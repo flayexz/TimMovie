@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TimMovie.Database.Models;
 
-public class ApplicationContext : IdentityDbContext<User,IdentityRole<int>,int>
+public class ApplicationContext : IdentityDbContext<User,IdentityRole<Guid>,Guid>
 {
     public DbSet<Actor> Actors { get; set; }
     public DbSet<Banner> Banners { get; set; }
@@ -28,8 +28,13 @@ public class ApplicationContext : IdentityDbContext<User,IdentityRole<int>,int>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<User>().HasMany(x => x.FilmsWatchLater).WithMany(x => x.UsersWatchLater);
-        modelBuilder.Entity<User>().HasOne(x => x.WatchingFilm).WithMany(x => x.UsersWatching);
-
+        modelBuilder.Entity<User>().HasMany(x => x.FilmsWatchLater).
+            WithMany(x => x.UsersWatchLater);
+        modelBuilder.Entity<User>().HasOne(x => x.WatchingFilm).
+            WithMany(x => x.UsersWatching).OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<User>().HasOne(x => x.Country).
+            WithMany(x => x.Users).OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<Film>().HasOne(x => x.Country).
+            WithMany(x => x.Films).OnDelete(DeleteBehavior.SetNull);
     }
 }

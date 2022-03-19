@@ -10,5 +10,7 @@ public class Notification
     public string Content { get; set; }
     
     public List<User> Users { get; set; }
+    
+    public DateTime? Date { get; set; }
 
 }

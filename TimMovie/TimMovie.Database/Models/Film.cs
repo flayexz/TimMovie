@@ -7,13 +7,14 @@ public class Film
     public Guid Id { get; set; }
     
     [Required]
+    [MaxLength(200)]
     public string Title { get; set; }
     
     public DateTime Date { get; set; }
     
     public string? Description { get; set; }
     
-    public Country Country { get; set; }
+    public Country? Country { get; set; }
     
     public string? Image { get; set; }
     
