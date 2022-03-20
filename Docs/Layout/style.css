@@ -16,8 +16,6 @@ a:hover {
 .card-film {
     transition: all 0.3s ease-out 0s;
     background-color: #1f1b2e;
-    max-width: 300px;
-    position: relative;
 }
 
 .card-description {
@@ -25,13 +23,11 @@ a:hover {
     display: none;
 }
 
-.card-film:hover {
-    transition: all 0.3s ease-in 0s;
-    max-width: 320px;
-    position: relative;
-    z-index: 2;
-}
-
 .more-info-card-film {
     color: rgb(214, 214, 214);
+}
+
+.input-name-film {
+    min-width: 320px;
+    max-width: 30%;
 }
