@@ -1,0 +1,161 @@
+body {
+  background-color: #100e19 !important;
+  min-width: 455px;
+}
+
+.panel {
+  border: 1px solid gray;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 5%;
+  padding-top: 1%;
+}
+
+.box {
+  position: relative;
+  background: #100e19;
+}
+
+.box::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: #fff;
+  z-index: -2;
+  filter: blur(40px);
+}
+
+.box::before,
+.box::after {
+  background: linear-gradient(235deg, #100e19, #e84855, #8a2be2);
+}
+
+#tmbanner {
+  max-width: 100%;
+}
+
+.banner {
+  padding: 5px;
+  width: 100%;
+}
+
+.list-title {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: large;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  padding: 0.3%;
+  border: 1px solid gray;
+  background-color: #8a2be2;
+}
+
+.navigation {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0.3%;
+  background-color: #e84855;
+  font-size: medium !important;
+}
+
+.films-list {
+  min-height: 10px;
+  max-width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.film-card {
+  text-align: start !important;
+  max-height: 200px;
+  min-height: 50px;
+  margin-left: 2%;
+  padding: 5px;
+  max-width: 80px;
+  min-width: 80px;
+}
+
+.film-photo {
+  min-height: 50px;
+  max-width: 100%;
+  max-height: 140px;
+}
+
+.film-title {
+  /* word-break: break-all; */
+  width: 40%;
+  text-align: left !important;
+  padding-left: 2% !important;
+  font-size: large;
+  color: #e84855;
+}
+
+.film-number {
+  padding: 1%;
+  border-right: solid 1px gray;
+  color: white;
+}
+
+.films-container {
+  margin-top: 0.5%;
+}
+
+.navigation-film-name {
+  width: 50%;
+}
+
+.clickable:hover {
+  cursor: pointer;
+}
+
+.film-block {
+  font-size: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.film-duration {
+  margin-left: 5%;
+  width: 15%;
+}
+
+#grade1 {
+  color: #00a676;
+}
+
+#grade2 {
+  color: white;
+}
+
+#grade3 {
+  color: red;
+}
+
+.film-grade {
+  margin-left: 2%;
+  padding-right: 5%;
+}
+
+.navigation-film-grade {
+  margin-left: 6%;
+  padding-right: 2%;
+}
+
+.navigation-film-watched-date {
+  margin-left: 4%;
+}
+
+.film-watched-date {
+  margin-left: 4%;
+}
+
+.navigation-film-duration {
+  margin-left: 2%;
+}
