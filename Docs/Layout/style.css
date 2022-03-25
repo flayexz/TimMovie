@@ -1,0 +1,33 @@
+body {
+    background-color: #100e19;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: inherit;
+}
+
+.card-film {
+    transition: all 0.3s ease-out 0s;
+    background-color: #1f1b2e;
+}
+
+.card-description {
+    color: grey;
+    display: none;
+}
+
+.more-info-card-film {
+    color: rgb(214, 214, 214);
+}
+
+.input-name-film {
+    min-width: 320px;
+    max-width: 30%;
+}
