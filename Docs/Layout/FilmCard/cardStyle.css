@@ -1,0 +1,43 @@
+.film-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.film-card a:hover {
+    color: inherit;
+}
+
+.container_film_card {
+    margin-top: 0%;
+}
+
+.film-card:hover .film-card__img {
+    filter: brightness(30%);
+}
+
+.film-card__more-info-container {
+    right: 0;
+    top: 0;
+    z-index: 4;
+}
+
+.film-card__title {
+    font-size: 1.2em;
+}
+
+.film-card__under-content {
+    margin-top: 2%;
+}
+
+.film-card__subscribe-text {
+    font-size: 0.8em;
+}
+
+.film-card__more-info {
+    padding: 4%;
+}
+
+.film-card__more-info-content {
+    margin-top: 58%;
+    font-size: 0.9em;
+}
