@@ -1,0 +1,136 @@
+body {
+    background-color: #100e19;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    color: inherit;
+}
+
+.card-film {
+    transition: all 0.3s ease-out 0s;
+    background-color: #1f1b2e;
+}
+
+.card-description {
+    color: grey;
+    display: none;
+}
+
+.more-info-card-film {
+    color: rgb(214, 214, 214);
+}
+
+.input-name-film {
+    min-width: 320px;
+    max-width: 30%;
+}
+
+.navbar-nav{
+    margin-top: 5px;
+}
+
+.nav-button-left, .nav-button-left-first{
+    margin: 13px auto auto 20px;
+    color: darkgrey;
+    font-weight: 500;
+}
+
+.nav-button-right, .nav-button-right-first{
+    margin: auto 20px auto auto;
+    color: darkgrey;
+    font-weight: 500;
+}
+
+.nav-button-left-first{
+    margin-left: 40px;
+}
+
+.nav-button-right-first{
+    margin-right: 20px;
+}
+
+.nav-item:hover{
+    color: white;
+}
+
+.logoImg{
+    width: 130px;
+    height: 50px;
+    border-radius: 6px;
+}
+
+.profileImg{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 34px;
+    height: 34px;
+}
+
+.notifImg{
+    margin-top: 13px;
+    margin-bottom: 13px;
+    width: 24px;
+    height: 24px;
+}
+
+.dropdown-content {
+    left: 0;
+    top: 63px;
+    color: black;
+    display: none;
+    position: absolute;
+}
+
+.dropdown-content a{
+    color: darkgrey;
+}
+
+.nav-item:hover .dropdown-content {
+    background-color: #1a152b;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.navbar-collapse:first-child:hover{
+    background-color: #1a152b;
+}
+
+.header-content header{
+    font-size: 35px;
+    margin-left: 5%;
+    margin-right: 5%;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-content ul{
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.main-content li{
+    width: 210px;
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+
+.main-content li a:hover{
+    text-decoration: underline;
+}
+
+.parent-block{
+    margin-left: 30px;
+}
+
+li {
+    list-style-type: none;
+}
