@@ -4,8 +4,11 @@
 }
 
 .dropdown-filter__button {
-    cursor: pointer;
     font-size: 1.2em;
+}
+
+.dropdown-filter__button-content {
+    cursor: pointer;
 }
 
 .dropdown-filter__menu {
