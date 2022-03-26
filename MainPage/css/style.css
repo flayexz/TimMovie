@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Roboto&display=swap");
+
+body {
+  background-color: #100e19;
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+.text_color {
+  color: #fff;
+}
+
+.param_links {
+  text-decoration: none;
+}
+
+.filter-white {
+  fill: #fff;
+}
+
+.param_links :hover {
+  font-weight: bold;
+  color: #ea003d;
+}
+
+.circleBorders {
+  border-radius: 40px;
+}
+
+.carousel-item {
+  background: #100e19;
+  color: white;
+  position: relative;
+  background-position: center;
+  background-size: cover;
+}
+
+#bannerCarousel .carousel-item {
+  min-height: 32rem;
+}
+
+#recommendationsCarousel .carousel-item {
+  min-height: 10rem;
+}
+
+.banner-container {
+  position: absolute;
+  bottom: 3%;
+  left: 0;
+  right: 0;
+  padding-bottom: 50px;
+}
+
+.overlay-image {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0.5;
+}
+
+.btn_color {
+  color: white;
+  background: #ea003d;
+}
+
+.btn_color:hover {
+  color: white;
+  filter: brightness(120%) saturate(120%);
+}
+
+.carousel-item h1 {
+  font-size: 3rem;
+}
+
+.carousel-item p {
+  font-size: 20px;
+  margin: 0;
+}
+
+.black_borders {
+  border: 4px #100e19 solid;
+}
+
+.carousel-nav-icon {
+  fill: white;
+}
+
+/* banner carousel */
+.bc_buttons {
+  position: relative;
+  flex-grow: 0.6;
+}
+
+/* .bc_buttons .carousel-nav-icon {
+  height: 48px;
+  width: 48px;
+} */
+
+/* cards carousel */
+.cc_buttons {
+  position: relative;
+  flex-grow: 0.5;
+}
+
+/* .cc_buttons .carousel-nav-icon {
+  min-height: 28px;
+  width: 28px;
+} */
+
+.card-image {
+  width: 160px;
+  height: 250px;
+  background-position: center;
+  background-size: cover;
+}

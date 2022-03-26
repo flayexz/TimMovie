@@ -1,0 +1,12 @@
+body {
+  background-color: #100e19;
+}
+
+.my_contaiter {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.my_contaiter :nth-child(1) {
+  flex-shrink: 3;
+}
