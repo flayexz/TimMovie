@@ -4,30 +4,11 @@ body {
     font-family: "Open Sans", sans-serif;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.search-film {
+    margin-top: 3%;
 }
 
-a:hover {
-    color: inherit;
-}
-
-.card-film {
-    transition: all 0.3s ease-out 0s;
-    background-color: #1f1b2e;
-}
-
-.card-description {
-    color: grey;
-    display: none;
-}
-
-.more-info-card-film {
-    color: rgb(214, 214, 214);
-}
-
-.input-name-film {
+.search-film__input {
     min-width: 320px;
     max-width: 30%;
 }
