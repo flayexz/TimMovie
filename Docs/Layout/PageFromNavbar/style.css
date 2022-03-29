@@ -32,63 +32,116 @@ a:hover {
     max-width: 30%;
 }
 
-.navbar-nav{
-    margin-top: 5px;
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    padding-bottom: 10px;
 }
 
-.nav-button-left, .nav-button-left-first{
-    margin: 13px auto auto 20px;
+.nav-button-left-xl, .nav-button-left-first-xl,
+.nav-button-left-lg, .nav-button-left-first-lg,
+.nav-button-left-md, .nav-button-left-first-md,
+.nav-button-left-sm, .nav-button-left-first-sm {
+    padding-left: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
     color: darkgrey;
     font-weight: 500;
 }
 
-.nav-button-right, .nav-button-right-first{
-    margin: auto 20px auto auto;
+.nav-button-right-xl, .nav-button-right-last-xl,
+.nav-button-right-lg, .nav-button-right-last-lg,
+.nav-button-right-md, .nav-button-right-last-md,
+.nav-button-right-sm, .nav-button-right-last-sm {
+    padding-right: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
     color: darkgrey;
     font-weight: 500;
 }
 
-.nav-button-left-first{
+/*@media (max-width: 600px) {*/
+/*    #sidebar {display: none;}*/
+/*}*/
+.nav-button-left-first-xl,
+.nav-button-left-first-lg,
+.nav-button-left-first-md,
+.nav-button-left-first-sm {
     margin-left: 40px;
+    padding-left: 0;
 }
 
-.nav-button-right-first{
-    margin-right: 20px;
+.nav-button-right-last-xl,
+.nav-button-right-last-lg,
+.nav-button-right-last-md,
+.nav-button-right-last-sm {
+    padding-right: 0;
 }
 
-.nav-item:hover{
+.nav-button-left-lg, .nav-button-left-first-lg{
+    font-size: 0.8em;
+}
+
+.nav-button-right-lg, .nav-button-right-last-lg{
+    font-size: 0.8em;
+}
+
+.nav-button-left-md, .nav-button-left-first-md{
+    font-size: 0.6em;
+}
+
+.nav-button-right-md, .nav-button-right-last-md{
+    font-size: 0.6em;
+}
+
+.nav-button-left-sm, .nav-button-left-first-sm{
+    font-size: 0.3em;
+}
+
+.nav-button-right-sm, .nav-button-right-last-sm{
+    font-size: 0.3em;
+}
+
+.nav-item:hover {
     color: white;
+    cursor: pointer;
 }
 
-.logoImg{
+.dropdown-content-item:hover {
+    cursor: default;
+}
+
+.logoImg {
     width: 130px;
     height: 50px;
     border-radius: 6px;
+    margin-left: 10px;
 }
 
-.profileImg{
-    margin-top: 8px;
-    margin-bottom: 8px;
+.profileImg {
     width: 34px;
     height: 34px;
+    margin-right: 10px;
 }
 
-.notifImg{
-    margin-top: 13px;
-    margin-bottom: 13px;
+.notifImg {
     width: 24px;
     height: 24px;
 }
 
 .dropdown-content {
     left: 0;
-    top: 63px;
+    top: 75px;
     color: black;
     display: none;
     position: absolute;
+    border-top: 1px solid #404040;
 }
 
-.dropdown-content a{
+.dropdown-content a {
     color: darkgrey;
 }
 
@@ -99,38 +152,85 @@ a:hover {
     width: 100%;
 }
 
-.navbar-collapse:first-child:hover{
+.navbar-collapse:first-child:hover {
     background-color: #1a152b;
 }
 
-.header-content header{
-    font-size: 35px;
-    margin-left: 5%;
-    margin-right: 5%;
-    height: 80px;
+.header-content {
+    font-size: 14px;
+    margin-left: 20px;
     display: flex;
     justify-content: space-between;
 }
 
-.main-content ul{
+.main-content ul {
     display: inline-flex;
     flex-direction: column;
 }
 
-.main-content li{
-    width: 210px;
-    font-size: 19px;
-    margin-bottom: 10px;
+.main-content li {
+    width: 140px;
+    font-size: 13px;
+    padding-bottom: 10px;
 }
 
-.main-content li a:hover{
+.main-content li a:hover {
     text-decoration: underline;
 }
 
-.parent-block{
-    margin-left: 30px;
+.header-block {
+    margin-top: 10px;
+    margin-left: 12px;
 }
 
-li {
+.dropdown-content .header-content .header-block {
+    color: white;
+    font-weight: 600;
+}
+
+.dropdown-content-item {
+    /*border-right-width: 10px;*/
+    /*border-color: white;*/
+    padding-right: 10px;
+    border-right: 1px solid #404040;
+}
+
+.dropdown-content-item-last {
+    display: flex;
+    width: 100%;
+    max-width: 546px;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+}
+
+.parent-block ul {
+    margin-left: 10px;
+}
+
+.dropdown-content li {
     list-style-type: none;
 }
+
+.subscribeSquare {
+    border-radius: 20px;
+    width: 400px;
+    height: 270px;
+}
+
+.subscribeSquareHeader {
+    height: 80%;
+    background: blue;
+}
+
+.subscribeSquareMain {
+    height: 20%;
+    background: yellow;
+    color: yellow;
+}
+
+.subscribeSquareMain:hover {
+    color: black;
+    cursor: pointer;
+}
+
