@@ -217,7 +217,7 @@ a:hover {
     display: none;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 61.99em) {
     .nav-item:hover .dropdown-content {
         display: none;
     }
