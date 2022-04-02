@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TimMovie.Infrastructure.Database;
+namespace TimMovie.SharedKernel.BaseEntities;
 
 public abstract class PersonBaseEntity
 {

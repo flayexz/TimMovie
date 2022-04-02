@@ -16,10 +16,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Database" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\TimMovie.Core\TimMovie.Core.csproj" />
     </ItemGroup>
 

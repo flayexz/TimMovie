@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TimMovie.Infrastructure.Database;
+namespace TimMovie.Core.Entities;
 
-public class Country
+public class Genre
 {
     public Guid Id { get; set; }
     
     [Required]
-    [MaxLength(100)]
+    [MaxLength(50)]
     public string Name { get; set; }
-
-    public List<User> Users { get; set; }
+    
     public List<Film> Films { get; set; }
 }

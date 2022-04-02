@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using TimMovie.Core.Entities.Enums;
+using TimMovie.SharedKernel.BaseEntities;
 
-namespace TimMovie.Infrastructure.Database;
+namespace TimMovie.Core.Entities;
 
-public class User : IdentityUser<Guid>
+public class User : UserBaseEntity
 {
     public UserStatus Status { get; set; }
     public Film? WatchingFilm { get; set; }

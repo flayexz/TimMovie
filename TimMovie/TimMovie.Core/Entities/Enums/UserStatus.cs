@@ -1,4 +1,4 @@
-﻿namespace TimMovie.Infrastructure.Database;
+﻿namespace TimMovie.Core.Entities.Enums;
 
 public enum UserStatus
 {
