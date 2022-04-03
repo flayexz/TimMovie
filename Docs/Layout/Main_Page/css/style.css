@@ -67,24 +67,14 @@ body {
   filter: brightness(120%) saturate(120%);
 }
 
-
-.carousel-nav-icon {
-  fill: white;
-}
-
-.bc_buttons {
+.shift-left{
   position: relative;
-  flex-grow: 1;
+  left: -20%;
 }
 
-.hover_card {
-  font-weight: bold;
-  color: gray;
-}
-
-.hover_card:hover {
-  color: #fff;
-  transition-duration: 0.2s;
+.shift-right {
+  position: relative;
+  right: -20%;
 }
 
 /* film carousel styles */
@@ -98,6 +88,8 @@ h1{
 
 .prev_next_buttons {
   fill: rgba(255, 255, 255, .72);
+  cursor: pointer;
+  opacity: 1;
 }
 
 .prev_next_buttons:hover {

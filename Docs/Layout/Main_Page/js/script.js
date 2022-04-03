@@ -78,11 +78,6 @@ let isNeedToHide;
 
 setMoveCoefficients();
 
-console.log(shiftCards)
-console.log(m)
-console.log(ost)
-console.log(shifts)
-
 
 next.on('click', function (e) {
     index++;
