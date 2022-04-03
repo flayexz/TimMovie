@@ -38,11 +38,12 @@ body {
 }
 
 .banner-container {
+  width: 90%;
   position: absolute;
   bottom: 3%;
   left: 0;
   right: 0;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 }
 
 .overlay-image {
