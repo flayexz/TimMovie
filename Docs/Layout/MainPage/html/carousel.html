@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/carousel.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<style>
+
+</style>
+
+
+
+<body>
+  <div class="container-xl">
+    <h1 class="text-white p-5">Big Banner bootstrap 5.0.2</h1>
+    <div class="row mb-5 bottomBorder">
+      <!-- Left button -->
+      <div class="col-md-1 d-flex justify-content-center p-0" style="width: 4%;">
+        <a href="#bannerCarousel" class="carousel-control-prev bc_buttons" role="button" data-bs-slide="prev">
+          <div class="carousel-nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <path
+                d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <!-- Banner carousel -->
+      <div class="col-md-10 p-0" style="width: 92%;">
+        <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+          <!-- slides of banners -->
+          <div class="carousel-inner circleBorders">
+            <!-- active slide Interstellar -->
+            <div class="carousel-item active" data-bs-interval="10000">
+              <div class="overlay-image" style="background-image:url(../images/banners/interstellar.jpg)"></div>
+              <div class="banner-container ms-2">
+                <h1>Интерстеллар</h1>
+                <p>Фантастический эпос про задыхающуюся Землю, космические полеты и парадоксы времени. «Оскар» за
+                  спецэффекты</p>
+                <a href="#" class="btn btn-lg btn_color">
+                  Смотреть
+                </a>
+              </div>
+            </div>
+            <!-- carousel item Dark Knight-->
+            <div class="carousel-item" data-bs-interval="10000">
+              <div class="overlay-image" style="background-image:url(../images/banners/dark_knight.jpg)"></div>
+              <div class="banner-container ms-2">
+                <h1>Темный рыцарь</h1>
+                <p>У Бэтмена появляется новый враг — философ-террорист Джокер. Кинокомикс, который вывел жанр на новый
+                  уровень.</p>
+                <a href="#" class="btn btn-lg btn_color">
+                  Смотреть
+                </a>
+              </div>
+            </div>
+            <!-- carousel item The Lord Of The Rings-->
+            <div class="carousel-item" data-bs-interval="10000">
+              <div class="overlay-image" style="background-image:url(../images/banners/lord_of_the_rings.jpg)"></div>
+              <div class="banner-container ms-2">
+                <h1>Властелин колец: Братство Кольца</h1>
+                <p>Фродо Бэггинс отправляется спасать Средиземье. Первая часть культовой фэнтези-трилогии Питера
+                  Джексона
+                </p>
+                <a href="#" class="btn btn-lg btn_color">
+                  Смотреть
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right button -->
+      <div class="col-md-1 d-flex justify-content-center p-0" style="width: 4%;">
+        <a href="#bannerCarousel" class="carousel-control-next bc_buttons" role="button" data-bs-slide="next">
+          <div class="carousel-nav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <path
+                d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <h1 class="text-white pl-5">Multi-item responsive carousel with html + css + js</h1>
+    <div class="carousel-container">
+      <div class="carousel-inner">
+        <div class="track">
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/1+1.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 1
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/101 далматинец.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 2
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/12 королевств.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 3
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/1812.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 4
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/44 котенка.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 5
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/9 рота.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 6
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Аватар короля.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 7
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Алладин.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 8
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Амнезия.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 9
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Апгрейд.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 10
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Апокалипсис.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 11
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Афера века.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 12
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Балерина.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 13
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Балканский рубеж.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 14
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card">
+              <div class="img">
+                <img src="../images/cards/Барбоскины.jpg" class="card-image" alt="film_card">
+              </div>
+              <div class="info">
+                Film 15
+              </div>
+            </div>
+          </div>
+          <div class="card-container column">
+            <div class="card text-white align-items-center justify-content-center"
+              style="background-color:#1f1b2e; height: 90%;">
+              Посмотреть все
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <a class="column h-100 prev_next_buttons prev carousel-control-prev"><svg xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path
+              d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
+          </svg></a>
+        <a class="column h-100 prev_next_buttons next carousel-control-next"><svg xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path
+              d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
+          </svg></a>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="../js/script.js"></script>
+</body>
+
+
+
+
+
+</html>
