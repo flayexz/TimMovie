@@ -15,20 +15,29 @@
 
 <body>
   <div class="container-xl">
-    <div class="row mb-2">
-      <!-- Left button -->
-      <div class="col-md-1 d-flex justify-content-center p-0" style="width: 4%;">
-        <a href="#bannerCarousel" class="carousel-control-prev bc_buttons" role="button" data-bs-slide="prev">
-          <div class="carousel-nav-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <path
-                d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
-            </svg>
-          </div>
+    <div class="row mb-2 justify-content-center">
+      <div class="col-1 p-0">
+        <a class="prev_next_buttons h-100 d-flex align-items-center justify-content-start"><svg class="shift-left"
+            xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 129 129"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path
+              d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
+          </svg></a>
+      </div>
+      <div class="col-1 order-3 p-0">
+        <a href="#bannerCarousel" class="prev_next_buttons h-100 d-flex align-items-center justify-content-end"
+          role="button" data-bs-slide="next">
+          <svg class="shift-right" xmlns="http://www.w3.org/2000/svg" width="80px" height="80px" viewBox="0 0 129 129"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path
+              d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
+          </svg>
         </a>
       </div>
+
+
       <!-- Banner carousel -->
-      <div class="col-md-10 p-0" style="width: 92%;">
+      <div class="col-10 p-0">
         <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
           <!-- slides of banners -->
           <div class="carousel-inner circleBorders">
@@ -72,17 +81,22 @@
           </div>
         </div>
       </div>
-      <!-- Right button -->
-      <div class="col-md-1 d-flex justify-content-center p-0" style="width: 4%;">
-        <a href="#bannerCarousel" class="carousel-control-next bc_buttons" role="button" data-bs-slide="next">
-          <div class="carousel-nav-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <path
-                d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
-            </svg>
-          </div>
+      <!-- <div class="banner-nav">
+        <a href="#bannerCarousel" class="column carousel-control-prev" role="button" data-bs-slide="prev">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path
+              d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
+          </svg>
         </a>
-      </div>
+        <a href="#bannerCarousel" class="column carousel-control-next" role="button" data-bs-slide="next">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <path
+              d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
+          </svg>
+        </a>
+      </div> -->
     </div>
     <!-- Recommendations carousel -->
     <h1 class="text_color pl-3 mt-5">Рекомендуем вам посмотреть</h1>
@@ -669,12 +683,12 @@
           </div>
         </div>
         <div class="carousel-nav">
-          <a class="column h-100 prev_next_buttons prev carousel-control-prev"><svg xmlns="http://www.w3.org/2000/svg"
+          <a class="column h-100 prev carousel-control-prev prev_next_buttons"><svg xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
               <path
                 d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
             </svg></a>
-          <a class="column h-100 prev_next_buttons next carousel-control-next"><svg xmlns="http://www.w3.org/2000/svg"
+          <a class="column h-100 next carousel-control-next prev_next_buttons"><svg xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
               <path
                 d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z" />
