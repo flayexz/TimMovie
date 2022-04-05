@@ -12,6 +12,7 @@ namespace TimMovie.Web.Controllers;
 [AllowAnonymous]
 public class AccountController : Controller
 {
+    private readonly ILogger<AccountController> logger; 
     private readonly UserManager<User> userManager;
     private readonly IUserMessageService userMessageService;
     private readonly IMailService mailService;
@@ -19,13 +20,14 @@ public class AccountController : Controller
     private readonly IMapper mapper;
 
     public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
-        IUserMessageService userMessageService, IMailService mailService)
+        IUserMessageService userMessageService, IMailService mailService, ILogger<AccountController> logger)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
         this.mapper = mapper;
         this.userMessageService = userMessageService;
         this.mailService = mailService;
+        this.logger = logger;
     }
 
     [HttpGet]
@@ -92,14 +94,20 @@ public class AccountController : Controller
             HttpContext.Request.Scheme);
 
         var msg = userMessageService.GenerateConfirmMessage(user.UserName, user.Email, confirmUrl!);
-        await mailService.SendMessageAsync(msg);
+        var result = await mailService.SendMessageAsync(msg);
+        if(result.IsFailure)
+            logger.Log(LogLevel.Error,result.Error);
+        else
+        {
+            logger.Log(LogLevel.Information,$"send email msg to {user.Email}");
+        }
     }
 
     private void AddErrors(IdentityResult result)
     {
         foreach (var error in result.Errors)
         {
-            ModelState.AddModelError(string.Empty, error.Description);
+            ModelState.AddModelError("CustomError", error.Description);
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using TimMovie.Core.Classes;
+using TimMovie.SharedKernel.Classes;
 
 namespace TimMovie.Core.Interfaces;
 
 public interface IMailService
 {
-    public Task SendMessageAsync(MessageMail message);
+    public Task<Result> SendMessageAsync(MessageMail message);
 }

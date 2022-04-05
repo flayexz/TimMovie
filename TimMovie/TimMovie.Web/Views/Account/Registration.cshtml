@@ -25,21 +25,22 @@
                 </div>
                 <div class="form-fields">
                     <div class="form-field">
+                        <span asp-validation-for="Email"></span>
                         <input type="email" placeholder="Почта" class="input-field" asp-for="Email">
-                        <span asp-validation-for="UserName"></span>
                     </div>
                     <div class="form-field">
+                        <span asp-validation-for="UserName"></span>
                         <input type="text" placeholder="Логин" class="input-field" asp-for="UserName">
-                        <span asp-validation-for="UserName"></span>
                     </div>
                     <div class="form-field">
-                        <input type="password" placeholder="Пароль" class="input-field" asp-for="Password">
                         <span asp-validation-for="Password"></span>
+                        <input type="password" placeholder="Пароль" class="input-field" asp-for="Password">
                     </div>
                     <div class="form-field">
-                        <input type="password" placeholder="Подтвердите пароль" class="input-field" asp-for="ConfirmPassword">
                         <span asp-validation-for="ConfirmPassword"></span>
+                        <input type="password" placeholder="Подтвердите пароль" class="input-field" asp-for="ConfirmPassword">
                     </div>
+                    @Html.ValidationMessage("CustomError",new{style="color:red"})
                 </div>
                 <div class="form-buttons mt-4">
                     <button class="button">

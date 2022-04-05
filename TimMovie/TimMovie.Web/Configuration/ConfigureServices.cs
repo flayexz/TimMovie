@@ -31,14 +31,13 @@ public static class ServicesConfiguration
         
         //TODO: сделать чтобы было вот так
        // services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
-       
        services.AddScoped<IMailService,MailKitService>(o => new MailKitService(new MailSetup(
             configuration.GetValue<int>("MailSetup:Port"),
             configuration.GetSection("MailSetup:Host").Value,
             configuration.GetSection("MailSetup:Password").Value,
             configuration.GetSection("MailSetup:FromCompanyName").Value,
             configuration.GetSection("MailSetup:FromCompanyAddress").Value)));
-       services.AddTransient<IUserMessageService,UserMessageService>();
-        return services;
+       services.AddScoped<IUserMessageService,UserMessageService>();
+       return services;
     }
 }

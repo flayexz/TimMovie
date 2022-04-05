@@ -6,7 +6,7 @@ public class RegistrationViewModel
 {
     
     [Required(ErrorMessage = "Это обязательно поле")]
-    [EmailAddress]
+    [EmailAddress(ErrorMessage = "Неверный тип почты")]
     [Display(Name = "Почта")]
     public string Email { get; set; }
 
