@@ -1,5 +1,4 @@
-﻿using System.Net.Mail;
-using MimeKit;
+﻿using MimeKit;
 using TimMovie.Core.Classes;
 using TimMovie.Core.Interfaces;
 using TimMovie.SharedKernel.Classes;
