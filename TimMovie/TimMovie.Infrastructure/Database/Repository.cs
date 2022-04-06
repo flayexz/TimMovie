@@ -23,6 +23,9 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate) =>
         _dbSet.AsNoTracking().Where(predicate);
 
+    public TEntity? GetFirst(Func<TEntity, bool> predicate) => 
+        _dbSet.AsNoTracking().Where(predicate).FirstOrDefault();
+
     public void Update(TEntity item)
     {
         _context.Entry(item).State = EntityState.Modified;
