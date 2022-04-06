@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.SharedKernel.BaseEntities;
 
-public abstract class PersonBaseEntity
+public abstract class PersonBaseEntity : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Required]
     [MaxLength(100)]
     public string Name { get; set; }

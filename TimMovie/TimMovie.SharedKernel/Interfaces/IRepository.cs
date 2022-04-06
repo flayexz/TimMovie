@@ -1,11 +1,14 @@
-﻿namespace TimMovie.SharedKernel.Interfaces;
+﻿using TimMovie.SharedKernel.BaseEntities;
 
-public interface IRepository<TEntity> where TEntity : class
+namespace TimMovie.SharedKernel.Interfaces;
+
+public interface IRepository<TEntity> where TEntity : BaseEntity
 {
-    void Create(TEntity item);
-    IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
-    TEntity? GetFirst(Func<TEntity, bool> predicate);
-    void Update(TEntity item);
-    void Delete(TEntity item);
-    void Save();
+    Task<TEntity?> CreateAsync(TEntity item);
+    // IEnumerable<TEntity> GetAsync(Func<TEntity, bool> predicate);
+    // TEntity? GetFirstAsync(Func<TEntity, bool> predicate);
+    Task<TEntity?> FindAsync(TEntity item);
+    Task UpdateAsync(TEntity item);
+    Task DeleteAsync(TEntity item);
+    Task SaveAsync();
 }

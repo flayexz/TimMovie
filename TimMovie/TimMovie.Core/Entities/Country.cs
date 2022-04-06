@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
-public class Country
+public class Country : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Required]
     [MaxLength(100)]
     public string Name { get; set; }

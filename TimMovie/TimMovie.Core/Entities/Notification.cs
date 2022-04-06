@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
-public class Notification
+public class Notification : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Required]
     public string Content { get; set; }
     
