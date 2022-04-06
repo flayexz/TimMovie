@@ -15,11 +15,11 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _dbSet = context.Set<TEntity>();
     }
 
-    public async Task<TEntity?> CreateAsync(TEntity item)
+    public async Task<TEntity?> AddAsync(TEntity item)
     {
-        await _dbSet.AddAsync(item);
+        var entityEntry = await _dbSet.AddAsync(item);
         await SaveAsync();
-        return await FindAsync(item);
+        return entityEntry.Entity;
     }
 
     // public async Task<IEnumerable<TEntity>> GetAsync(Func<TEntity, bool> predicate) =>
