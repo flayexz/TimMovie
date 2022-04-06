@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
-public class Film
+public class Film : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Required]
     [MaxLength(200)]
     public string Title { get; set; }
     
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
     
     public string? Description { get; set; }
     

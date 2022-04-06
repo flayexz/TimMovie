@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
-public class UserSubscribe
+public class UserSubscribe : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Required]
     public User SubscribedUser { get; set; }
     
