@@ -9,7 +9,7 @@ public class Film : BaseEntity
     [MaxLength(200)]
     public string Title { get; set; }
     
-    public int Year { get; set; }
+    public DateOnly Date { get; set; }
     
     public string? Description { get; set; }
     
