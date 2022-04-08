@@ -1,4 +1,7 @@
-﻿using System.Net.Mail;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.Extensions.Options;
 using TimMovie.Core.Classes;
 using TimMovie.Core.Interfaces;
 using TimMovie.Infrastructure.Services;
@@ -16,28 +19,16 @@ public static class ServicesConfiguration
             options.LoginPath = "/Account/Login";
             options.AccessDeniedPath = "/Account/Denied";
         });
-        
-        // services.AddAuthentication().AddVKontakte(
-        //     opt =>
-        //     {
-        //         opt.ClientId = configuration.GetValue<string>("VkSettings:ClientId");
-        //         opt.ClientSecret = configuration.GetValue<string>("VkSettings:ClientSecret");
-        //     });
-        
+        services.AddAuthentication().AddVkontakte(configuration);
         services.AddAuthorization();
         services.AddControllersWithViews();
         services.AddAutoMapper(typeof(AppMappingProfile));
         
         
-        //TODO: сделать чтобы было вот так
-       // services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
-       services.AddScoped<IMailService,MailKitService>(o => new MailKitService(new MailSetup(
-            configuration.GetValue<int>("MailSetup:Port"),
-            configuration.GetSection("MailSetup:Host").Value,
-            configuration.GetSection("MailSetup:Password").Value,
-            configuration.GetSection("MailSetup:FromCompanyName").Value,
-            configuration.GetSection("MailSetup:FromCompanyAddress").Value)));
-       services.AddScoped<IUserMessageService,UserMessageService>();
+       services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
+       services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
+       services.AddScoped<IMailService,MailKitService>();
+       services.AddScoped<IUserMessageService, UserMessageService>();
        return services;
     }
 }
