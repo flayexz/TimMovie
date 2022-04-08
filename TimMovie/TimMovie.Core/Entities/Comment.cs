@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
-public class Comment
+public class Comment : BaseEntity
 {
-    public Guid Id { get; set; }
-    
     [Required]
     public Film Film { get; set; }
     
