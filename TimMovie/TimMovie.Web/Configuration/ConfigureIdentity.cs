@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.Entities;
 using TimMovie.Infrastructure.Database;
+using TimMovie.Infrastructure.Identity;
 
 namespace TimMovie.Web.Configuration;
 
@@ -18,6 +18,7 @@ public static class ConfigureIdentity
                 opt.User.RequireUniqueEmail = true;
                 opt.SignIn.RequireConfirmedEmail = true;
             })
+            .AddErrorDescriber<RussianErrorDescriber>()
             .AddSignInManager()
             .AddEntityFrameworkStores<ApplicationContext>()
             .AddDefaultTokenProviders();

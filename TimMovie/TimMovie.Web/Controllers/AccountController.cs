@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,9 +44,9 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = mapper.Map<User>(model);
-        user.RegistrationDate = DateTime.Now;
+        var user = CreateUser(model);
         var result = await userManager.CreateAsync(user, model.Password);
+        
         if (!result.Succeeded)
         {
             AddErrors(result);
@@ -82,16 +83,70 @@ public class AccountController : Controller
         return View("Error");
     }
 
+    [HttpPost]
+    public async Task<IActionResult> RegisterByVkAsync(string provider, string returnUrl)
+    {
+        var redirectUrl = Url.Action("ExternalLoginCallback",new { returnUrl });
+        var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        return Challenge(properties, provider);
+    }
+    [AllowAnonymous]
+    public async Task<IActionResult> ExternalLoginCallback(string returnUrl)
+    {
+        var info = await signInManager.GetExternalLoginInfoAsync();
+        if (info == null)
+        {
+            return RedirectToAction("Registration");
+        }
+
+        var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, false);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Registration");
+        }
+
+        return RedirectToAction("Registration");
+    }
+    
+    [AllowAnonymous]
+    [HttpPost]
+    [ActionName("RegisterExternal")]
+    public async Task<IActionResult> RegisterExternalConfirmed(ExternalLoginViewModel model)
+    {
+        var info = await signInManager.GetExternalLoginInfoAsync();
+        if (info == null)
+        {
+            return RedirectToAction("Registration");
+        }
+
+        var user = new User { UserName = model.UserName };
+        var result = await userManager.CreateAsync(user);
+        if (result.Succeeded)
+        {
+            return RedirectToAction("Index", "Home");
+            // var claimsResult = await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "Administrator"));
+            // if (claimsResult.Succeeded)
+            // {
+            //     var identityResult = await userManager.AddLoginAsync(user, info);
+            //     if (identityResult.Succeeded)
+            //     {
+            //         await signInManager.SignInAsync(user, false);
+            //         return RedirectToAction("Index");
+            //     }
+            // }
+        }
+
+        return Ok(); 
+    }
+    
     private async Task SendConfirmEmailAsync(User user)
     {
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
         var confirmUrl = Url.Action(
             "ConfirmEmail",
             "Account",
             new { userId = user.Id, code = token },
             HttpContext.Request.Scheme);
-
         var msg = userMessageService.GenerateConfirmMessage(user.UserName, user.Email, confirmUrl!);
         var result = await mailService.SendMessageAsync(msg);
         if(result.IsFailure)
@@ -106,7 +161,15 @@ public class AccountController : Controller
     {
         foreach (var error in result.Errors)
         {
-            ModelState.AddModelError("CustomError", error.Description);
+            ModelState.AddModelError(string.Empty,error.Description);
         }
     }
+
+    private User CreateUser(RegistrationViewModel model)
+    {
+        var user = mapper.Map<User>(model);
+        user.RegistrationDate = DateTime.Now;
+        return user;
+    }
+    
 }

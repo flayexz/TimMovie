@@ -135,5 +135,5 @@ a.button {
 }
 
 .field-validation-error{
-    color: red !important;
+    color: darkred !important;
 }

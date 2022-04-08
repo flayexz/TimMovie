@@ -55,5 +55,5 @@ function resizeToDefault(){
     document.querySelector('.navigation').querySelectorAll('span').forEach(x => x.style = 'font-size:15px !important');
     document.querySelector('.navigation-film-name').style=' width: 48%;';
     document.querySelectorAll('.film-duration').forEach(x => x.style='width: 15%;');
-}  
+}
 
