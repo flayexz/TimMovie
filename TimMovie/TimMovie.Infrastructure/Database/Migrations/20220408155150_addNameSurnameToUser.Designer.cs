@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220408155150_addNameSurnameToUser")]
+    partial class addNameSurnameToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -484,11 +486,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<Guid?>("CountryId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -501,6 +498,11 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -527,6 +529,10 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
+
+                    b.Property<string>("SurName")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");

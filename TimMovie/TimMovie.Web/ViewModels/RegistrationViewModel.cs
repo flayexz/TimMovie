@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
+using TimMovie.Core.Entities;
 
 namespace TimMovie.Web.ViewModels;
 
@@ -25,5 +26,8 @@ public class RegistrationViewModel
     [DataType(DataType.Password)]
     [Compare(nameof(Password),ErrorMessage = "Пароли не совпадают")]
     public string ConfirmPassword { get; set; }
+    
+    
+    public Country? Country { get; set; }
 
 }

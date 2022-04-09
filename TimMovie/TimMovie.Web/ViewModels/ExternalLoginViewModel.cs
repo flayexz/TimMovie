@@ -4,9 +4,10 @@ namespace TimMovie.Web.ViewModels;
 
 public class ExternalLoginViewModel
 {
-    [Required]
-    public string UserName { get; set; }
-        
-    [Required]
-    public string ReturnUrl { get; set; }
+    [Required(ErrorMessage = "Это обязательно поле")]
+    [EmailAddress(ErrorMessage = "Неверный тип почты")]
+    [Display(Name = "Почта")]
+    public string Email { get; set; }
+    
+    public string ReurnUrl { get; set; }
 }
