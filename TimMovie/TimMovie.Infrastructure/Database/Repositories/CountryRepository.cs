@@ -5,11 +5,8 @@ namespace TimMovie.Infrastructure.Database.Repositories;
 
 public class CountryRepository : Repository<Country>
 {
-    private readonly ApplicationContext _context;
-
     public CountryRepository(ApplicationContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<Country?> FindByNameAsync(string name) =>
