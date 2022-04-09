@@ -160,7 +160,7 @@ public class AccountController : Controller
         var vkInfoResult = await vkService.GetUserInfoByIdAsync(id);
         if (vkInfoResult.Succeeded)
         {
-            var user = CreateUser(email, vkInfoResult.Value);
+            var user = await CreateUserAsync(email, vkInfoResult.Value);
             var createUserResult = await RegisterUserByExternalProviderAsync(info, user);
             if (createUserResult.Succeeded)
             {
@@ -193,7 +193,7 @@ public class AccountController : Controller
         return Result.Fail(result.Errors.First().Description);
     }
 
-    private User CreateUser(string email, VkUserInfo vkInfo)
+    private async Task<User> CreateUserAsync(string email, VkUserInfo vkInfo)
     {
         var user = new User
         {
@@ -202,6 +202,7 @@ public class AccountController : Controller
             BirthDate = vkInfo.Birthday,
             RegistrationDate = DateTime.Now
         };
+        await AddCountryByIpAsync(user);
         return user;
     }
 

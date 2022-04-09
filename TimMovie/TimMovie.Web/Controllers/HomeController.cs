@@ -18,15 +18,8 @@ public class HomeController : Controller
     {
         return View();
     }
-
-    [Authorize(Policy = "AtLeast18")]
+    
     public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [Authorize]
-    public IActionResult Auth()
     {
         return View();
     }
