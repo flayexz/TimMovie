@@ -10,4 +10,12 @@
       <ProjectReference Include="..\TimMovie.SharedKernel\TimMovie.SharedKernel.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Specifications\StaticSpecification" />
+    </ItemGroup>
+
 </Project>
