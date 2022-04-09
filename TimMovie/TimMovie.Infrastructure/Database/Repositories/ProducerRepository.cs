@@ -10,5 +10,5 @@ public class ProducerRepository : Repository<Producer>
     }
 
     public async Task<Producer?> FindByNameAndSurnameAsync(string name, string surname) =>
-        await Context.Producers.FirstOrDefaultAsync(p => p.Name.Equals(name) && p.Surname.Equals(surname));
+        await _context.Producers.FirstOrDefaultAsync(p => p.Name.Equals(name) && p.Surname.Equals(surname));
 }

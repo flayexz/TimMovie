@@ -10,6 +10,6 @@ public class FilmRepository : Repository<Film>
     }
     
     public async Task<Film?> FindByTitleAsync(string title) =>
-        await Context.Films.FirstOrDefaultAsync(g => g.Title.Equals(title));
+        await _context.Films.FirstOrDefaultAsync(g => g.Title.Equals(title));
 
 }

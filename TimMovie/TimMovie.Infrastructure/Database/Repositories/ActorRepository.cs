@@ -10,5 +10,5 @@ public class ActorRepository : Repository<Actor>
     }
 
     public async Task<Actor?> FindByNameAndSurnameAsync(string name, string surname) =>
-        await Context.Actors.FirstOrDefaultAsync(a => a.Name.Equals(name) && a.Surname.Equals(surname));
+        await _context.Actors.FirstOrDefaultAsync(a => a.Name.Equals(name) && a.Surname.Equals(surname));
 }

@@ -6,12 +6,12 @@ namespace TimMovie.Infrastructure.Database.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
-    protected readonly ApplicationContext Context;
+    protected readonly ApplicationContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
     public Repository(ApplicationContext context)
     {
-        Context = context;
+        _context = context;
         _dbSet = context.Set<TEntity>();
     }
 
@@ -33,7 +33,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
     public async Task UpdateAsync(TEntity item)
     {
-        Context.Entry(item).State = EntityState.Modified;
+        _context.Entry(item).State = EntityState.Modified;
         await SaveAsync();
     }
 
@@ -43,5 +43,5 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         await SaveAsync();
     }
 
-    public Task SaveAsync() => Context.SaveChangesAsync();
+    public Task SaveAsync() => _context.SaveChangesAsync();
 }

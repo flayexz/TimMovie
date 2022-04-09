@@ -10,5 +10,5 @@ public class GenreRepository : Repository<Genre>
     }
 
     public async Task<Genre?> FindByNameAsync(string name) =>
-        await Context.Genres.FirstOrDefaultAsync(g => g.Name.Equals(name));
+        await _context.Genres.FirstOrDefaultAsync(g => g.Name.Equals(name));
 }

@@ -10,6 +10,6 @@ public class CountryRepository : Repository<Country>
     }
 
     public async Task<Country?> FindByNameAsync(string name) =>
-        await Context.Countries.FirstOrDefaultAsync(g => g.Name.Equals(name));
+        await _context.Countries.FirstOrDefaultAsync(g => g.Name.Equals(name));
 
 }
