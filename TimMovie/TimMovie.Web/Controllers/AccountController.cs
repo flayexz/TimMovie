@@ -69,7 +69,7 @@ public class AccountController : Controller
         var sendResult = await SendConfirmEmailAsync(user);
         if (sendResult.Succeeded)
         {
-            return PartialView("MailSend");
+            return PartialView("MailSend", (user.Email, user.DisplayName));
         }
 
         return View();
@@ -117,18 +117,24 @@ public class AccountController : Controller
         {
             return RedirectToAction("Registration");
         }
-        
+
         var result = await signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, false);
-        
+
         if (result.Succeeded)
         {
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
-        
+
+        if (result.IsNotAllowed)
+        {
+            var userFromDb = await userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+            return PartialView("MailSend", (userFromDb.Email, userFromDb.DisplayName));
+        }
+
         return RedirectToAction("RegisterExternal",
             new { ReturnUrl = returnUrl, Email = info.Principal.FindFirstValue(ClaimTypes.Email) });
     }
-    
+
     [AllowAnonymous]
     public IActionResult RegisterExternal(ExternalLoginViewModel model)
     {
@@ -141,20 +147,24 @@ public class AccountController : Controller
         var userMail = await userManager.FindByEmailAsync(model.Email);
         if (userMail != null)
         {
-            ModelState.AddModelError(String.Empty, $"почта {model.Email} уже занята");
+            ModelState.AddModelError(string.Empty, $"почта {model.Email} уже занята");
             return View(model);
         }
+
         var info = await signInManager.GetExternalLoginInfoAsync();
         var id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
         var registerResult = await RegisterUserByVkAsync(id, model.Email, info);
 
         if (registerResult.Succeeded)
-            return PartialView("MailSend");
+        {
+            var userFromDb = await userManager.FindByEmailAsync(model.Email);
+            return PartialView("MailSend", (userFromDb.Email, userFromDb.DisplayName));
+        }
 
         return View("Registration");
     }
-    
-    
+
+
     private async Task<Result> RegisterUserByVkAsync(string id, string email, ExternalLoginInfo info)
     {
         var vkInfoResult = await vkService.GetUserInfoByIdAsync(id);
@@ -204,6 +214,20 @@ public class AccountController : Controller
         };
         await AddCountryByIpAsync(user);
         return user;
+    }
+
+    [HttpPost]
+    [ActionName("SendConfirmEmail")]
+    public async Task<IActionResult> SendConfirmEmailAction(string email)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user is null)
+        {
+            return BadRequest();
+        }
+
+        await SendConfirmEmailAsync(user);
+        return PartialView("MailSend", (user.Email, user.DisplayName));
     }
 
     private async Task<Result> SendConfirmEmailAsync(User user)
