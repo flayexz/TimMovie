@@ -1,8 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using static System.Int32;
 
-namespace TimMovie.Infrastructure.Identity;
+namespace TimMovie.Web.AuthorizationHandlers.AgePolicy;
 
 public class AgeHandler : AuthorizationHandler<AgeRequirement>
 {

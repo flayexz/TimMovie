@@ -1,12 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using TimMovie.Core.Entities;
 using TimMovie.Infrastructure.Database;
 using TimMovie.Infrastructure.Identity;
 
-namespace TimMovie.Web.Configuration;
+namespace TimMovie.Infrastructure;
 
-public static class ConfigureIdentity
+public static class InfrastructureStartupSetup
 {
+    public static void AddDbContext(this IServiceCollection services, string connectionString) =>
+        services.AddDbContext<ApplicationContext>(options =>
+            options.UseNpgsql(connectionString));
+    
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {
         services.AddIdentity<User, IdentityRole<Guid>>(opt =>

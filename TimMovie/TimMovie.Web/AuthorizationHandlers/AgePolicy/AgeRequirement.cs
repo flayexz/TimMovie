@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace TimMovie.Infrastructure.Identity;
+namespace TimMovie.Web.AuthorizationHandlers.AgePolicy;
 
 public class AgeRequirement : IAuthorizationRequirement
 {

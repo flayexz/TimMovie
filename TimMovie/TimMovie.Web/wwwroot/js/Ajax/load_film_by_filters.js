@@ -6,7 +6,7 @@
     let isLoad = false;
     
     function getObjWithFilters(){
-        let typeFilter = $("#sort-type").val();
+        let sortingType = $("#sort-type").val();
         
         let genresName = []; 
         let genres = $("#genre-filter").find(".more-filters_list-item_active");
@@ -15,7 +15,7 @@
         });
 
         let period = $("#year-filter").find(".more-filters_list-item_active").first()[0];
-        let annualPeriods = {
+        let annualPeriodsViewModel = {
             firstYear: period.dataset.valueFirst,
             lastYear: period.dataset.valueLast
         }
@@ -30,9 +30,9 @@
         let rating = ratingObj === undefined ? null : ratingObj.dataset.value;
         
         return {
-            typeFilter,
+            sortingType,
             genresName,
-            annualPeriods,
+            annualPeriodsViewModel,
             countriesName,
             rating
         }

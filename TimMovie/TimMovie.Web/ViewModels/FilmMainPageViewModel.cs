@@ -1,6 +1,4 @@
-﻿using TimMovie.Web.Models;
-
-namespace TimMovie.Web.ViewModels;
+﻿namespace TimMovie.Web.ViewModels;
 
 public class FilmMainPageViewModel
 {
