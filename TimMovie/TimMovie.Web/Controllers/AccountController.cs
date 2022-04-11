@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Classes;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
-using TimMovie.Infrastructure.Database.Repositories;
+using TimMovie.Core.Services;
 using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Extensions;
 using TimMovie.Web.ViewModels;
@@ -19,16 +19,16 @@ public class AccountController : Controller
     private readonly IVkService vkService;
     private readonly ILogger<AccountController> logger;
     private readonly IIpService ipService;
-    private readonly CountryRepository countryRepository;
     private readonly UserManager<User> userManager;
     private readonly IUserMessageService userMessageService;
     private readonly IMailService mailService;
     private readonly SignInManager<User> signInManager;
     private readonly IMapper mapper;
+    private readonly CountryService _countryService;
 
     public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IUserMessageService userMessageService, IMailService mailService, ILogger<AccountController> logger,
-        IIpService ipService, CountryRepository countryRepository, IVkService vkService)
+        IIpService ipService, IVkService vkService, CountryService countryService)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
@@ -37,8 +37,8 @@ public class AccountController : Controller
         this.mailService = mailService;
         this.logger = logger;
         this.ipService = ipService;
-        this.countryRepository = countryRepository;
         this.vkService = vkService;
+        _countryService = countryService;
     }
 
     [HttpGet]
@@ -279,7 +279,7 @@ public class AccountController : Controller
         var userCountryResult = await ipService.GetCountryByIpAsync(ip);
         if (userCountryResult.Succeeded)
         {
-            var countryFromDb = await countryRepository.FindByNameAsync(userCountryResult.Value);
+            var countryFromDb = _countryService.FindByName(userCountryResult.Value);
             if (countryFromDb != null)
             {
                 user.Country = countryFromDb;

@@ -7,7 +7,15 @@ public class CoreModule: Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<FilmService>().AsSelf();
-        builder.RegisterType<FilmsFilterService>().AsSelf();
+        RegisterServiceOnSelf<FilmService>(builder);
+        RegisterServiceOnSelf<FilmsFilterService>(builder);
+        RegisterServiceOnSelf<CountryService>(builder);
+        RegisterServiceOnSelf<GenreService>(builder);
+    }
+
+    private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 
+        where T : notnull
+    {
+        builder.RegisterType<T>().AsSelf().InstancePerLifetimeScope();
     }
 }

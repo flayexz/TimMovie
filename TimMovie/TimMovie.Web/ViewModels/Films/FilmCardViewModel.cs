@@ -1,8 +1,8 @@
 ﻿using TimMovie.Core.Entities;
 
-namespace TimMovie.Web.ViewModels;
+namespace TimMovie.Web.ViewModels.Films;
 
-public class FilmCard
+public class FilmCardViewModel
 {
     public Film Film { get; set; }
     public double Rating { get; set; }

@@ -17,8 +17,6 @@ public static class ConfigureVkontakte
             config.AuthorizationEndpoint = "https://oauth.vk.com/authorize";
             config.TokenEndpoint = "https://oauth.vk.com/access_token";
             config.Scope.Add("email");
-            config.ClaimActions.MapJsonKey(ClaimTypes.DateOfBirth,"first_name");
-            config.ClaimActions.MapJsonKey(ClaimTypes.Surname,"last_name");
             config.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "user_id");
             config.ClaimActions.MapJsonKey(ClaimTypes.Email, "email");
             config.SaveTokens = true;

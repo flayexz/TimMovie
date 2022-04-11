@@ -1,4 +1,4 @@
-namespace TimMovie.Web.Models;
+namespace TimMovie.Web.ViewModels;
 
 public class ErrorViewModel
 {

@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using TimMovie.Core.Entities.Enums;
-using TimMovie.SharedKernel.BaseEntities;
 using TimMovie.SharedKernel.Classes;
 
 namespace TimMovie.Core.Entities;
 
-public class User : UserBaseEntity
+public class User : IdentityUser<Guid>
 {
     [DateOnly] public DateOnly BirthDate { get; set; }
     public UserStatus Status { get; set; }

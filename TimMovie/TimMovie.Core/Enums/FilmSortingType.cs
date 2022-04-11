@@ -1,7 +1,6 @@
-﻿namespace TimMovie.Core.MoreTypeFilms;
+﻿namespace TimMovie.Core.Enums;
 
-[Flags]
-public enum TypeSortFilms
+public enum FilmSortingType
 {
     Popularity = 0,
     ReleaseDate = 5,
