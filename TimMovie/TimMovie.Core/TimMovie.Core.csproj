@@ -10,4 +10,13 @@
       <ProjectReference Include="..\TimMovie.SharedKernel\TimMovie.SharedKernel.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.3.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Specifications\StaticSpecification" />
+    </ItemGroup>
+
 </Project>

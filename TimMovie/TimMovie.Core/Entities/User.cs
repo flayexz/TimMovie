@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TimMovie.Core.Entities.Enums;
 using TimMovie.SharedKernel.BaseEntities;
 using TimMovie.SharedKernel.Classes;
@@ -11,6 +12,10 @@ public class User : UserBaseEntity
     public UserStatus Status { get; set; }
     public Film? WatchingFilm { get; set; }
 
+    [Required]
+    [MaxLength(100)]
+    public string DisplayName { get; set; }
+    
     public Country? Country { get; set; }
     public DateTime RegistrationDate { get; set; }
     public List<UserFilmWatched> WatchedFilms { get; set; }

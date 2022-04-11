@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimMovie.Core.Entities;
+using TimMovie.SharedKernel.Extensions;
 using TimMovie.Web.ViewModels;
 
 namespace TimMovie.Web.Configuration;

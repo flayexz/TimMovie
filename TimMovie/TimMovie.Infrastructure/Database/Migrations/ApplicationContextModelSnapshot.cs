@@ -484,6 +484,11 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<Guid?>("CountryId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");

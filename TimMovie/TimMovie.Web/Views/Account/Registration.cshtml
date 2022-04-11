@@ -28,18 +28,22 @@
                     <span asp-validation-for="Email"></span>
                     <input type="email" placeholder="Почта" class="input-field" asp-for="Email">
                 </div>
+                
                 <div class="form-field">
                     <span asp-validation-for="UserName"></span>
                     <input type="text" placeholder="Логин" class="input-field" asp-for="UserName">
                 </div>
+                
                 <div class="form-field">
                     <span asp-validation-for="Password"></span>
                     <input type="password" placeholder="Пароль" class="input-field" asp-for="Password">
                 </div>
+                
                 <div class="form-field">
                     <span asp-validation-for="ConfirmPassword"></span>
                     <input type="password" placeholder="Подтвердите пароль" class="input-field" asp-for="ConfirmPassword">
                 </div>
+                
                 @Html.ValidationMessage("CustomError", new { style = "color:red" })
             </div>
             <div asp-validation-summary="ModelOnly" style="color: darkred"></div>
@@ -50,7 +54,7 @@
                 <div class="divider">или</div>
             </div>
         </form>
-        <form method="post" asp-action="RegisterByVk" asp-route-returnUrl="/Index" asp-route-provider="VK">
+        <form method="post" asp-action="RegisterByVk" asp-route-returnUrl="/" asp-route-provider="VK">
             <div class="vk-area" onclick="document.querySelector('#submit-vk-auth').click() ">
                 <svg class="button-vk" fill="none" height="35" width="355" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 -0.001000000000000334 272.518 48.001">
