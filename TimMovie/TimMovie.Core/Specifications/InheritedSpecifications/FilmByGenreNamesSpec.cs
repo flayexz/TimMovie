@@ -17,7 +17,13 @@ public class FilmByGenreNamesSpec: Specification<Film>
     public FilmByGenreNamesSpec(string[] genreNames)
     {
         ArgumentValidator.CheckOnNull(genreNames, nameof(genreNames));
-        
-        Conditional = film => film.Genres.Select(genre => genre.Name).Intersect(genreNames).Any();
+
+        var spec = new Specification<Film>(film => film.Genres.Select(genre => genre.Name).Contains(genreNames.FirstOrDefault()));
+        foreach (var name in genreNames.Skip(1))
+        {
+            spec = spec && new Specification<Film>(film => film.Genres.Select(genre => genre.Name).Contains(name));
+        }
+
+        Conditional = spec.ToExpression();
     }
 }

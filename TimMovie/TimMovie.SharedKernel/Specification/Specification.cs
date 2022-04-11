@@ -29,6 +29,11 @@ public class Specification<TEntity>: ISpecification<TEntity>
         return Conditional.AsFunc()(entity);
     }
 
+    public Expression<Func<TEntity, bool>> ToExpression()
+    {
+        return Conditional;
+    }
+
     public static bool operator true(Specification<TEntity> _)
     {
         return false;
