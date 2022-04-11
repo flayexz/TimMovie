@@ -9,5 +9,7 @@ public class AppMappingProfile : Profile
     public AppMappingProfile()
     {
         CreateMap<RegistrationViewModel, User>();
+        CreateMap<FilmMainPageViewModel, Film>().ReverseMap();
+        CreateMap<BannerViewModel, Banner>().ReverseMap();
     }
 }
