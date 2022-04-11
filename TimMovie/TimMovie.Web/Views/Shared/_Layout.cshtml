@@ -10,6 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="~/css/Navbar.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/TimMovie.Web.styles.css" asp-append-version="true"/>
+    @await RenderSectionAsync("Styles", false)
 </head>
 <body>
 <header>
@@ -25,7 +29,7 @@
                         <a href="#" class="navbar-text">Новинки</a>
                     </li>
                     <li class="nav-item nav-button-left">
-                        <a href="#" class="navbar-text">Фильмы</a>
+                        <a href="#" class="navbar-text" asp-controller="Films" asp-action="Page">Фильмы</a>
                     </li>
                     <li class="nav-item nav-button-left">
                         <a href="#" class="navbar-text">Смотреть позже</a>
@@ -77,5 +81,7 @@
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+
+@await RenderSectionAsync("Scripts", false)
 </body>
 </html>

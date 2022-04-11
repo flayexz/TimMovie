@@ -9,9 +9,8 @@ public class AppMappingProfile : Profile
 {
     public AppMappingProfile()
     {
-        CreateMap<RegistrationViewModel, User>()
-            .ForMember(x => x.DisplayName,
-                opt =>
-                    opt.MapFrom(src => src.Email.GetMailName()));
+        CreateMap<RegistrationViewModel, User>();
+        CreateMap<FilmMainPageViewModel, Film>().ReverseMap();
+        CreateMap<BannerViewModel, Banner>().ReverseMap();
     }
 }

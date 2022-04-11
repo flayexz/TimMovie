@@ -30,4 +30,5 @@ public class Film : BaseEntity
     public List<User> UsersWatching { get; set; }
     
     public List<Subscribe> Subscribes { get; set; } 
+    public List<UserFilmWatched> UserFilmWatcheds { get; set; } 
 }
