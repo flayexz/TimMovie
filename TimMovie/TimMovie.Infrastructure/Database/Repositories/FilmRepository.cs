@@ -13,5 +13,4 @@ public class FilmRepository : Repository<Film>
     
     public async Task<Film?> FindByTitleAsync(string title) =>
         await _context.Films.FirstOrDefaultAsync(new FilmByNameCountrySpec(title));
-
 }

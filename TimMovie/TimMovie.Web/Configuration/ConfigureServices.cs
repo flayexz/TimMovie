@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using TimMovie.Core.Classes;
+using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Infrastructure.Database;
 using TimMovie.Infrastructure.Database.Repositories;
@@ -32,10 +33,14 @@ public static class ServicesConfiguration
         
         services.AddControllersWithViews();
         services.AddAutoMapper(typeof(AppMappingProfile));
-
-        services.AddScoped<CountryRepository>();
+      
+        services.AddScoped<Repository<Banner>>();
+        services.AddScoped<Repository<Film>>();
         
-        services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
+       services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
+
+       services.AddScoped<CountryRepository>();
+        
        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
        services.AddScoped<IMailService,MailKitService>();
        

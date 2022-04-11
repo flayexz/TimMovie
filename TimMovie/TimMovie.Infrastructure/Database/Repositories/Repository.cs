@@ -23,7 +23,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         await _context.SaveChangesAsync();
         return entityEntry.Entity;
     }
-
+    
+    public async Task<List<TEntity>> GetAllAsync() =>
+        await _dbSet.ToListAsync();
+        
     public async Task UpdateAsync(TEntity item)
     {
         _context.Entry(item).State = EntityState.Modified;
