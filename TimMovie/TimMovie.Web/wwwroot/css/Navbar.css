@@ -3,16 +3,6 @@
     color: white;
     font-family: "Open Sans", sans-serif;
 }
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-a:hover {
-    color: inherit;
-}
-
 .card-film {
     transition: all 0.3s ease-out 0s;
     background-color: #1f1b2e;
@@ -64,12 +54,13 @@ a:hover {
 }
 
 .navbar-text {
-    padding-top: 0;
-    padding-bottom: 0;
+    text-decoration: none;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }
 
 .navbar-text:hover {
-    color: white;
+    color: white !important;
     cursor: pointer;
 }
 
