@@ -15,7 +15,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _dbSet = context.Set<TEntity>();
     }
 
-    public IQueryable Queryable => _dbSet.AsQueryable();
+    public IQueryable<TEntity> Query => _dbSet.AsQueryable();
 
     public async Task<TEntity?> AddAsync(TEntity item)
     {
