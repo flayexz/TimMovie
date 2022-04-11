@@ -15,33 +15,24 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _dbSet = context.Set<TEntity>();
     }
 
+    public IQueryable Queryable => _dbSet.AsQueryable();
+
     public async Task<TEntity?> AddAsync(TEntity item)
     {
         var entityEntry = await _dbSet.AddAsync(item);
-        await SaveAsync();
+        await _context.SaveChangesAsync();
         return entityEntry.Entity;
     }
-
-    public async Task<TEntity?> FindAsync(TEntity item) =>
-        await _dbSet.FirstOrDefaultAsync(i => i.Equals(item));
-    
-    public async Task<TEntity?> FindByIdAsync(Guid id) =>
-        await _dbSet.FirstOrDefaultAsync(i => i.Id.Equals(id));
-
-    public async Task<List<TEntity>> GetAllAsync() =>
-        await _dbSet.ToListAsync();
 
     public async Task UpdateAsync(TEntity item)
     {
         _context.Entry(item).State = EntityState.Modified;
-        await SaveAsync();
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(TEntity item)
     {
         _dbSet.Remove(item);
-        await SaveAsync();
+        await _context.SaveChangesAsync();
     }
-
-    public Task SaveAsync() => _context.SaveChangesAsync();
 }
