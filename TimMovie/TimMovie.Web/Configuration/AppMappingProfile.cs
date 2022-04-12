@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TimMovie.Core.DTO;
 using TimMovie.Core.Entities;
 using TimMovie.Web.ViewModels;
 
@@ -8,8 +9,10 @@ public class AppMappingProfile : Profile
 {
     public AppMappingProfile()
     {
-        CreateMap<RegistrationViewModel, User>();
+        CreateMap<RegistrationViewModel, UserRegistrationDto>();
+        CreateMap<UserRegistrationDto, User>();
         CreateMap<FilmMainPageViewModel, Film>().ReverseMap();
         CreateMap<BannerViewModel, Banner>().ReverseMap();
+        CreateMap<ExternalLoginViewModel, ExternalLoginDto>();
     }
 }

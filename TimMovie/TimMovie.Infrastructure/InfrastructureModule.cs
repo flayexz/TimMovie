@@ -27,5 +27,6 @@ public class InfrastructureModule: Module
             new NamedParameter("accessToken", _configuration["VkSettings:AccessToken"]),
             new NamedParameter("client", new HttpClient())
         }).InstancePerDependency();
+        builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
     }
 }
