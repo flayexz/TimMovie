@@ -1,5 +1,4 @@
-﻿using System.Net;
-using TimMovie.SharedKernel.Classes;
+﻿using TimMovie.SharedKernel.Classes;
 
 namespace TimMovie.Core.Interfaces;
 

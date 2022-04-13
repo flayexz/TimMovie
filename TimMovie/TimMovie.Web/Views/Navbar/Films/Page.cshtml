@@ -1,0 +1,259 @@
+﻿@using TimMovie.Core.Enums
+@model TimMovie.Web.ViewModels.FilmFilter.FilmFiltersViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="d-flex flex-column mt-4">
+    <h2>Фильмы</h2>
+</div>
+<div class="d-flex flex-column">
+<div class="d-flex flex-grow-1 [ filter ]">
+    <div class="[ dropdown-filter ]">
+        <div class="[ dropdown-filter__button ]">
+            <div class="d-flex">
+                <div class=" d-flex align-items-center [ dropdown-filter__button-content ]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1.1em" fill="currentColor"
+                         class="bi bi-list" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    <div class="[ dropdown-filter__value ]">Популярность</div>
+                </div>
+            </div>
+        </div>
+        <ul class="[ dropdown-filter__menu ]">
+            <div class="[ dropdown-filter__list-item_disabled ]">Сортировать</div>
+            <li class="[ dropdown-filter__list-item ] dropdown-filter__list-item_active"
+                data-value="@FilmSortingType.Popularity">
+                Популярность
+            </li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Rating">Рейтинг</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.ReleaseDate">Дата выхода</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Views">Просмотры</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Title">Название</li>
+        </ul>
+        <input type="text" class="[ dropdown-filter__input ]" id="sort-type" value="@FilmSortingType.Popularity">
+    </div>
+</div>
+<div class="[ additional-filters ]">
+    <div class="flex-grow-1">
+        <div class="[ additional-filters__container ]">
+            <div class=" d-flex justify-content-center [ filter-item ]">
+                <div class="d-flex flex-grow-1">
+                    <div class="[ more-filters ]">
+                        <div class="[ more-filters_button ]">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="">Жанры</div>
+                                <svg class="d-flex align-items-center mt-1 [ more-filters__dropdown-arrow ]"
+                                     xmlns="http://www.w3.org/2000/svg" width="1.1em" fill="currentColor"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <ul class="[ more-filters__menu ]">
+                            <div class="[ more-filters__menu-container ]" id="genre-filter">
+                                @foreach (var name in Model.GenresName)
+                                {
+                                    <li class="[ more-filters__list-item ]" data-value="@name">
+                                        <div>@name</div>
+                                        <svg class="[ more-filters__list-item_mark ]"
+                                             xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="white" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                            <path
+                                                d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                                        </svg>
+                                    </li>
+                                }
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-flex justify-content-center [ filter-item ]">
+                <div class="d-flex flex-grow-1">
+                    <div class="[ more-filters more-filters_one-value ]">
+                        <div class="[ more-filters_button ]">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="">Годы</div>
+                                <svg class="d-flex align-items-center mt-1 [ more-filters__dropdown-arrow ]"
+                                     xmlns="http://www.w3.org/2000/svg" width="1.1em" fill="currentColor"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <ul class="[ more-filters__menu ]">
+                            <div class="[ more-filters__menu-container_one-value ]" id="year-filter">
+                                <li class="[ more-filters__list-item ] more-filters_list-item_active" data-value-first="1900" data-value-last="2300">
+                                    <div>Все года</div>
+                                    <svg class="[ more-filters__list-item_mark ]"
+                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="white" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                              d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                        <path
+                                            d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                                    </svg>
+                                </li>
+                                @foreach (var period in Model.AnnualPeriods)
+                                {
+                                    <li class="[ more-filters__list-item ]" data-value-first="@period.FirstYear" data-value-last="@period.LastYear">
+                                        @if (period.IsOneYear)
+                                        {
+                                            <div>@period.FirstYear</div>
+                                        }
+                                        else
+                                        {
+                                            <div>@period.LastYear-@period.FirstYear</div>
+                                        }
+                                        <svg class="[ more-filters__list-item_mark ]"
+                                             xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="white" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                            <path
+                                                d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                                        </svg>
+                                    </li>
+                                }
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-flex justify-content-center [ filter-item ]">
+                <div class="d-flex flex-grow-1">
+                    <div class="[ more-filters ]">
+                        <div class="[ more-filters_button ]">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="">Страны</div>
+                                <svg class="d-flex align-items-center mt-1 [ more-filters__dropdown-arrow ]"
+                                     xmlns="http://www.w3.org/2000/svg" width="1.1em" fill="currentColor"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <ul class="[ more-filters__menu more-filters__menu_country ]" id="country-filter">
+                            <div class="[ more-filters__menu-container ]">
+                                @foreach (var name in Model.CountriesName)
+                                {
+                                    <li class="[ more-filters__list-item ]" data-value="@name">
+                                        <div>@name</div>
+                                        <svg class="[ more-filters__list-item_mark ]"
+                                             xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="white" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                            <path
+                                                d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                                        </svg>
+                                    </li>
+                                }
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class=" d-flex justify-content-center [ filter-item ]">
+                <div class="d-flex flex-grow-1">
+                    <div class="[ more-filters more-filters_one-value ]">
+                        <div class="[ more-filters_button ]">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="">Оценка</div>
+                                <svg class="d-flex align-items-center mt-1 [ more-filters__dropdown-arrow ]"
+                                     xmlns="http://www.w3.org/2000/svg" width="1.1em" fill="currentColor"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <ul class="[ more-filters__menu ]">
+                            <div class="[ more-filters__menu-container_one-value ]" id="rating-filter">
+                                @foreach (var rating in Model.Ratings)
+                                {
+                                    <li class="[ more-filters__list-item ] " data-value="@rating">
+                                        <div>До @rating</div>
+                                        <svg class="[ more-filters__list-item_mark ]"
+                                             xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="white" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                            <path
+                                                d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
+                                        </svg>
+                                    </li>
+                                }
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row gx-4 gy-5 [ container_film_card ]" id="container_film_card">
+    @* <div class="col [ film-card ]"> *@
+    @*     <div class="position-relative"> *@
+    @*         <a href="/ссылка" class="position-absolute [ film-card__more-info-container ]"> *@
+    @*             <div class="d-flex flex-column [ film-card__more-info ]"> *@
+    @*                 <div class="d-flex flex-column align-items-end"> *@
+    @*                     <svg width="2.2em" fill="white" version="1.1" viewBox="0 0 700 700" *@
+    @*                          xmlns="http://www.w3.org/2000/svg"> *@
+    @*                         <path *@
+    @*                             d="m536.2 12.824h-372.4c-8.5117 0-15.625 7-15.625 15.625v502.77c0 12.938 14.895 20.328 25.258 12.434l176.62-139.95 176.62 140.28c10.305 7.8945 25.145 0.50391 25.145-12.434l-0.003906-503.11c0-8.625-7-15.625-15.625-15.625zm-15.625 486.98-161-128.3c-5.6016-4.2578-13.328-4.3672-19.039 0l-161.11 127.96v-455.34h341.15z"/> *@
+    @*                     </svg> *@
+    @*                     <svg class="mt-2" width="2.2em" fill="white" version="1.1" viewBox="0 0 700 700" *@
+    @*                          xmlns="http://www.w3.org/2000/svg"> *@
+    @*                         <path *@
+    @*                             d="m153.84 102.23c-26.82 21.855-43.027 54.121-44.547 88.68-1.6094 34.418 11.344 67.926 35.684 92.312l180.28 180.28c6.5664 6.5547 15.469 10.234 24.746 10.234s18.18-3.6797 24.746-10.234l180.28-180.28c24.332-24.391 37.285-57.891 35.684-92.305-1.5156-34.562-17.719-66.828-44.535-88.688-24.383-19.027-54.926-28.398-85.785-26.324-30.859 2.0703-59.871 15.445-81.492 37.562l-28.898 28.898-28.898-28.898c-21.617-22.121-50.629-35.496-81.488-37.566-30.859-2.0742-61.398 7.3008-85.777 26.328zm142.52 35.984 41.273 41.273-0.003906-0.003906c3.2812 3.2852 7.7344 5.1289 12.375 5.1289s9.0898-1.8438 12.371-5.1289l41.273-41.273v0.003906c15.434-16.016 36.227-25.781 58.406-27.441 22.18-1.6602 44.191 4.9062 61.836 18.441 19.066 15.633 30.633 38.594 31.852 63.215 1.2148 24.621-8.0312 48.609-25.457 66.047l-180.28 180.28-180.28-180.28c-17.43-17.438-26.676-41.426-25.457-66.051 1.2188-24.621 12.793-47.582 31.859-63.211 15.137-12.332 34.109-18.984 53.637-18.805 25 0.10156 48.945 10.098 66.598 27.805z"/> *@
+    @*                     </svg> *@
+    @*                 </div> *@
+    @*                 <div class="me-2 d-flex flex-column text-end [ film-card__more-info-content ]"> *@
+    @*                     <div>Рейтинг: 6.4/10</div> *@
+    @*                     <div>2021, Россия, коммедия</div> *@
+    @*                 </div> *@
+    @*             </div> *@
+    @*         </a> *@
+    @*         <a href="/ссылка" class="mw-100"> *@
+    @*             <img class="rounded-2 mw-100 [ film-card__img ]" *@
+    @*                  src="~/img/content/films/8199890.jpg" alt=""/> *@
+    @*         </a> *@
+    @*         <div class="d-flex flex-column [ film-card__under-content ]"> *@
+    @*             <a href="/ссылка"> *@
+    @*                 <div class="[ film-card__title ]">Бэтмен</div> *@
+    @*             </a> *@
+    @*             <div class="text-danger [ film-card__subscribe-text ]">Подписка</div> *@
+    @*         </div> *@
+    @*     </div> *@
+    @* </div> *@
+</div>
+<div class="mb-5 loader hide"></div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/FilmCard/animation_for_film_card.js"></script>
+    <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="~/js/Dropdown/dropdown.js"></script>
+    <script src="~/js/Dropdown/dropdown_more_filters.js"></script>
+    <script src="~/js/Dropdown/dropdown_filters_with_one_value.js"></script>
+    <script src="~/js/Ajax/load_film_by_filters.js"></script>
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
+    <link rel="stylesheet" href="~/css/Dropdown/dropdownFilters.css"/>
+    <link rel="stylesheet" href="~/css/Dropdown/dropdownStyle.css"/>
+    <link rel="stylesheet" href="~/css/loader.css"/>
+}

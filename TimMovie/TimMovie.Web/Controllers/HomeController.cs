@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TimMovie.Web.Models;
+using TimMovie.Web.ViewModels;
 
 namespace TimMovie.Web.Controllers;
 
