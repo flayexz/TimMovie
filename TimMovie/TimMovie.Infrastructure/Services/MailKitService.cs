@@ -15,11 +15,11 @@ public class MailKitService : IMailService
 
     private readonly MailSetup mailSetup;
 
-    public async Task<Result> SendMessageAsync(MessageMail message)
+    public async Task<Result> SendMessageAsync(string address,MessageMail message)
     {
         try
         {
-            var mimeMessage = CreateMimeMessage(message);
+            var mimeMessage = CreateMimeMessage(address,message);
             using var client = new SmtpClient();
             await client.ConnectAsync(mailSetup.Host, mailSetup.Port, true);
             await client.AuthenticateAsync(mailSetup.FromCompanyAddress, mailSetup.Password);
@@ -32,12 +32,12 @@ public class MailKitService : IMailService
             return Result.Fail(e.Message);
         }
     }
-    private MimeMessage CreateMimeMessage(MessageMail message)
+    private MimeMessage CreateMimeMessage(string address, MessageMail message)
     {
         return new MimeMessage
         {
             From = { new MailboxAddress(mailSetup.FromCompanyName, mailSetup.FromCompanyAddress) },
-            To = { MailboxAddress.Parse(message.Address) },
+            To = { MailboxAddress.Parse(address) },
             Subject = message.Subject,
             Body = new BodyBuilder { HtmlBody = message.Content }.ToMessageBody()
         };

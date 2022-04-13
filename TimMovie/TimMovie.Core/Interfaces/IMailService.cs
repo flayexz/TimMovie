@@ -5,5 +5,5 @@ namespace TimMovie.Core.Interfaces;
 
 public interface IMailService
 {
-    public Task<Result> SendMessageAsync(MessageMail message);
+    public Task<Result> SendMessageAsync(string address,MessageMail message);
 }

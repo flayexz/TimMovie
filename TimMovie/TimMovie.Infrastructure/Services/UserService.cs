@@ -65,8 +65,8 @@ public class UserService : IUserService
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
         var confirmUrl = CreateUrlToConfirmEmail(urlToAction, userFromDb, token);
-        var msg = userMessageService.GenerateConfirmMessage(userFromDb.DisplayName, userFromDb.Email, confirmUrl);
-        var result = await mailService.SendMessageAsync(msg);
+        var msg = userMessageService.GenerateConfirmMessage(userFromDb.DisplayName, confirmUrl);
+        var result = await mailService.SendMessageAsync(userFromDb.Email,msg);
         return result;
     }
 

@@ -1,3 +1,3 @@
 ﻿namespace TimMovie.Core.Classes;
 
-public record MessageMail(string Address, string Content, string Subject);
+public record MessageMail(string Content, string Subject);
