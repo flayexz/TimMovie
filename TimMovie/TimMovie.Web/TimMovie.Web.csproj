@@ -24,8 +24,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages" />
+      <Folder Include="AuthorizationHandlers" />
       <Folder Include="Views\Navbar" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\MainPage\MainPage.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Navbar\MainPage\MainPage.cshtml" />
     </ItemGroup>
 
 </Project>

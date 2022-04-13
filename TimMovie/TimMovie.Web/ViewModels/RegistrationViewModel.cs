@@ -27,7 +27,4 @@ public class RegistrationViewModel
     [Compare(nameof(Password),ErrorMessage = "Пароли не совпадают")]
     public string ConfirmPassword { get; set; }
     
-    
-    public Country? Country { get; set; }
-
 }

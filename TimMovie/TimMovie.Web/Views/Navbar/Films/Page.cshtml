@@ -1,6 +1,5 @@
-﻿@using TimMovie.Web.ViewModels
-@using TimMovie.Core.MoreTypeFilms
-@model TimMovie.Web.ViewModels.FilmFilters
+﻿@using TimMovie.Core.Enums
+@model TimMovie.Web.ViewModels.FilmFilter.FilmFiltersViewModel
 
 @{
     Layout = "_Layout";
@@ -27,15 +26,15 @@
         <ul class="[ dropdown-filter__menu ]">
             <div class="[ dropdown-filter__list-item_disabled ]">Сортировать</div>
             <li class="[ dropdown-filter__list-item ] dropdown-filter__list-item_active"
-                data-value="@TypeSortFilms.Popularity">
+                data-value="@FilmSortingType.Popularity">
                 Популярность
             </li>
-            <li class="[ dropdown-filter__list-item ]" data-value="@TypeSortFilms.Rating">Рейтинг</li>
-            <li class="[ dropdown-filter__list-item ]" data-value="@TypeSortFilms.ReleaseDate">Дата выхода</li>
-            <li class="[ dropdown-filter__list-item ]" data-value="@TypeSortFilms.Views">Просмотры</li>
-            <li class="[ dropdown-filter__list-item ]" data-value="@TypeSortFilms.Title">Название</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Rating">Рейтинг</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.ReleaseDate">Дата выхода</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Views">Просмотры</li>
+            <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Title">Название</li>
         </ul>
-        <input type="text" class="[ dropdown-filter__input ]" id="sort-type" value="@TypeSortFilms.Popularity">
+        <input type="text" class="[ dropdown-filter__input ]" id="sort-type" value="@FilmSortingType.Popularity">
     </div>
 </div>
 <div class="[ additional-filters ]">

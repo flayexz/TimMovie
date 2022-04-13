@@ -1,5 +1,5 @@
 ﻿using TimMovie.Core.Entities;
-using TimMovie.Core.MoreTypeFilms;
+using TimMovie.Core.Enums;
 
 namespace TimMovie.Core.Services;
 
@@ -43,22 +43,22 @@ public class SortFilmBuilder : FilmBuilder
         return this;
     }
 
-    public SortFilmBuilder SortByType(TypeSortFilms typeSort)
+    public SortFilmBuilder SortByType(FilmSortingType sortType)
     {
-        switch (typeSort)
+        switch (sortType)
         {
-           case TypeSortFilms.Popularity:
+           case FilmSortingType.Popularity:
                return SortByPopularity();
-           case TypeSortFilms.ReleaseDate:
+           case FilmSortingType.ReleaseDate:
                return SortByReleaseDate();
-           case TypeSortFilms.Rating:
+           case FilmSortingType.Rating:
                return SortByRating();
-           case TypeSortFilms.Views:
+           case FilmSortingType.Views:
                return SortByViews();
-           case TypeSortFilms.Title:
+           case FilmSortingType.Title:
                return SortByFilmName();
            default:
-               throw new ArgumentOutOfRangeException(nameof(typeSort), typeSort, null);
+               throw new ArgumentOutOfRangeException(nameof(sortType), sortType, null);
         }
     }
 }
