@@ -36,14 +36,14 @@ public class UserService : IUserService
         this.vkService = vkService;
     }
 
-    public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistrationDto, string? ip)
+    public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistrationDto)
     {
         var user = mapper.Map<User>(userRegistrationDto);
         user.RegistrationDate = DateTime.Now;
         user.DisplayName = userRegistrationDto.UserName;
         user.BirthDate = DateOnly.FromDateTime(DateTime.Today);
-        if (ip != null)
-            await AddCountryByIpAsync(user, ip);
+        if (userRegistrationDto.Ip != null)
+            await AddCountryByIpAsync(user, userRegistrationDto.Ip);
         var registerResult = await userManager.CreateAsync(user, userRegistrationDto.Password);
         if (registerResult.Succeeded)
         {
@@ -55,9 +55,9 @@ public class UserService : IUserService
         return registerResult;
     }
 
-    public async Task<Result> SendConfirmEmailAsync(string userName, string urlToAction)
+    public async Task<Result> SendConfirmEmailAsync(string email, string urlToAction)
     {
-        var userFromDb = await userManager.FindByNameAsync(userName);
+        var userFromDb = await userManager.FindByEmailAsync(email);
         if (userFromDb is null)
         {
             return Result.Fail("can`t find user by userName while sending email");
@@ -109,7 +109,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<Result> RegisterExternalAsync(ExternalLoginDto externalLoginDto, string? ip)
+    public async Task<Result> RegisterExternalAsync(ExternalLoginDto externalLoginDto)
     {
         if (await IsEmailExistAsync(externalLoginDto.Email))
         {
@@ -121,11 +121,13 @@ public class UserService : IUserService
         {
             return Result.Fail("не удалось получить регистрационную информацию из внешнего поставщика");
         }
+
         var id = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
         var vkInfoResult = await vkService.GetUserInfoByIdAsync(id);
         if (vkInfoResult.Succeeded)
         {
-            var user = await CreateUserByVkRegistrationAsync(externalLoginDto.Email, vkInfoResult.Value, ip);
+            var user = await CreateUserByVkRegistrationAsync(externalLoginDto.Email, vkInfoResult.Value,
+                externalLoginDto.Ip);
             var createUserResult = await userManager.CreateAsync(user);
             if (!createUserResult.Succeeded)
             {
@@ -152,7 +154,8 @@ public class UserService : IUserService
         return userMail is not null;
     }
 
-    public async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync() => await signInManager.GetExternalLoginInfoAsync();
+    public async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync() =>
+        await signInManager.GetExternalLoginInfoAsync();
 
 
     private async Task UpdateClaimsAsync(User user)
@@ -191,9 +194,8 @@ public class UserService : IUserService
     private string CreateUrlToConfirmEmail(string urlToAction, User user, string token)
     {
         var queryString = System.Web.HttpUtility.ParseQueryString(string.Empty);
-        queryString.Add("userId",user.Id.ToString());
-        queryString.Add("code",token);
+        queryString.Add("userId", user.Id.ToString());
+        queryString.Add("code", token);
         return urlToAction + "?" + queryString;
     }
-    
 }

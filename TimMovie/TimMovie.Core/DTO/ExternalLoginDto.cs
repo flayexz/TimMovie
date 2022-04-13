@@ -10,4 +10,6 @@ public class ExternalLoginDto
     public string Email { get; set; }
     
     public string ReurnUrl { get; set; }
+    
+    public string? Ip { get; set; }
 }

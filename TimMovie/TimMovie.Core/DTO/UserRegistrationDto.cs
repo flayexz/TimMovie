@@ -17,4 +17,6 @@ public class UserRegistrationDto
     [Display(Name = "Пароль")]
     [DataType(DataType.Password)]
     public string Password { get; set; }
+    
+    public string? Ip { get; set; }
 }
