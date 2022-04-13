@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authentication;
-using TimMovie.Core.Entities;
 
-namespace TimMovie.Web.ViewModels;
+namespace TimMovie.Core.DTO;
 
-public class RegistrationViewModel
+public class UserRegistrationDto
 {
-    
     [Required(ErrorMessage = "Это обязательно поле")]
     [EmailAddress(ErrorMessage = "Неверный тип почты")]
     [Display(Name = "Почта")]
@@ -21,10 +18,5 @@ public class RegistrationViewModel
     [DataType(DataType.Password)]
     public string Password { get; set; }
     
-    [Required(ErrorMessage = "Это обязательно поле")]
-    [Display(Name = "Подтверждение пароля")]
-    [DataType(DataType.Password)]
-    [Compare(nameof(Password),ErrorMessage = "Пароли не совпадают")]
-    public string ConfirmPassword { get; set; }
-    
+    public string? Ip { get; set; }
 }
