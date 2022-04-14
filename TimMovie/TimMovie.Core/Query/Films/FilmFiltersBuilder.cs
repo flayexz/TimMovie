@@ -1,21 +1,21 @@
 ﻿using TimMovie.Core.Entities;
-using TimMovie.Core.Specifications.InheritedSpecifications;
+using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
+using TimMovie.SharedKernel.Interfaces;
 using TimMovie.SharedKernel.Specification;
 
-namespace TimMovie.Core.Services;
+namespace TimMovie.Core.Query.Films;
 
-public class FilteredFilmsBuilder: FilmBuilder
+public class FilmFiltersBuilder: FilmQueryBuilder
 {
-    
-    public FilteredFilmsBuilder(FilmBuilder builder) : base(builder)
+    public FilmFiltersBuilder(FilmQueryBuilder builder) : base(builder)
     {
     }
     
-    public FilteredFilmsBuilder(IQueryable<Film> query) : base(query)
+    public FilmFiltersBuilder(IRepository<Film> query) : base(query)
     {
     }
 
-    public FilteredFilmsBuilder FilterByGenre(IEnumerable<string> genreNames)
+    public FilmFiltersBuilder AddFilterByGenre(IEnumerable<string>? genreNames)
     {
         if (genreNames is null)
         {
@@ -26,19 +26,19 @@ public class FilteredFilmsBuilder: FilmBuilder
         return this;
     }
     
-    public FilteredFilmsBuilder FilterByYear(int year)
+    public FilmFiltersBuilder AddFilterByYear(int year)
     {
         Query = Query.Where(new FilmDateSpec(year));
         return this;
     }
     
-    public FilteredFilmsBuilder FilterByYear(int firstYear, int lastYear)
+    public FilmFiltersBuilder AddFilterByYear(int firstYear, int lastYear)
     {
         Query = Query.Where(new FilmDateSpec(firstYear, lastYear));
         return this;
     }
     
-    public FilteredFilmsBuilder FilterByCountry(IEnumerable<string> countryNames)
+    public FilmFiltersBuilder FilterByCountry(IEnumerable<string>? countryNames)
     {
         if (countryNames is null || !countryNames.Any())
         {
@@ -56,7 +56,7 @@ public class FilteredFilmsBuilder: FilmBuilder
         return this;
     }
     
-    public FilteredFilmsBuilder FilterOnMinimumRating(int rating)
+    public FilmFiltersBuilder AddFilterOnMinimumRating(double rating)
     {
         Query = Query.Where(new FilmWithMinimumRating(rating));
         return this;

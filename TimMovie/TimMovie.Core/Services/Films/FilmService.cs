@@ -1,7 +1,9 @@
 ﻿using TimMovie.Core.Entities;
+using TimMovie.Core.Specifications.InheritedSpecifications;
+using TimMovie.Core.Specifications.StaticSpecification;
 using TimMovie.SharedKernel.Interfaces;
 
-namespace TimMovie.Core.Services;
+namespace TimMovie.Core.Services.Films;
 
 public class FilmService
 {
@@ -15,13 +17,14 @@ public class FilmService
     public bool IsExistInSubscribe(Film film)
     {
          return _filmRepository.Query
-             .FirstOrDefault(f => film.Id == f.Id && f.Subscribes.Any()) is not null;
+             .FirstOrDefault(new EntityByIdSpec<Film>(film.Id) 
+                             && FilmStaticSpec.FilmIsIncludedAnySubscriptionSpec) is not null;
     }
 
     public double? GetRating(Film film)
     {
         return _filmRepository.Query
-            .Where(f => f.Id == film.Id)
+            .Where(new EntityByIdSpec<Film>(film.Id))
             .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
             .FirstOrDefault();
     }
