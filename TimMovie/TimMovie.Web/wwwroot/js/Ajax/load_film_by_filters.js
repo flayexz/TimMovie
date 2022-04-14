@@ -4,6 +4,8 @@
     let amountTake = 30;
     let allLoaded = false;
     let isLoad = false;
+    let currentRequest;
+    let requestIsAlreadySent = false;
     
     function getObjWithFilters(){
         let sortingType = $("#sort-type").val();
@@ -50,12 +52,18 @@
             }
         };
         
-        $('.loader').toggleClass('hide');
-        $.post({
+        if (!requestIsAlreadySent){
+            $('.loader').toggleClass('hide');   
+        }
+        
+        requestIsAlreadySent = true;
+        currentRequest = $.post({
             url: "/Films/FilmFilters",
             data: data,
             success: function (result){
+                console.log("Написал, результат пришел")
                 $('.loader').toggleClass('hide');
+                requestIsAlreadySent = false;
 
                 amountSkip += amountTake;
                 allLoaded = result.length < 30;
@@ -91,6 +99,7 @@
     }
     
     function loadWithNewFilter(){
+        currentRequest.abort();
         cardContainer.empty();
         amountSkip = 0;
         getFilmsByFilters();
@@ -98,12 +107,12 @@
     
     $(document).ready(function (){
         tryLoadMoreFilms();
+        
+        $(".dropdown-filter__list-item").on("click", loadWithNewFilter);
+        $(".more-filters__list-item").on("click", loadWithNewFilter);
+        $("#sort-order").on("click", loadWithNewFilter);
+        window.addEventListener("scroll", tryLoadMoreFilms);
+        window.addEventListener("resize", tryLoadMoreFilms);
     });
-
-    $(".dropdown-filter__list-item").on("click", loadWithNewFilter);
-    $(".more-filters__list-item").on("click", loadWithNewFilter);
-    $("#sort-order").on("click", loadWithNewFilter);
-    window.addEventListener("scroll", tryLoadMoreFilms);
-    window.addEventListener("resize", tryLoadMoreFilms);
 })()
 

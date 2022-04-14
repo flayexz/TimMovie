@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using TimMovie.Core.Services;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Genres;

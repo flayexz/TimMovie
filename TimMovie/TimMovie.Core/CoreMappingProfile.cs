@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 

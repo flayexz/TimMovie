@@ -4,7 +4,7 @@
     $.each(dropdowns, function() {
         const $listItems = $(this).find(".more-filters__list-item");
 
-        let activeItem = $(".more-filters_list-item_active");
+        let activeItem = $(this).find(".more-filters_list-item_active");
 
         function setActiveItem($newActiveItem) {
             activeItem.removeClass("more-filters_list-item_active");
