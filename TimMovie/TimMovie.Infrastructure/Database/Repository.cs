@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.SharedKernel.BaseEntities;
 using TimMovie.SharedKernel.Interfaces;
 
@@ -19,7 +20,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
     public async Task<List<TEntity>> GetAllAsync() =>
         await _dbSet.ToListAsync();
-    
+
     public async Task<TEntity?> AddAsync(TEntity item)
     {
         var entityEntry = await _dbSet.AddAsync(item);
@@ -35,7 +36,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     {
         _dbSet.Remove(item);
     }
-    
-    public async Task SaveChangesAsync()=>
+
+    public async Task SaveChangesAsync() =>
         await _context.SaveChangesAsync();
+
+    public IQueryable<TEntity> Include<TProperty>(
+        IQueryable<TEntity> query,
+        Expression<Func<TEntity, TProperty>> navigationPathToProperty)
+    {
+        return query.Include(navigationPathToProperty);
+    }
 }

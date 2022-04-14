@@ -1,12 +1,13 @@
 ﻿(function (){
     let cardContainer = $("#container_film_card");
-    let numberOfLoadedCards = 0;
-    let pagination = 30;
+    let amountSkip = 0;
+    let amountTake = 30;
     let allLoaded = false;
     let isLoad = false;
     
     function getObjWithFilters(){
         let sortingType = $("#sort-type").val();
+        let isDescending = $("#sort-order").is(':checked');
         
         let genresName = []; 
         let genres = $("#genre-filter").find(".more-filters_list-item_active");
@@ -15,7 +16,7 @@
         });
 
         let period = $("#year-filter").find(".more-filters_list-item_active").first()[0];
-        let annualPeriodsViewModel = {
+        let annualPeriod = {
             firstYear: period.dataset.valueFirst,
             lastYear: period.dataset.valueLast
         }
@@ -32,18 +33,21 @@
         return {
             sortingType,
             genresName,
-            annualPeriodsViewModel,
+            annualPeriod,
             countriesName,
-            rating
+            rating,
+            isDescending
         }
     }
     
     function getFilmsByFilters(){
         let infoAboutFilters = getObjWithFilters();
         let data = {
-            filters: infoAboutFilters,
-            pagination,
-            numberOfLoadedCards,
+            filtersWithPagination: {
+                dataDto: infoAboutFilters,
+                amountSkip,
+                amountTake,
+            }
         };
         
         $('.loader').toggleClass('hide');
@@ -52,12 +56,11 @@
             data: data,
             success: function (result){
                 $('.loader').toggleClass('hide');
-                
-                numberOfLoadedCards += pagination;
+
+                amountSkip += amountTake;
                 allLoaded = result.length < 30;
                 
                 cardContainer.append(result);
-                
                 $("img").one("load", function() {
                     prepareFilms();
                     adaptСontainer();
@@ -89,7 +92,7 @@
     
     function loadWithNewFilter(){
         cardContainer.empty();
-        numberOfLoadedCards = 0;
+        amountSkip = 0;
         getFilmsByFilters();
     }
     
@@ -99,6 +102,7 @@
 
     $(".dropdown-filter__list-item").on("click", loadWithNewFilter);
     $(".more-filters__list-item").on("click", loadWithNewFilter);
+    $("#sort-order").on("click", loadWithNewFilter);
     window.addEventListener("scroll", tryLoadMoreFilms);
     window.addEventListener("resize", tryLoadMoreFilms);
 })()

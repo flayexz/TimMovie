@@ -12,14 +12,14 @@ public class Specification<TEntity>: ISpecification<TEntity>
 
     public Specification(Expression<Func<TEntity, bool>> conditional)
     {
-        ArgumentValidator.CheckOnNull(conditional, nameof(conditional));
+        ArgumentValidator.ThrowExceptionIfNull(conditional, nameof(conditional));
         
         Conditional = conditional;
     }
 
     public bool IsSatisfiedBy(TEntity entity)
     {
-        ArgumentValidator.CheckOnNull(entity!, nameof(entity));
+        ArgumentValidator.ThrowExceptionIfNull(entity!, nameof(entity));
 
         if (Conditional is null)
         {
@@ -74,14 +74,14 @@ public class Specification<TEntity>: ISpecification<TEntity>
 
     public static implicit operator Expression<Func<TEntity, bool>>(Specification<TEntity> spec)
     {
-        ArgumentValidator.CheckOnNull(spec, nameof(spec));
+        ArgumentValidator.ThrowExceptionIfNull(spec, nameof(spec));
         
         return spec.Conditional;
     }
 
     private static void CheckSpecificationsOnNull(Specification<TEntity> spec1, Specification<TEntity> spec2)
     {
-        ArgumentValidator.CheckOnNull(spec1, nameof(spec1));
-        ArgumentValidator.CheckOnNull(spec2, nameof(spec2));
+        ArgumentValidator.ThrowExceptionIfNull(spec1, nameof(spec1));
+        ArgumentValidator.ThrowExceptionIfNull(spec2, nameof(spec2));
     }
 }

@@ -5,7 +5,7 @@ public static class ArgumentValidator
     /// <summary>
     /// Проверяет объект на null, выкидывает <see cref="ArgumentNullException"/> если null.
     /// </summary>
-    public static void CheckOnNull(object obj, string paramName)
+    public static void ThrowExceptionIfNull(object obj, string paramName)
     {
         if (obj is null)
         {
