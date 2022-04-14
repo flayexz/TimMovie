@@ -1,7 +1,7 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.SharedKernel.Specification;
 
-namespace TimMovie.Core.Specifications.InheritedSpecifications;
+namespace TimMovie.Core.Specifications.InheritedSpecifications.CountrySpec;
 
 public class CountryByNameSpec: Specification<Country>
 {
