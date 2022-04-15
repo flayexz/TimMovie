@@ -1,5 +1,5 @@
 
-    const durationForShow = 80;
+    const durationForShow = 65;
     const nameAdditionalInformationClassName = ".film-card__more-info-container";
 
     function displayMoreInfo() {
