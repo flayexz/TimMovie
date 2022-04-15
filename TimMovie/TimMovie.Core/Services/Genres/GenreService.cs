@@ -1,7 +1,7 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.SharedKernel.Interfaces;
 
-namespace TimMovie.Core.Services;
+namespace TimMovie.Core.Services.Genres;
 
 public class GenreService
 {

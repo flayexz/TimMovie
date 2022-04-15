@@ -1,7 +1,7 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.SharedKernel.Specification;
 
-namespace TimMovie.Core.Specifications.InheritedSpecifications;
+namespace TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 
 /// <summary>
 /// Фильтр на минимальный рейтинг.
