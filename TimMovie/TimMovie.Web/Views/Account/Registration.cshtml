@@ -1,8 +1,6 @@
-﻿@model TimMovie.Web.ViewModels.RegistrationViewModel
-
+﻿@model TimMovie.Web.ViewModels.Account.RegistrationViewModel
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    Layout = null;
 }
 
 <head>
@@ -46,7 +44,7 @@
                 
                 @Html.ValidationMessage("CustomError", new { style = "color:red" })
             </div>
-            <div asp-validation-summary="ModelOnly" style="color: darkred"></div>
+            <div asp-validation-summary="ModelOnly" style="color: #a60303"></div>
             <div class="form-buttons mt-4">
                 <button class="button">
                     <span>Зарегистрироваться</span>
@@ -56,7 +54,7 @@
         </form>
         <form method="post" asp-action="RegisterByVk" asp-route-returnUrl="/" asp-route-provider="VK">
             <div class="vk-area" onclick="document.querySelector('#submit-vk-auth').click() ">
-                <svg class="button-vk" fill="none" height="35" width="355" xmlns="http://www.w3.org/2000/svg"
+                <svg class="button-vk" fill="none" height="40" width="355" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 -0.001000000000000334 272.518 48.001">
                     <path
                         d="M0 23C0 12.158 0 6.737 3.368 3.368S12.158 0 23 0h2c10.842 0 16.264 0 19.632 3.368C48 6.737 48 12.158 48 23v2c0 10.842 0 16.264-3.368 19.632C41.263 48 35.842 48 25 48h-2c-10.842 0-16.263 0-19.632-3.368C0 41.263 0 35.842 0 25z"
@@ -75,3 +73,11 @@
     </div>
 </div>
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

@@ -15,7 +15,6 @@ public static class ServicesConfiguration
         
         services.ConfigureApplicationCookie(options =>
         {
-            options.LoginPath = "/Account/Login";
             options.AccessDeniedPath = "/Account/Denied";
         });
         
