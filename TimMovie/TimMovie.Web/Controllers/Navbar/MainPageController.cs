@@ -26,9 +26,9 @@ public class MainPageController :Controller
     [HttpGet]
     public async Task<IActionResult> MainPage()
     {
-        var films = _mapper.Map<List<FilmMainPageViewModel>>(await _filmRepository.GetAllAsync()).Take(15).ToList();
+        var cards = _mapper.Map<IEnumerable<FilmCardViewModel>>(await _filmRepository.GetAllAsync()).Take(15);
         var banners = _mapper.Map<List<BannerViewModel>>(await _bannerRepository.GetAllAsync());
         
-        return View("~/Views/Navbar/MainPage/MainPage.cshtml", (banners, films));
+        return View("~/Views/Navbar/MainPage/MainPage.cshtml", (banners, cards));
     }
 }

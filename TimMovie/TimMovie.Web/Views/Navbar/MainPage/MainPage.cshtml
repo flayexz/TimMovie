@@ -1,12 +1,11 @@
-﻿@model (List<TimMovie.Web.ViewModels.BannerViewModel> Banners, List<TimMovie.Web.ViewModels.FilmMainPageViewModel> Films)
+﻿@model (List<TimMovie.Web.ViewModels.BannerViewModel> Banners, IEnumerable<TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel> Cards)
 @{
     var banners = Model.Banners;
-    var films = Model.Films;
-}
-
-@{
+    var cards = Model.Cards;
+    var counter = 0; //чтобы показать карточку "посмотреть все"
     ViewBag.Title = "Main";
 }
+
 <div class="row mb-2 justify-content-center">
     <div class="col-1 p-0">
         <a href="#bannerCarousel" class="prev_next_buttons h-100 d-flex align-items-center justify-content-end"
@@ -34,13 +33,11 @@
     <div class="col-10 p-0">
         <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <!-- slides of banners -->
-
             <div class="carousel-inner circleBorders">
                 @for (var i = 0; i < banners.Count; i++)
                 {
                     var active = i == 0 ? "active" : string.Empty;
                     <div class="carousel-item @active" data-bs-interval="10000">
-
                         <div class="overlay-image" style="background-image:url(@banners[i].Image)">
                         </div>
                         <div class="banner-container ms-4">
@@ -64,7 +61,26 @@
     <div class="carousel-container">
         <div class="carousel-inner">
             <div class="track">
-                @await Html.PartialAsync("~/Views/Navbar/Mainpage/check.cshtml", films)
+                @foreach (var card in cards)
+                {
+                    counter++;
+                    <div class="card-container column">
+                        <div class="card">
+                            @{
+                                await Html.RenderPartialAsync("~/Views/FilmCard/Card.cshtml", card);
+                            }
+                        </div>
+                    </div>
+                    if (counter == 15)
+                    {
+                        <div class="card-container column">
+                            <div class="card text-white align-items-center justify-content-center text-center last_card_style"
+                                 style="background-color:#1f1b2e; height: 75%;">
+                                Посмотреть все
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
         <div class="carousel-nav">
@@ -85,6 +101,7 @@
         </div>
     </div>
 </div>
+
 
 @section Scripts{
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
