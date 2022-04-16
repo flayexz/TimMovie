@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authentication;
-using TimMovie.Core.Entities;
 
-namespace TimMovie.Web.ViewModels;
+namespace TimMovie.Web.ViewModels.Account;
 
 public class RegistrationViewModel
 {
