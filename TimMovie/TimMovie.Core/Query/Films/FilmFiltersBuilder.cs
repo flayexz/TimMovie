@@ -38,7 +38,7 @@ public class FilmFiltersBuilder: FilmQueryBuilder
         return this;
     }
     
-    public FilmFiltersBuilder FilterByCountry(IEnumerable<string>? countryNames)
+    public FilmFiltersBuilder AddFilterByCountry(IEnumerable<string>? countryNames)
     {
         if (countryNames is null || !countryNames.Any())
         {

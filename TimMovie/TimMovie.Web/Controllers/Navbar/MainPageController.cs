@@ -1,34 +1,35 @@
-﻿using AutoMapper;
+﻿using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
-using TimMovie.Core.Entities;
+using TimMovie.Core.Enums;
+using TimMovie.Core.Services;
+using TimMovie.Core.Services.Banners;
 using TimMovie.Core.Services.Films;
-using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.FilmCard;
 
 namespace TimMovie.Web.Controllers.Navbar;
 
-public class MainPageController :Controller
+public class MainPageController : Controller
 {
-    private readonly IRepository<Banner> _bannerRepository;
-    private readonly IRepository<Film> _filmRepository;
+    private readonly FilmCardService _filmCardService;
+    private readonly BannerService _bannerService;
     private readonly IMapper _mapper;
 
-    public MainPageController(IRepository<Banner> bannerRepository, IRepository<Film> filmRepository, IMapper mapper)
+    public MainPageController(IMapper mapper, FilmCardService filmCardService, BannerService bannerService)
     {
-        _bannerRepository = bannerRepository;
-        _filmRepository = filmRepository;
         _mapper = mapper;
+        _filmCardService = filmCardService;
+        _bannerService = bannerService;
     }
 
+
     [HttpGet]
-    public async Task<IActionResult> MainPage()
+    public IActionResult MainPage()
     {
-        var cards = _mapper.Map<IEnumerable<FilmCardViewModel>>(await _filmRepository.GetAllAsync()).Take(15);
-        var banners = _mapper.Map<List<BannerViewModel>>(await _bannerRepository.GetAllAsync());
-        
-        return View("~/Views/Navbar/MainPage/MainPage.cshtml", (banners, cards));
+        var banners = _mapper.Map<List<BannerViewModel>>(_bannerService.GetBanners());
+        return View("~/Views/Navbar/MainPage/MainPage.cshtml", (banners));
     }
 }

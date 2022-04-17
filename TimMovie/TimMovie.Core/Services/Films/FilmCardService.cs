@@ -2,8 +2,10 @@
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
+using TimMovie.Core.Enums;
 using TimMovie.Core.Query;
 using TimMovie.Core.Query.Films;
+using TimMovie.Core.Services.Genres;
 using TimMovie.SharedKernel.Interfaces;
 using TimMovie.SharedKernel.Validators;
 
@@ -14,12 +16,16 @@ public class FilmCardService
     private readonly IRepository<Film> _filmRepository;
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
+    private readonly GenreService _genreService;
 
-    public FilmCardService(IRepository<Film> filmRepository, IMapper mapper, FilmService filmService)
+
+    public FilmCardService(IRepository<Film> filmRepository, IMapper mapper, FilmService filmService,
+        GenreService genreService)
     {
         _filmRepository = filmRepository;
         _mapper = mapper;
         _filmService = filmService;
+        _genreService = genreService;
     }
 
     public IEnumerable<FilmCardDto> GetFilmCardsByFilters(
@@ -41,7 +47,7 @@ public class FilmCardService
         return filmCard;
     }
 
-    private IEnumerable<FilmCardDto> GetFilmCardsByFilms(IEnumerable<Film> films)
+    private List<FilmCardDto> GetFilmCardsByFilms(IEnumerable<Film> films)
     {
         return films
             .Select(film =>
@@ -70,12 +76,33 @@ public class FilmCardService
         filterBuilder
             .AddFilterByGenre(filters.GenresName)
             .AddFilterByYear(filters.AnnualPeriod.FirstYear, filters.AnnualPeriod.LastYear)
-            .FilterByCountry(filters.CountriesName);
+            .AddFilterByCountry(filters.CountriesName);
         //.FilterOnMinimumRating(filters.Rating ?? 0);//Надо добавить рейтинг в бд
 
         var sortBuilder = new SortFilmBuilder(filterBuilder);
         sortBuilder.AddSortByTypeSort(filters.SortingType, filters.IsDescending);
 
         return sortBuilder.Build();
+    }
+
+
+    public List<FilmCardDto> GetFilmCardsByGenre(CarouselGenres genre, int amount)
+    {
+        var genreName = _genreService.GetGenreNameByEnumName(genre);
+
+        var filterBuilder = new FilmFiltersBuilder(_filmRepository);
+        filterBuilder.AddFilterByGenre(new[] {genreName});
+
+        var sortBuilder = new SortFilmBuilder(filterBuilder);
+        sortBuilder.AddSortByRating(false);
+        sortBuilder.AddSortByViews(false);
+
+        var queryExecutor = sortBuilder.Build();
+
+        var films = queryExecutor
+            .IncludeInResult(film => film.Genres)
+            .IncludeInResult(film => film.Country)
+            .GetEntitiesWithPagination(0, amount);
+        return GetFilmCardsByFilms(films);
     }
 }

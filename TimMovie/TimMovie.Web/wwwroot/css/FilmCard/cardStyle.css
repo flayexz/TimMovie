@@ -31,6 +31,7 @@
 
 .film-card__subscribe-text {
     font-size: 0.8em;
+    color:#ccc;
 }
 
 .film-card__more-info {
@@ -40,4 +41,5 @@
 .film-card__more-info-content {
     margin-top: 58%;
     font-size: 0.9em;
+    color:#ccc;
 }

@@ -1,11 +1,9 @@
-﻿@model (List<TimMovie.Web.ViewModels.BannerViewModel> Banners, IEnumerable<TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel> Cards)
+﻿@using TimMovie.Core.Enums
+@model List<TimMovie.Web.ViewModels.BannerViewModel>
 @{
-    var banners = Model.Banners;
-    var cards = Model.Cards;
-    var counter = 0; //чтобы показать карточку "посмотреть все"
-    ViewBag.Title = "Main";
+    var banners = Model;
+    ViewBag.Title = "Главная";
 }
-
 <div class="row mb-2 justify-content-center">
     <div class="col-1 p-0">
         <a href="#bannerCarousel" class="prev_next_buttons h-100 d-flex align-items-center justify-content-end"
@@ -27,7 +25,6 @@
             </svg>
         </a>
     </div>
-
 
     <!-- Banner carousel -->
     <div class="col-10 p-0">
@@ -56,51 +53,12 @@
     </div>
 </div>
 <!-- Recommendations carousel -->
-<h1 class="text_color pl-3 mt-5">Рекомендуем вам посмотреть</h1>
-<div class="container-xl">
-    <div class="carousel-container">
-        <div class="carousel-inner">
-            <div class="track">
-                @foreach (var card in cards)
-                {
-                    counter++;
-                    <div class="card-container column">
-                        <div class="card">
-                            @{
-                                await Html.RenderPartialAsync("~/Views/FilmCard/Card.cshtml", card);
-                            }
-                        </div>
-                    </div>
-                    if (counter == 15)
-                    {
-                        <div class="card-container column">
-                            <div class="card text-white align-items-center justify-content-center text-center last_card_style"
-                                 style="background-color:#1f1b2e; height: 75%;">
-                                Посмотреть все
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-        <div class="carousel-nav">
-            <a class="column h-100 prev carousel-control-prev prev_next_buttons">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <path
-                        d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z"/>
-                </svg>
-            </a>
-            <a class="column h-100 next carousel-control-next prev_next_buttons">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <path
-                        d="m40.4,121.3c-0.8,0.8-1.8,1.2-2.9,1.2s-2.1-0.4-2.9-1.2c-1.6-1.6-1.6-4.2 0-5.8l51-51-51-51c-1.6-1.6-1.6-4.2 0-5.8 1.6-1.6 4.2-1.6 5.8,0l53.9,53.9c1.6,1.6 1.6,4.2 0,5.8l-53.9,53.9z"/>
-                </svg>
-            </a>
-        </div>
-    </div>
-</div>
+@* @await Component.InvokeAsync("Carousel", cards) *@
+<h1 class="text_color pl-3 mt-5">Лучшие комедии</h1>
+<vc:carousel genre-name="@CarouselGenres.Comedy"></vc:carousel>
+<h1 class="text_color pl-3 mt-5">Лучшие драмы</h1>
+<vc:carousel genre-name="@CarouselGenres.Dramas"></vc:carousel>
+
 
 
 @section Scripts{
@@ -108,7 +66,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
-    <script src="/js/script.js"></script>
+    <script src="/js/Carousel_Script.js"></script>
     <script src="/js/resendEmailScript.js"></script>
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>

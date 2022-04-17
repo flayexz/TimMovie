@@ -1,6 +1,10 @@
 const prev = $('.prev');
 const next = $('.next');
-const track = $('.track');
+//const track = $('.track');
+
+
+// var carousel
+// var track 
 
 let index = 0;
 
@@ -78,9 +82,11 @@ setMoveCoefficients();
 
 
 next.on('click', function (e) {
+    carousel = $(e.currentTarget).parent().parent();
+    track = carousel.find('#track')
     index++;
     console.log(index)
-    prev.css("display", "flex")
+    carousel.find('#prev').css("display", "flex")
     if (cardsOnSlideAmount === 1)
     {
         track.css("transform", `translateX(-${index * columnWidth * 1}px)`);
@@ -94,21 +100,23 @@ next.on('click', function (e) {
     }
     else {
         track.css("transform", `translateX(-${-getTransformValue() + ost * columnWidth}px)`)
-        next.css("display", "none");
+        carousel.find('.next').css("display", "none");
     }
 });
 
 let flag = ost === 0;
 
 prev.on('click', function (e) {
+carousel = $(e.currentTarget).parent().parent();
+track = carousel.find('.track')
 index--;
 next.css("display", "flex");
 if (index === 0) {
-prev.css("display", "none");
+carousel.find('.prev').css("display", "none")
     }
     if (cardsOnSlideAmount === 1)
         track.css("transform", `translateX(-${index * columnWidth}px)`);
-    else if (flag) 
+    else if (!flag) 
         track.css("transform", `translateX(-${index * columnWidth * shiftCards}px)`);
     else {
         track.css("transform", `translateX(-${-getTransformValue() - ost * columnWidth}px)`);

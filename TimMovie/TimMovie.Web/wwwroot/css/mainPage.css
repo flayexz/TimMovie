@@ -114,12 +114,12 @@ h1{
 }
 
 .last_card_style{
-  font-weight: 500px;
   border-radius: 15px;
 }
 
-.col-10{
-  width: 12,5% !important;
+.last_card_style :hover{
+  transform: scale(1.04);
+  background-color: #231f34;
 }
 
 @media screen and (max-width: 1400px) {
@@ -174,7 +174,7 @@ h1{
 
 .carousel-container .track {
   display: flex;
-  transition: 1s;
+  transition: 0.7s;
 }
 
 .carousel-container .card-container {
