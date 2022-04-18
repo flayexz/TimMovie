@@ -1,8 +1,0 @@
-{
-  "type": "postgres",
-  "host": "62.109.29.6",
-  "port": 32246,
-  "username": "postgres",
-  "password": "azjkgB7Tmd",
-  "database": "TimMovie"
-}
