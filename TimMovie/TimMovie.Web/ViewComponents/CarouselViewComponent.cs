@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.Classes;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Enums;
 using TimMovie.Core.Services.Films;
@@ -19,7 +20,7 @@ public class CarouselViewComponent : ViewComponent
         _mapper = mapper;
     }
 
-    public IViewComponentResult Invoke(CarouselGenres genreName)
+    public IViewComponentResult Invoke(string genreName)
     {
         var cards = _mapper.Map<List<FilmCardViewModel>>(_filmCardService.GetFilmCardsByGenre(genreName, 15));
         return View(cards);

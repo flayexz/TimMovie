@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using TimMovie.Core.Classes;
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
-using TimMovie.Core.Enums;
 using TimMovie.Core.Query;
 using TimMovie.Core.Query.Films;
 using TimMovie.Core.Services.Genres;
@@ -86,10 +86,8 @@ public class FilmCardService
     }
 
 
-    public List<FilmCardDto> GetFilmCardsByGenre(CarouselGenres genre, int amount)
+    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount)
     {
-        var genreName = _genreService.GetGenreNameByEnumName(genre);
-
         var filterBuilder = new FilmFiltersBuilder(_filmRepository);
         filterBuilder.AddFilterByGenre(new[] {genreName});
 
