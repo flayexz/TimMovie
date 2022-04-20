@@ -6,8 +6,8 @@
 
     <ItemGroup>
         <Compile Include="AuthStartupSetup.fs" />
-        <Compile Include="WeatherForecast.fs" />
-        <Compile Include="Controllers/WeatherForecastController.fs" />
+        <Compile Include="Controllers\AuthController.fs" />
+        <Compile Include="Controllers\Check.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
