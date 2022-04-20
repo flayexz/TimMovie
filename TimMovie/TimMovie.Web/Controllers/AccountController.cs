@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO.Account;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
+using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.Account;
 
 namespace TimMovie.Web.Controllers;

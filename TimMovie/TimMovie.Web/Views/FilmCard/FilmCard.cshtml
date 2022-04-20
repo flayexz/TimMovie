@@ -1,8 +1,9 @@
-﻿@model IEnumerable<TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel>
+﻿@model TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel
+@{
+    var card = Model;
+}
 
-@foreach (var card in Model)
-{
-    <div class="col [ film-card ]">
+<div class="col [ film-card ]">
         <div class="position-relative">
             <a href="/ссылка" class="position-absolute [ film-card__more-info-container ]">
                 <div class="d-flex flex-column [ film-card__more-info ]">
@@ -43,4 +44,3 @@
             </div>
         </div>
     </div>
-}

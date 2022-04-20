@@ -1,4 +1,6 @@
-﻿namespace TimMovie.Web.ViewModels;
+﻿using TimMovie.Core.Entities;
+
+namespace TimMovie.Web.ViewModels;
 
 public class BannerViewModel
 {
@@ -6,9 +8,9 @@ public class BannerViewModel
 
     public string Image { get; set; }
 
-    public FilmMainPageViewModel Film { get; set; }
+    public Film Film { get; set; }
 
-    public BannerViewModel(string? description, string image, FilmMainPageViewModel film)
+    public BannerViewModel(string? description, string image, Film film)
     {
         Description = description;
         Image = image;

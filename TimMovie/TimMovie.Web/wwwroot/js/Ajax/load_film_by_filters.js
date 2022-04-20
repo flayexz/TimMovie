@@ -6,11 +6,11 @@
     let isLoad = false;
     let currentRequest;
     let requestIsAlreadySent = false;
-    
+
     function getObjWithFilters(){
         let sortingType = $("#sort-type").val();
         let isDescending = $("#sort-order").is(':checked');
-        
+
         let genresName = []; 
         let genres = $("#genre-filter").find(".more-filters_list-item_active");
         $.each(genres, function (i, item){
@@ -31,7 +31,7 @@
 
         let ratingObj = $("#rating-filter").find(".more-filters_list-item_active")[0];
         let rating = ratingObj === undefined ? null : ratingObj.dataset.value;
-        
+
         return {
             sortingType,
             genresName,
@@ -41,7 +41,7 @@
             isDescending
         }
     }
-    
+
     function getFilmsByFilters(){
         let infoAboutFilters = getObjWithFilters();
         let data = {
@@ -51,11 +51,11 @@
                 amountTake,
             }
         };
-        
+
         if (!requestIsAlreadySent){
             $('.loader').toggleClass('hide');   
         }
-        
+
         requestIsAlreadySent = true;
         currentRequest = $.post({
             url: "/Films/FilmFilters",
@@ -67,7 +67,7 @@
 
                 amountSkip += amountTake;
                 allLoaded = result.length < 30;
-                
+
                 cardContainer.append(result);
                 $("img").one("load", function() {
                     prepareFilms();
@@ -82,14 +82,14 @@
         if (allLoaded){
             return;
         }
-        
+
         const height = document.body.offsetHeight;
         const screenHeight = window.innerHeight;
-        
+
         const scrolled = window.scrollY;
-        
+
         const threshold = height - screenHeight / 4;
-        
+
         const position = scrolled + screenHeight;
 
         if (position >= threshold && !isLoad) {
@@ -97,17 +97,17 @@
             getFilmsByFilters();
         }
     }
-    
+
     function loadWithNewFilter(){
         currentRequest.abort();
         cardContainer.empty();
         amountSkip = 0;
         getFilmsByFilters();
     }
-    
+
     $(document).ready(function (){
         tryLoadMoreFilms();
-        
+
         $(".dropdown-filter__list-item").on("click", loadWithNewFilter);
         $(".more-filters__list-item").on("click", loadWithNewFilter);
         $("#sort-order").on("click", loadWithNewFilter);

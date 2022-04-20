@@ -15,10 +15,10 @@ public class AppMappingProfile : Profile
     {
         CreateMap<RegistrationViewModel, UserRegistrationDto>();
         CreateMap<UserRegistrationDto, User>();
-        CreateMap<FilmMainPageViewModel, Film>().ReverseMap();
-        CreateMap<BannerViewModel, Banner>().ReverseMap();
+        CreateMap<Banner, BannerViewModel>();
         CreateMap<ExternalLoginViewModel, ExternalLoginDto>();
         CreateMap<FilmCardDto, FilmCardViewModel>();
+        CreateMap<Film, FilmCardViewModel>();
         CreateMap<LoginViewModel, LoginDto>().ReverseMap();
     }
 }

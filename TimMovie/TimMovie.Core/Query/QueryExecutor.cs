@@ -28,7 +28,6 @@ public class QueryExecutor<TEntity>
         Expression<Func<TEntity, TProperty>> navigationPathToProperty)
     {
         _query = _repository.Include(_query, navigationPathToProperty);
-        
         return this;
     }
 }

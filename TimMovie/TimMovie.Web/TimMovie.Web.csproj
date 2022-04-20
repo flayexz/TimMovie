@@ -25,15 +25,24 @@
 
     <ItemGroup>
       <Folder Include="AuthorizationHandlers" />
-      <Folder Include="Views\Navbar" />
     </ItemGroup>
 
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Views\MainPage\MainPage.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Navbar\MainPage\MainPage.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Account\MailSend.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Account\RegisterExternal.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Account\Registration.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\FilmCard\FilmCard.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Navbar\Films\Filters.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Navbar\MainPage\MainPage.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Error.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\FilmCard\Card.cshtml" />
     </ItemGroup>
 
 </Project>

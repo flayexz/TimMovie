@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TimMovie.Core.Services.Banners;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Genres;
@@ -13,6 +14,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<CountryService>(builder);
         RegisterServiceOnSelf<GenreService>(builder);
         RegisterServiceOnSelf<FilmCardService>(builder);
+        RegisterServiceOnSelf<BannerService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 

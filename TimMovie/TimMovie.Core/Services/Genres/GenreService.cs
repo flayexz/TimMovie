@@ -11,7 +11,7 @@ public class GenreService
     {
         _genreRepository = genreRepository;
     }
-    
+
     public IEnumerable<string> GetGenreNames()
     {
         return _genreRepository.Query.Select(genre => genre.Name).ToList();
