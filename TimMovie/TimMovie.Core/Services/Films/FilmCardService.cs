@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using TimMovie.Core.Classes;
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
@@ -16,7 +15,6 @@ public class FilmCardService
     private readonly IRepository<Film> _filmRepository;
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
-    private readonly GenreService _genreService;
 
 
     public FilmCardService(IRepository<Film> filmRepository, IMapper mapper, FilmService filmService,
@@ -25,7 +23,6 @@ public class FilmCardService
         _filmRepository = filmRepository;
         _mapper = mapper;
         _filmService = filmService;
-        _genreService = genreService;
     }
 
     public IEnumerable<FilmCardDto> GetFilmCardsByFilters(

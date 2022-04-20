@@ -62,6 +62,6 @@ public class FilmsController : Controller
         var cardsViewModel = cardsDto
             .Select(card=> _mapper.Map<FilmCardViewModel>(card));
 
-        return PartialView("~/Views/FilmCard/FilmCard.cshtml", cardsViewModel);
+        return PartialView("~/Views/FilmCard/FilmCards.cshtml", cardsViewModel);
     }
 }

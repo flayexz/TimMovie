@@ -1,6 +1,6 @@
 ﻿namespace TimMovie.Core.Classes;
 
-public static class CarouselGenres
+public static class GenresNames
 {
     public static string ForKids = "Для детей";
     public static string ForFamily = "Семейные";
