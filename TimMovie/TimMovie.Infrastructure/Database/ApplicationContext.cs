@@ -28,6 +28,7 @@ public class ApplicationContext : IdentityDbContext<User,IdentityRole<Guid>,Guid
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseOpenIddict();
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<User>().HasMany(x => x.FilmsWatchLater).
             WithMany(x => x.UsersWatchLater);
