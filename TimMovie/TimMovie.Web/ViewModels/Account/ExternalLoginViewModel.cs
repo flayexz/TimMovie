@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TimMovie.Web.ViewModels;
+namespace TimMovie.Web.ViewModels.Account;
 
 public class ExternalLoginViewModel
 {

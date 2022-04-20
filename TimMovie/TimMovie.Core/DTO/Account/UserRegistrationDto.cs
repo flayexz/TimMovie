@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TimMovie.Core.DTO;
+namespace TimMovie.Core.DTO.Account;
 
 public class UserRegistrationDto
 {

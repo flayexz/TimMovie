@@ -1,4 +1,13 @@
-﻿* {
+﻿input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    caret-color: white !important;
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0 30px #100e19 inset !important;
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -126,7 +135,7 @@ a.button {
 
 .divider {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 14px;
     color: #405d87;
     text-align: center;

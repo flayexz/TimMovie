@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using TimMovie.Core.DTO;
+using TimMovie.Core.DTO.Account;
 using TimMovie.SharedKernel.Classes;
 
 namespace TimMovie.Core.Interfaces;
@@ -18,6 +18,8 @@ public interface IUserService
     public Task<Result> RegisterExternalAsync(ExternalLoginDto externalLoginDto);
 
     public Task<bool> IsEmailExistAsync(string email);
+
+    public Task<SignInResult> LoginAsync(LoginDto loginDto);
     
     public Task<ExternalLoginInfo?> GetExternalLoginInfoAsync();
 
