@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO.Account;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
-using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.Account;
 
 namespace TimMovie.Web.Controllers;
@@ -73,7 +72,7 @@ public class AccountController : Controller
         if (confirmResult.Succeeded)
         {
             logger.LogInformation($"user with id {userId} confirmed email");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MainPage", "MainPage");
         }
 
         logger.LogError(confirmResult.Error);
@@ -156,7 +155,6 @@ public class AccountController : Controller
         {
             logger.LogError($"пользователя с почтой {email} не существует");
             return BadRequest();
-            ;
         }
 
         var sendResult = await userService.SendConfirmEmailAsync(email, UrlToConfirmEmail);
@@ -205,7 +203,7 @@ public class AccountController : Controller
         if (loginResult.Succeeded)
         {
             logger.LogInformation($"пользователь {login} вошел в свой акканут");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MainPage", "MainPage");
         }
         
         if (loginResult.IsNotAllowed)
