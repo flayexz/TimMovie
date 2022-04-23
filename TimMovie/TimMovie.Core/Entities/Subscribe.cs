@@ -10,7 +10,7 @@ public class Subscribe : BaseEntity
     public string Name { get; set; }
     
     [Required]
-    public float Price { get; set; }
+    public decimal Price { get; set; }
 
     public string? Description { get; set; }
     
