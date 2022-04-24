@@ -85,6 +85,7 @@
 <div class="container-xl">
     <main role="main" class="pb-3">
         @RenderBody()
+        @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         <div id="modDialog" class="modal fade">
             <div id="dialogContent" class="modal-dialog"></div>
         </div>

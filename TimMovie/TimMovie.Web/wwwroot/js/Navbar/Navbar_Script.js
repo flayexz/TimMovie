@@ -4,11 +4,8 @@
         $.get({
             url:"/Search/ModalWindow",
             success: function (data){
-                $('#dialogContent').html(data);
+                $('.container-xl').append(data);
                 $('#modDialog').modal('show');
-            },
-            error: function () {
-                console.log('модальное окно ajax пошёл по пизде')
             }
         })
     });
