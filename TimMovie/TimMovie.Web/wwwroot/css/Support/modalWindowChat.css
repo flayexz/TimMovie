@@ -1,0 +1,15 @@
+﻿.support-chat-button{
+    position: fixed;
+    right: 40px;
+    bottom: 30px;
+    width: 60px;
+    height: 60px;
+    background: rgb(249,16,76);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.support-chat-button:hover{
+    cursor: pointer;
+}
