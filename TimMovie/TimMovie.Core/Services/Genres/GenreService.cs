@@ -16,4 +16,7 @@ public class GenreService
     {
         return _genreRepository.Query.Select(genre => genre.Name).ToList();
     }
+
+    public IEnumerable<Genre> GetGenresByNamePart(string namePart, int count = int.MaxValue) =>
+        _genreRepository.Query.Where(g => g.Name.Contains(namePart)).Take(count);
 }

@@ -16,9 +16,9 @@ public class FilmService
 
     public bool IsExistInSubscribe(Film film)
     {
-         return _filmRepository.Query
-             .FirstOrDefault(new EntityByIdSpec<Film>(film.Id) 
-                             && FilmStaticSpec.FilmIsIncludedAnySubscriptionSpec) is not null;
+        return _filmRepository.Query
+            .FirstOrDefault(new EntityByIdSpec<Film>(film.Id)
+                            && FilmStaticSpec.FilmIsIncludedAnySubscriptionSpec) is not null;
     }
 
     public double? GetRating(Film film)
@@ -28,4 +28,7 @@ public class FilmService
             .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
             .FirstOrDefault();
     }
+
+    public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>
+        _filmRepository.Query.Where(f => f.Title.Contains(namePart)).Take(count);
 }
