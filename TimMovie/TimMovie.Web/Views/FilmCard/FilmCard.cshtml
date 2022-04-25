@@ -1,8 +1,9 @@
-﻿@model IEnumerable<TimMovie.Web.ViewModels.Films.FilmCardViewModel>
+﻿@model TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel
+@{
+    var card = Model;
+}
 
-@foreach (var card in Model)
-{
-    <div class="col [ film-card ]">
+<div class="col [ film-card ]">
         <div class="position-relative">
             <a href="/ссылка" class="position-absolute [ film-card__more-info-container ]">
                 <div class="d-flex flex-column [ film-card__more-info ]">
@@ -20,17 +21,17 @@
                     </div>
                     <div class="me-2 d-flex flex-column text-end [ film-card__more-info-content ]">
                         <div>Рейтинг: @card.Rating/10</div>
-                        <div>@card.Film.Year, @card.Film.Country!.Name, @card.Film.Genres.FirstOrDefault()?.Name</div>
+                        <div>@card.Year, @card.CountryName, @card.FirstGenreName</div>
                     </div>
                 </div>
             </a>
             <a href="/ссылка" class="mw-100">
                 <img class="rounded-2 mw-100 [ film-card__img ]"
-                     src="@card.Film.Image" alt=""/>
+                     src="@card.Image" alt=""/>
             </a>
             <div class="d-flex flex-column [ film-card__under-content ]">
                 <a href="/ссылка">
-                    <div class="[ film-card__title ]">@card.Film.Title</div>
+                    <div class="[ film-card__title ]">@(card.Title.Length >= 23 ? $"{card.Title.Substring(0, 23)}..." : card.Title)</div>
                 </a>
                 @if (card.IsExistInSubscribe)
                 {
@@ -43,4 +44,3 @@
             </div>
         </div>
     </div>
-}

@@ -11,7 +11,10 @@ public static class InfrastructureStartupSetup
 {
     public static void AddDbContext(this IServiceCollection services, string connectionString) =>
         services.AddDbContext<ApplicationContext>(options =>
-            options.UseNpgsql(connectionString));
+        {
+            options.UseNpgsql(connectionString);
+            options.UseOpenIddict();
+        });
     
     public static IServiceCollection AddIdentity(this IServiceCollection services)
     {

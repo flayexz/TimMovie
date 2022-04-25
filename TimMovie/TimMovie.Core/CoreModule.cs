@@ -1,5 +1,8 @@
 ﻿using Autofac;
-using TimMovie.Core.Services;
+using TimMovie.Core.Services.Banners;
+using TimMovie.Core.Services.Countries;
+using TimMovie.Core.Services.Films;
+using TimMovie.Core.Services.Genres;
 
 namespace TimMovie.Core;
 
@@ -8,9 +11,10 @@ public class CoreModule: Module
     protected override void Load(ContainerBuilder builder)
     {
         RegisterServiceOnSelf<FilmService>(builder);
-        RegisterServiceOnSelf<FilmsFilterService>(builder);
         RegisterServiceOnSelf<CountryService>(builder);
         RegisterServiceOnSelf<GenreService>(builder);
+        RegisterServiceOnSelf<FilmCardService>(builder);
+        RegisterServiceOnSelf<BannerService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - TimMovie.Web</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -18,7 +18,7 @@
 <header>
     <div class="container-xl">
         <nav class="navbar navbar-expand-lg navbar-dark border-bottom box-shadow mb-3">
-            <div><a href=""><img class="logoImg" src="~/img/logo.png" alt=""></a></div>
+            <div><a asp-controller="MainPage" asp-action="MainPage"><img class="logoImg" src="~/img/logo.png" alt=""></a></div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,7 +28,7 @@
                         <a href="#" class="navbar-text">Новинки</a>
                     </li>
                     <li class="nav-item nav-button-left">
-                        <a class="navbar-text" asp-controller="Films" asp-action="Page">Фильмы</a>
+                        <a class="navbar-text" asp-controller="Films" asp-action="Filters">Фильмы</a>
                     </li>
                     <li class="nav-item nav-button-left">
                         <a href="#" class="navbar-text">Смотреть позже</a>
@@ -51,19 +51,30 @@
                             <div class="notifText">Уведомления</div>
                         </a>
                     </li>
-                    <li class="nav-item nav-button-right-last">
-                        <a href="#" class="navbar-text">Войти</a>
-                    </li>
-    <!--                <li class="nav-item nav-button-right-last">-->
-    <!--                    <a href="" class="navbar-text">-->
-    <!--                        <svg class="profileImg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="288" height="288">-->
-    <!--                            <path d="M16 16A7 7 0 109 9 7 7 0 0016 16zM16 4a5 5 0 11-5 5A5 5 0 0116 4zM17 18H15A11 11 0 004 29a1 1 0 001 1H27a1 1 0 001-1A11 11 0 0017 18zM6.06 28A9 9 0 0115 20h2a9 9 0 018.94 8z"-->
-    <!--                                  fill="currentColor" class="color000 svgShape"></path>-->
-    <!--                        </svg>-->
-    <!--                    </a>-->
-    <!--                </li>-->
+
+                    @{
+                        if (Context.User.Identity == null || !Context.User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item nav-button-right-last">
+                                <a class="navbar-text" data-bs-toggle="modal" data-bs-target="#modal1">Войти</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item nav-button-right-last">
+                                <a href="" class="navbar-text">
+                                    <svg class="profileImg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="288" height="288">
+                                        <path d="M16 16A7 7 0 109 9 7 7 0 0016 16zM16 4a5 5 0 11-5 5A5 5 0 0116 4zM17 18H15A11 11 0 004 29a1 1 0 001 1H27a1 1 0 001-1A11 11 0 0017 18zM6.06 28A9 9 0 0115 20h2a9 9 0 018.94 8z"
+                                              fill="currentColor" class="color000 svgShape">
+                                        </path>
+                                    </svg>
+                                </a>
+                            </li>
+                        }
+                    }
                 </ul>
             </div>
+            <partial name="~/Views/Account/Login.cshtml"></partial>
         </nav>
     </div>
 </header>
@@ -77,7 +88,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-  
+
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }

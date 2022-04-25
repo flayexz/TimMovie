@@ -3,19 +3,6 @@
     color: white;
     font-family: "Open Sans", sans-serif;
 }
-.card-film {
-    transition: all 0.3s ease-out 0s;
-    background-color: #1f1b2e;
-}
-
-.card-description {
-    color: grey;
-    display: none;
-}
-
-.more-info-card-film {
-    color: rgb(214, 214, 214);
-}
 
 .input-name-film {
     min-width: 320px;

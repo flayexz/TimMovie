@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using TimMovie.Core;
 using TimMovie.Core.Classes;
 using TimMovie.Infrastructure;
 using TimMovie.Web.AuthorizationHandlers.AgePolicy;
@@ -14,7 +15,6 @@ public static class ServicesConfiguration
         
         services.ConfigureApplicationCookie(options =>
         {
-            options.LoginPath = "/Account/Login";
             options.AccessDeniedPath = "/Account/Denied";
         });
         
@@ -25,7 +25,7 @@ public static class ServicesConfiguration
             opt.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new AgeRequirement(18))));
 
         services.AddControllersWithViews();
-        services.AddAutoMapper(typeof(AppMappingProfile));
+        services.AddAutoMapper(typeof(AppMappingProfile), typeof(CoreMappingProfile));
 
         services.AddIdentity();
 

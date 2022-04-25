@@ -3,11 +3,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TimMovie.Core.DTO;
+using TimMovie.Core.DTO.Account;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
-using TimMovie.Infrastructure.Services;
-using TimMovie.Web.ViewModels;
+using TimMovie.Web.ViewModels.Account;
 
 namespace TimMovie.Web.Controllers;
 
@@ -73,7 +72,7 @@ public class AccountController : Controller
         if (confirmResult.Succeeded)
         {
             logger.LogInformation($"user with id {userId} confirmed email");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MainPage", "MainPage");
         }
 
         logger.LogError(confirmResult.Error);
@@ -156,7 +155,6 @@ public class AccountController : Controller
         {
             logger.LogError($"пользователя с почтой {email} не существует");
             return BadRequest();
-            ;
         }
 
         var sendResult = await userService.SendConfirmEmailAsync(email, UrlToConfirmEmail);
@@ -177,6 +175,49 @@ public class AccountController : Controller
         logger.LogError("не удалось отправить повторное сообщение на почту");
         return View("Error");
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LoginAsync()
+    {
+
+        var isLogin = Request.Form.TryGetValue("userName", out var login);
+        var isPassword = Request.Form.TryGetValue("password",out var password);
+        var isRememberMe = Request.Form.TryGetValue("rememberMe", out _);
+
+        if (!isLogin || !isPassword )
+        {
+            return View();
+        }
+        
+        var loginDto = new LoginDto
+        {
+            Login = login,
+            Password = password,
+            RememberMe = isRememberMe
+        };
+        
+
+        var loginResult = await userService.LoginAsync(loginDto);
+
+        if (loginResult.Succeeded)
+        {
+            logger.LogInformation($"пользователь {login} вошел в свой акканут");
+            return RedirectToAction("MainPage", "MainPage");
+        }
+        
+        if (loginResult.IsNotAllowed)
+        {
+            var userFromDb = await userManager.FindByNameAsync(login) ?? await userManager.FindByEmailAsync(login);
+            
+            return PartialView("MailSend", (userFromDb.Email, userFromDb.DisplayName));
+        }
+        
+        logger.LogInformation($"неудачная попытка входа с использованием логина {login}");
+        ModelState.AddModelError(string.Empty, "Неверный логин/почта или пароль");
+        return View("~/Views/Home/Index.cshtml");
+    }
+    
 
     private void AddErrors(IdentityResult result)
     {

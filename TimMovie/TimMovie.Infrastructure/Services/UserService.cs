@@ -3,9 +3,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using TimMovie.Core.DTO;
+using TimMovie.Core.DTO.Account;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services;
+using TimMovie.Core.Services.Countries;
 using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Extensions;
 
@@ -152,6 +154,24 @@ public class UserService : IUserService
     {
         var userMail = await userManager.FindByEmailAsync(email);
         return userMail is not null;
+    }
+
+    public async Task<SignInResult> LoginAsync(LoginDto loginDto)
+    {
+        var user = await userManager.FindByEmailAsync(loginDto.Login);
+        var login = user is null ? loginDto.Login : user.UserName;
+        var result = await signInManager.PasswordSignInAsync(login, loginDto.Password, loginDto.RememberMe, false);
+        if (result == SignInResult.NotAllowed)
+        {
+            if (await userManager.CheckPasswordAsync(user ?? await userManager.FindByNameAsync(login),
+                    loginDto.Password))
+            {
+                return result;
+            }
+            return SignInResult.Failed;
+        }
+
+        return result;
     }
 
     public async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync() =>
