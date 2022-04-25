@@ -4,7 +4,7 @@ using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Infrastructure.Database;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 {
     private readonly ApplicationContext _context;
     private readonly DbSet<TEntity> _dbSet;

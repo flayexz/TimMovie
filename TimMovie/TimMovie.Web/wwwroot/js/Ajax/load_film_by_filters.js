@@ -47,6 +47,7 @@
         };
         
         $('.loader').toggleClass('hide');
+        console.log("Запрос")
         $.post({
             url: "/Films/FilmFilters",
             data: data,
