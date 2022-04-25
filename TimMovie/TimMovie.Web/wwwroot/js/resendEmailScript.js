@@ -1,4 +1,8 @@
 ﻿function resendEmail(){
+    $('.loader').toggleClass('hide');
+    setTimeout(()=> {
+        $('.loader').toggleClass('hide');
+    }, 1500);
     console.log('clicked');
     let email = $("#emailInput").val();
     $.ajax({
@@ -13,6 +17,7 @@
             console.log('resend email');
         },
         error: function () {
+            $('.loader').toggleClass('hide');
             console.log('error occured')
         }
     })

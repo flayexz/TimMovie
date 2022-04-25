@@ -3,7 +3,7 @@ using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.SharedKernel.Interfaces;
 
-public interface IRepository<TEntity> where TEntity : BaseEntity
+public interface IRepository<TEntity> where TEntity : class
 {
     IQueryable<TEntity> Query { get; }
     Task<TEntity?> AddAsync(TEntity item);
