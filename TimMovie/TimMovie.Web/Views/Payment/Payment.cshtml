@@ -1,0 +1,26 @@
+﻿@* @model (TimMovie.Web.ViewModels.Payment.SubscribePaymentViewModel payment, TimMovie.Web.ViewModels.Payment.CardViewModel card) *@
+@model TimMovie.Web.ViewModels.Payment.SubscribePaymentWithCardViewModel
+
+@{
+    Layout = "_Layout";
+}
+
+<span>Покупка: @Model.SubscribePaymentViewModel.Subscribe.Name</span>
+<br>
+<span>Сумма: @Model.SubscribePaymentViewModel.Subscribe.Price</span>
+<br>
+
+@* @using (Html.BeginForm("Payment", "SubscribePayment", FormMethod.Post,new {enctype = "multipart/form-data"})) *@
+@* { *@
+@*     @Html.HiddenFor(x => x.payment.Subscribe.Id) *@
+@*     @Html.AntiForgeryToken() *@
+@*     @Html.EditorFor(x => x.card) *@
+@*     <input type="submit" value="оплатить"/> *@
+@* } *@
+
+<form enctype="multipart/form-data" method="post" asp-action="Payment" asp-controller="SubscribePayment" asp-route-subscribeId="@Model.SubscribePaymentViewModel.Subscribe.Id">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" style="color: #a60303"></div>
+    @Html.EditorFor(x => x.CardViewModel)
+    <input type="submit" value="Оплатить">
+</form> 
