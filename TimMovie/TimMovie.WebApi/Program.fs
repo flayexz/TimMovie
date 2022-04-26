@@ -36,7 +36,7 @@ module Program =
         
         services.AddOpenIddict()
             .AddValidation(fun options ->
-                options.SetIssuer("https://localhost:7282") |> ignore
+                options.SetIssuer(configuration["IdentityUrl"]) |> ignore
                 options.UseSystemNetHttp() |> ignore
                 options.UseAspNetCore() |> ignore) 
      

@@ -36,7 +36,7 @@ module Program =
         services
             .AddIdentity()
             .ConfigureOpenIddict()
-            .AddOpenIddictServer()
+            .AddOpenIddictServer(configuration["IdentityUrl"])
 
         let app = builder.Build()
 

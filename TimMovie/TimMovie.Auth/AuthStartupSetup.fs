@@ -30,7 +30,7 @@ type IServiceCollection with
 
         services
 
-    member services.AddOpenIddictServer() =
+    member services.AddOpenIddictServer(identityUrl:string) =
         services
             .AddOpenIddict()
             .AddCore(fun options ->
@@ -45,7 +45,7 @@ type IServiceCollection with
                     .AllowRefreshTokenFlow()
                     .SetAccessTokenLifetime(TimeSpan.FromDays(365))
                     .SetTokenEndpointUris("/connect/token")
-                    .SetIssuer(Uri("https://localhost:7282"))
+                    .SetIssuer(Uri(identityUrl))
                     .AddEphemeralEncryptionKey()
                     .AddEphemeralSigningKey()
                     //.AddDevelopmentEncryptionCertificate()
