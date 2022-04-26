@@ -1,4 +1,4 @@
-namespace TimMovie.Auth
+namespace TimMovie.WebApi
 
 #nowarn "20"
 
