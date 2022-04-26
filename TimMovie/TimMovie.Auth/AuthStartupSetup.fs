@@ -4,7 +4,6 @@ open System
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Identity
-open Microsoft.IdentityModel.Tokens
 open OpenIddict.Abstractions
 open TimMovie.Infrastructure.Database
 
@@ -14,9 +13,8 @@ type IServiceCollection with
             .AddAuthentication(fun opt ->
                 opt.DefaultAuthenticateScheme <- JwtBearerDefaults.AuthenticationScheme
                 opt.DefaultChallengeScheme <- JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(fun (opt: JwtBearerOptions) -> opt.ClaimsIssuer <- JwtBearerDefaults.AuthenticationScheme)
-        //                          opt.Audience <- "localhost:7097"
-//                          opt.Authority <- "localhost:7282")
+            .AddJwtBearer(fun (opt: JwtBearerOptions) ->
+                            opt.ClaimsIssuer <- JwtBearerDefaults.AuthenticationScheme)
         |> ignore
 
         services
@@ -35,40 +33,34 @@ type IServiceCollection with
     member services.AddOpenIddictServer() =
         services
             .AddOpenIddict()
-            .AddValidation(fun options ->
-                options.SetIssuer("https://localhost:7282/")
-                |> ignore
-
-                options.UseSystemNetHttp() |> ignore
-
-                options.Configure
-                    (fun options ->
-                        options.TokenValidationParameters.IssuerSigningKey <-
-                            SymmetricSecurityKey(
-                                Convert.FromBase64String("DRjd/GnduI3Efzen9V9BvbNUfc/VKgXltV7Kbk9sMkY=")
-                            ))
-                |> ignore
-                
-                options.UseAspNetCore() |> ignore
-
-                options.AddEncryptionCertificate("b82f36609cdaff9a95de60e8d5ac774b2e496c4b")
-                |> ignore)
             .AddCore(fun options ->
                 options
                     .UseEntityFrameworkCore()
                     .UseDbContext<ApplicationContext>()
                 |> ignore)
-            .AddServer(fun options ->
+            .AddServer(fun options ->          
                 options
                     .AcceptAnonymousClients()
                     .AllowPasswordFlow()
                     .AllowRefreshTokenFlow()
                     .SetAccessTokenLifetime(TimeSpan.FromDays(365))
                     .SetTokenEndpointUris("/connect/token")
-                    .UseAspNetCore(fun builder -> builder.EnableTokenEndpointPassthrough() |> ignore)
-                    .AddDevelopmentEncryptionCertificate()
-                    .AddDevelopmentSigningCertificate()
+                    .SetIssuer(Uri("https://localhost:7282"))
+                    .AddEphemeralEncryptionKey()
+                    .AddEphemeralSigningKey()
+                    //.AddDevelopmentEncryptionCertificate()
+                    //.AddDevelopmentSigningCertificate()
+                    .DisableAccessTokenEncryption() |> ignore   // если хочешь, чтобы на jwt.io были зашифрованные данные, то убрать (их все равно расшифровать нет проблем если что)
+                options
+                    .UseAspNetCore()
+                    .DisableTransportSecurityRequirement()
+                    .EnableTokenEndpointPassthrough()
                 |> ignore)
+            .AddValidation(fun options ->
+                options.UseSystemNetHttp() |> ignore 
+                options.UseAspNetCore() |> ignore
+                options.UseLocalServer() |> ignore
+            )
         |> ignore
 
         services
