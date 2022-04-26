@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="~/css/Navbar.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/Support/modalWindowChat.css" asp-append-version="true"/>
+    
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
@@ -82,12 +85,14 @@
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
+    @{ await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); }
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+<script src="js/support_chat.js"></script>
 
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
