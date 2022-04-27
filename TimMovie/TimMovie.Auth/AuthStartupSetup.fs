@@ -46,10 +46,8 @@ type IServiceCollection with
                     .SetAccessTokenLifetime(TimeSpan.FromDays(365))
                     .SetTokenEndpointUris("/connect/token")
                     .SetIssuer(Uri(identityUrl))
-                    .AddEphemeralEncryptionKey()
-                    .AddEphemeralSigningKey()
-                    //.AddDevelopmentEncryptionCertificate()
-                    //.AddDevelopmentSigningCertificate()
+                    .AddDevelopmentEncryptionCertificate()
+                    .AddDevelopmentSigningCertificate()
                     .DisableAccessTokenEncryption() |> ignore   // если хочешь, чтобы на jwt.io были зашифрованные данные, то убрать (их все равно расшифровать нет проблем если что)
                 options
                     .UseAspNetCore()
