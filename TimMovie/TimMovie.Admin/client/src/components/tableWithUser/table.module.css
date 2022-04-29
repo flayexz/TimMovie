@@ -1,0 +1,14 @@
+﻿.listItems::-webkit-scrollbar {
+    display: none;
+}
+
+.listItems{
+    resize: none;
+}
+
+.userRecord{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    margin-top: 10px;
+}

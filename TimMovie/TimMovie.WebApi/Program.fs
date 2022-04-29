@@ -1,12 +1,11 @@
-namespace TimMovie.Auth
+namespace TimMovie.WebApi
 
 #nowarn "20"
 
-open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
-open TimMovie.Auth.AuthStartupSetup
-open TimMovie.Infrastructure
+open OpenIddict.Validation.AspNetCore
 
 module Program =
     let exitCode = 0
@@ -19,25 +18,28 @@ module Program =
         let configuration = builder.Configuration
 
         services.AddControllers()
-
+        
         services
             .AddCors(fun options ->
                 options.AddDefaultPolicy
                     (fun builder ->
                         builder
-                            .AllowAnyHeader()
                             .AllowAnyOrigin()
+                            .AllowAnyHeader()
                             .AllowAnyMethod()
                         |> ignore))
-            .AddAuthenticationAndJwt()
-            .AddAuthorization()
-            .AddDbContext(configuration["ConnectionStrings:DefaultConnection"])
-
-        services
-            .AddIdentity()
-            .ConfigureOpenIddict()
-            .AddOpenIddictServer(configuration["IdentityUrl"])
-
+       
+        services.AddAuthentication(fun options ->
+            options.DefaultScheme <- OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
+        
+        services.AddAuthorization()
+        
+        services.AddOpenIddict()
+            .AddValidation(fun options ->
+                options.SetIssuer(configuration["IdentityUrl"]) |> ignore
+                options.UseSystemNetHttp() |> ignore
+                options.UseAspNetCore() |> ignore) 
+     
         let app = builder.Build()
 
         app

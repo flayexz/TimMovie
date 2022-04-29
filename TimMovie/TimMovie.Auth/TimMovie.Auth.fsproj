@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.Certificate" Version="6.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
       <PackageReference Include="OpenIddict" Version="3.1.1" />
       <PackageReference Include="OpenIddict.Abstractions" Version="3.1.1" />
