@@ -1,4 +1,5 @@
 ﻿using TimMovie.Core.Entities;
+using TimMovie.Core.Specifications.InheritedSpecifications.ProducerSpec;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Producers;
@@ -14,6 +15,6 @@ public class ProducerService
 
     public IEnumerable<Producer> GetProducersByNamePart(string namePart, int count = int.MaxValue) =>
         _producerRepository.Query
-            .Where(p => p.Surname == null ? p.Name.Contains(namePart) : (p.Name + " " + p.Surname).Contains(namePart))
+            .Where(new ProducerByNamePartSpec(namePart))
             .Take(count);
 }

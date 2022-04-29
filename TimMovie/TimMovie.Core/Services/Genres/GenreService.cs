@@ -1,4 +1,5 @@
 ﻿using TimMovie.Core.Entities;
+using TimMovie.Core.Specifications.InheritedSpecifications.GenreSpec;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Genres;
@@ -18,5 +19,5 @@ public class GenreService
     }
 
     public IEnumerable<Genre> GetGenresByNamePart(string namePart, int count = int.MaxValue) =>
-        _genreRepository.Query.Where(g => g.Name.Contains(namePart)).Take(count);
+        _genreRepository.Query.Where(new GenreByNamePartSpec(namePart)).Take(count);
 }

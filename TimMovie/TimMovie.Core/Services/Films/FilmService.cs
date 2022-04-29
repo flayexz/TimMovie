@@ -1,5 +1,6 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.Core.Specifications.InheritedSpecifications;
+using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
 using TimMovie.SharedKernel.Interfaces;
 
@@ -30,5 +31,5 @@ public class FilmService
     }
 
     public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>
-        _filmRepository.Query.Where(f => f.Title.Contains(namePart)).Take(count);
+        _filmRepository.Query.Where(new FilmByNamePartSpec(namePart)).Take(count);
 }
