@@ -1,11 +1,13 @@
 import {Controller, Get, Query} from '@nestjs/common';
 import {IUserDto} from 'src/dto/IUserDto';
 import {UserService} from "../../services/UserService";
+import {Admin} from "../../auth/adminAuth";
 
+@Admin()
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
-    
+
     @Get('collection')
     async getUsersWithFilterByLogin(
             @Query("incomingText") incomingText: string, 

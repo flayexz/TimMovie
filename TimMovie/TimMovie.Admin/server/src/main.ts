@@ -5,7 +5,8 @@ async function bootstrap() {
 
     const app = await NestFactory.create(AppModule);
     app.enableCors({
-        allowedHeaders: '*'
+        origin: process.env.CLIENT_URL,
+        credentials: true
     });
     await app.listen(3000);
 }

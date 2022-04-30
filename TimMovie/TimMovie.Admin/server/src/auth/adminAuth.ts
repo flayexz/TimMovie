@@ -38,7 +38,6 @@ export class AdminAuth implements CanActivate {
             const decodedJwtAccessToken = this.jwtService.decode(token)
             let roles = decodedJwtAccessToken[process.env.CLAIM_ROLE];
             if(roles != null){
-
                 if(roles.includes('admin')){
                     return true
                 }

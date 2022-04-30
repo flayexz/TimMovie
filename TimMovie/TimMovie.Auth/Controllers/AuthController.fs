@@ -3,6 +3,7 @@
 open System.Collections.Generic
 open System.Security.Claims
 open Microsoft.AspNetCore.Authentication
+open Microsoft.AspNetCore.Cors
 open Microsoft.AspNetCore.Identity
 open Microsoft.AspNetCore.Mvc
 open OpenIddict.Abstractions
