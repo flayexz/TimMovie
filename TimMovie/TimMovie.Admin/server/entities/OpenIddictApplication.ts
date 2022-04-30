@@ -1,11 +1,11 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { OpenIddictAuthorizations } from "./OpenIddictAuthorizations";
-import { OpenIddictTokens } from "./OpenIddictTokens";
+import { OpenIddictAuthorization } from "./OpenIddictAuthorization";
+import { OpenIddictToken } from "./OpenIddictToken";
 
 @Index("IX_OpenIddictApplications_ClientId", ["clientId"], { unique: true })
 @Index("PK_OpenIddictApplications", ["id"], { unique: true })
 @Entity("OpenIddictApplications", { schema: "public" })
-export class OpenIddictApplications {
+export class OpenIddictApplication {
   @Column("text", { primary: true, name: "Id" })
   id: string;
 
@@ -58,14 +58,14 @@ export class OpenIddictApplications {
   type: string | null;
 
   @OneToMany(
-    () => OpenIddictAuthorizations,
+    () => OpenIddictAuthorization,
     (openIddictAuthorizations) => openIddictAuthorizations.application
   )
-  openIddictAuthorizations: OpenIddictAuthorizations[];
+  openIddictAuthorizations: OpenIddictAuthorization[];
 
   @OneToMany(
-    () => OpenIddictTokens,
+    () => OpenIddictToken,
     (openIddictTokens) => openIddictTokens.application
   )
-  openIddictTokens: OpenIddictTokens[];
+  openIddictTokens: OpenIddictToken[];
 }

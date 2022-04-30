@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { OpenIddictApplications } from "./OpenIddictApplications";
-import { OpenIddictAuthorizations } from "./OpenIddictAuthorizations";
+import { OpenIddictApplication } from "./OpenIddictApplication";
+import { OpenIddictAuthorization } from "./OpenIddictAuthorization";
 
 @Index(
   "IX_OpenIddictTokens_ApplicationId_Status_Subject_Type",
@@ -11,7 +11,7 @@ import { OpenIddictAuthorizations } from "./OpenIddictAuthorizations";
 @Index("PK_OpenIddictTokens", ["id"], { unique: true })
 @Index("IX_OpenIddictTokens_ReferenceId", ["referenceId"], { unique: true })
 @Entity("OpenIddictTokens", { schema: "public" })
-export class OpenIddictTokens {
+export class OpenIddictToken {
   @Column("text", { primary: true, name: "Id" })
   id: string;
 
@@ -69,16 +69,16 @@ export class OpenIddictTokens {
   type: string | null;
 
   @ManyToOne(
-    () => OpenIddictApplications,
+    () => OpenIddictApplication,
     (openIddictApplications) => openIddictApplications.openIddictTokens
   )
   @JoinColumn([{ name: "ApplicationId", referencedColumnName: "id" }])
-  application: OpenIddictApplications;
+  application: OpenIddictApplication;
 
   @ManyToOne(
-    () => OpenIddictAuthorizations,
+    () => OpenIddictAuthorization,
     (openIddictAuthorizations) => openIddictAuthorizations.openIddictTokens
   )
   @JoinColumn([{ name: "AuthorizationId", referencedColumnName: "id" }])
-  authorization: OpenIddictAuthorizations;
+  authorization: OpenIddictAuthorization;
 }

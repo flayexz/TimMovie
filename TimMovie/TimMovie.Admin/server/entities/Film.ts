@@ -8,20 +8,20 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { Actors } from "./Actors";
-import { AspNetUsers } from "./AspNetUsers";
-import { Banners } from "./Banners";
-import { Comments } from "./Comments";
-import { Genres } from "./Genres";
-import { Producers } from "./Producers";
-import { Subscribes } from "./Subscribes";
-import { Countries } from "./Countries";
-import { WatchedFilms } from "./WatchedFilms";
+import { Actor } from "./Actor";
+import { AspNetUser } from "./AspNetUser";
+import { Banner } from "./Banner";
+import { Comment } from "./Comment";
+import { Genre } from "./Genre";
+import { Producer } from "./Producer";
+import { Subscribe } from "./Subscribe";
+import { Country } from "./Country";
+import { WatchedFilm } from "./WatchedFilm";
 
 @Index("IX_Films_CountryId", ["countryId"], {})
 @Index("PK_Films", ["id"], { unique: true })
 @Entity("Films", { schema: "public" })
-export class Films {
+export class Film {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -43,46 +43,46 @@ export class Films {
   @Column("integer", { name: "Year", default: () => "0" })
   year: number;
 
-  @ManyToMany(() => Actors, (actors) => actors.films)
-  actors: Actors[];
+  @ManyToMany(() => Actor, (actors) => actors.films)
+  actors: Actor[];
 
-  @OneToMany(() => AspNetUsers, (aspNetUsers) => aspNetUsers.watchingFilm)
-  aspNetUsers: AspNetUsers[];
+  @OneToMany(() => AspNetUser, (aspNetUsers) => aspNetUsers.watchingFilm)
+  aspNetUsers: AspNetUser[];
 
-  @OneToMany(() => Banners, (banners) => banners.film)
-  banners: Banners[];
+  @OneToMany(() => Banner, (banners) => banners.film)
+  banners: Banner[];
 
-  @OneToMany(() => Comments, (comments) => comments.film)
-  comments: Comments[];
+  @OneToMany(() => Comment, (comments) => comments.film)
+  comments: Comment[];
 
-  @ManyToMany(() => Genres, (genres) => genres.films)
+  @ManyToMany(() => Genre, (genres) => genres.films)
   @JoinTable({
     name: "FilmGenre",
     joinColumns: [{ name: "FilmsId", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "GenresId", referencedColumnName: "id" }],
     schema: "public",
   })
-  genres: Genres[];
+  genres: Genre[];
 
-  @ManyToMany(() => Producers, (producers) => producers.films)
+  @ManyToMany(() => Producer, (producers) => producers.films)
   @JoinTable({
     name: "FilmProducer",
     joinColumns: [{ name: "FilmsId", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "ProducersId", referencedColumnName: "id" }],
     schema: "public",
   })
-  producers: Producers[];
+  producers: Producer[];
 
-  @ManyToMany(() => Subscribes, (subscribes) => subscribes.films)
+  @ManyToMany(() => Subscribe, (subscribes) => subscribes.films)
   @JoinTable({
     name: "FilmSubscribe",
     joinColumns: [{ name: "FilmsId", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "SubscribesId", referencedColumnName: "id" }],
     schema: "public",
   })
-  subscribes: Subscribes[];
+  subscribes: Subscribe[];
 
-  @ManyToMany(() => AspNetUsers, (aspNetUsers) => aspNetUsers.films)
+  @ManyToMany(() => AspNetUser, (aspNetUsers) => aspNetUsers.films)
   @JoinTable({
     name: "FilmUser",
     joinColumns: [{ name: "FilmsWatchLaterId", referencedColumnName: "id" }],
@@ -91,14 +91,14 @@ export class Films {
     ],
     schema: "public",
   })
-  aspNetUsers2: AspNetUsers[];
+  aspNetUsers2: AspNetUser[];
 
-  @ManyToOne(() => Countries, (countries) => countries.films, {
+  @ManyToOne(() => Country, (countries) => countries.films, {
     onDelete: "SET NULL",
   })
   @JoinColumn([{ name: "CountryId", referencedColumnName: "id" }])
-  country: Countries;
+  country: Country;
 
-  @OneToMany(() => WatchedFilms, (watchedFilms) => watchedFilms.film)
-  watchedFilms: WatchedFilms[];
+  @OneToMany(() => WatchedFilm, (watchedFilms) => watchedFilms.film)
+  watchedFilms: WatchedFilm[];
 }

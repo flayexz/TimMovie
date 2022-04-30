@@ -1,19 +1,19 @@
 import { Column, Entity, Index, OneToMany } from "typeorm";
-import { AspNetUsers } from "./AspNetUsers";
-import { Films } from "./Films";
+import { AspNetUser } from "./AspNetUser";
+import { Film } from "./Film";
 
 @Index("PK_Countries", ["id"], { unique: true })
 @Entity("Countries", { schema: "public" })
-export class Countries {
+export class Country {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
   @Column("character varying", { name: "Name", length: 100 })
   name: string;
 
-  @OneToMany(() => AspNetUsers, (aspNetUsers) => aspNetUsers.country)
-  aspNetUsers: AspNetUsers[];
+  @OneToMany(() => AspNetUser, (aspNetUsers) => aspNetUsers.country)
+  aspNetUsers: AspNetUser[];
 
-  @OneToMany(() => Films, (films) => films.country)
-  films: Films[];
+  @OneToMany(() => Film, (films) => films.country)
+  films: Film[];
 }

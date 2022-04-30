@@ -3,7 +3,7 @@ import { Column, Entity, Index } from "typeorm";
 @Index("PK_OpenIddictScopes", ["id"], { unique: true })
 @Index("IX_OpenIddictScopes_Name", ["name"], { unique: true })
 @Entity("OpenIddictScopes", { schema: "public" })
-export class OpenIddictScopes {
+export class OpenIddictScope {
   @Column("text", { primary: true, name: "Id" })
   id: string;
 

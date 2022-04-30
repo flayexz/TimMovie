@@ -1,9 +1,9 @@
 import { Column, Entity, Index, JoinTable, ManyToMany } from "typeorm";
-import { AspNetUsers } from "./AspNetUsers";
+import { AspNetUser } from "./AspNetUser";
 
 @Index("PK_Notifications", ["id"], { unique: true })
 @Entity("Notifications", { schema: "public" })
-export class Notifications {
+export class Notification {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -13,12 +13,12 @@ export class Notifications {
   @Column("timestamp with time zone", { name: "Date", nullable: true })
   date: Date | null;
 
-  @ManyToMany(() => AspNetUsers, (aspNetUsers) => aspNetUsers.notifications)
+  @ManyToMany(() => AspNetUser, (aspNetUsers) => aspNetUsers.notifications)
   @JoinTable({
     name: "NotificationUser",
     joinColumns: [{ name: "NotificationsId", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "UsersId", referencedColumnName: "id" }],
     schema: "public",
   })
-  aspNetUsers: AspNetUsers[];
+  aspNetUsers: AspNetUser[];
 }
