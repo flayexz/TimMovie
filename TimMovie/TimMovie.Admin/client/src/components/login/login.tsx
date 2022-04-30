@@ -1,10 +1,8 @@
 import React, {useState} from "react"
 import AuthService from "../../services/authService";
-import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login(){
-    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string>('');
@@ -56,7 +54,7 @@ function Login(){
         }
 
         AuthService.login(token);
-        navigate('/')
+        window.location.href = '/';
     }
 
     return (
