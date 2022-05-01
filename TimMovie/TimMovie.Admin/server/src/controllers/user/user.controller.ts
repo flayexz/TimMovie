@@ -1,12 +1,14 @@
 import {Body, Controller, Get, Param, Post, Query} from '@nestjs/common';
 import {IShortInformationAboutUserDto} from 'src/dto/IShortInformationAboutUserDto';
 import {UserService} from "../../services/UserService";
+import {Admin} from "../../auth/adminAuth";
 import {IAllInformationAboutUserDto} from "../../dto/IAllInformationAboutUserDto";
 import {SubscribeService} from "../../services/SubscribeService";
 import {RoleService} from "../../services/RoleService";
 
+
+@Admin()
 @Controller('users')
-export class UserController {
     constructor(private readonly userService: UserService,
                 private readonly subscribeService: SubscribeService,
                 private readonly roleService: RoleService) {}

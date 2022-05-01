@@ -5,7 +5,7 @@ import ColumnTable from "./ColumnTable";
 import ColumnTableWithList from "./ColumnTableWithList";
 import Search from '../common/search/Search';
 import {IUserDto} from "../../dto/IUserDto";
-import {Link} from "react-router-dom";
+import $api from "../../http";
 
 function UsersTablePage(){
     const [users, setUsers] = useState<Array<IUserDto>>([]);
@@ -51,8 +51,8 @@ function UsersTablePage(){
             return;
         }
         
-        let url = `http://localhost:3000/users/collection?incomingText=${inputTextForSearch.current}&skip=${numberOfLoadedRecords}&take=${pagination}`;
-        axios.get(url)
+        let url = `/users/collection?incomingText=${inputTextForSearch.current}&skip=${numberOfLoadedRecords}&take=${pagination}`;
+        $api.get(url)
             .then(response => {
                 if(response.status.toString().startsWith("5")){
                     console.error(`При обращениии по ${url} произошла ошибка. Статус: ${response.status}. 

@@ -1,10 +1,15 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import UsersTablePage from "./components/tableWithUser/UsersTablePage";
+import Login from "./components/login/login";
+import AuthService from "./services/authService";
 import Layout from "./components/shared/Layout";
 import UserProfile from "./components/userProfile/UserProfile";
 
 function App() {
+    if(!AuthService.isAdminAuth()){
+        return <Login/>
+    }
     return (
         <Routes>
             <Route path="/" element={<Layout/>}>

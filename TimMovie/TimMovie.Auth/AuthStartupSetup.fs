@@ -48,7 +48,7 @@ type IServiceCollection with
                     .SetIssuer(Uri(identityUrl))
                     .AddDevelopmentEncryptionCertificate()
                     .AddDevelopmentSigningCertificate()
-                    .DisableAccessTokenEncryption() |> ignore   // если хочешь, чтобы на jwt.io были зашифрованные данные, то убрать (их все равно расшифровать нет проблем если что)
+                    .DisableAccessTokenEncryption() |> ignore
                 options
                     .UseAspNetCore()
                     .DisableTransportSecurityRequirement()
