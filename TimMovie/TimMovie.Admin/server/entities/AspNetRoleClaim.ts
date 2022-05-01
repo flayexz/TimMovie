@@ -6,12 +6,12 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { AspNetRoles } from "./AspNetRoles";
+import { AspNetRole } from "./AspNetRole";
 
 @Index("PK_AspNetRoleClaims", ["id"], { unique: true })
 @Index("IX_AspNetRoleClaims_RoleId", ["roleId"], {})
 @Entity("AspNetRoleClaims", { schema: "public" })
-export class AspNetRoleClaims {
+export class AspNetRoleClaim {
   @PrimaryGeneratedColumn({ type: "integer", name: "Id" })
   id: number;
 
@@ -24,9 +24,9 @@ export class AspNetRoleClaims {
   @Column("text", { name: "ClaimValue", nullable: true })
   claimValue: string | null;
 
-  @ManyToOne(() => AspNetRoles, (aspNetRoles) => aspNetRoles.aspNetRoleClaims, {
+  @ManyToOne(() => AspNetRole, (aspNetRoles) => aspNetRoles.aspNetRoleClaims, {
     onDelete: "CASCADE",
   })
   @JoinColumn([{ name: "RoleId", referencedColumnName: "id" }])
-  role: AspNetRoles;
+  role: AspNetRole;
 }

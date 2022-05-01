@@ -1,10 +1,10 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { Films } from "./Films";
+import { Film } from "./Film";
 
 @Index("IX_Banners_FilmId", ["filmId"], {})
 @Index("PK_Banners", ["id"], { unique: true })
 @Entity("Banners", { schema: "public" })
-export class Banners {
+export class Banner {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -17,7 +17,7 @@ export class Banners {
   @Column("uuid", { name: "FilmId" })
   filmId: string;
 
-  @ManyToOne(() => Films, (films) => films.banners, { onDelete: "CASCADE" })
+  @ManyToOne(() => Film, (films) => films.banners, { onDelete: "CASCADE" })
   @JoinColumn([{ name: "FilmId", referencedColumnName: "id" }])
-  film: Films;
+  film: Film;
 }

@@ -6,13 +6,13 @@ import {
   ManyToMany,
   OneToMany,
 } from "typeorm";
-import { AspNetRoleClaims } from "./AspNetRoleClaims";
-import { AspNetUsers } from "./AspNetUsers";
+import { AspNetRoleClaim } from "./AspNetRoleClaim";
+import { AspNetUser } from "./AspNetUser";
 
 @Index("PK_AspNetRoles", ["id"], { unique: true })
 @Index("RoleNameIndex", ["normalizedName"], { unique: true })
 @Entity("AspNetRoles", { schema: "public" })
-export class AspNetRoles {
+export class AspNetRole {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -30,17 +30,17 @@ export class AspNetRoles {
   concurrencyStamp: string | null;
 
   @OneToMany(
-    () => AspNetRoleClaims,
+    () => AspNetRoleClaim,
     (aspNetRoleClaims) => aspNetRoleClaims.role
   )
-  aspNetRoleClaims: AspNetRoleClaims[];
+  aspNetRoleClaims: AspNetRoleClaim[];
 
-  @ManyToMany(() => AspNetUsers, (aspNetUsers) => aspNetUsers.aspNetRoles)
+  @ManyToMany(() => AspNetUser, (aspNetUsers) => aspNetUsers.aspNetRoles)
   @JoinTable({
     name: "AspNetUserRoles",
     joinColumns: [{ name: "RoleId", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "UserId", referencedColumnName: "id" }],
     schema: "public",
   })
-  aspNetUsers: AspNetUsers[];
+  aspNetUsers: AspNetUser[];
 }

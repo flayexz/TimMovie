@@ -6,6 +6,9 @@ import {AdminAuth} from "./auth/adminAuth";
 import {AdminController} from "./controllers/user/adminController";
 import {JwtModule} from "@nestjs/jwt";
 import { ConfigModule } from '@nestjs/config';
+import {RoleService} from "./services/RoleService";
+import {SubscribeService} from "./services/SubscribeService";
+import { SubscribeController } from "./controllers/subscribe/subscribeController"
 
 @Module({
   imports: [
@@ -15,8 +18,8 @@ import { ConfigModule } from '@nestjs/config';
       }),
       JwtModule.register({})
   ],
-  controllers: [UserController,AdminController],
-  providers: [UserService,AdminAuth],
+  controllers: [UserController,AdminController, SubscribeController],
+  providers: [UserService,AdminAuth, RoleService, SubscribeService],
 })
 
 export class AppModule {}

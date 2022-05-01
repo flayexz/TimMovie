@@ -81,8 +81,8 @@ function UsersTablePage(){
         <div className="d-flex flex-column justify-content-center">
             <Search ref={searchBar} label='Поиск по логину' onClickSearchBtn={searchByLogin}/>
             <div className="d-flex justify-content-between mb-4 mt-3">
-                <ColumnTable nameColumn={"Логин"} users={users} userPropName={"login"}/>
-                <ColumnTable nameColumn={"Почта"} users={users} userPropName={"email"}/>
+                <ColumnTable nameColumn={"Логин"} users={users} userPropName={"login"} isLinked={true}/>
+                <ColumnTable nameColumn={"Почта"} users={users} userPropName={"email"} isLinked={false}/>
                 <ColumnTableWithList nameColumn={"Роли"} users={users} userPropName={"roles"} 
                                      messageInEmptyList={"Нет ролей"}/>
                 <ColumnTableWithList nameColumn={"Подписки"} users={users} userPropName={"subscribes"} 

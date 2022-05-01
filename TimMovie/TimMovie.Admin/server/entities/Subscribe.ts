@@ -1,10 +1,10 @@
 import { Column, Entity, Index, ManyToMany, OneToMany } from "typeorm";
-import { Films } from "./Films";
-import { UserSubscribes } from "./UserSubscribes";
+import { Film } from "./Film";
+import { UserSubscribe } from "./UserSubscribe";
 
 @Index("PK_Subscribes", ["id"], { unique: true })
 @Entity("Subscribes", { schema: "public" })
-export class Subscribes {
+export class Subscribe {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -17,9 +17,9 @@ export class Subscribes {
   @Column("text", { name: "Description", nullable: true })
   description: string | null;
 
-  @ManyToMany(() => Films, (films) => films.subscribes)
-  films: Films[];
+  @ManyToMany(() => Film, (films) => films.subscribes)
+  films: Film[];
 
-  @OneToMany(() => UserSubscribes, (userSubscribes) => userSubscribes.subscribe)
-  userSubscribes: UserSubscribes[];
+  @OneToMany(() => UserSubscribe, (userSubscribes) => userSubscribes.subscribe)
+  userSubscribes: UserSubscribe[];
 }
