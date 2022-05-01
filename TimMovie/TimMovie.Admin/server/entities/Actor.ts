@@ -1,9 +1,9 @@
 import { Column, Entity, Index, JoinTable, ManyToMany } from "typeorm";
-import { Films } from "./Films";
+import { Film } from "./Film";
 
 @Index("PK_Actors", ["id"], { unique: true })
 @Entity("Actors", { schema: "public" })
-export class Actors {
+export class Actor {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -16,12 +16,12 @@ export class Actors {
   @Column("text", { name: "Photo", nullable: true })
   photo: string | null;
 
-  @ManyToMany(() => Films, (films) => films.actors)
+  @ManyToMany(() => Film, (films) => films.actors)
   @JoinTable({
     name: "ActorFilm",
     joinColumns: [{ name: "ActorsId", referencedColumnName: "id" }],
     inverseJoinColumns: [{ name: "FilmsId", referencedColumnName: "id" }],
     schema: "public",
   })
-  films: Films[];
+  films: Film[];
 }

@@ -7,17 +7,17 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm";
-import { AspNetUserClaims } from "./AspNetUserClaims";
-import { AspNetUserLogins } from "./AspNetUserLogins";
-import { AspNetRoles } from "./AspNetRoles";
-import { AspNetUserTokens } from "./AspNetUserTokens";
-import { Countries } from "./Countries";
-import { Films } from "./Films";
-import { CommentReports } from "./CommentReports";
-import { Comments } from "./Comments";
-import { Notifications } from "./Notifications";
-import { UserSubscribes } from "./UserSubscribes";
-import { WatchedFilms } from "./WatchedFilms";
+import { AspNetUserClaim } from "./AspNetUserClaim";
+import { AspNetUserLogin } from "./AspNetUserLogin";
+import { AspNetRole } from "./AspNetRole";
+import { AspNetUserToken } from "./AspNetUserToken";
+import { Country } from "./Country";
+import { Film } from "./Film";
+import { CommentReport } from "./CommentReport";
+import { Comment } from "./Comment";
+import { Notification } from "./Notification";
+import { UserSubscribe } from "./UserSubscribe";
+import { WatchedFilm } from "./WatchedFilm";
 
 @Index("IX_AspNetUsers_CountryId", ["countryId"], {})
 @Index("PK_AspNetUsers", ["id"], { unique: true })
@@ -25,7 +25,7 @@ import { WatchedFilms } from "./WatchedFilms";
 @Index("UserNameIndex", ["normalizedUserName"], { unique: true })
 @Index("IX_AspNetUsers_WatchingFilmId", ["watchingFilmId"], {})
 @Entity("AspNetUsers", { schema: "public" })
-export class AspNetUsers {
+export class AspNetUser {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
@@ -106,56 +106,56 @@ export class AspNetUsers {
   displayName: string;
 
   @OneToMany(
-    () => AspNetUserClaims,
+    () => AspNetUserClaim,
     (aspNetUserClaims) => aspNetUserClaims.user
   )
-  aspNetUserClaims: AspNetUserClaims[];
+  aspNetUserClaims: AspNetUserClaim[];
 
   @OneToMany(
-    () => AspNetUserLogins,
+    () => AspNetUserLogin,
     (aspNetUserLogins) => aspNetUserLogins.user
   )
-  aspNetUserLogins: AspNetUserLogins[];
+  aspNetUserLogins: AspNetUserLogin[];
 
-  @ManyToMany(() => AspNetRoles, (aspNetRoles) => aspNetRoles.aspNetUsers)
-  aspNetRoles: AspNetRoles[];
+  @ManyToMany(() => AspNetRole, (aspNetRoles) => aspNetRoles.aspNetUsers)
+  aspNetRoles: AspNetRole[];
 
   @OneToMany(
-    () => AspNetUserTokens,
+    () => AspNetUserToken,
     (aspNetUserTokens) => aspNetUserTokens.user
   )
-  aspNetUserTokens: AspNetUserTokens[];
+  aspNetUserTokens: AspNetUserToken[];
 
-  @ManyToOne(() => Countries, (countries) => countries.aspNetUsers, {
+  @ManyToOne(() => Country, (countries) => countries.aspNetUsers, {
     onDelete: "SET NULL",
   })
   @JoinColumn([{ name: "CountryId", referencedColumnName: "id" }])
-  country: Countries;
+  country: Country;
 
-  @ManyToOne(() => Films, (films) => films.aspNetUsers, {
+  @ManyToOne(() => Film, (films) => films.aspNetUsers, {
     onDelete: "SET NULL",
   })
   @JoinColumn([{ name: "WatchingFilmId", referencedColumnName: "id" }])
-  watchingFilm: Films;
+  watchingFilm: Film;
 
-  @OneToMany(() => CommentReports, (commentReports) => commentReports.user)
-  commentReports: CommentReports[];
+  @OneToMany(() => CommentReport, (commentReports) => commentReports.user)
+  commentReports: CommentReport[];
 
-  @OneToMany(() => Comments, (comments) => comments.author)
-  comments: Comments[];
+  @OneToMany(() => Comment, (comments) => comments.author)
+  comments: Comment[];
 
-  @ManyToMany(() => Films, (films) => films.aspNetUsers2)
-  films: Films[];
+  @ManyToMany(() => Film, (films) => films.aspNetUsers2)
+  films: Film[];
 
-  @ManyToMany(() => Notifications, (notifications) => notifications.aspNetUsers)
-  notifications: Notifications[];
+  @ManyToMany(() => Notification, (notifications) => notifications.aspNetUsers)
+  notifications: Notification[];
 
   @OneToMany(
-    () => UserSubscribes,
+    () => UserSubscribe,
     (userSubscribes) => userSubscribes.subscribedUser
   )
-  userSubscribes: UserSubscribes[];
+  userSubscribes: UserSubscribe[];
 
-  @OneToMany(() => WatchedFilms, (watchedFilms) => watchedFilms.watchedUser)
-  watchedFilms: WatchedFilms[];
+  @OneToMany(() => WatchedFilm, (watchedFilms) => watchedFilms.watchedUser)
+  watchedFilms: WatchedFilm[];
 }

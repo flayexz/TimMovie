@@ -6,12 +6,12 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { AspNetUsers } from "./AspNetUsers";
+import { AspNetUser } from "./AspNetUser";
 
 @Index("PK_AspNetUserClaims", ["id"], { unique: true })
 @Index("IX_AspNetUserClaims_UserId", ["userId"], {})
 @Entity("AspNetUserClaims", { schema: "public" })
-export class AspNetUserClaims {
+export class AspNetUserClaim {
   @PrimaryGeneratedColumn({ type: "integer", name: "Id" })
   id: number;
 
@@ -24,9 +24,9 @@ export class AspNetUserClaims {
   @Column("text", { name: "ClaimValue", nullable: true })
   claimValue: string | null;
 
-  @ManyToOne(() => AspNetUsers, (aspNetUsers) => aspNetUsers.aspNetUserClaims, {
+  @ManyToOne(() => AspNetUser, (aspNetUsers) => aspNetUsers.aspNetUserClaims, {
     onDelete: "CASCADE",
   })
   @JoinColumn([{ name: "UserId", referencedColumnName: "id" }])
-  user: AspNetUsers;
+  user: AspNetUser;
 }

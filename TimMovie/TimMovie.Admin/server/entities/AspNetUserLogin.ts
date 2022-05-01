@@ -1,12 +1,12 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
-import { AspNetUsers } from "./AspNetUsers";
+import { AspNetUser } from "./AspNetUser";
 
 @Index("PK_AspNetUserLogins", ["loginProvider", "providerKey"], {
   unique: true,
 })
 @Index("IX_AspNetUserLogins_UserId", ["userId"], {})
 @Entity("AspNetUserLogins", { schema: "public" })
-export class AspNetUserLogins {
+export class AspNetUserLogin {
   @Column("text", { primary: true, name: "LoginProvider" })
   loginProvider: string;
 
@@ -19,9 +19,9 @@ export class AspNetUserLogins {
   @Column("uuid", { name: "UserId" })
   userId: string;
 
-  @ManyToOne(() => AspNetUsers, (aspNetUsers) => aspNetUsers.aspNetUserLogins, {
+  @ManyToOne(() => AspNetUser, (aspNetUsers) => aspNetUsers.aspNetUserLogins, {
     onDelete: "CASCADE",
   })
   @JoinColumn([{ name: "UserId", referencedColumnName: "id" }])
-  user: AspNetUsers;
+  user: AspNetUser;
 }
