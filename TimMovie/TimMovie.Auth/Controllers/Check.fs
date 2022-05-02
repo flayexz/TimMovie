@@ -9,5 +9,5 @@ type CheckController () =
 
     [<HttpGet("check")>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-    member _.Get() =
-        "давай давай ураааа"
+    member _.Get():StatusCodeResult =
+        OkResult()

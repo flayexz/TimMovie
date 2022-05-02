@@ -14,6 +14,7 @@ public class User : IdentityUser<Guid>
     [Required]
     [MaxLength(100)]
     public string DisplayName { get; set; }
+    public string PathToPhoto { get; set; }
     
     public Country? Country { get; set; }
     public DateTime RegistrationDate { get; set; }

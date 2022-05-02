@@ -1,10 +1,10 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import ColumnTable from "./ColumnTable";
 import ColumnTableWithList from "./ColumnTableWithList";
 import Search from '../common/search/Search';
 import {IUserDto} from "../../dto/IUserDto";
+import $api from "../../http";
 
 function UsersTablePage(){
     const [users, setUsers] = useState<Array<IUserDto>>([]);
@@ -50,8 +50,8 @@ function UsersTablePage(){
             return;
         }
         
-        let url = `http://localhost:3000/users/collection?incomingText=${inputTextForSearch.current}&skip=${numberOfLoadedRecords}&take=${pagination}`;
-        axios.get(url)
+        let url = `/users/collection?incomingText=${inputTextForSearch.current}&skip=${numberOfLoadedRecords}&take=${pagination}`;
+        $api.get(url)
             .then(response => {
                 if(response.status.toString().startsWith("5")){
                     console.error(`При обращениии по ${url} произошла ошибка. Статус: ${response.status}. 
@@ -80,8 +80,8 @@ function UsersTablePage(){
         <div className="d-flex flex-column justify-content-center">
             <Search ref={searchBar} label='Поиск по логину' onClickSearchBtn={searchByLogin}/>
             <div className="d-flex justify-content-between mb-4 mt-3">
-                <ColumnTable nameColumn={"Логин"} users={users} userPropName={"login"}/>
-                <ColumnTable nameColumn={"Почта"} users={users} userPropName={"email"}/>
+                <ColumnTable nameColumn={"Логин"} users={users} userPropName={"login"} isLinked={true}/>
+                <ColumnTable nameColumn={"Почта"} users={users} userPropName={"email"} isLinked={false}/>
                 <ColumnTableWithList nameColumn={"Роли"} users={users} userPropName={"roles"} 
                                      messageInEmptyList={"Нет ролей"}/>
                 <ColumnTableWithList nameColumn={"Подписки"} users={users} userPropName={"subscribes"} 
