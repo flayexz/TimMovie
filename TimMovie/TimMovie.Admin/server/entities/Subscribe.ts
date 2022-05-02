@@ -1,5 +1,6 @@
 import { Column, Entity, Index, ManyToMany, OneToMany } from "typeorm";
 import { Film } from "./Film";
+import { Genre } from "./Genre";
 import { UserSubscribe } from "./UserSubscribe";
 
 @Index("PK_Subscribes", ["id"], { unique: true })
@@ -19,6 +20,9 @@ export class Subscribe {
 
   @ManyToMany(() => Film, (films) => films.subscribes)
   films: Film[];
+
+  @ManyToMany(() => Genre, (genres) => genres.subscribes)
+  genres: Genre[];
 
   @OneToMany(() => UserSubscribe, (userSubscribes) => userSubscribes.subscribe)
   userSubscribes: UserSubscribe[];
