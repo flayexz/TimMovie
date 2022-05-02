@@ -1,10 +1,10 @@
-﻿using TimMovie.SharedKernel.BaseEntities;
+﻿using TimMovie.SharedKernel.Interfaces;
 using TimMovie.SharedKernel.Specification;
 
 namespace TimMovie.Core.Specifications.InheritedSpecifications;
 
 public class EntityByIdSpec<TEntity>: Specification<TEntity> 
-    where TEntity: BaseEntity
+    where TEntity: IIdHolder<Guid>
 {
     public EntityByIdSpec(Guid id)
     {

@@ -2,7 +2,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Account;
 using TimMovie.Core.DTO.Users;
 using TimMovie.Core.Entities;
@@ -182,10 +181,11 @@ public class UserService : IUserService
 
     public async Task<ShortInfoUserDto> GetShortInfoAboutUser(Guid userId)
     {
-        var user = await userManager.FindByIdAsync(userId.ToString());//Чекнуть заинклудился ли фильм
+        var user = await userManager.FindByIdAsync(userId.ToString());
         
         var shortInfoAboutUser = mapper.Map<ShortInfoUserDto>(user);
         shortInfoAboutUser.FilmForStatusDto = _filmService.GetCurrentWatchingFilmByUser(userId);
+        
         return shortInfoAboutUser;
     }
 

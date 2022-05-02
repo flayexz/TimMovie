@@ -1,6 +1,8 @@
-﻿namespace TimMovie.SharedKernel.BaseEntities;
+﻿using TimMovie.SharedKernel.Interfaces;
 
-public abstract class BaseEntity
+namespace TimMovie.SharedKernel.BaseEntities;
+
+public abstract class BaseEntity: IIdHolder<Guid>
 {
     public Guid Id { get; set; }
 }

@@ -24,6 +24,12 @@ public class QueryExecutor<TEntity>
             .ToList();
     }
 
+    public TEntity? FirstOrDefault()
+    {
+        return _query
+            .FirstOrDefault();
+    }
+
     public QueryExecutor<TEntity> IncludeInResult<TProperty>(
         Expression<Func<TEntity, TProperty>> navigationPathToProperty)
     {
