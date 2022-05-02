@@ -1,0 +1,79 @@
+﻿.profile_card{
+    background: #1e192d;
+    width: 250px;
+    border-radius: 10px;
+}
+.left_container_profile{
+}
+.edit_profile_btn{
+    color: gray;
+    cursor: pointer;
+    text-decoration: none;
+}
+.edit_profile_btn:hover{
+    transition: all 0.2s ease-in-out 0s;
+    color: white;
+}
+.nickname_in_profile{
+    font-size: 1.25em;
+}
+.status_in_profile{
+    color: #cecece;
+    font-size: 0.85em;
+}
+.filmLinkInProfile {
+    color: #5f94b7;
+    cursor: pointer;
+    text-decoration: none;
+}
+.watching_status{
+    color: #5f94b7;
+}
+.filmLinkInProfile:hover{
+    transition: all 0.2s ease-in-out 0s;
+    color: white;
+}
+.empty_subscribes_in_profile{
+    height: 140px;
+}
+.link_on_subscribe_in_profile{
+    text-decoration: none;
+    color: #a1a1a1;
+    cursor: pointer;
+}
+.link_on_subscribe_in_profile:hover{
+    transition: all 0.2s ease-in-out 0s;
+    color: white;
+}
+.subscribeCardInProfile{
+    background: #1e192d;
+    border-radius: 10px;
+}
+.subscribeCardInProfile_title{
+    font-size: 1.25em;
+}
+.subscribeCardInProfile_description{
+    font-size: 0.85em;
+    color: #b6b6b6;
+}
+.subscribeCardInProfile_duration{
+    color: gray;
+    font-size: 0.9em;
+}
+.containerForSubscribeInProfile{
+    grid-template-columns: repeat(5, 1fr);
+    grid-column-gap: 1.5em;
+    grid-row-gap: 1.5em;
+}
+.emptyFilmsInProfile{
+    fill: #bebebe;
+   color: #bebebe;
+}
+.online_status{
+    fill: #c3fdc3;
+    color: #c3fdc3;
+}
+.offline_status{
+    fill: #858585;
+    color: #858585;
+}

@@ -9,6 +9,7 @@ import {RoleService} from "../../services/RoleService";
 
 @Admin()
 @Controller('users')
+export class UserController{
     constructor(private readonly userService: UserService,
                 private readonly subscribeService: SubscribeService,
                 private readonly roleService: RoleService) {}

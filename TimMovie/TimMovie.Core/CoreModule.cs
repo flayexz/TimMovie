@@ -5,6 +5,7 @@ using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Genres;
 using TimMovie.Core.Services.Producers;
+using TimMovie.Core.Services.Subscribes;
 
 namespace TimMovie.Core;
 
@@ -19,6 +20,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<BannerService>(builder);
         RegisterServiceOnSelf<ActorService>(builder);
         RegisterServiceOnSelf<ProducerService>(builder);
+        RegisterServiceOnSelf<SubscribeService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 
