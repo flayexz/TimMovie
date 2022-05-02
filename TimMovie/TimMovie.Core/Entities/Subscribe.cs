@@ -3,7 +3,7 @@ using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
-public class FilmSubscribe : BaseEntity
+public class Subscribe : BaseEntity
 {
     [Required] 
     [MaxLength(70)] 

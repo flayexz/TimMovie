@@ -29,6 +29,6 @@ public class Film : BaseEntity
     public List<User> UsersWatchLater { get; set; }
     public List<User> UsersWatching { get; set; }
     
-    public List<FilmSubscribe> Subscribes { get; set; } 
+    public List<Subscribe> Subscribes { get; set; } 
     public List<UserFilmWatched> UserFilmWatcheds { get; set; } 
 }

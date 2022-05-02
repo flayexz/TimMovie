@@ -11,5 +11,5 @@ public class Genre : BaseEntity
     
     public List<Film> Films { get; set; }
     
-    public List<FilmSubscribe> Subscribes { get; set; }
+    public List<Subscribe> Subscribes { get; set; }
 }
