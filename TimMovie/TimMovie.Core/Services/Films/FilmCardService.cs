@@ -4,6 +4,7 @@ using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
 using TimMovie.Core.Query.Films;
+using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.UserFilmWatchedSpec;
 using TimMovie.SharedKernel.Interfaces;
 using TimMovie.SharedKernel.Validators;
 
@@ -108,7 +109,7 @@ public class FilmCardService
     public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid userId, int amount)
     {
         var query = _userFilmWatchedRepository.Query
-            .Where(watched => watched.WatchedUser.Id == userId)
+            .Where(new WatchedFilmByUserIdSpec(userId))
             .OrderByDescending(watched => watched.Date);
         var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
         

@@ -6,13 +6,13 @@ namespace TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 /// <summary>
 /// Фильтр на минимальный рейтинг.
 /// </summary>
-public class FilmWithMinimumRating: Specification<Film>
+public class FilmWithMinimumRatingSpec: Specification<Film>
 {
     /// <summary>
     /// Создает фильтр, который отбирает фильмы, рейтинг которых больше <paramref name="rating"/>.
     /// </summary>
     /// <param name="rating">Минимальный рейтинг.</param>
-    public FilmWithMinimumRating(double rating)
+    public FilmWithMinimumRatingSpec(double rating)
     {
         Conditional = film =>
             film.UserFilmWatcheds.Select(watched => watched.Grade).Average() >= rating;

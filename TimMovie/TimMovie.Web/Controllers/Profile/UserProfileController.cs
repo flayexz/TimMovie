@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Films;
@@ -11,7 +10,6 @@ using TimMovie.Web.ViewModels.UserSubscribes;
 
 namespace TimMovie.Web.Controllers.Profile;
 
-[Authorize]
 public class UserProfileController : Controller
 {
     private readonly IUserService _userService;
@@ -31,17 +29,17 @@ public class UserProfileController : Controller
         _subscribeService = subscribeService;
     }
 
-    [HttpGet("/{id:guid}")]
-    public async Task<IActionResult> Page(Guid id)
+    [HttpGet("[controller]/{id:guid}")]
+    public async Task<IActionResult> Profile(Guid id)
     {
         if (!await _userService.UserIsExisted(id))
         {
             return View("~/Views/Errors/UserNotExisting.cshtml");
         }
 
-        var userProfile = new UserProfileViewModel()
+        var userProfile = new UserProfileViewModel
         {
-            IsOwner = User.GetUserId() == id,
+            IsOwner = User.Identity.IsAuthenticated && User.GetUserId() == id,
             UserInfo = _mapper.Map<ShortInfoUserViewModel>(await _userService.GetShortInfoAboutUser(id)),
             FilmCards = _filmCardService
                 .GetLatestFilmsViewedByUser(id, 6)

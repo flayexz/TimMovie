@@ -43,12 +43,11 @@ public class FilmService
     public FilmForStatusDto? GetCurrentWatchingFilmByUser(Guid userId)
     {
         var query = _userRepository.Query
-            .Where(user => user.Id == userId);
+            .Where(new EntityByIdSpec<User>(userId));
         var executor = new QueryExecutor<User>(query, _userRepository);
 
         var film = executor
             .IncludeInResult(user => user.WatchingFilm)
-            .GetEntitiesWithPagination(0, 1)
             .FirstOrDefault();
 
         return film is null 
