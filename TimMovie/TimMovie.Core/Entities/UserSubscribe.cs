@@ -9,8 +9,8 @@ public class UserSubscribe : BaseEntity
     public User SubscribedUser { get; set; }
     
     [Required]
-    public Subscribe Subscribe { get; set; }
-    
+    public FilmSubscribe FilmSubscribe { get; set; }
+
     [Required]
     public DateTime StartDay { get; set; }
     

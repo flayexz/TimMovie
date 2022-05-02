@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.SharedKernel.BaseEntities;
 
