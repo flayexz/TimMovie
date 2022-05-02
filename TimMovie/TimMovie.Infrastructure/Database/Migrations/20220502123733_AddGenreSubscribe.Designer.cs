@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220502123733_AddGenreSubscribe")]
+    partial class AddGenreSubscribe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +37,21 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasIndex("FilmsId");
 
                     b.ToTable("ActorFilm");
+                });
+
+            modelBuilder.Entity("FilmFilmSubscribe", b =>
+                {
+                    b.Property<Guid>("FilmsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SubscribesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("FilmsId", "SubscribesId");
+
+                    b.HasIndex("SubscribesId");
+
+                    b.ToTable("FilmFilmSubscribe");
                 });
 
             modelBuilder.Entity("FilmGenre", b =>
@@ -67,19 +84,19 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.ToTable("FilmProducer");
                 });
 
-            modelBuilder.Entity("FilmSubscribe", b =>
+            modelBuilder.Entity("FilmSubscribeGenre", b =>
                 {
-                    b.Property<Guid>("FilmsId")
+                    b.Property<Guid>("GenresId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("SubscribesId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("FilmsId", "SubscribesId");
+                    b.HasKey("GenresId", "SubscribesId");
 
                     b.HasIndex("SubscribesId");
 
-                    b.ToTable("FilmSubscribe");
+                    b.ToTable("FilmSubscribeGenre");
                 });
 
             modelBuilder.Entity("FilmUser", b =>
@@ -95,21 +112,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasIndex("UsersWatchLaterId");
 
                     b.ToTable("FilmUser");
-                });
-
-            modelBuilder.Entity("GenreSubscribe", b =>
-                {
-                    b.Property<Guid>("GenresId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SubscribesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("GenresId", "SubscribesId");
-
-                    b.HasIndex("SubscribesId");
-
-                    b.ToTable("GenreSubscribe");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -599,6 +601,28 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.ToTable("Films");
                 });
 
+            modelBuilder.Entity("TimMovie.Core.Entities.FilmSubscribe", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("character varying(70)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FilmSubscribes");
+                });
+
             modelBuilder.Entity("TimMovie.Core.Entities.Genre", b =>
                 {
                     b.Property<Guid>("Id")
@@ -654,28 +678,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Producers");
-                });
-
-            modelBuilder.Entity("TimMovie.Core.Entities.Subscribe", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("character varying(70)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Subscribes");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>
@@ -807,18 +809,18 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid>("FilmSubscribeId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("StartDay")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("SubscribeId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SubscribedUserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscribeId");
+                    b.HasIndex("FilmSubscribeId");
 
                     b.HasIndex("SubscribedUserId");
 
@@ -836,6 +838,21 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasOne("TimMovie.Core.Entities.Film", null)
                         .WithMany()
                         .HasForeignKey("FilmsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FilmFilmSubscribe", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.Film", null)
+                        .WithMany()
+                        .HasForeignKey("FilmsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimMovie.Core.Entities.FilmSubscribe", null)
+                        .WithMany()
+                        .HasForeignKey("SubscribesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -870,15 +887,15 @@ namespace TimMovie.Infrastructure.Database.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FilmSubscribe", b =>
+            modelBuilder.Entity("FilmSubscribeGenre", b =>
                 {
-                    b.HasOne("TimMovie.Core.Entities.Film", null)
+                    b.HasOne("TimMovie.Core.Entities.Genre", null)
                         .WithMany()
-                        .HasForeignKey("FilmsId")
+                        .HasForeignKey("GenresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TimMovie.Core.Entities.Subscribe", null)
+                    b.HasOne("TimMovie.Core.Entities.FilmSubscribe", null)
                         .WithMany()
                         .HasForeignKey("SubscribesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -896,21 +913,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasOne("TimMovie.Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersWatchLaterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GenreSubscribe", b =>
-                {
-                    b.HasOne("TimMovie.Core.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TimMovie.Core.Entities.Subscribe", null)
-                        .WithMany()
-                        .HasForeignKey("SubscribesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1102,9 +1104,9 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("TimMovie.Core.Entities.UserSubscribe", b =>
                 {
-                    b.HasOne("TimMovie.Core.Entities.Subscribe", "Subscribe")
+                    b.HasOne("TimMovie.Core.Entities.FilmSubscribe", "FilmSubscribe")
                         .WithMany()
-                        .HasForeignKey("SubscribeId")
+                        .HasForeignKey("FilmSubscribeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1114,7 +1116,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subscribe");
+                    b.Navigation("FilmSubscribe");
 
                     b.Navigation("SubscribedUser");
                 });
