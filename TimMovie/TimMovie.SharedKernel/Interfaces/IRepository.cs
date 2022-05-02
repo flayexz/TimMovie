@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.SharedKernel.Interfaces;
 
@@ -14,4 +13,7 @@ public interface IRepository<TEntity> where TEntity : class
     IQueryable<TEntity> Include<TProperty>(
         IQueryable<TEntity> query,
         Expression<Func<TEntity, TProperty>> navigationPathToProperty);
+
+    IQueryable<TEntity> ThenInclude<TIncludableEntity, TProperty>
+        (IQueryable<TEntity> query, Expression<Func<TIncludableEntity, TProperty>> navigationPathToProperty);
 }

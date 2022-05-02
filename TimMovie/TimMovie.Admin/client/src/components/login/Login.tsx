@@ -1,11 +1,19 @@
 import React, {useState} from "react"
-import AuthService from "../../services/authService";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useAuth} from "../../hook/useAuth";
+import {Navigate, useNavigate} from "react-router-dom";
 
 function Login(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string>('');
+    const auth = useAuth();
+    
+    const navigate = useNavigate();
+    
+    if (auth?.isAdminAuth()){
+        return <Navigate to='/'/>
+    }
 
     const onLoginClick = async (e: any) => {
         e.preventDefault()
@@ -48,13 +56,13 @@ function Login(){
             return;
         }
 
-        if(!AuthService.isAdmin(token)){
+        if(!auth?.isAdmin(token)){
             setError('у вас нет прав администратора');
             return;
         }
 
-        AuthService.login(token);
-        window.location.href = '/';
+        auth?.login(token);
+        navigate("/", {replace: true});
     }
 
     return (

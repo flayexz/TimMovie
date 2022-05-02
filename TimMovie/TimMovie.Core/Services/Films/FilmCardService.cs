@@ -114,7 +114,8 @@ public class FilmCardService
         var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
         
         var films = queryExec
-            .IncludeInResult(watched => watched.Film)
+            .IncludeInResult(watched => watched.Film.Country)
+            .IncludeInResult(watched => watched.Film.Genres)
             .GetEntitiesWithPagination(0, amount)
             .Select(watched => watched.Film);
         

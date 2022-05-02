@@ -20,7 +20,7 @@
                         </svg>
                     </div>
                     <div class="me-2 d-flex flex-column text-end [ film-card__more-info-content ]">
-                        <div>Рейтинг: @card.Rating/10</div>
+                        <div>Рейтинг: @(card.Rating ?? 0)/10</div>
                         <div>@card.Year, @card.CountryName, @card.FirstGenreName</div>
                     </div>
                 </div>

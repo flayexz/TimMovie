@@ -5,10 +5,12 @@ import Logout from "../logout/Logout";
 function Layout(){
     return (
         <>
-            <header>
-                <NavLink to="/" >Пользоваетели</NavLink>
-                <Logout/>
-            </header>
+            <div className="container-xl">
+                <header>
+                    <NavLink to="/" >Пользоваетели</NavLink>
+                    <Logout/>
+                </header>
+            </div>
             <div className="container-xl">
                 <Outlet/>
             </div>

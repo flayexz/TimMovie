@@ -1,10 +1,14 @@
-import AuthService from "../../services/authService";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useAuth} from "../../hook/useAuth";
+import {useNavigate} from "react-router-dom";
 
 function Logout(){
+    const auth = useAuth();
+    const navigate = useNavigate();
+    
     const onlogoutOnClick = async (e:any) => {
-        AuthService.logout();
-        return window.location.href = '/';
+        auth?.logout();
+        return navigate("/");
     }
 
     return <a onClick={onlogoutOnClick} className='ms-3' style={{textDecoration:"underline", cursor:"pointer"}}>Выйти</a>
