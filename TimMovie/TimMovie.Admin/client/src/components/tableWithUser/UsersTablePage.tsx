@@ -1,6 +1,5 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import ColumnTable from "./ColumnTable";
 import ColumnTableWithList from "./ColumnTableWithList";
 import Search from '../common/search/Search';

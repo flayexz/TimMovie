@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import UsersTablePage from "./components/tableWithUser/UsersTablePage";
-import Login from "./components/login/login";
+import Login from "./components/login/Login";
 import AuthService from "./services/authService";
 import Layout from "./components/shared/Layout";
 import UserProfile from "./components/userProfile/UserProfile";

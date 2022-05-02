@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using TimMovie.Core.DTO.Account;
+using TimMovie.Core.DTO.Users;
 using TimMovie.SharedKernel.Classes;
 
 namespace TimMovie.Core.Interfaces;
@@ -26,4 +27,6 @@ public interface IUserService
     
     public Task<ExternalLoginInfo?> GetExternalLoginInfoAsync();
 
+    public Task<ShortInfoUserDto> GetShortInfoAboutUser(Guid userId);
+    public Task<bool> UserIsExisted(Guid id);
 }
