@@ -11,7 +11,7 @@ function Logout(){
         return navigate("/");
     }
 
-    return <a onClick={onlogoutOnClick} className='ms-3' style={{textDecoration:"underline", cursor:"pointer"}}>Выйти</a>
+    return <button onClick={onlogoutOnClick} className='ms-3 btn btn-outline-dark'>Выйти</button>
 }
 
 export default Logout
