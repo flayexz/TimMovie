@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="introduction" content="no-reference">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="filmPage.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <title>FilmPage</title>
+</head>
+
+<body>
+  <div class="container-xl">
+    <a href="#" id="backward_link" class="hover_link">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
+        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px">
+        <path
+          d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z" />
+      </svg>
+    </a>
+    <ul id="film_with_genre_links">
+      <li><a href="#" class="hover_link">Фильмы</a></li>
+      <li>&bull; <a href="#" class="hover_link">Комедии</a></li>
+    </ul>
+
+    <div class="row mt-5" id="film-row">
+      <div class="col-xl-5 text_color order-xl-2" id="film_info_container">
+        <div id="film_info" class="mb-5">
+          <h1>Фильм Большой Стэн</h1>
+          <ul id="film_links">
+            <li><a class="hover_link">2007</a>
+            <li><a class="hover_link">США</a></li>
+            </li>
+          </ul>
+          <ul>
+            <li>&bull; <a class="hover_link">Комедии</a>
+            <li>&bull; <a class="hover_link">Зарубежные</a></li>
+            <li>&bull; <a class="hover_link">Боевик</a></li>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-xl-7 order-xl-1" id="film_player">
+        <div class="ratio ratio-16x9 circleBorders">
+          <iframe src="https://www.youtube.com/embed/_DCxb5VYSo4?rel=0&controls=2&modestbranding=1"
+            title="YouTube video" allowfullscreen style="border-radius: 16px;"></iframe>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <button class="buttons" id="rate_movie">Поставить оценку фильму</button>
+          <button class="buttons" id="watch_later"><svg width="1.8rem" fill="#c6c6c9" version="1.1"
+              viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="m536.2 12.824h-372.4c-8.5117 0-15.625 7-15.625 15.625v502.77c0 12.938 14.895 20.328 25.258 12.434l176.62-139.95 176.62 140.28c10.305 7.8945 25.145 0.50391 25.145-12.434l-0.003906-503.11c0-8.625-7-15.625-15.625-15.625zm-15.625 486.98-161-128.3c-5.6016-4.2578-13.328-4.3672-19.039 0l-161.11 127.96v-455.34h341.15z" />
+            </svg>Смотреть позже</button>
+        </div>
+        <div class="actors d-flex align-content-center justify-content-between mt-3">
+          <a class="actor">
+            <div id="film_rating" class="content">9,1</div>
+            <div class="caption">Рейтинг TimMovie</div>
+          </a>
+          <a class="actor">
+            <div class="content"> <img src="/images/1001250653.jpg" class="img-fluid rounded-3"></div>
+            <div class="caption">Люк Бэсон</div>
+          </a>
+          <a class="actor">
+            <div class="content"> <img src="/images/1003818608.jpg" class="img-fluid rounded-3"></div>
+            <div class="caption">Киану Ривз</div>
+          </a>
+          <a class="actor">
+            <div class="content"> <img src="/images/1008766829.jpg" class="img-fluid rounded-3"></div>
+            <div class="caption">Уилл Смитт</div>
+          </a>
+          <a class="actor">
+            <div class="content"> <img src="/images/1108432931.jpg" class="img-fluid rounded-3"></div>
+            <div class="caption">Жан Рено</div>
+          </a>
+          <a class="actor">
+            <div class="content"> <img src="/images/1108432931.jpg" class="img-fluid rounded-3"></div>
+            <div class="caption">Вин Дизель</div>
+          </a>
+        </div>
+      </div>
+      <div id="film_description">
+        <h2 class="text_color text_bold">О фильме</h6>
+          <div id="description">
+            Как вырастить звезду большого тенниса? А сразу двух? Ричард составил план по воспитанию чемпионок, и со
+            временем весь
+            мир узнал имена его дочерей – Винус и Серены Уильямс. Вдохновляющая история о семье и первых успехах двух
+            знаменитых
+            спортсменок (они выступили исполнительными продюсерами фильма). Роль их отца стала одной из лучших
+            драматических работ
+            Уилла Смита.
+
+            <p> Больше всего Ричард боялся, что его детей настигнут обычные угрозы «черного» гетто: наркотики, уличная
+              преступность,
+              перестрелки, бедная жизнь и ранняя смерть. У него не было денег и связей, чтобы обеспечить им достойное
+              будущее, но
+              зато у него был план. Еще до рождения Винус и Серены Ричард решил, что девочки станут первыми ракетками
+              мира. Вера в
+              силу семейной поддержки и целеустремленности его не подвела. Вера в своих дочерей – тем более. В какой-то
+              момент
+              кажется, что Серена уходит в тень старшей сестры, но родители не перестают поддерживать их обеих. Девочек
+              ждет
+              непростой путь от домашних тренировок до занятий с легендарными наставниками, от первых матчей до
+              головокружительных
+              контрактов. И всё это – только начало. </p>
+            Необычный спортивный байопик о роли семьи в становлении чемпионов «Король Ричард» можно посмотреть в нашем
+            онлайн-кинотеатре.
+          </div>
+          <button id="more">Читать дальше...</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, maiores laborum veniam
+        laudantium culpa dicta ducimus hic eveniet. Earum ab, necessitatibus eaque impedit quod labore autem dicta
+        veritatis possimus odit voluptatibus, repudiandae obcaecati sapiente officiis magni error numquam recusandae
+        quam architecto similique laboriosam. Quo distinctio rem, explicabo repellat, alias a nisi necessitatibus,
+        mollitia facilis optio rerum exercitationem. Ipsum cumque eveniet cupiditate hic? Accusamus, veritatis
+        exercitationem fugit excepturi natus vel cumque qui deleniti inventore aperiam rerum laudantium dignissimos?
+        Eveniet nostrum beatae obcaecati, nobis saepe officia non quos dolorum distinctio perferendis molestiae, quia
+        eaque. Quis dolorum fugiat eum illo velit adipisci distinctio.</div>
+    </div>
+  </div>
+
+
+  <script src="/filmPage.js"></script>
+</body>
+
+</html>
