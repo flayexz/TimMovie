@@ -298,7 +298,8 @@ public class UserService : IUserService
             UserName = email.GetMailName().AddRandomEnd(), Email = email,
             DisplayName = vkInfo.FirstName + " " + vkInfo.LastName,
             BirthDate = vkInfo.Birthday,
-            RegistrationDate = DateTime.Now
+            RegistrationDate = DateTime.Now,
+            PathToPhoto =  PathToDefaultUserPhoto
         };
         if (ip != null)
             await AddCountryByIpAsync(user, ip);
