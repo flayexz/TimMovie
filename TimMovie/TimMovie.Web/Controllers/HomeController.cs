@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.Entities;
+using TimMovie.SharedKernel.Extensions;
+using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Web.ViewModels;
 
 namespace TimMovie.Web.Controllers;
@@ -7,8 +10,8 @@ namespace TimMovie.Web.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    
+    public HomeController(ILogger<HomeController> logger, IRepository<User> repository)
     {
         _logger = logger;
     }
@@ -18,7 +21,7 @@ public class HomeController : Controller
         return View();
     }
     
-    public IActionResult Privacy()
+    public async Task<IActionResult> Privacy()
     {
         return View();
     }

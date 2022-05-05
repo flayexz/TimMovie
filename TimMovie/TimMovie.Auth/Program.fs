@@ -8,7 +8,6 @@ open Microsoft.Extensions.Hosting
 open TimMovie.Auth.AuthStartupSetup
 open TimMovie.Infrastructure
 
-
 module Program =
     let exitCode = 0
 
@@ -28,7 +27,6 @@ module Program =
                         builder
                             .AllowAnyHeader()
                             .AllowAnyOrigin()
-                            .AllowAnyHeader()
                             .AllowAnyMethod()
                         |> ignore))
             .AddAuthenticationAndJwt()
@@ -38,7 +36,7 @@ module Program =
         services
             .AddIdentity()
             .ConfigureOpenIddict()
-            .AddOpenIddictServer()
+            .AddOpenIddictServer(configuration["IdentityUrl"])
 
         let app = builder.Build()
 

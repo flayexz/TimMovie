@@ -58,7 +58,7 @@ public class FilmFiltersBuilder: FilmQueryBuilder
     
     public FilmFiltersBuilder AddFilterOnMinimumRating(double rating)
     {
-        Query = Query.Where(new FilmWithMinimumRating(rating));
+        Query = Query.Where(new FilmWithMinimumRatingSpec(rating));
         return this;
     }
 }

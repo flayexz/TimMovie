@@ -2,12 +2,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Account;
+using TimMovie.Core.DTO.Users;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
-using TimMovie.Core.Services;
 using TimMovie.Core.Services.Countries;
+using TimMovie.Core.Services.Films;
 using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Extensions;
 
@@ -23,10 +23,11 @@ public class UserService : IUserService
     private readonly IIpService ipService;
     private readonly CountryService countryService;
     private readonly IVkService vkService;
+    private readonly FilmService _filmService;
 
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
-        CountryService countryService, IVkService vkService)
+        CountryService countryService, IVkService vkService, FilmService filmService)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
@@ -36,6 +37,7 @@ public class UserService : IUserService
         this.ipService = ipService;
         this.countryService = countryService;
         this.vkService = vkService;
+        _filmService = filmService;
     }
 
     public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistrationDto)
@@ -177,7 +179,21 @@ public class UserService : IUserService
     public async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync() =>
         await signInManager.GetExternalLoginInfoAsync();
 
+    public async Task<ShortInfoUserDto> GetShortInfoAboutUser(Guid userId)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        
+        var shortInfoAboutUser = mapper.Map<ShortInfoUserDto>(user);
+        shortInfoAboutUser.FilmForStatusDto = _filmService.GetCurrentWatchingFilmByUser(userId);
+        
+        return shortInfoAboutUser;
+    }
 
+    public async Task<bool> UserIsExisted(Guid id)
+    {
+        return await userManager.FindByIdAsync(id.ToString()) is not null;
+    }
+    
     private async Task UpdateClaimsAsync(User user)
     {
         await userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate.ToString()));

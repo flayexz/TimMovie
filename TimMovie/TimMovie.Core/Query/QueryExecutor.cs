@@ -5,7 +5,7 @@ using TimMovie.SharedKernel.Interfaces;
 namespace TimMovie.Core.Query;
 
 public class QueryExecutor<TEntity>
-    where TEntity: BaseEntity
+    where TEntity: class
 {
     private IQueryable<TEntity> _query;
     private readonly IRepository<TEntity> _repository;
@@ -22,6 +22,12 @@ public class QueryExecutor<TEntity>
             .Skip(amountSkip)
             .Take(amountTake)
             .ToList();
+    }
+
+    public TEntity? FirstOrDefault()
+    {
+        return _query
+            .FirstOrDefault();
     }
 
     public QueryExecutor<TEntity> IncludeInResult<TProperty>(

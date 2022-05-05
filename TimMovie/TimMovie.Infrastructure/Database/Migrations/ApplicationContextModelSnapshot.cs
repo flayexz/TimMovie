@@ -97,6 +97,21 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.ToTable("FilmUser");
                 });
 
+            modelBuilder.Entity("GenreSubscribe", b =>
+                {
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SubscribesId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GenresId", "SubscribesId");
+
+                    b.HasIndex("SubscribesId");
+
+                    b.ToTable("GenreSubscribe");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -711,6 +726,10 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
+                    b.Property<string>("PathToPhoto")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
@@ -877,6 +896,21 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasOne("TimMovie.Core.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersWatchLaterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GenreSubscribe", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.Genre", null)
+                        .WithMany()
+                        .HasForeignKey("GenresId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimMovie.Core.Entities.Subscribe", null)
+                        .WithMany()
+                        .HasForeignKey("SubscribesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

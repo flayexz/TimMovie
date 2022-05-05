@@ -33,18 +33,17 @@ public static class ServicesConfiguration
             opt.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new AgeRequirement(18))));
 
         services.AddControllersWithViews();
-        services.AddAutoMapper(typeof(AppMappingProfile), typeof(CoreMappingProfile));
-        
+
+        services.AddAutoMapper(
+            typeof(AppMappingProfile),
+            typeof(CoreMappingProfile),
+            typeof(InfrastructureMappingProfile));
+
+        services.AddIdentity();
 
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
         services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
-        //services.AddScoped<IMailService,MailKitService>();
-
-        //services.AddScoped<IUserMessageService, UserMessageService>();
-        //services.AddTransient<IIpService,IpService>();
-
-        // services.AddTransient<IVkService, VkService>(opt =>
-        //     new VkService(configuration["VkSettings:AccessToken"], new HttpClient()));
+        
         return services;
     }
 }

@@ -10,7 +10,7 @@ public class UserSubscribe : BaseEntity
     
     [Required]
     public Subscribe Subscribe { get; set; }
-    
+
     [Required]
     public DateTime StartDay { get; set; }
     

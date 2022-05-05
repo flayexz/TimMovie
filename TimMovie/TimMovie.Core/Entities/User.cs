@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using TimMovie.Core.Entities.Enums;
 using TimMovie.SharedKernel.Classes;
+using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Entities;
 
-public class User : IdentityUser<Guid>
+public class User : IdentityUser<Guid>, IIdHolder<Guid>
 {
     [DateOnly] public DateOnly BirthDate { get; set; }
     public UserStatus Status { get; set; }
@@ -14,6 +15,7 @@ public class User : IdentityUser<Guid>
     [Required]
     [MaxLength(100)]
     public string DisplayName { get; set; }
+    public string PathToPhoto { get; set; }
     
     public Country? Country { get; set; }
     public DateTime RegistrationDate { get; set; }
