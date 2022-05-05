@@ -56,7 +56,6 @@ public class FilmCardService
             {
                 var filmCard = _mapper.Map<FilmCardDto>(film);
                 filmCard.Rating = _filmService.GetRating(film);
-                filmCard.IsExistInSubscribe = _filmService.IsExistInSubscribe(film);
                 return filmCard;
             })
             .ToList();
