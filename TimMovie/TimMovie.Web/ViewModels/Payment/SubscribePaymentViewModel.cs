@@ -8,5 +8,5 @@ public class SubscribePaymentViewModel
 
     public Subscribe Subscribe { get; set; } = null!;
 
-    public User User { get; set; } = null!;
+    public Core.Entities.User User { get; set; } = null!;
 }

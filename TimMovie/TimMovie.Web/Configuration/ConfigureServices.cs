@@ -38,9 +38,7 @@ public static class ServicesConfiguration
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
             typeof(InfrastructureMappingProfile));
-
-        services.AddIdentity();
-
+        
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
         services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
         
