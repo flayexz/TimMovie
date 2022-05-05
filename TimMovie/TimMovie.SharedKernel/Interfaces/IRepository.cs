@@ -7,7 +7,6 @@ public interface IRepository<TEntity> where TEntity : class
     IQueryable<TEntity> Query { get; }
     Task<TEntity?> AddAsync(TEntity item);
     Task<List<TEntity>> GetAllAsync();
-    Task SaveChangesAsync();
     void Update(TEntity item);
     void Delete(TEntity item);
     public Task SaveChangesAsync();

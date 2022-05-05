@@ -32,7 +32,6 @@ public class AppMappingProfile : Profile
             .ForMember(x => x.CardNumber, opt =>
                 opt.MapFrom(src =>
                     src.CardNumber.Trim())).ReverseMap();
-        CreateMap<ShortInfoUserDto, ShortInfoUserViewModel>();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
     }
 }
