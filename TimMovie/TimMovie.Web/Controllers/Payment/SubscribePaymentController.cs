@@ -6,6 +6,7 @@ using TimMovie.Core.DTO.Payment;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Specifications.InheritedSpecifications;
+using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Web.ViewModels.Payment;
 
@@ -46,14 +47,14 @@ public class SubscribePaymentController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> Payment(CardViewModel cardViewModel ,Guid subscribeId, string? returnUrl)
+    public async Task<JsonResult> Payment(CardViewModel cardViewModel, Guid subscribeId, string? returnUrl)
     {
         var subscribeFromDb =
             subscribeRepository.Query.FirstOrDefault(
                 new EntityByIdSpec<Subscribe>(subscribeId));
 
         if (subscribeFromDb is null)
-            return BadRequest();
+            return new JsonResult(Result.Fail("данной подписки не существует"));
 
         var user = await userManager.FindByNameAsync(User.Identity!.Name);
 
@@ -67,27 +68,17 @@ public class SubscribePaymentController : Controller
             subscribePaymentViewModel.ReturnUrl = returnUrl;
 
         if (!ModelState.IsValid)
-            return View("~/Views/Payment/Payment.cshtml",
-                new SubscribePaymentWithCardViewModel
-                    { SubscribePaymentViewModel = subscribePaymentViewModel, CardViewModel = cardViewModel });
-
-
+            return new JsonResult(Result.Fail("неверные данные карты"));
+        
         var subscribeDto = mapper.Map<SubscribePaymentDto>(subscribePaymentViewModel);
         var cardDto = mapper.Map<CardDto>(cardViewModel);
         var paymentResult = await paymentService.PaySubscribeAsync(subscribeDto, cardDto);
 
         if (paymentResult.IsFailure)
         {
-            ModelState.AddModelError(string.Empty, paymentResult.Error);
-            return View("~/Views/Payment/Payment.cshtml",
-                new SubscribePaymentWithCardViewModel
-                    { SubscribePaymentViewModel = subscribePaymentViewModel, CardViewModel = cardViewModel });
+            return new JsonResult(Result.Fail(paymentResult.Error));
         }
-        
 
-        if (!string.IsNullOrEmpty(subscribePaymentViewModel.ReturnUrl))
-            return LocalRedirect(subscribePaymentViewModel.ReturnUrl);
-
-        return RedirectToAction("MainPage", "MainPage");
+        return new JsonResult(Result.Ok());
     }
 }

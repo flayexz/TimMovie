@@ -6,7 +6,7 @@ public class CardDto
 {
     [Required(ErrorMessage = "это обязательное поле")]
     [MinLength(13, ErrorMessage = "неверная длина карты")]
-    [MaxLength(16, ErrorMessage = "неверная длина карты")]
+    [MaxLength(19, ErrorMessage = "неверная длина карты")]
     public string CardNumber { get; set; } = null!;
     
     [DataType(DataType.Password)]
@@ -22,7 +22,4 @@ public class CardDto
     [Required(ErrorMessage = "это обязательное поле")]
     [Range(2022,int.MaxValue,ErrorMessage = "срок годности вашей карты истек")]
     public int ExpirationYear { get; set; }
-    
-    [Required(ErrorMessage = "это обязательное поле")]
-    public string NameOnCard { get; set; } = null!;
 }

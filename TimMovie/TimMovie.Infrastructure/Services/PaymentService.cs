@@ -24,9 +24,8 @@ public class PaymentService : IPaymentService
     {
         if (!IsCardValid(cardDto)) 
             return Result.Fail("карта является невалидной");
-        var rnd = new Random();
-        if(rnd.NextDouble() < 0.15)
-            return Result.Fail("не удалось оплатить покупку");
+        if(new Random().NextDouble() < 0.15)
+            return Result.Fail("банк отклонил вашу покупку");
         await userSubscribeService.AddUserToSubscribeAsync(subscribePaymentDto.User, subscribePaymentDto.Subscribe);
         return Result.Ok();
     }
