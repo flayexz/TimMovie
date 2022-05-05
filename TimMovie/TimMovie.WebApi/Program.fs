@@ -2,14 +2,17 @@ namespace TimMovie.WebApi
 
 #nowarn "20"
 
+open System
 open Autofac
 open Autofac.Extensions.DependencyInjection
+open Microsoft.Extensions.Options
 open Microsoft.OpenApi.Models
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting
 open OpenIddict.Validation.AspNetCore
 open TimMovie.Core
+open TimMovie.Core.Classes
 open TimMovie.Infrastructure
 
 module Program =
@@ -25,7 +28,6 @@ module Program =
     scheme.Scheme <- "Bearer"
     scheme.BearerFormat <- "JWT"
     scheme.In <- ParameterLocation.Header
-
     scheme.Description <-
         "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
 
@@ -46,6 +48,7 @@ module Program =
         builder.Services.Configure(builder.Configuration)
         builder.Host.ConfigureContainer<ContainerBuilder>
             (fun (containerBuilder: ContainerBuilder) ->
+                containerBuilder.RegisterModule<CoreModule>()
                 containerBuilder.RegisterModule(InfrastructureModule(builder.Configuration))
                 |> ignore)
 
@@ -68,7 +71,20 @@ module Program =
             (fun options -> options.DefaultScheme <- OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
 
         services.AddAuthorization()
+        
+//        let type1 = typeof<AppMappingProfile>
+//        let type2 = typeof<CoreMappingProfile>
+//        let type3 = typeof<InfrastructureMappingProfile>
+//        
+//        services.AddAutoMapper(type1, type2, type3)
 
+        services.AddIdentity()
+        
+//        services.Configure<MailSetup>(configuration.GetSection("MailSetup"))
+//        services.AddScoped(fun)
+//        services.AddScoped(fuc (x : IServiceProvider) -> x.)
+//        services.AddScoped(fun (x : IServiceProvider) -> x.GetService<IOptions<MailSetup>>().Value)
+        
         services
             .AddOpenIddict()
             .AddValidation(fun options ->
