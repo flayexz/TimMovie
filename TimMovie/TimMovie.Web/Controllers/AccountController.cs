@@ -30,7 +30,7 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Registration()
+    public IActionResult Registration(string? returnUrl)
     {
         return View();
     }
@@ -93,7 +93,7 @@ public class AccountController : Controller
         var result = await userService.ExternalLoginCallback();
         if (result.Succeeded)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MainPage", "MainPage");
         }
 
         var info = await userService.GetExternalLoginInfoAsync();
@@ -215,10 +215,15 @@ public class AccountController : Controller
         
         logger.LogInformation($"неудачная попытка входа с использованием логина {login}");
         ModelState.AddModelError(string.Empty, "Неверный логин/почта или пароль");
-        return View("~/Views/Home/Index.cshtml");
+        return RedirectToAction("MainPage", "MainPage");
+    }
+
+    [HttpGet]
+    public IActionResult Denied()
+    {
+        return View("Denied");
     }
     
-
     private void AddErrors(IdentityResult result)
     {
         foreach (var error in result.Errors)

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
 using TimMovie.Core.Classes;
@@ -11,13 +13,19 @@ public static class ServicesConfiguration
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDistributedMemoryCache();
+        
         services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
+        
+        services.AddIdentity();
         
         services.ConfigureApplicationCookie(options =>
         {
-            options.AccessDeniedPath = "/Account/Denied";
+            options.Cookie.Name = "auth";
+            options.LoginPath = new PathString("/Account/Registration");
+            options.AccessDeniedPath = new PathString("/Account/Denied");
         });
-        
+
         services.AddAuthentication().AddVkontakte(configuration);
 
         services.AddTransient<IAuthorizationHandler, AgeHandler>();
@@ -25,6 +33,7 @@ public static class ServicesConfiguration
             opt.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new AgeRequirement(18))));
 
         services.AddControllersWithViews();
+
         services.AddAutoMapper(
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
