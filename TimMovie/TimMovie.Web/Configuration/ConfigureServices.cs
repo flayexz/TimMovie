@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
 using TimMovie.Core.Classes;
@@ -13,13 +15,19 @@ public static class ServicesConfiguration
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDistributedMemoryCache();
+        
         services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
+        
+        services.AddIdentity();
         
         services.ConfigureApplicationCookie(options =>
         {
-            options.AccessDeniedPath = "/Account/Denied";
+            options.Cookie.Name = "auth";
+            options.LoginPath = new PathString("/Account/Registration");
+            options.AccessDeniedPath = new PathString("/Account/Denied");
         });
-        
+
         services.AddAuthentication().AddVkontakte(configuration);
 
         services.AddTransient<IAuthorizationHandler, AgeHandler>();
@@ -27,13 +35,12 @@ public static class ServicesConfiguration
             opt.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new AgeRequirement(18))));
 
         services.AddControllersWithViews();
+
         services.AddAutoMapper(
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
             typeof(InfrastructureMappingProfile));
-
-        services.AddIdentity();
-        services.AddScoped<UserManager<User>, UserManager<User>>();
+      
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
         services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
         
