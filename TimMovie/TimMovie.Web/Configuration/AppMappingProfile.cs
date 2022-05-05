@@ -24,7 +24,7 @@ public class AppMappingProfile : Profile
         CreateMap<FilmCardDto, FilmCardViewModel>();
         CreateMap<Film, FilmCardViewModel>();
         CreateMap<LoginViewModel, LoginDto>().ReverseMap();
-        CreateMap<ShortInfoUserDto, ShortInfoUserViewModel>();
+        CreateMap<UserInfoDto, UserInfoViewModel>();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
     }
 }

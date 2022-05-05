@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="AuthorizationHandlers" />
-      <Folder Include="Views\Partials" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,11 +43,6 @@
       <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
       <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
       <_ContentIncludedByDefault Remove="Views\FilmCard\Card.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Partials\FilmCard\FilmCard.cshtml" />
-      <AdditionalFiles Include="Views\Partials\FilmCard\FilmCards.cshtml" />
     </ItemGroup>
 
 </Project>

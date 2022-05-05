@@ -1,20 +1,27 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Account;
 using TimMovie.Core.DTO.Users;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
+using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Extensions;
+using TimMovie.SharedKernel.Validators;
 
 namespace TimMovie.Infrastructure.Services;
 
 public class UserService : IUserService
 {
+    private const string PathToDirectoryWithUserPhoto = "img/user_photo/";
+    private const string PathToDefaultUserPhoto = "/img/user_photo/default.jpg";
+
     private readonly SignInManager<User> signInManager;
     private readonly UserManager<User> userManager;
     private readonly IMapper mapper;
@@ -24,6 +31,7 @@ public class UserService : IUserService
     private readonly CountryService countryService;
     private readonly IVkService vkService;
     private readonly FilmService _filmService;
+
 
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
@@ -46,6 +54,7 @@ public class UserService : IUserService
         user.RegistrationDate = DateTime.Now;
         user.DisplayName = userRegistrationDto.UserName;
         user.BirthDate = DateOnly.FromDateTime(DateTime.Today);
+        user.PathToPhoto =  PathToDefaultUserPhoto;
         if (userRegistrationDto.Ip != null)
             await AddCountryByIpAsync(user, userRegistrationDto.Ip);
         var registerResult = await userManager.CreateAsync(user, userRegistrationDto.Password);
@@ -179,11 +188,13 @@ public class UserService : IUserService
     public async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync() =>
         await signInManager.GetExternalLoginInfoAsync();
 
-    public async Task<ShortInfoUserDto> GetShortInfoAboutUser(Guid userId)
+    public async Task<UserInfoDto> GetInfoAboutUser(Guid userId)
     {
-        var user = await userManager.FindByIdAsync(userId.ToString());
+        var user = await userManager.Users
+            .Include(u => u.Country)
+            .FirstOrDefaultAsync(new EntityByIdSpec<User>(userId));
         
-        var shortInfoAboutUser = mapper.Map<ShortInfoUserDto>(user);
+        var shortInfoAboutUser = mapper.Map<UserInfoDto>(user);
         shortInfoAboutUser.FilmForStatusDto = _filmService.GetCurrentWatchingFilmByUser(userId);
         
         return shortInfoAboutUser;
@@ -193,7 +204,74 @@ public class UserService : IUserService
     {
         return await userManager.FindByIdAsync(id.ToString()) is not null;
     }
-    
+
+    public async Task<Result> UpdateUserPhotoAsync(IFormFile photo, Guid userId, string pathToContentDirectory)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        if (!await UserIsExisted(userId))
+        {
+            return Result.Fail("Пользователя с таким id не существует");
+        }
+        
+        var randomFileName = GenerateRandomFileNameWithExtension(Path.GetExtension(photo.FileName));
+        var relativeUserPhotoLink = Path.Combine($"/{PathToDirectoryWithUserPhoto}", randomFileName);
+        var userPhotoLink = Path.Combine(pathToContentDirectory, PathToDirectoryWithUserPhoto, randomFileName);
+        
+        try
+        {
+            await using var fs = File.OpenWrite(userPhotoLink);
+            await photo.CopyToAsync(fs);
+
+            user.PathToPhoto = relativeUserPhotoLink;
+            await userManager.UpdateAsync(user);
+            
+            return Result.Ok();
+        }
+        catch (Exception e)
+        {
+            if (File.Exists(userPhotoLink))
+            {
+                File.Delete(userPhotoLink);
+            }
+            
+            return Result.Fail(e.Message);
+        }
+    }
+
+    public async Task UpdateUserInfo(ShortUserInfoDto userInfo, Guid userId)
+    {
+        var user = await userManager.Users
+            .Include(u => u.Country)
+            .FirstOrDefaultAsync(new EntityByIdSpec<User>(userId));
+        
+        if (user is null)
+        {
+            throw new InvalidOperationException($"В методе {nameof(UpdateUserInfoForUser)} не " +
+                                                $"найден пользователь с id: {userId}");
+        }
+
+        await UpdateUserInfoForUser(userInfo, user);
+    }
+
+    private async Task UpdateUserInfoForUser(ShortUserInfoDto userInfo, User user)
+    {
+        user.DisplayName = userInfo.DisplayName;
+        user.BirthDate = userInfo.BirthDate is null
+            ? null
+            : DateOnly.FromDateTime(userInfo.BirthDate.Value);
+        var country = countryService.FindByName(userInfo.CountryName);
+        user.Country = country;
+
+        await userManager.UpdateAsync(user);
+    }
+
+    private string GenerateRandomFileNameWithExtension(string extension)
+    {
+        ArgumentValidator.ThrowExceptionIfNull(extension, nameof(extension));
+        
+        return $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}{extension}";
+    }
+
     private async Task UpdateClaimsAsync(User user)
     {
         await userManager.AddClaimAsync(user, new Claim(ClaimTypes.DateOfBirth, user.BirthDate.ToString()));

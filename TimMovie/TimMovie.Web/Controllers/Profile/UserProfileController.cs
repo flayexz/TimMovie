@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.DTO.Users;
 using TimMovie.Core.Interfaces;
+using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Subscribes;
-using TimMovie.Web.Extension;
+using TimMovie.Core.Services.SupportedServices;
+using TimMovie.Core.ValidatorServices;
+using TimMovie.SharedKernel.Classes;
+using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.FilmCard;
 using TimMovie.Web.ViewModels.User;
 using TimMovie.Web.ViewModels.UserSubscribes;
@@ -15,18 +21,30 @@ public class UserProfileController : Controller
     private readonly IUserService _userService;
     private readonly FilmCardService _filmCardService;
     private readonly SubscribeService _subscribeService;
+    private readonly CountryService _countryService;
+    private readonly FileService _fileService;
+    private readonly UserValidator _userValidator;
     private readonly IMapper _mapper;
+    private readonly IWebHostEnvironment _webHostEnvironment;
 
     public UserProfileController(
         IUserService userService,
         IMapper mapper,
         FilmCardService filmCardService,
-        SubscribeService subscribeService)
+        SubscribeService subscribeService,
+        FileService fileService,
+        IWebHostEnvironment webHostEnvironment, 
+        CountryService countryService, 
+        UserValidator userValidator)
     {
         _userService = userService;
         _mapper = mapper;
         _filmCardService = filmCardService;
         _subscribeService = subscribeService;
+        _fileService = fileService;
+        _webHostEnvironment = webHostEnvironment;
+        _countryService = countryService;
+        _userValidator = userValidator;
     }
 
     [HttpGet("[controller]/{id:guid}")]
@@ -40,14 +58,51 @@ public class UserProfileController : Controller
         var userProfile = new UserProfileViewModel
         {
             IsOwner = User.Identity.IsAuthenticated && User.GetUserId() == id,
-            UserInfo = _mapper.Map<ShortInfoUserViewModel>(await _userService.GetShortInfoAboutUser(id)),
+            UserInfo = _mapper.Map<UserInfoViewModel>(await _userService.GetInfoAboutUser(id)),
             FilmCards = _filmCardService
                 .GetLatestFilmsViewedByUser(id, 6)
                 .Select(cardDto => _mapper.Map<FilmCardViewModel>(cardDto)),
             UserSubscribes = _subscribeService.GetAllUserSubscribes(id)
-                .Select(subscribeDto => _mapper.Map<UserSubscribeViewModel>(subscribeDto))
+                .Select(subscribeDto => _mapper.Map<UserSubscribeViewModel>(subscribeDto)),
+            CountryNames = _countryService.GetCountryNames()
         };
         
         return View("~/Views/Profile/UserProfile.cshtml", userProfile);
+    }
+    
+    [Authorize]
+    [HttpPost]
+    public async Task<JsonResult> SaveUserPhotoAsync(IFormFile file)
+    {
+        if (!_fileService.UserImageHasCorrectExtension(file))
+        {
+            return Json(Result.Fail($"Некорректное расшрение файла: {Path.GetExtension(file.Name)}"));
+        }
+
+        if (!_fileService.UserPhotoHasCorrectSize(file))
+        {
+            return Json(Result.Fail("Размер файла должен быть меньше 1 Мб"));
+        }
+
+        var userId = HttpContext.User.GetUserId();
+        var resultUpdate = await _userService.UpdateUserPhotoAsync(file, userId, _webHostEnvironment.WebRootPath);
+
+        return Json(resultUpdate);
+    }
+    
+    [Authorize]
+    [HttpPost]
+    public async Task<JsonResult> SaveUserInfo(ShortUserInfoDto userInfo)
+    {
+        var validationResult = _userValidator.ValidateUserInfo(userInfo);
+        if (!validationResult.Succeeded)
+        {
+            return Json(validationResult);
+        }
+
+        var userId = HttpContext.User.GetUserId();
+        await _userService.UpdateUserInfo(userInfo, userId);
+
+        return Json(Result.Ok());
     }
 }

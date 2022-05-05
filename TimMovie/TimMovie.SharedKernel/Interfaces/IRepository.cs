@@ -9,6 +9,7 @@ public interface IRepository<TEntity> where TEntity : class
     Task<List<TEntity>> GetAllAsync();
     void Update(TEntity item);
     void Delete(TEntity item);
+    public Task SaveChangesAsync();
 
     IQueryable<TEntity> Include<TProperty>(
         IQueryable<TEntity> query,

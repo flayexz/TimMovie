@@ -8,6 +8,6 @@ public class InfrastructureMappingProfile: Profile
 {
     public InfrastructureMappingProfile()
     {
-        CreateMap<User, ShortInfoUserDto>();
+        CreateMap<User, UserInfoDto>();
     }
 }
