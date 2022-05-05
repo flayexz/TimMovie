@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using TimMovie.Core.Entities;
 using TimMovie.SharedKernel.BaseEntities;
 using TimMovie.SharedKernel.Interfaces;
 
@@ -45,5 +47,18 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         Expression<Func<TEntity, TProperty>> navigationPathToProperty)
     {
         return query.Include(navigationPathToProperty);
+    }
+
+    public IQueryable<TEntity> ThenInclude<TIncludableEntity, TProperty>
+        (IQueryable<TEntity> query, Expression<Func<TIncludableEntity, TProperty>> navigationPathToProperty)
+    {
+        var includable = query as IIncludableQueryable<TEntity, TIncludableEntity>;
+        if (includable is null)
+        {
+            throw new InvalidOperationException(
+                $"{nameof(ThenInclude)} был применен к запросу, к которуму не был применен {nameof(Include)}");
+        }
+
+        return includable.ThenInclude(navigationPathToProperty);
     }
 }

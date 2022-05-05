@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
 using TimMovie.Core.Classes;
+using TimMovie.Core.Entities;
 using TimMovie.Infrastructure;
 using TimMovie.Web.AuthorizationHandlers.AgePolicy;
 
@@ -38,7 +40,7 @@ public static class ServicesConfiguration
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
             typeof(InfrastructureMappingProfile));
-        
+      
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
         services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
         

@@ -1,13 +1,26 @@
 ﻿import {Outlet, NavLink} from "react-router-dom";
 import React from "react";
+import classes from "./layout.module.css"
 import Logout from "../logout/Logout";
+import {classNameConcat} from "../../common/classNameConcat";
 
 function Layout(){
+    const activeLink = classNameConcat(classes.navLink, classes.active);
+    const activateLink = ({isActive}: any) => isActive ? activeLink : classes.navLink;
+    
     return (
         <>
             <header>
-                <NavLink to="/" >Пользоваетели</NavLink>
-                <Logout/>
+                <div className="container-xl">
+                    <div className={classes.navContainer}>
+                        <div className="d-flex justify-content-between align-items-center h-100">
+                            <div>
+                                <NavLink className={activateLink} to="/" >Пользователи</NavLink>
+                            </div>
+                            <div><Logout/></div>
+                        </div>
+                    </div>
+                </div>
             </header>
             <div className="container-xl">
                 <Outlet/>

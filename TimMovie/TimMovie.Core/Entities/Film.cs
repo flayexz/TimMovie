@@ -18,6 +18,7 @@ public class Film : BaseEntity
     public string? Image { get; set; }
     
     public string? FilmLink { get; set; }
+    public bool IsFree { get; set; }
     
     public List<Comment> Comments { get; set; }
 

@@ -1,11 +1,22 @@
 import React, {useState} from "react"
-import AuthService from "../../services/authService";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useAuth} from "../../hook/useAuth";
+import {Navigate, useNavigate} from "react-router-dom";
+import "../common/css/loader.css"
 
 function Login(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string>('');
+    const [displayBtn, setDisplayBtn] = useState(false);
+    const [loaderHide, setLoaderHide] = useState("hide");
+    const auth = useAuth();
+    
+    const navigate = useNavigate();
+    
+    if (auth?.isAdminAuth()){
+        return <Navigate to='/'/>
+    }
 
     const onLoginClick = async (e: any) => {
         e.preventDefault()
@@ -27,6 +38,8 @@ function Login(){
             formBody.push(encodedKey + "=" + encodedValue);
         }
 
+        setDisplayBtn(true);
+        setLoaderHide("");
         const authResponse = await fetch(`${process.env.REACT_APP_IDENTITY_URL}/connect/token`, {
             method: 'POST',
             body: formBody.join("&"),
@@ -35,6 +48,8 @@ function Login(){
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
         });
+        setLoaderHide("hide");
+        setDisplayBtn(false);
 
         if(!(authResponse.ok)){
             setError('неверный логин и/или пароль');
@@ -48,13 +63,13 @@ function Login(){
             return;
         }
 
-        if(!AuthService.isAdmin(token)){
+        if(!auth?.isAdmin(token)){
             setError('у вас нет прав администратора');
             return;
         }
 
-        AuthService.login(token);
-        window.location.href = '/';
+        auth?.login(token);
+        navigate("/", {replace: true});
     }
 
     return (
@@ -67,10 +82,11 @@ function Login(){
                     <input id='password' className='form-control mt-2' type='password' placeholder='Пароль'
                            onInput={e => setPassword(e.currentTarget.value)}/>
                     <div className={'justify-content-center d-flex mt-2'}>
-                        <button onClick={onLoginClick}
+                        <button onClick={onLoginClick} style={{display: `${displayBtn ? "none" : "block"}`}}
                                 className='btn btn btn-outline-dark justify-content-center w-100'>
                             Войти
                         </button>
+                        <div className={`loader ${loaderHide}`}/>
                     </div>
                     {error && <span className={'text-danger d-block text-center'}>{error}</span>}
                 </form>

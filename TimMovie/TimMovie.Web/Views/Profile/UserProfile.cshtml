@@ -5,6 +5,11 @@
     Layout = "_Layout";
 }
 
+
+@{
+    await Html.RenderPartialAsync("~/Views/Profile/ModalForEditUserPhoto.cshtml", Model.UserInfo.PathToPhoto);
+    await Html.RenderPartialAsync("~/Views/Profile/ModalForEditUserInfo.cshtml", (Model.UserInfo, Model.CountryNames));
+}
 <div class="d-flex flex-column">
     <div class="d-flex mt-3">
         @{ await Html.RenderPartialAsync("~/Views/Profile/ProfileCard.cshtml", (Model.IsOwner, Model.UserInfo)); }
@@ -46,15 +51,23 @@
         await Html.RenderPartialAsync("~/Views/Profile/UserSubscribes.cshtml", Model.UserSubscribes);
     }
 </div>
+@{
+    await Html.RenderPartialAsync("~/Views/Partials/Messages/MessageOnSave.cshtml");
+}
 
 @section Styles
 {
     <link rel="stylesheet" href="~/css/Profile/Profile.css">
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
+    <link rel="stylesheet" href="/css/SmallPageElements/loader.css">
+    <link rel="stylesheet" href="/css/Messages/MessageOnSave.css">
 }
 
 @section Scripts
 {
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="~/js/Profile/profile.js"></script>
+    <script src="~/js/Modals/modal_for_change_user_photo.js"></script>
+    <script src="~/js/Modals/modal_for_change_user_profile.js"></script>
 }

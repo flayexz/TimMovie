@@ -25,6 +25,7 @@ public class AppMappingProfile : Profile
         CreateMap<FilmCardDto, FilmCardViewModel>();
         CreateMap<Film, FilmCardViewModel>();
         CreateMap<LoginViewModel, LoginDto>().ReverseMap();
+        CreateMap<UserInfoDto, UserInfoViewModel>();
         CreateMap<SubscribePaymentViewModel, SubscribePaymentDto>().ReverseMap();
         CreateMap<CardViewModel, CardDto>().ForMember(x => x.ExpirationYear, opt =>
                 opt.MapFrom(src => 2000 + src.ExpirationYear))

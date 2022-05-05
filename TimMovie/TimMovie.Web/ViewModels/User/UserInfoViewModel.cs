@@ -1,12 +1,14 @@
 ﻿using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities.Enums;
 
-namespace TimMovie.Core.DTO.Users;
+namespace TimMovie.Web.ViewModels.User;
 
-public class ShortInfoUserDto
+public class UserInfoViewModel
 {
     public UserStatus Status { get; set; }
     public string DisplayName { get; set; }
+    public string CountryName { get; set; }
+    public DateOnly? BirthDate { get; set; }
     public string PathToPhoto { get; set; }
     public FilmForStatusDto? FilmForStatusDto { get; set; }
 }

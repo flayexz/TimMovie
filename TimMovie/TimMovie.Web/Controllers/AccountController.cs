@@ -20,7 +20,9 @@ public class AccountController : Controller
     private string? UserIp => HttpContext.Connection.RemoteIpAddress?.ToString();
     private string UrlToConfirmEmail => Url.Action("ConfirmEmail", "Account", null, HttpContext.Request.Scheme)!;
 
-    public AccountController(UserManager<User> userManager, IMapper mapper, ILogger<AccountController> logger,
+    public AccountController(UserManager<User> userManager, 
+        IMapper mapper,
+        ILogger<AccountController> logger,
         IUserService userService)
     {
         this.userManager = userManager;

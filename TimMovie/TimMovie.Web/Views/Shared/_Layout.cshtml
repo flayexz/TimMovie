@@ -1,5 +1,4 @@
-﻿@using System.Security.Claims
-@using TimMovie.Web.Extension
+﻿@using TimMovie.Web.Extensions
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,12 +10,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="~/css/Navbar.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/Navbar.css"/>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/css/Support/modalWindowChat.css" asp-append-version="true"/>
-    
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/Support/modalWindowChat.css"/>
+    <link rel="stylesheet" href="~/css/Search.css"/>
+
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
@@ -48,7 +48,8 @@
                         <a href="#" class="navbar-text">Оплатить подписку</a>
                     </li>
                     <li class="nav-item nav-button-right">
-                        <a class="navbar-text" id="button-navbar-search">Поиск</a>
+                        <a data-bs-toggle="modal" data-bs-target="#modalGlobalSearch"
+                           class="navbar-text" id="button-navbar-search">Поиск</a>
                     </li>
                     <li class="nav-item nav-button-right">
                         <a href="" class="navbar-text">
@@ -89,21 +90,20 @@
 </header>
 <div class="container-xl">
     <main role="main" class="pb-3">
+        @{ await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); }
         @RenderBody()
         @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        <div id="modDialog" class="modal fade">
-            <div id="dialogContent" class="modal-dialog"></div>
-        </div>
     </main>
-    @{ await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); }
 </div>
+@{ await Html.RenderPartialAsync("~/Views/Navbar/Search/ModalWindow.cshtml");}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-<script src="~/js/Navbar/Navbar_Script.js"></script>
+<script src="~/js/Navbar/Search_Script.js"></script>
 <script src="~/js/support_chat.js"></script>
+
 
 @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
