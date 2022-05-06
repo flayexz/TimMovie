@@ -1,15 +1,15 @@
 ﻿using TimMovie.Core.DTO.Payment;
 using TimMovie.Core.Interfaces;
-using TimMovie.Core.Services.UserSubscribes;
+using TimMovie.Core.Services.Subscribes;
 using TimMovie.SharedKernel.Classes;
 
 namespace TimMovie.Infrastructure.Services;
 
 public class PaymentService : IPaymentService
 {
-    private readonly UserSubscribeService userSubscribeService;
+    private readonly SubscribeService userSubscribeService;
 
-    public PaymentService(UserSubscribeService userSubscribeService)
+    public PaymentService(SubscribeService userSubscribeService)
     {
         this.userSubscribeService = userSubscribeService;
     }
