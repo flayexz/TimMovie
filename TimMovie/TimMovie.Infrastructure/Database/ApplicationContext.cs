@@ -23,8 +23,6 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Gu
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     {
-        var filler = new DatabaseFiller(this);
-        filler.AddFilmSubscribes();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
