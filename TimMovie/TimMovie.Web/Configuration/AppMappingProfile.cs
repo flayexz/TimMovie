@@ -33,5 +33,6 @@ public class AppMappingProfile : Profile
                 opt.MapFrom(src =>
                     src.CardNumber.Trim())).ReverseMap();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
+        CreateMap<FilmDto, FilmViewModel>();
     }
 }

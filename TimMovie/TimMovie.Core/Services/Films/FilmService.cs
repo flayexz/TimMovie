@@ -2,6 +2,7 @@
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
+using TimMovie.Core.Query.Films;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
@@ -31,10 +32,13 @@ public class FilmService
 
     public double? GetRating(Film film)
     {
-        return _filmRepository.Query
+        var rating = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(film.Id))
-            .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
+            .Select(f =>  f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
             .FirstOrDefault();
+        return rating.HasValue 
+            ? Math.Round(rating.Value, 2)
+            : null;
     }
 
     public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>
@@ -50,8 +54,28 @@ public class FilmService
             .IncludeInResult(user => user.WatchingFilm)
             .FirstOrDefault();
 
-        return film is null 
+        return MapToRequiredDto<User?, FilmForStatusDto>(film);
+    }
+
+    private TDto? MapToRequiredDto<T, TDto>(T entity)
+        where TDto : class => entity is null
             ? null
-            : _mapper.Map<FilmForStatusDto>(film);
+            : _mapper.Map<TDto>(entity);
+
+    public FilmDto? GetFilmById(Guid filmId)
+    {
+        var query = _filmRepository.Query
+            .Where(new EntityByIdSpec<Film>(filmId));
+        var executor = new QueryExecutor<Film>(query, _filmRepository);
+
+        var film = executor
+            .IncludeInResult(film => film.Genres)
+            .IncludeInResult(film => film.Country)
+            .IncludeInResult(film => film.Actors)
+            .IncludeInResult(film => film.Producers)
+            .IncludeInResult(film => film.Comments)
+            .FirstOrDefault();
+        
+        return MapToRequiredDto<Film?, FilmDto>(film);
     }
 }
