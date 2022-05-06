@@ -11,9 +11,9 @@ public class ActorService
 {
     private readonly IRepository<Actor> _actorRepository;
     private readonly IRepository<Film> _filmRepository;
-    private readonly Mapper _mapper;
+    private readonly IMapper _mapper;
 
-    public ActorService(IRepository<Actor> actorRepository, IRepository<Film> filmRepository, Mapper mapper)
+    public ActorService(IRepository<Actor> actorRepository, IRepository<Film> filmRepository, IMapper mapper)
     {
         _actorRepository = actorRepository;
         _filmRepository = filmRepository;

@@ -12,12 +12,12 @@ public class ProducerService
 {
     private readonly IRepository<Producer> _producerRepository;
     private readonly IRepository<Film> _filmRepository;
-    private readonly Mapper _mapper;
+    private readonly IMapper _mapper;
 
     public ProducerService(
         IRepository<Producer> producerRepository, 
         IRepository<Film> filmRepository,
-        Mapper mapper)
+        IMapper mapper)
     {
         _producerRepository = producerRepository;
         _filmRepository = filmRepository;
