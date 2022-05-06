@@ -1,12 +1,12 @@
 ﻿import React from "react"
 import classes from "./table.module.css";
-import {IUserDto} from "../../dto/IUserDto";
+import {IShortUserInfoDto} from "../../dto/IShortUserInfoDto";
 import {Link} from "react-router-dom";
 import {classNameConcat} from "../../common/classNameConcat";
 
 interface IColumnTableProps{
     nameColumn: string;
-    users: IUserDto[];
+    users: IShortUserInfoDto[];
     userPropName: string;
     isLinked: boolean;
 }

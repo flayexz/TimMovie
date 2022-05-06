@@ -6,6 +6,9 @@ import Layout from "./components/shared/Layout";
 import UserProfile from "./components/userProfile/UserProfile";
 import AuthProvider from "./components/auth/AuthProvider";
 import RequireAuth from "./components/auth/RequireAuth";
+import LineWithSvg from "./components/userProfile/LineWithSvg";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import UserInfo from "./components/userProfile/UserInfo";
 
 function App() {
     return (

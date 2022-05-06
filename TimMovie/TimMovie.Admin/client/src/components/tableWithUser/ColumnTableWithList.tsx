@@ -1,11 +1,11 @@
 ﻿import React from "react"
 import {classNameConcat} from "../../common/classNameConcat";
 import classes from "./table.module.css";
-import {IUserDto} from "../../dto/IUserDto";
+import {IShortUserInfoDto} from "../../dto/IShortUserInfoDto";
 
 interface IColumnTableWithListProps{
     nameColumn: string;
-    users: IUserDto[];
+    users: IShortUserInfoDto[];
     userPropName: string;
     messageInEmptyList: string;
 }

@@ -3,11 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ColumnTable from "./ColumnTable";
 import ColumnTableWithList from "./ColumnTableWithList";
 import Search from '../common/search/Search';
-import {IUserDto} from "../../dto/IUserDto";
+import {IShortUserInfoDto} from "../../dto/IShortUserInfoDto";
 import $api from "../../http";
 
 function UsersTablePage(){
-    const [users, setUsers] = useState<Array<IUserDto>>([]);
+    const [users, setUsers] = useState<Array<IShortUserInfoDto>>([]);
     const [numberOfLoadedRecords, setNumberOfLoadedRecords] = useState(0);
     const [fetching, setFetching] = useState(true);
     const allLoaded = useRef(false);
