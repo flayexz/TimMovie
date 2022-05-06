@@ -9,5 +9,5 @@ public class FilmCardDto
     public string Image { get; set; } = null!;
     public string FirstGenreName { get; set; } = null!;
     public double? Rating { get; set; }
-    public bool IsExistInSubscribe { get; set; }
+    public bool IsFree { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using TimMovie.SharedKernel.Validators;
 
-namespace TimMovie.Web.Extension;
+namespace TimMovie.Web.Extensions;
 
 public static class ClaimsPrincipalExtension
 {

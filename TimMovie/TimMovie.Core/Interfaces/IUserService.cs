@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using TimMovie.Core.DTO.Account;
 using TimMovie.Core.DTO.Users;
@@ -27,6 +28,8 @@ public interface IUserService
     
     public Task<ExternalLoginInfo?> GetExternalLoginInfoAsync();
 
-    public Task<ShortInfoUserDto> GetShortInfoAboutUser(Guid userId);
+    public Task<UserInfoDto> GetInfoAboutUserAsync(Guid userId);
     public Task<bool> UserIsExisted(Guid id);
+    public Task<Result> UpdateUserPhotoAsync(IFormFile photo, Guid userId, string pathToContentDirectory);
+    public Task UpdateUserInfo(ShortUserInfoDto userInfo, Guid userId);
 }

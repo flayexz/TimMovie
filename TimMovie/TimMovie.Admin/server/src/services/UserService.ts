@@ -25,7 +25,7 @@ export class UserService {
                 login: user.userName,
                 email: user.email,
                 roles: user.aspNetUserClaims
-                    .filter(claim => claim.claimType === "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")
+                    .filter(claim => claim.claimType === process.env.CLAIM_ROLE)
                     .map(claim => claim.claimValue),
                 subscribes: user.userSubscribes.map(sub => sub.subscribe.name)
             }
@@ -51,7 +51,7 @@ export class UserService {
             login: user.userName,
             email: user.email,
             roles: user.aspNetUserClaims
-                .filter(claim => claim.claimType === "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")
+                .filter(claim => claim.claimType === process.env.CLAIM_ROLE)
                 .map(claim => claim.claimValue),
             subscribes: user.userSubscribes.map(sub => sub.subscribe.name),
             displayName: user.displayName,
@@ -61,5 +61,11 @@ export class UserService {
         };
         
         return userDto; 
+    }
+    
+    public async userIsExisted(id: string): Promise<boolean>{
+        let user = await getRepository(AspNetUser)
+            .findOne({where: {id: id}});
+        return user != undefined;
     }
 }

@@ -11,6 +11,5 @@ $(function () {
     });
     $("#buttonClose").click(function () {
         $('#dialogContent').html();
-        $('#modDialog').modal('toggle');
     });
 })

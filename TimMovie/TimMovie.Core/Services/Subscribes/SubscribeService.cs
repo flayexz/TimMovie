@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.Entities;
+using TimMovie.Core.Query;
 using TimMovie.Core.Specifications.InheritedSpecifications.SubscribeSpec;
+using TimMovie.Core.Specifications.StaticSpecification;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Subscribes;
@@ -17,12 +19,16 @@ public class SubscribeService
         _mapper = mapper;
     }
 
-    public IEnumerable<UserSubscribeDto> GetAllUserSubscribes(Guid userId)
+    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid userId)
     {
-        var userSubscribes = _userSubscribeRepository.Query
-            .Where(new UserSubscribeByUserIdSpec(userId))
-            .ToList();
-        return MapToUserSubscribeDto(userSubscribes);
+        var query = _userSubscribeRepository.Query
+            .Where(new UserSubscribeByUserIdSpec(userId) && SubscribeSpec.ActiveSubscribe);
+        
+        var subscribes = new QueryExecutor<UserSubscribe>(query, _userSubscribeRepository)
+            .IncludeInResult(subscribe => subscribe.Subscribe)
+            .GetEntities();
+        
+        return MapToUserSubscribeDto(subscribes);
     }
 
     private IEnumerable<UserSubscribeDto> MapToUserSubscribeDto(IEnumerable<UserSubscribe> userSubscribes)

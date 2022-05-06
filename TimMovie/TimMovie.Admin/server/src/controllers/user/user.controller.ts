@@ -1,10 +1,10 @@
-import {Body, Controller, Get, Param, Post, Query} from '@nestjs/common';
+import {Body, Controller, Get, Post, Query} from '@nestjs/common';
 import {IShortInformationAboutUserDto} from 'src/dto/IShortInformationAboutUserDto';
 import {UserService} from "../../services/UserService";
-import {Admin} from "../../auth/adminAuth";
 import {IAllInformationAboutUserDto} from "../../dto/IAllInformationAboutUserDto";
 import {SubscribeService} from "../../services/SubscribeService";
 import {RoleService} from "../../services/RoleService";
+import {Admin} from "../../auth/adminAuth";
 
 
 @Admin()
@@ -25,8 +25,8 @@ export class UserController{
         return users;
     }
 
-    @Get(':id')
-    public async getAllInfoAboutUser(@Param('id') id: string): Promise<IAllInformationAboutUserDto | null> {
+    @Get('user')
+    public async getAllInfoAboutUser(@Query('id') id: string): Promise<IAllInformationAboutUserDto | null> {
         const user: IAllInformationAboutUserDto = await this.userService.getAllInfoAboutUser(id);
         return user;
     }
@@ -43,5 +43,15 @@ export class UserController{
         @Body("userId")userId: string,
         @Body("roleNames")roleNames: string[]): Promise<void>{
         await this.roleService.updateRolesForUser(userId, roleNames);
+    }
+
+    @Get("isExist")
+    public async userIsExisted(
+        @Query("userId")userId: string): Promise<{isExisted}>{
+        let isExisted = await this.userService.userIsExisted(userId);
+        
+        return {
+            isExisted
+        };
     }
 }
