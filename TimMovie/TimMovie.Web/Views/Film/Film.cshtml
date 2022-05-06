@@ -32,8 +32,10 @@
                 </li>
             </ul>
             <ul>
-                @foreach(var genre in Model.Genres)
-                {<li class="d-inline-block">&bull; <a class="hover_link">@genre.Name</a></li>}
+                @foreach (var genre in Model.Genres)
+                {
+                    <li class="d-inline-block">&bull; <a class="hover_link">@genre.Name</a></li>
+                }
             </ul>
         </div>
     </div>
@@ -65,27 +67,123 @@
                 </div>
             </div>
             <div class="d-flex flex-column justify-content-center text-center">
-                <h1 class="text_color rating_label">9,1</h1>
-                <span class="rating_under_label">Оценили: 5999</span>
+                <h1 class="text_color rating_label">@Model.Rating</h1>
+                <span class="rating_under_label">Оценили: @Model.GradesNumber</span>
             </div>
         </div>
     </div>
     <div id="film_description">
         <h2 class="text_color text_bold">О фильме</h2>
         <div id="description">
-            Драматическая история о войне в Донбассе. Май 2014 года, Луганск. Жизни многих местных жителей навсегда меняются с началом боевых действий. Кому из них суждено стать жертвой новой реальности, и кто останется человеком несмотря на страшные обстоятельства? 
+            Драматическая история о войне в Донбассе. Май 2014 года, Луганск. Жизни многих местных жителей навсегда меняются с началом боевых действий. Кому из них суждено стать жертвой новой реальности, и кто останется человеком несмотря на страшные обстоятельства?
             <p>Влад Новожилов – бывший солдат-афганец, который живёт в Луганске вместе с семьёй. В мае 2014 года в соседнем Донецке разворачивается настоящая война, и Новожиловы принимают решение уехать в Россию – подальше от ужасов вооружённого конфликта. На своём пути к безопасности и мирной жизни герои и их близкие сталкиваются с множеством тяжёлых испытаний. Вокруг них происходят обстрелы, гибнут невинные люди, а жители Донбасса сталкиваются с издевательствами и лишениями. Удастся ли героям остаться в живых, преодолеть все трудности и сохранить человечность? Как происходящее повлияет на их судьбы? </p>
             <p>Приглашаем поклонников военных драм посмотреть онлайн российский фильм «Солнцепёк» режиссёров Максима Бриуса и Михаила Вассербаума, который рассказывает пронзительную историю войны в Донбассе. </p>
         </div>
         <button id="more">Читать дальше...</button>
     </div>
 </div>
-<div class="row">
-    <div class="col">
-        Режисеры и актеры... TODO
+<div class="film__line mt-4"></div>
+<div class="d-flex flex-column mt-4">
+    <div class="h3">
+        Актеры и режиссеры
+    </div>
+    <div class="actors-producers__container mt-3">
+        @foreach (var producer in Model.Producers)
+        {
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src=@producer.Photo class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">@producer.Name @producer.Surname</div>
+                    <div class="actors-producers__item__who">Продюсер</div>
+                </div>
+            </a>
+        }
+        @foreach (var actor in Model.Actors)
+        {
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src=@actor.Photo class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
+                    <div class="actors-producers__item__who">Актёр</div>
+                </div>
+            </a>
+        }
+        
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="~/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div class="actors-producers__item__container_show">
+            <a href="#" class="d-flex flex-column actors-producers__item__container">
+                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
+                <div class="d-flex flex-column mt-1">
+                    <div class="actors-producers__item__name">Том Холланд</div>
+                    <div class="actors-producers__item__who">Актер</div>
+                </div>
+            </a>
+        </div>
+        <div id="actorsProducersMoreBtn">
+            <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
+                Еще
+            </div>
+        </div>
+        <div id="actorsProducersHideBtn">
+            <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
+                Скрыть
+            </div>
+        </div>
     </div>
 </div>
-
 
 
 @section Styles

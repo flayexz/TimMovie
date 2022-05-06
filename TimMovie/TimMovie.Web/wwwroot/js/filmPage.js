@@ -1,6 +1,7 @@
 $(document).ready(function () {
   moveDescription();
   cropDescriptrion();
+  hideActorsAndProducers();
 });
 
 $(window).resize(function () {
@@ -52,3 +53,38 @@ $("#more").on("click", function () {
 $("#backward_link").on("click", function (){
   history.go(-1);
 })
+
+
+//actors and producers script
+
+const showMoreActorsAndProducersBtn = $("#actorsProducersMoreBtn");
+const hideActorsAndProducersBtn = $("#actorsProducersHideBtn");
+const actorsAndProducersContainer = $(".actors-producers__container");
+const durationForShow = 400;
+
+
+// function hideActorsAndProducers() {
+//   let e = $(".actors-producers__item__container_show");
+//   $(".actors-producers__item__container_show").each(function() {
+//     $(this).hide();
+//   })
+//   hideActorsAndProducersBtn.hide();
+// }
+
+function showMoreActorsAndProducers() {
+  $(".actors-producers__item__container_show").each(function() {
+    $(this).show(durationForShow);
+  })
+  showMoreActorsAndProducersBtn.hide();
+  hideActorsAndProducersBtn.show(durationForShow);
+}
+
+function hideActorsAndProducers() {
+  $(".actors-producers__item__container_show").each(function() {
+    $(this).hide();
+  })
+  showMoreActorsAndProducersBtn.show(durationForShow);
+  hideActorsAndProducersBtn.hide();
+}
+
+

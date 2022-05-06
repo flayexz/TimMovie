@@ -9,8 +9,10 @@ public class FilmViewModel
     public int Year { get; set; }
     
     public string? Description { get; set; }
-    
     public Country? Country { get; set; }
+
+    public double? Rating { get; set; }
+    public int? GradesNumber { get; set; }
     public string? FilmLink { get; set; }
     public List<Comment> Comments { get; set; }
 
