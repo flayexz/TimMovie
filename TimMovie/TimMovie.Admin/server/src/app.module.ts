@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import {RoleService} from "./services/RoleService";
 import {SubscribeService} from "./services/SubscribeService";
 import { SubscribeController } from "./controllers/subscribe/subscribeController"
+import {RoleController} from "./controllers/role/role.controller";
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { SubscribeController } from "./controllers/subscribe/subscribeController
       }),
       JwtModule.register({})
   ],
-  controllers: [UserController,AdminController, SubscribeController],
+  controllers: [UserController,AdminController, SubscribeController, RoleController],
   providers: [UserService,AdminAuth, RoleService, SubscribeService],
 })
 

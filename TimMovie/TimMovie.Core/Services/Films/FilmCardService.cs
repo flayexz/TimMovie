@@ -56,7 +56,6 @@ public class FilmCardService
             {
                 var filmCard = _mapper.Map<FilmCardDto>(film);
                 filmCard.Rating = _filmService.GetRating(film);
-                filmCard.IsExistInSubscribe = _filmService.IsExistInSubscribe(film);
                 return filmCard;
             })
             .ToList();
@@ -114,7 +113,8 @@ public class FilmCardService
         var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
         
         var films = queryExec
-            .IncludeInResult(watched => watched.Film)
+            .IncludeInResult(watched => watched.Film.Country)
+            .IncludeInResult(watched => watched.Film.Genres)
             .GetEntitiesWithPagination(0, amount)
             .Select(watched => watched.Film);
         

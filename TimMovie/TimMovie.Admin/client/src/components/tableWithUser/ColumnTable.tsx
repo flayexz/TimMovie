@@ -2,6 +2,7 @@
 import classes from "./table.module.css";
 import {IUserDto} from "../../dto/IUserDto";
 import {Link} from "react-router-dom";
+import {classNameConcat} from "../../common/classNameConcat";
 
 interface IColumnTableProps{
     nameColumn: string;
@@ -15,7 +16,9 @@ function ColumnTable({nameColumn, users, userPropName, isLinked}: IColumnTablePr
         <div className="d-flex flex-column">
             <h5>{nameColumn}</h5>
             {users.map((user: any) => isLinked 
-                ? <Link to={`/users/${user.id}`}><div className={classes.userRecord} key={user.id}>{user[userPropName]}</div></Link> 
+                ? <Link to={`/users/${user.id}`} key={user.id} className={classes.linkToUser}>
+                    <div className={classes.userRecord}>{user[userPropName]}</div>
+                </Link> 
                 : <div className={classes.userRecord} key={user.id}>{user[userPropName]}</div>)}
         </div>
     );

@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.SharedKernel.Interfaces;
 
@@ -10,8 +9,12 @@ public interface IRepository<TEntity> where TEntity : class
     Task<List<TEntity>> GetAllAsync();
     void Update(TEntity item);
     void Delete(TEntity item);
+    public Task SaveChangesAsync();
 
     IQueryable<TEntity> Include<TProperty>(
         IQueryable<TEntity> query,
         Expression<Func<TEntity, TProperty>> navigationPathToProperty);
+
+    IQueryable<TEntity> ThenInclude<TIncludableEntity, TProperty>
+        (IQueryable<TEntity> query, Expression<Func<TIncludableEntity, TProperty>> navigationPathToProperty);
 }

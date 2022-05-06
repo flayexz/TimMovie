@@ -28,5 +28,6 @@ public class InfrastructureModule: Module
             new NamedParameter("client", new HttpClient())
         }).InstancePerDependency();
         builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+        builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
     }
 }

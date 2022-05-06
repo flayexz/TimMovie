@@ -1,0 +1,243 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Roboto&display=swap");
+
+body {
+ background-color: #100e19;
+ font-weight: 500;
+ font-size: 40px;
+}
+
+* {
+ font-family: "Roboto", sans-serif;
+}
+
+h1{
+ font-size: 3rem;
+}
+
+.text_color {
+ color: #fff;
+}
+
+.hover_link{
+ font-size: 1.3rem;
+ font-weight: 500;
+ text-decoration: none;
+ cursor: pointer;
+ color: rgba(255,255,255,0.72);
+}
+
+.hover_link:hover{
+ color: #fff;
+}
+
+ul{
+ line-height: 1.3rem;
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+}
+
+ul li{
+ display:inline;
+ font-size: 1rem;
+ padding: 10px;
+ color: rgba(255, 255, 255, 0.72)
+}
+
+
+#backward_link{
+ padding: 10px;
+ padding-left: 0;
+}
+
+#film_description
+{
+ padding-left: 10px;
+ font-size: 1rem;
+ text-align: left;
+ color: rgba(255, 255, 255, 0.72);
+}
+
+button{
+ border: 0;
+}
+
+.buttons{
+ background-color: #23212b;
+ color:rgba(255, 255, 255, .72);
+ font-size: 1.2rem;
+ border-radius: 8px;
+ height: 40px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 10px;
+ margin-top: 10px;
+}
+
+.buttons:hover{
+ background-color: #36353e;
+}
+
+#more{
+ padding-left: 0;
+ background-color: transparent;
+ color:rgba(255, 255, 255, .48);
+ font-size: 1rem;
+}
+
+#more:hover{
+ color:#fff
+}
+
+.text_bold{
+ font-weight: 1000;
+}
+
+.actor{
+ padding: 1px;
+ cursor: pointer;
+ text-decoration: none;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+}
+
+.actor:hover .content{
+border: 7px solid #494850;
+}
+
+.actor:hover .caption {
+ color:#fff
+}
+
+.actor:hover #film_rating{
+ background-color: #494850;
+}
+
+.content{
+ width: 60px;
+ height: 60px;
+ border: 7px solid #36353e;
+ border-radius: 8px;
+}
+
+
+#film_rating{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ font-size: 1.2rem;
+ background-color: #36353e;
+ color: #fff;
+}
+
+.caption{
+ max-width: 68.8px;
+ text-align: center;
+ font-size: 0.9rem;
+ color: #828187;
+ height:4rem;
+}
+
+img{
+ vertical-align: baseline;
+}
+
+
+.pl-5{
+  padding-left: 40px;
+}
+
+.rating_label{
+  font-family: iviSans, Arial, Helvetica, Helvetica Neue, FreeSans, sans-serif;
+  font-size:56px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.rating_under_label{
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+#watch_later{
+max-width: 200px; 
+}
+
+@media screen and (max-width: 450px) {
+ #rate_movie_label{
+  display: none;
+ }
+
+ #rate_movie{
+  height: 80px;
+  width: 80px;
+ }
+
+ #watch_later {
+  height: 80px;
+  width: 80px;
+ }
+
+  #watch_later_label {
+   display: none;
+  }
+.svg_size{
+  width: 4em;
+}
+
+}
+
+@media screen and (min-width: 450px) {
+ #rate_movie_label {
+  display: flex;
+ }
+ #watch_later_label {
+  display: flex;
+ }
+}
+
+
+@media screen and (max-width: 600px) {
+ #film_with_genre_links {
+  display: none;
+ }
+ #backward_link {
+  display: inline-block;
+ }
+}
+
+@media screen and (min-width: 600px) {
+ #film_with_genre_links {
+  display: inline-flex;
+ }
+ #backward_link{
+  display: none;
+ }
+}
+
+@media screen and (max-width: 880px){
+ #film_info_container {
+  text-align: center;
+ }
+}
+
+@media screen and (min-width: 880px){
+ #film_info_container {
+  text-align: left;
+ }
+}
+
+@media screen and (min-width: 1200px) {
+ #film_info_container {
+  text-align: center;
+ }
+
+ #film_player {
+  height: min-content;
+  position: sticky;
+  top:0;
+ }
+}

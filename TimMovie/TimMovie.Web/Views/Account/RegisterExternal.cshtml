@@ -15,7 +15,7 @@
     <h1 style="color: white">Ваша почта</h1>
     <br>
     <form method="post" asp-controller="Account" asp-action="RegisterExternal">
-        <input hidden asp-for="ReurnUrl"/>
+        <input hidden asp-for="ReturnUrl"/>
         <span asp-validation-for="Email"></span>
         <div class="form-field">
             <input type="email" placeholder="Почта" class="input-field" asp-for="Email" style="width:300px">

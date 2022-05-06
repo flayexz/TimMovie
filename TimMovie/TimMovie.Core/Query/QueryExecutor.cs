@@ -7,33 +7,39 @@ namespace TimMovie.Core.Query;
 public class QueryExecutor<TEntity>
     where TEntity: class
 {
-    private IQueryable<TEntity> _query;
-    private readonly IRepository<TEntity> _repository;
+    protected IQueryable<TEntity> Query;
+    protected readonly IRepository<TEntity> Repository;
 
     public QueryExecutor(IQueryable<TEntity> query, IRepository<TEntity> repository)
     {
-        _query = query;
-        _repository = repository;
+        Query = query;
+        Repository = repository;
     }
 
     public IEnumerable<TEntity> GetEntitiesWithPagination(int amountSkip, int amountTake)
     {
-        return _query
+        return Query
             .Skip(amountSkip)
             .Take(amountTake)
             .ToList();
     }
+    
+    public IEnumerable<TEntity> GetEntities()
+    {
+        return Query.ToList();
+    }
 
     public TEntity? FirstOrDefault()
     {
-        return _query
+        return Query
             .FirstOrDefault();
     }
 
-    public QueryExecutor<TEntity> IncludeInResult<TProperty>(
+    public IncludableQueryExecutor<TEntity,TProperty> IncludeInResult<TProperty>(
         Expression<Func<TEntity, TProperty>> navigationPathToProperty)
     {
-        _query = _repository.Include(_query, navigationPathToProperty);
-        return this;
+        Query = Repository.Include(Query, navigationPathToProperty);
+        
+        return new IncludableQueryExecutor<TEntity,TProperty>(Query, Repository);
     }
 }

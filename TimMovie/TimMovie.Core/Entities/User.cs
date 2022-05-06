@@ -8,7 +8,7 @@ namespace TimMovie.Core.Entities;
 
 public class User : IdentityUser<Guid>, IIdHolder<Guid>
 {
-    [DateOnly] public DateOnly BirthDate { get; set; }
+    [DateOnly] public DateOnly? BirthDate { get; set; }
     public UserStatus Status { get; set; }
     public Film? WatchingFilm { get; set; }
 

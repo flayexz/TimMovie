@@ -9,5 +9,5 @@ public class ExternalLoginViewModel
     [Display(Name = "Почта")]
     public string Email { get; set; }
     
-    public string ReurnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 }

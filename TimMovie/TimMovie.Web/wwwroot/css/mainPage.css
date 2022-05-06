@@ -208,8 +208,4 @@ h1{
   right: -40px;
 }
 
-.card-container:hover {
-  transition: 0.2s;
-  transform: scale(1.05); 
-}
 /* end of film carousel styles */
