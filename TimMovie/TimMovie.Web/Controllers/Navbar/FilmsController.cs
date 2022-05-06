@@ -59,8 +59,7 @@ public class FilmsController : Controller
     {
         var cardsDto = _filmCardService.GetFilmCardsByFilters(filtersWithPagination);
 
-        var cardsViewModel = cardsDto
-            .Select(card=> _mapper.Map<FilmCardViewModel>(card));
+        var cardsViewModel = _mapper.Map<IEnumerable<FilmCardViewModel>>(cardsDto);
 
         return PartialView("~/Views/Partials/FilmCard/FilmCards.cshtml", cardsViewModel);
     }

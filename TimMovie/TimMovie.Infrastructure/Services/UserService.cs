@@ -188,7 +188,7 @@ public class UserService : IUserService
     public async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync() =>
         await signInManager.GetExternalLoginInfoAsync();
 
-    public async Task<UserInfoDto> GetInfoAboutUser(Guid userId)
+    public async Task<UserInfoDto> GetInfoAboutUserAsync(Guid userId)
     {
         var user = await userManager.Users
             .Include(u => u.Country)

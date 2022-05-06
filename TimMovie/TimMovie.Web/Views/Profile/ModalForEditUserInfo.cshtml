@@ -18,20 +18,20 @@
               </svg>
               <div class="d-flex flex-column justify-content-between align-items-center edit-user-info__container">
                   <div class="form-fields d-flex flex-column justify-content-between align-items-center">
-                      <div class="d-flex flex-column form-field edit-user-info__display-name-container">
+                      <div class="d-flex flex-column align-items-center form-field edit-user-info__display-name-container">
                           <label for="displayNameInput">Никнейм</label>
                           <input id="displayNameInput" type="email" placeholder="" class="input-field edit-user-info__input"
                                  name="DisplayName" value="@Model.UserInfo.DisplayName">
                           <span id="displayNameError" class="edit-user-info__error-message-input"></span>
                       </div>
-                      <div class="d-flex flex-column edit-user-info__birthday-container">
+                      <div class="d-flex flex-column align-items-center edit-user-info__birthday-container">
                           <label for="birthDateInput" id="mw-100">Дата рождения</label>
                           <input id="birthDateInput" type="date" placeholder="" class="input-field edit-user-info__input"
                                  name="BirthDate" value="@Model.UserInfo.BirthDate?.ToString("yyyy-MM-dd")"
                                  min="1920-01-01" max="@DateTime.Now.ToString("yyyy-MM-dd")">
                           <span id="birthDateError" class="edit-user-info__error-message-input"></span>
                       </div>
-                      <div class="d-flex flex-column">
+                      <div class="d-flex flex-column align-items-center">
                           <label for="countryNameInput">Страна</label>
                           <select id="countryNameInput" class="custom-select edit-user-info__input">
                               <option selected>Другая</option>

@@ -55,15 +55,16 @@ public class UserProfileController : Controller
             return View("~/Views/Errors/UserNotExisting.cshtml");
         }
 
+        var userInfo = await _userService.GetInfoAboutUserAsync(id);
+        var filmCards = _filmCardService.GetLatestFilmsViewedByUser(id, 6);
+        var subscribes = _subscribeService.GetAllActiveUserSubscribes(id);
+
         var userProfile = new UserProfileViewModel
         {
             IsOwner = User.Identity.IsAuthenticated && User.GetUserId() == id,
-            UserInfo = _mapper.Map<UserInfoViewModel>(await _userService.GetInfoAboutUser(id)),
-            FilmCards = _filmCardService
-                .GetLatestFilmsViewedByUser(id, 6)
-                .Select(cardDto => _mapper.Map<FilmCardViewModel>(cardDto)),
-            UserSubscribes = _subscribeService.GetAllUserSubscribes(id)
-                .Select(subscribeDto => _mapper.Map<UserSubscribeViewModel>(subscribeDto)),
+            UserInfo = _mapper.Map<UserInfoViewModel>(userInfo),
+            FilmCards = _mapper.Map<IEnumerable<FilmCardViewModel>>(filmCards),
+            UserSubscribes = _mapper.Map<IEnumerable<UserSubscribeViewModel>>(subscribes),
             CountryNames = _countryService.GetCountryNames()
         };
         
