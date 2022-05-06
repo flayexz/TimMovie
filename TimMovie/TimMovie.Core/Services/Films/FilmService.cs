@@ -2,6 +2,8 @@
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
+using TimMovie.Core.Services.Actors;
+using TimMovie.Core.Services.Producers;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
@@ -13,13 +15,22 @@ public class FilmService
 {
     private readonly IRepository<Film> _filmRepository;
     private readonly IRepository<User> _userRepository;
+    private readonly ProducerService _producerService;
+    private readonly ActorService _actorService;
     private readonly IMapper _mapper;
 
-    public FilmService(IRepository<Film> filmRepository, IRepository<User> userRepository, IMapper mapper)
+    public FilmService(
+        IRepository<Film> filmRepository,
+        IRepository<User> userRepository,
+        IMapper mapper,
+        ProducerService producerService, 
+        ActorService actorService)
     {
         _filmRepository = filmRepository;
         _userRepository = userRepository;
         _mapper = mapper;
+        _producerService = producerService;
+        _actorService = actorService;
     }
 
     public bool IsExistInSubscribe(Film film)
@@ -53,5 +64,17 @@ public class FilmService
         return film is null 
             ? null
             : _mapper.Map<FilmForStatusDto>(film);
+    }
+    
+    public FilmActorsAndProducersDto GetFilmActorsAndProducers(Guid filmId)
+    {
+        var producers = _producerService.GetFilmProducers(filmId);
+        var actors = _actorService.GetFilmActors(filmId);
+
+        return new FilmActorsAndProducersDto
+        {
+            FilmActors = actors,
+            FilmProducers = producers
+        };
     }
 }
