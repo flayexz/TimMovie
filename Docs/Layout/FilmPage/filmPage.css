@@ -146,6 +146,36 @@ img{
 }
 
 
+@media screen and (max-width: 550px) {
+ #rate_movie_label{
+  display: none;
+ }
+
+ #rate_movie{
+  height: 80px;
+  width: 80px;
+ }
+
+ #watch_later {
+  height: 80px;
+  width: 80px;
+ }
+
+  #watch_later_label {
+   display: none;
+  }
+}
+
+@media screen and (min-width: 550px) {
+ #rate_movie_label {
+  display: flex;
+ }
+ #watch_later_label {
+  display: flex;
+ }
+}
+
+
 @media screen and (max-width: 600px) {
  #film_with_genre_links {
   display: none;
