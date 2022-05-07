@@ -40,6 +40,7 @@ public static class ServicesConfiguration
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
             typeof(InfrastructureMappingProfile));
+        services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
       
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
         services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);

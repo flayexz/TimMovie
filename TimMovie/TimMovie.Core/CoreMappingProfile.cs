@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Films;
+using TimMovie.Core.DTO.Person;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.WatchedFilms;
 using TimMovie.Core.Entities;
@@ -15,6 +16,7 @@ public class CoreMappingProfile: Profile
                 dto => dto.FirstGenreName,
                 expression => expression.MapFrom(film => film.Genres.First().Name));
         CreateMap<UserSubscribe, UserSubscribeDto>();
+        CreateMap<Film, FilmDto>();
         CreateMap<User, FilmForStatusDto>()
             .ForMember(
                 film => film.Id,
@@ -22,6 +24,8 @@ public class CoreMappingProfile: Profile
             .ForMember(
                 film => film.Title,
                 expression => expression.MapFrom(user => user.WatchingFilm.Title));
+        CreateMap<Producer, FilmProducerDto>();
+        CreateMap<Actor, FilmActorDto>();
         CreateMap<UserFilmWatched, WatchedFilmDto>()
             .ForMember(
                 x => x.WatchedDate,
