@@ -70,7 +70,7 @@
                 const int numsAfterCurrentPage = 2;
                 var pageIndex = Model.PageIndex;
                 var isShownStart = false;
-                for (int i = 1; i < Model.TotalPages + 1; i++)
+                for (var i = 1; i < Model.TotalPages + 1; i++)
                 {
                     var currentIndex = i;
                     var paginationIndex = currentIndex < pageIndex ? pageIndex - (pageIndex - currentIndex) : i;
