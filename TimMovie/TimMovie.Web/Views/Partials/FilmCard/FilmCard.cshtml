@@ -5,7 +5,7 @@
 
 <div class="col [ film-card ]">
     <div class="position-relative">
-        <a href="/ссылка" class="position-absolute [ film-card__more-info-container ]">
+        <a class="position-absolute [ film-card__more-info-container ]" asp-controller="Film" asp-action="Film" asp-route-id="@Model.Id">
             <div class="d-flex flex-column [ film-card__more-info ]">
                 <div class="d-flex flex-column align-items-end">
                     <svg width="2.2em" fill="white" version="1.1" viewBox="0 0 700 700"
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </a>
-        <a href="/ссылка" class="mw-100">
+        <a href="" class="mw-100">
             <img class="rounded-2 mw-100 [ film-card__img ]"
                  src="@card.Image" alt=""/>
         </a>
