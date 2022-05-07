@@ -4,6 +4,8 @@ namespace TimMovie.Core.DTO.Subscribes;
 
 public class SubscribeDto
 {
+    public Guid Id { get; set; }
+    
     public string Name { get; set; }
 
     public decimal Price { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Services.Subscribes;
+using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.SearchFromLayout;
 
 namespace TimMovie.Web.Controllers.Navbar;
@@ -24,9 +25,11 @@ public class SearchController : Controller
     public IActionResult SearchSubscribeResults(string namePart, int take = int.MaxValue, int skip = 0)
     {
         var subscribes = _subscribeService.GetSubscribesByNamePart(namePart, take, skip);
+        var userSubscribes = _subscribeService.GetAllActiveUserSubscribes(User.GetUserId());
         var viewModel = new SearchSubscribeViewModel
         {
-            Subscribes = subscribes
+            Subscribes = subscribes,
+            UserSubscribes = userSubscribes
         };
         return View("~/Views/Subscribes/SubscribesResult.cshtml", viewModel);
     }

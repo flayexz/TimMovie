@@ -46,11 +46,27 @@
                 </div>
                 <div class="subscribeCardInSubscribeSearch-body-price d-flex">
                     <div class="subscribeCard-name">Цена:</div>
-                    <div class="subscribeCard-price">@subscribe.Price</div>
+                    <div class="subscribeCard-price">@(subscribe.Price)р</div>
                 </div>
-                <a href="#" class="subscribeCardInSubscribeSearch-body-button">
-                    Купить
-                </a>
+                @{
+                    var hasUserSubscribe = Model.UserSubscribes.Any(s => s.SubscribeId == subscribe.Id);
+                    <div class="subscribeCard-subscribe-active w-100 d-flex align-items-center">
+                       @if (hasUserSubscribe)
+                       {
+                           @($"Действует до {@Model.UserSubscribes.FirstOrDefault(s => s.SubscribeId == subscribe.Id)?.EndDate}")
+                       }       
+                    </div>
+                    <a asp-controller="SubscribePayment" asp-action="Payment" asp-route-subscribeId="@subscribe.Id" class="subscribeCardInSubscribeSearch-body-button">
+                        @if (hasUserSubscribe)
+                        {
+                            @("Продлить")
+                        }
+                        else
+                        {
+                            @("Оплатить")
+                        }
+                    </a>
+                }
             </div>
         </div>
     }

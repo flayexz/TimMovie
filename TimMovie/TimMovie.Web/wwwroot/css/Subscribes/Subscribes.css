@@ -1,6 +1,7 @@
 ﻿.subscribeCardInSubscribeSearch{
-    width: 220px;
-    height: 370px;
+    width: 230px;
+    /*height: 400px;*/
+    height: auto;
     color: darkgrey;
     padding: 0;
     border-radius: 6px;
@@ -30,7 +31,7 @@
     text-align: center;
     border-radius: 6px;
     padding: 5px;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .subscribeCardInSubscribeSearch-body-button:hover{
@@ -74,8 +75,18 @@
 
 .subscribeCard-container{
     display: grid;
-    grid-template-columns: repeat(auto-fill, 220px);
+    grid-template-columns: repeat(auto-fill, 230px);
     grid-column-gap: 35px;
     grid-row-gap: 1em;
     justify-content: center;
+}
+
+.subscribeCard-subscribe-active{
+    margin-top: 5px;
+    font-size: 12px;
+    height: 18px;
+}
+
+.subscribeCardInSubscribeSearch-body{
+    padding-bottom: 0.5rem;
 }

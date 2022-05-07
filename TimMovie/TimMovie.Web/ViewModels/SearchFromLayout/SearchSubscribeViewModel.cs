@@ -5,5 +5,6 @@ namespace TimMovie.Web.ViewModels.SearchFromLayout;
 public class SearchSubscribeViewModel
 {
     public IEnumerable<SubscribeDto>? Subscribes { get; set; }
-
+    
+    public IEnumerable<UserSubscribeDto> UserSubscribes { get; set; }
 }
