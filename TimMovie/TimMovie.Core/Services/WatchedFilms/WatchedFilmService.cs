@@ -5,6 +5,7 @@ using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.UserFilmWatchedSpec;
+using TimMovie.Core.Specifications.StaticSpecification;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.WatchedFilms;
@@ -15,7 +16,9 @@ public class WatchedFilmService
     private readonly IMapper mapper;
     private readonly FilmService filmService;
 
-    public WatchedFilmService(IRepository<UserFilmWatched> userFilmWatchedRepository, IMapper mapper, FilmService filmService)
+    public WatchedFilmService(IRepository<UserFilmWatched> userFilmWatchedRepository,
+        IMapper mapper,
+        FilmService filmService)
     {
         this.userFilmWatchedRepository = userFilmWatchedRepository;
         this.mapper = mapper;
@@ -45,5 +48,12 @@ public class WatchedFilmService
         });
 
         return new PaginatedList<WatchedFilmDto>(watchedDto, query.Count(), pageIndex, pageSize);
+    }
+
+    public int GetAmountGradesForFilms(Guid filmId)
+    {
+        return userFilmWatchedRepository.Query
+            .Where(new WatchedFilmByFilmIdSpec(filmId) && WatchedFilmStaticSpec.HaveGrade)
+            .Count();
     }
 }

@@ -1,7 +1,7 @@
 $(document).ready(function () {
   moveDescription();
   cropDescriptrion();
-  hideActorsAndProducers();
+  hideAllActorsAndProducers();
 });
 
 $(window).resize(function () {
@@ -59,17 +59,16 @@ $("#backward_link").on("click", function (){
 
 const showMoreActorsAndProducersBtn = $("#actorsProducersMoreBtn");
 const hideActorsAndProducersBtn = $("#actorsProducersHideBtn");
-const actorsAndProducersContainer = $(".actors-producers__container");
 const durationForShow = 400;
 
 
-// function hideActorsAndProducers() {
-//   let e = $(".actors-producers__item__container_show");
-//   $(".actors-producers__item__container_show").each(function() {
-//     $(this).hide();
-//   })
-//   hideActorsAndProducersBtn.hide();
-// }
+function hideAllActorsAndProducers() {
+  let e = $(".actors-producers__item__container_show");
+  $(".actors-producers__item__container_show").each(function() {
+    $(this).hide();
+  })
+  hideActorsAndProducersBtn.hide();
+}
 
 function showMoreActorsAndProducers() {
   $(".actors-producers__item__container_show").each(function() {
@@ -86,5 +85,9 @@ function hideActorsAndProducers() {
   showMoreActorsAndProducersBtn.show(durationForShow);
   hideActorsAndProducersBtn.hide();
 }
+
+showMoreActorsAndProducersBtn.on("click", showMoreActorsAndProducers);
+hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
+hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
 
 

@@ -2,8 +2,7 @@
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
-using TimMovie.Core.Services.Actors;
-using TimMovie.Core.Services.Producers;
+using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
@@ -15,22 +14,19 @@ public class FilmService
 {
     private readonly IRepository<Film> _filmRepository;
     private readonly IRepository<User> _userRepository;
-    private readonly ProducerService _producerService;
-    private readonly ActorService _actorService;
+    private readonly Lazy<WatchedFilmService> _watchedFilmService;
     private readonly IMapper _mapper;
 
     public FilmService(
         IRepository<Film> filmRepository,
         IRepository<User> userRepository,
         IMapper mapper,
-        ProducerService producerService,
-        ActorService actorService)
+        Lazy<WatchedFilmService> watchedFilmService)
     {
         _filmRepository = filmRepository;
         _userRepository = userRepository;
         _mapper = mapper;
-        _producerService = producerService;
-        _actorService = actorService;
+        _watchedFilmService = watchedFilmService;
     }
 
     public bool IsExistInSubscribe(Film film)
@@ -72,20 +68,8 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
 
-    private int? GetGradesAmount(Guid filmId)
-    {
-        var query = _filmRepository.Query
-            .Where(new EntityByIdSpec<Film>(filmId));
-        var executor = new QueryExecutor<Film>(query, _filmRepository);
-    
-        var film = executor
-            .IncludeInResult(film => film.UserFilmWatcheds).FirstOrDefault();
-        return film?.UserFilmWatcheds.Count;
-    }
-    
     public FilmDto? GetFilmById(Guid filmId)
     {
-        var t = GetGradesAmount(filmId);
         var query = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(filmId));
         var executor = new QueryExecutor<Film>(query, _filmRepository);
@@ -96,13 +80,12 @@ public class FilmService
             .IncludeInResult(film => film.Actors)
             .IncludeInResult(film => film.Producers)
             .IncludeInResult(film => film.Comments)
-            .IncludeInResult(film => film.UserFilmWatcheds)
             .FirstOrDefault();
 
 
         var film = MapToRequiredDto<Film?, FilmDto>(tmpFilm);
         film!.Rating = GetRating(tmpFilm!);
-        film!.GradesNumber = tmpFilm!.UserFilmWatcheds.Count; 
+        film!.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
         return film;
     }
 }

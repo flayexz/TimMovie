@@ -88,6 +88,10 @@
         Актеры и режиссеры
     </div>
     <div class="actors-producers__container mt-3">
+        @{
+            var amountActorForShow = 10 - Model.Producers.Count;
+            var actorsAndProducersMoreTen = Model.Producers.Count + Model.Actors.Count > 10;
+        }
         @foreach (var producer in Model.Producers)
         {
             <a href="#" class="d-flex flex-column actors-producers__item__container">
@@ -98,7 +102,7 @@
                 </div>
             </a>
         }
-        @foreach (var actor in Model.Actors)
+        @foreach (var actor in Model.Actors.Take(amountActorForShow))
         {
             <a href="#" class="d-flex flex-column actors-producers__item__container">
                 <img src=@actor.Photo class="actors-producers__item__img">
@@ -108,80 +112,31 @@
                 </div>
             </a>
         }
-        
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="~/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
+        @if (actorsAndProducersMoreTen)
+        {
+            foreach (var actor in Model.Actors.Skip(amountActorForShow))
+            {
+                <div class="actors-producers__item__container_show">
+                    <a href="#" class="d-flex flex-column actors-producers__item__container">
+                        <img src=@actor.Photo class="actors-producers__item__img">
+                        <div class="d-flex flex-column mt-1">
+                            <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
+                            <div class="actors-producers__item__who">Актёр</div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
+            }
+            <div id="actorsProducersMoreBtn">
+                <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
+                    Еще
                 </div>
-            </a>
-        </div>
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
-                </div>
-            </a>
-        </div>
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
-                </div>
-            </a>
-        </div>
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
-                </div>
-            </a>
-        </div>
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
-                </div>
-            </a>
-        </div>
-        <div class="actors-producers__item__container_show">
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
-                <img src="/images/1001250653.jpg" class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">Том Холланд</div>
-                    <div class="actors-producers__item__who">Актер</div>
-                </div>
-            </a>
-        </div>
-        <div id="actorsProducersMoreBtn">
-            <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
-                Еще
             </div>
-        </div>
-        <div id="actorsProducersHideBtn">
-            <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
-                Скрыть
+            <div id="actorsProducersHideBtn">
+                <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
+                    Скрыть
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
