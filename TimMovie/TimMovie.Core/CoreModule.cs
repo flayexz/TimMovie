@@ -7,6 +7,7 @@ using TimMovie.Core.Services.Genres;
 using TimMovie.Core.Services.Producers;
 using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.SupportedServices;
+using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.ValidatorServices;
 
 namespace TimMovie.Core;
@@ -25,6 +26,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<SubscribeService>(builder);
         RegisterServiceOnSelf<FileService>(builder);
         RegisterServiceOnSelf<UserValidator>(builder);
+        RegisterServiceOnSelf<WatchedFilmService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 

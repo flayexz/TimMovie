@@ -67,6 +67,7 @@ public class UserProfileController : Controller
             UserSubscribes = _mapper.Map<IEnumerable<UserSubscribeViewModel>>(subscribes),
             CountryNames = _countryService.GetCountryNames()
         };
+        userProfile.UserInfo.Id = id;
         
         return View("~/Views/Profile/UserProfile.cshtml", userProfile);
     }

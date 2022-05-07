@@ -4,6 +4,7 @@ using TimMovie.Core.DTO.Films;
 using TimMovie.Core.DTO.Payment;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.Users;
+using TimMovie.Core.DTO.WatchedFilms;
 using TimMovie.Core.Entities;
 using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.Account;
@@ -11,6 +12,7 @@ using TimMovie.Web.ViewModels.FilmCard;
 using TimMovie.Web.ViewModels.Payment;
 using TimMovie.Web.ViewModels.User;
 using TimMovie.Web.ViewModels.UserSubscribes;
+using TimMovie.Web.ViewModels.WatchedFilms;
 
 namespace TimMovie.Web.Configuration;
 
@@ -33,5 +35,7 @@ public class AppMappingProfile : Profile
                 opt.MapFrom(src =>
                     src.CardNumber.Trim())).ReverseMap();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
+        CreateMap<FilmDto, FilmViewModel>();
+        CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
     }
 }
