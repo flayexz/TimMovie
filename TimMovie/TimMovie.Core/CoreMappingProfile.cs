@@ -2,6 +2,7 @@
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.DTO.Person;
 using TimMovie.Core.DTO.Subscribes;
+using TimMovie.Core.DTO.WatchedFilms;
 using TimMovie.Core.Entities;
 
 namespace TimMovie.Core;
@@ -25,5 +26,13 @@ public class CoreMappingProfile: Profile
                 expression => expression.MapFrom(user => user.WatchingFilm.Title));
         CreateMap<Producer, FilmProducerDto>();
         CreateMap<Actor, FilmActorDto>();
+        CreateMap<UserFilmWatched, WatchedFilmDto>()
+            .ForMember(
+                x => x.WatchedDate,
+                e => e.MapFrom(src => DateOnly.FromDateTime(src.Date)))
+            .ForMember(x => x.Title,
+                e => e.MapFrom(src => src.Film.Title))
+            .ForMember(x => x.Image,
+                e => e.MapFrom(src => src.Film.Image));
     }
 }
