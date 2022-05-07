@@ -1,9 +1,9 @@
-﻿using TimMovie.Core.Entities;
+﻿using TimMovie.Core.DTO.Subscribes;
 
 namespace TimMovie.Web.ViewModels.SearchFromLayout;
 
 public class SearchSubscribeViewModel
 {
-    public IEnumerable<Subscribe>? Subscribes { get; set; }
+    public IEnumerable<SubscribeDto>? Subscribes { get; set; }
 
 }
