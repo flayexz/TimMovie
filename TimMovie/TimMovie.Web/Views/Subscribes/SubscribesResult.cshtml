@@ -7,7 +7,7 @@
     @foreach (var subscribe in Model.Subscribes)
     {
         <div class="subscribeCardInSubscribeSearch col card">
-            <div class="subscribeCardInSubscribeSearch-header card-header">
+            <div class="subscribeCardInSubscribeSearch-header card-header d-flex justify-content-center">
                 @subscribe.Name
             </div>
             <div class="subscribeCardInSubscribeSearch-body card-body d-flex flex-column">
@@ -50,11 +50,16 @@
                 </div>
                 @{
                     var hasUserSubscribe = Model.UserSubscribes.Any(s => s.SubscribeId == subscribe.Id);
-                    <div class="subscribeCard-subscribe-active w-100 d-flex align-items-center">
-                       @if (hasUserSubscribe)
-                       {
-                           @($"Действует до {@Model.UserSubscribes.FirstOrDefault(s => s.SubscribeId == subscribe.Id)?.EndDate}")
-                       }       
+                    <div class="subscribeCard-subscribe-active w-100 d-flex align-items-center flex-row">
+                        @if (hasUserSubscribe)
+                        {
+                            <div class="subscribeCard-subscribe-active-title">
+                                @("Действует до")
+                            </div>
+                            <div class="subscribeCard-subscribe-active-date">
+                                @Model.UserSubscribes.FirstOrDefault(s => s.SubscribeId == subscribe.Id)?.EndDate.ToShortDateString()
+                            </div>
+                        }
                     </div>
                     <a asp-controller="SubscribePayment" asp-action="Payment" asp-route-subscribeId="@subscribe.Id" class="subscribeCardInSubscribeSearch-body-button">
                         @if (hasUserSubscribe)
