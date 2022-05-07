@@ -17,7 +17,8 @@ public class SubscribeService
     private readonly IMapper _mapper;
     private const int SubscribeMonthsDuration = 1;
 
-    public SubscribeService(IRepository<UserSubscribe> userSubscribeRepository, IRepository<Subscribe> subscribesRepository, IMapper mapper)
+    public SubscribeService(IRepository<UserSubscribe> userSubscribeRepository,
+        IRepository<Subscribe> subscribesRepository, IMapper mapper)
     {
         _userSubscribeRepository = userSubscribeRepository;
         _subscribesRepository = subscribesRepository;
