@@ -28,11 +28,10 @@ public class SubscribeService
     /// при namePart == null будут возвращены все подписки
     /// </summary>
     /// <param name="namePart"></param>
-    /// <param name="count"></param>
     /// <param name="take"></param>
     /// <param name="skip"></param>
     /// <returns></returns>
-    public IEnumerable<Subscribe> GetSubscribesByNamePart(string? namePart, int take, int skip, int count = int.MaxValue)
+    public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take, int skip)
     {
         var query = _subscribesRepository.Query
             .Where(new UserSubscribeByNamePart(namePart))
@@ -42,7 +41,7 @@ public class SubscribeService
             .IncludeInResult(subscribe => subscribe.Films)
             .IncludeInResult(subscribe => subscribe.Genres)
             .GetEntities();
-        return subscribes;
+        return MapToSubscribeDto(subscribes);
     }
 
     public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid userId)
@@ -56,6 +55,9 @@ public class SubscribeService
 
         return MapToUserSubscribeDto(subscribes);
     }
+
+    private IEnumerable<SubscribeDto> MapToSubscribeDto(IEnumerable<Subscribe> userSubscribes) =>
+        userSubscribes.Select(s => _mapper.Map<SubscribeDto>(s));
 
     private IEnumerable<UserSubscribeDto> MapToUserSubscribeDto(IEnumerable<UserSubscribe> userSubscribes)
     {
