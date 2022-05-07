@@ -1,6 +1,6 @@
 $(function () {
         let element = $('#input-search-subscribe');
-        let subBody = $('.subscribe-body');
+        let subBody = $('.subscribeCard-container');
         let allLoaded = false;
         let amountSkip = 0;
         const amountTake = 10;

@@ -2,9 +2,9 @@
     width: 220px;
     height: 370px;
     color: darkgrey;
-    margin: 10px 15px;
     padding: 0;
     border-radius: 6px;
+    box-sizing: border-box;
 }
 
 
@@ -70,5 +70,12 @@
 .subscribeCard-price{
     color: rgb(187, 13, 58);
     font-size: 21px;
+}
 
+.subscribeCard-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 220px);
+    grid-column-gap: 35px;
+    grid-row-gap: 1em;
+    justify-content: center;
 }
