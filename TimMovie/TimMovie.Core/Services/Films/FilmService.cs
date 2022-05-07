@@ -31,10 +31,13 @@ public class FilmService
 
     public double? GetRating(Film film)
     {
-        return _filmRepository.Query
+        var rating = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(film.Id))
             .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
             .FirstOrDefault();
+        return rating.HasValue
+            ? Math.Round(rating.Value, 1)
+            : null;
     }
 
     public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>
