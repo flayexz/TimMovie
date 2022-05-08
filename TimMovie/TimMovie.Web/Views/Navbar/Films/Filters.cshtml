@@ -4,6 +4,9 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Фильмы";
+    var selectedFilters = Model.SelectedFilters;
+    Func<bool, string> selectedValue = isSelected => isSelected ? "more-filters_list-item_active" : "";
+    Func<bool, string> selectedMark = isSelected => isSelected ? "more-filters__list-item_mark_selected" : "";
 }
 
 <div class="d-flex flex-column mt-4">
@@ -27,20 +30,32 @@
             </div>
             <ul class="[ dropdown-filter__menu ]">
                 <div class="[ dropdown-filter__list-item_disabled ]">Сортировать</div>
-                <li class="[ dropdown-filter__list-item ] dropdown-filter__list-item_active"
+                <li class="[ dropdown-filter__list-item ] @(selectedFilters.FilmSortingType == FilmSortingType.Popularity ? "dropdown-filter__list-item_active" : "")"
                     data-value="@FilmSortingType.Popularity">
                     Популярность
                 </li>
-                <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Rating">Рейтинг</li>
-                <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.ReleaseDate">Дата выхода</li>
-                <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Views">Просмотры</li>
-                <li class="[ dropdown-filter__list-item ]" data-value="@FilmSortingType.Title">Название</li>
+                <li class="[ dropdown-filter__list-item ] @(selectedFilters.FilmSortingType == FilmSortingType.Rating ? "dropdown-filter__list-item_active" : "")"
+                    data-value="@FilmSortingType.Rating">
+                    Рейтинг
+                </li>
+                <li class="[ dropdown-filter__list-item ] @(selectedFilters.FilmSortingType == FilmSortingType.ReleaseDate ? "dropdown-filter__list-item_active" : "")"
+                    data-value="@FilmSortingType.ReleaseDate">
+                    Дата выхода
+                </li>
+                <li class="[ dropdown-filter__list-item ] @(selectedFilters.FilmSortingType == FilmSortingType.Views ? "dropdown-filter__list-item_active" : "")"
+                    data-value="@FilmSortingType.Views">
+                    Просмотры
+                </li>
+                <li class="[ dropdown-filter__list-item ] @(selectedFilters.FilmSortingType == FilmSortingType.Title ? "dropdown-filter__list-item_active" : "")"
+                    data-value="@FilmSortingType.Title">
+                    Название
+                </li>
             </ul>
-            <input type="text" class="[ dropdown-filter__input ]" id="sort-type" value="@FilmSortingType.Popularity">
+            <input type="text" class="[ dropdown-filter__input ]" id="sort-type" value="@selectedFilters.FilmSortingType">
         </div>
     </div>
     <div class="form-check ms-5">
-        <input class="form-check-input" type="checkbox" value="" id="sort-order">
+        <input class="form-check-input" type="checkbox" value="" checked="@(selectedFilters.IsDescending)" id="sort-order">
         <label class="form-check-label" for="flexCheckDefault">
             От большего к меньшему
         </label>
@@ -67,9 +82,11 @@
                             <div class="[ more-filters__menu-container ]" id="genre-filter">
                                 @foreach (var name in Model.GenresName)
                                 {
-                                    <li class="[ more-filters__list-item ]" data-value="@name">
+                                    var isSelected = selectedFilters.GenreNames.Contains(name);
+                                    <li class="[ more-filters__list-item ] @selectedValue(isSelected)" 
+                                        data-value="@name">
                                         <div>@name</div>
-                                        <svg class="[ more-filters__list-item_mark ]"
+                                        <svg class="[ more-filters__list-item_mark ] @selectedMark(isSelected)"
                                              xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="white" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -100,9 +117,10 @@
                         </div>
                         <ul class="[ more-filters__menu ]">
                             <div class="[ more-filters__menu-container_one-value ]" id="year-filter">
-                                <li class="[ more-filters__list-item ] more-filters_list-item_active" data-value-first="1900" data-value-last="2300">
+                                <li class="[ more-filters__list-item ] @selectedValue(selectedFilters.Year is null)"
+                                    data-value-first="1900" data-value-last="2300">
                                     <div>Все года</div>
-                                    <svg class="[ more-filters__list-item_mark ] more-filters__list-item_mark_selected"
+                                    <svg class="[ more-filters__list-item_mark ] @selectedMark(selectedFilters.Year is null)"
                                          xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                          fill="white" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
@@ -113,7 +131,8 @@
                                 </li>
                                 @foreach (var period in Model.AnnualPeriods)
                                 {
-                                    <li class="[ more-filters__list-item ]" data-value-first="@period.FirstYear" data-value-last="@period.LastYear">
+                                    var isSelected = period.FirstYear <= selectedFilters.Year && selectedFilters.Year <= period.LastYear;
+                                    <li class="[ more-filters__list-item ] @selectedValue(isSelected)" data-value-first="@period.FirstYear" data-value-last="@period.LastYear">
                                         @if (period.IsOneYear)
                                         {
                                             <div>@period.FirstYear</div>
@@ -122,7 +141,7 @@
                                         {
                                             <div>@period.FirstYear-@period.LastYear</div>
                                         }
-                                        <svg class="[ more-filters__list-item_mark ]"
+                                        <svg class="[ more-filters__list-item_mark ] @selectedMark(isSelected)"
                                              xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="white" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -155,9 +174,10 @@
                             <div class="[ more-filters__menu-container ]">
                                 @foreach (var name in Model.CountriesName)
                                 {
-                                    <li class="[ more-filters__list-item ]" data-value="@name">
+                                    var isSelected = selectedFilters.Countries.Contains(name);
+                                    <li class="[ more-filters__list-item ] @selectedValue(isSelected)" data-value="@name">
                                         <div>@name</div>
-                                        <svg class="[ more-filters__list-item_mark ]"
+                                        <svg class="[ more-filters__list-item_mark ] @selectedMark(isSelected)"
                                              xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="white" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
@@ -188,9 +208,9 @@
                         </div>
                         <ul class="[ more-filters__menu ]">
                             <div class="[ more-filters__menu-container_one-value ]" id="rating-filter">
-                                <li class="[ more-filters__list-item ] more-filters_list-item_active" data-value="0">
+                                <li class="[ more-filters__list-item ] @selectedValue(!selectedFilters.MinRating.HasValue)" data-value="0">
                                     <div>Любой рейтинг</div>
-                                    <svg class="[ more-filters__list-item_mark ] more-filters__list-item_mark_selected"
+                                    <svg class="[ more-filters__list-item_mark ] @selectedMark(!selectedFilters.MinRating.HasValue)"
                                          xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                          fill="white" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
@@ -201,9 +221,10 @@
                                 </li>
                                 @foreach (var rating in Model.Ratings)
                                 {
-                                    <li class="[ more-filters__list-item ] " data-value="@rating">
-                                        <div>До @rating</div>
-                                        <svg class="[ more-filters__list-item_mark ]"
+                                    var isSelected = rating == selectedFilters.MinRating;
+                                    <li class="[ more-filters__list-item ] @selectedValue(isSelected)" data-value="@rating">
+                                        <div>От @rating</div>
+                                        <svg class="[ more-filters__list-item_mark ] @selectedMark(isSelected)"
                                              xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                              fill="white" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"

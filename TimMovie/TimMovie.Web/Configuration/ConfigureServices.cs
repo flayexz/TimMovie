@@ -1,11 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
 using TimMovie.Core.Classes;
-using TimMovie.Core.Entities;
 using TimMovie.Infrastructure;
 using TimMovie.Web.AuthorizationHandlers.AgePolicy;
 
