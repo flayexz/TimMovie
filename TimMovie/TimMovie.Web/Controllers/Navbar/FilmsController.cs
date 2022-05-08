@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
+using TimMovie.Core.Enums;
 using TimMovie.Core.Services;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
@@ -31,8 +33,24 @@ public class FilmsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Filters()
+    public IActionResult Filters(
+        HashSet<string> genres,
+        HashSet<string> countries, 
+        int? minRating = null,
+        int? year = null,
+        FilmSortingType filmSortingType = FilmSortingType.Popularity,
+        bool isDescending = true)
     {
+        if (minRating is < 5 or >= 10)
+        {
+            minRating = null;
+        }
+        
+        if (year < 1900 || year > DateTime.Now.Year)
+        {
+            year = null;
+        }
+        
         var filmFilters = new FilmFiltersViewModel
         {
             GenresName = _genreService.GetGenreNames(),
@@ -48,6 +66,15 @@ public class FilmsController : Controller
                 new AnnualPeriodDto(2011, 2013),
                 new AnnualPeriodDto(2001, 2010),
                 new AnnualPeriodDto(1900, 2000)
+            },
+            SelectedFilters = new CurrentSelectedFilters()
+            {
+                GenreNames = genres,
+                Countries = countries,
+                MinRating = minRating,
+                Year =year,
+                FilmSortingType = filmSortingType,
+                IsDescending = isDescending
             }
         };
 
@@ -58,6 +85,10 @@ public class FilmsController : Controller
     public IActionResult FilmFilters(GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
     {
         var cardsDto = _filmCardService.GetFilmCardsByFilters(filtersWithPagination);
+        if (filtersWithPagination?.DataDto is null)
+        {
+            return NotFound();
+        }
 
         var cardsViewModel = _mapper.Map<IEnumerable<FilmCardViewModel>>(cardsDto);
 
