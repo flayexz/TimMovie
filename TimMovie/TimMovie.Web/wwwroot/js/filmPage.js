@@ -63,7 +63,6 @@ const durationForShow = 400;
 
 
 function hideAllActorsAndProducers() {
-  let e = $(".actors-producers__item__container_show");
   $(".actors-producers__item__container_show").each(function() {
     $(this).hide();
   })
