@@ -5,8 +5,10 @@ $(function () {
         url: "/Film/GetGrade",
         data: {filmId: filmId},
         success: function (data) {
-            choosedButton = $(`.gradeNumber:contains(${data})`).first();
-            choosedButton.css("background", "#302a45");
+            if (data != null) {
+                choosedButton = $(`.gradeNumber:contains(${data})`).first();
+                choosedButton.css("background", "#302a45");
+            }
         }
     })
     let gradeNumber = $(".gradeNumber");
@@ -22,16 +24,16 @@ $(function () {
             }
         })
     })
-    gradeNumber.mouseover(function(e) {
+    gradeNumber.mouseover(function (e) {
         $(e.target).css({
             "background": "#B22222",
             "border-color": "#B22222",
             "cursor": "pointer"
         });
     });
-    gradeNumber.mouseleave(function(e){
+    gradeNumber.mouseleave(function (e) {
         let background = "#1e1a2e";
-        if (choosedButton[0].innerText === $(e.target)[0].innerText)
+        if (choosedButton != null && choosedButton[0].innerText === $(e.target)[0].innerText)
             background = "#302a45";
         $(e.target).css({
             "background": background,
