@@ -3,6 +3,7 @@ using TimMovie.Core.DTO.Person;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
 using TimMovie.Core.Specifications.InheritedSpecifications;
+using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.ActorSpec;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Actors;
@@ -22,7 +23,7 @@ public class ActorService
 
     public IEnumerable<Actor> GetActorsByNamePart(string namePart, int count = int.MaxValue) =>
         _actorRepository.Query
-            .Where(a => a.Surname == null ? a.Name.Contains(namePart) : (a.Name + " " + a.Surname).Contains(namePart))
+            .Where(new ActorByNamePartSpec(namePart))
             .Take(count);
     
     public IEnumerable<FilmActorDto> GetFilmActors(Guid filmId)
