@@ -1,0 +1,53 @@
+.modalWindowGrade {
+    position: relative;
+    top: 25%;
+    width: 490px;
+}
+
+.modal-body-text {
+    font-size: 16px;
+    color: #a6a2b3;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.modalGradeBody {
+    border-top: 0;
+}
+
+.gradeButton {
+    background: #1e1a2e;
+    border-color: #1e1a2e;
+    color: #a6a2b3;
+    border-radius: 10px;
+    padding: 4px 2px;
+}
+
+.gradeNumber {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    padding-top: 9%;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.gradeButton:hover {
+    background: #1e1a2e;
+    border-color: #1e1a2e;
+    color: #a6a2b3;
+    cursor: default;
+}
+
+/*.gradeNumber:hover {*/
+/*    background: #B22222;*/
+/*    border-color: #B22222;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.buttonCloseGrade{
+    display: flex;
+    justify-content: flex-end;
+    /*top: 0;*/
+    /*right: 5%;*/
+}
