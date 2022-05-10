@@ -2,7 +2,7 @@
 
 namespace TimMovie.Web.ViewModels.SearchFromLayout;
 
-public class SearchViewModel
+public class SearchEntityViewModel
 {
     public IEnumerable<string>? Films { get; set; }
     
