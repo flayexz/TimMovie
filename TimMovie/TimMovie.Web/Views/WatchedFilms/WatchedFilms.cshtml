@@ -40,6 +40,13 @@
                     foreach (var watched in Model)
                     {
                         index++;
+                        var gradeClass = watched.Grade switch
+                        {
+                            >= 8 => "goodGrade",
+                            >= 5 => "mediumGrade",
+                            > 0 => "badGrade",
+                            _ => ""
+                            };
                         var filmNumber = index + (Model.PageIndex - 1) * Model.PageSize;
                         <div class="films-list">
                             <div class="@(filmNumber > 9 ? "film-number-large" : "film-number") film-block">
@@ -55,7 +62,7 @@
                                 <span>@watched.Rating</span>
                             </div>
                             <div class="film-grade film-block">
-                                <span class="@(watched.Grade >= 8 ? "goodGrade" : watched.Grade >= 5 ? "mediumGrade" : "badGrade")">@watched.Grade</span>
+                                <span class="@(gradeClass)">@(watched.Grade > 0 ? watched.Grade : "-")</span>
                             </div>
                             <div class="film-watched-date film-block">
                                 <span class="watched-date-text">@watched.WatchedDate</span>
@@ -70,7 +77,7 @@
                 const int numsAfterCurrentPage = 2;
                 var pageIndex = Model.PageIndex;
                 var isShownStart = false;
-                for (int i = 1; i < Model.TotalPages + 1; i++)
+                for (var i = 1; i < Model.TotalPages + 1; i++)
                 {
                     var currentIndex = i;
                     var paginationIndex = currentIndex < pageIndex ? pageIndex - (pageIndex - currentIndex) : i;

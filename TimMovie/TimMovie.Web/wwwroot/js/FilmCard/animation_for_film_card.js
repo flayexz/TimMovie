@@ -17,7 +17,10 @@
     function hideAllMoreInfo() {
         let moreInfo = $(nameAdditionalInformationClassName);
         $.each(moreInfo, function() {
-            $(this).hide(durationForShow, "swing");
+            let isHidden = $(this).is(":hidden");
+            if (!isHidden) {
+                $(this).hide();
+            }
         });
     }
     
@@ -26,7 +29,7 @@
 
         let cards = $(".film-card");
         $.each(cards, function() {
-            $(this).hover(displayMoreInfo, hideMoreInfo);
+                $(this).hover(displayMoreInfo, hideMoreInfo);
         });
     }
 
