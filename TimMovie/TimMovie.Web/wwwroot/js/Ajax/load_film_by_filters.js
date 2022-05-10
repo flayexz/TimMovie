@@ -71,7 +71,7 @@
                 cardContainer.append(result);
                 $("img").one("load", function() {
                     prepareFilms();
-                    adaptСontainer();
+                    adaptContainer();
                 });
                 isLoad = false;
             }

@@ -77,8 +77,8 @@ public class FilmCardService
         filterBuilder
             .AddFilterByGenre(filters.GenresName)
             .AddFilterByYear(filters.AnnualPeriod.FirstYear, filters.AnnualPeriod.LastYear)
-            .AddFilterByCountry(filters.CountriesName);
-        //.FilterOnMinimumRating(filters.Rating ?? 0);//Надо добавить рейтинг в бд
+            .AddFilterByCountry(filters.CountriesName)
+            .AddFilterOnMinimumRating(filters.Rating ?? 0);
 
         var sortBuilder = new SortFilmBuilder(filterBuilder);
         sortBuilder.AddSortByTypeSort(filters.SortingType, filters.IsDescending);

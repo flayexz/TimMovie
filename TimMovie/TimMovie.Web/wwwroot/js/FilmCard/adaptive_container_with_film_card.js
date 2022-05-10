@@ -47,13 +47,13 @@
         });
     }
 
-    function adaptСontainer() {
+    function adaptContainer() {
         changeAmountOfCol();
         changeFontSizeTitleCardFilms();
     }
 
     $(document).ready(function() {
-        adaptСontainer();
+        adaptContainer();
 
-        $(window).resize(adaptСontainer);
+        $(window).resize(adaptContainer);
     });
