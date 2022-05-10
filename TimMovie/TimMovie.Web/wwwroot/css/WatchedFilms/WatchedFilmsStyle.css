@@ -188,7 +188,8 @@
 }
 
 .pagination-button{
-    width: 15%;
+    font-size: 15px;
+    width: 10%;
     color: white;
 }
 
