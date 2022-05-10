@@ -48,10 +48,8 @@ public class WatchedFilmsController : Controller
         {
             return NotFound();
         }
-
-        Console.WriteLine("1 " + User.GetUserId());
-        Console.WriteLine("2 " + user.Id);
-        var isOwner = User.GetUserId() == user.Id;
+        
+        var isOwner = User.Identity.IsAuthenticated && User.GetUserId() == user.Id;
 
         var watchedFilmsViewModel = mapper.Map<PaginatedList<WatchedFilmViewModel>>(watchedFilmsDto);
         watchedFilmsViewModel.PageIndex = watchedFilmsDto.PageIndex;
