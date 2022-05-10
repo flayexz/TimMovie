@@ -6,13 +6,13 @@ namespace TimMovie.Core.Specifications.InheritedSpecifications.SubscribeSpec;
 /// <summary>
 /// Фильтр на получение подписок
 /// </summary>
-public class UserSubscribeByNamePart : Specification<Subscribe>
+public class UserSubscribeByNamePartSpec : Specification<Subscribe>
 {
     /// <summary>
     /// Создает фильтр для получения подписок по части названия
     /// При пустой части названия фильтрация не производится
     /// </summary>
     /// <param name="namePart"></param>
-    public UserSubscribeByNamePart(string? namePart) =>
+    public UserSubscribeByNamePartSpec(string? namePart) =>
         Conditional = s => namePart == null || s.Name.ToLower().Contains(namePart);
 }
