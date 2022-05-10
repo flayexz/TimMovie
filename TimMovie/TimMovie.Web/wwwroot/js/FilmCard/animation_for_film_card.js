@@ -31,5 +31,13 @@
     }
 
     $(document).ready(function() {
-        prepareFilms()
+        prepareFilms();
+    });
+
+    $("body").on('click', '.setGradeButton', () => {
+        event.preventDefault();
+        let filmId = $('.film-card__more-info-container').filter(function() {
+            return $(this).css('display') !== 'none';
+        }).attr("href").split('/').pop();
+        getGrade(filmId);
     });
