@@ -1,13 +1,13 @@
 $(function () {
-    $('#input-search-entities-navbar').keyup(function () {
+    $('#input-search-navbar').keyup(function () {
+        let value = $('#input-search-navbar').val();
         $.post({
-            url: "/Search/SearchEntityResults",
-            data: {namePart: $('#input-search-entities-navbar').val()},
+            url: "/Search/SearchResults",
+            data: {namePart: value},
             success: function (data) {
-                $('.search-elements').html(data);
+                $('#search-elements').html(data);
             }
         })
-        
     });
     $("#buttonClose").click(function () {
         $('#dialogContent').html();

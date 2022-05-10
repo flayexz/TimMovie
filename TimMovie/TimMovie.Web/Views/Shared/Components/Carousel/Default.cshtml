@@ -2,13 +2,14 @@
 @model IEnumerable<TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel>
 
 @{
+    var genreName = Model.First().FirstGenreName;
     var cards    = Model;
     var counter = 0;
 }
 <!-- Films carousel -->
 <div class="carousel-container">
     <div class="carousel-inner">
-        <div class="track" id="track">
+        <div class="track">
             @foreach (var card in cards)
             {
                 counter++;
@@ -22,10 +23,12 @@
                 if (counter == 15)
                 {
                     <div class="card-container column">
-                        <div class="card text-white align-items-center justify-content-center last_card_style"
-                             style="background-color:#1f1b2e; height: 75%;">
-                            Посмотреть все
-                        </div>
+                        <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@genreName">
+                            <div class="card text-white align-items-center justify-content-center last_card_style"
+                                 style="background-color:#1f1b2e; height: 75%;">
+                                Посмотреть все
+                            </div>
+                        </a>
                     </div>
                 }
             }

@@ -6,7 +6,7 @@ const track = $('.track');
 track.each(number => {
     let index = 0;
     let item = track[number];
-    console.log(item);
+    console.log(track.length)
 
     function getCardsAmount() {
         let windowWidth = window.innerWidth;
@@ -76,13 +76,7 @@ track.each(number => {
     let isNeedToHide;
 
     setMoveCoefficients();
-
-    console.log(`shifts: ${shifts}`)
-    console.log(`shiftCards: ${shiftCards}`)
-    console.log(`ost: ${ost}`)
-    console.log(`isNeedToHide: ${isNeedToHide}`)
-
-
+    
     next[number].addEventListener('click', function (e) {
         index++;
         console.log(index)

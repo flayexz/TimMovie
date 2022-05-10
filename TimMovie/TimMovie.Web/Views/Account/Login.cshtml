@@ -4,11 +4,14 @@
 <div class="modal fade text-align-center" id="modal1" tabindex="-1" role="dialog" aria-bs-labelledby="modalLabel1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 430px !important;">
         <div class="modal-content" style="background-color: #100e19 !important;border-radius: 20px">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalLabel1" style="color: white;display: flex;justify-content: center">Вход</h3>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-bs-label="Close">
+                </button>
+            </div>
             <div class="modal-body">
-                <div class="mt-2 mb-4 d-flex justify-content-center">
-                    <h1 class="modal-title" id="modalLabel1">Вход</h1>
-                </div>
                 <form method="post" id="loginModal" asp-controller="Account" asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" style="color: #a60303"></div>
                     <div class="row mb-3 mt-3">
                         <div class="col">
                             <input name="userName" type="text" class="loginInput" placeholder="Логин или почта">
@@ -27,8 +30,6 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" class="mt-4 mb-2 login-button-submit" value="Войти">
-                    <div asp-validation-summary="ModelOnly" style="color: #a60303"></div>
                 </form>
                 <div class="divider">или</div>
                 <div>
@@ -51,11 +52,17 @@
                         <input type="submit" id="submit-vk-auth" hidden>
                     </form>
                 </div>
-                <div class="col d-flex justify-content-center mt-2">
+            </div>
+            <div class="modal-footer">
+                <div class="col">
                     <div class="row mb-3">
-                        <a asp-controller="Account" asp-action="Registration" class="me-auto" style="font-size: 17px;text-decoration: none;color: #0a3dbe">Еще не зарегистрированы?</a>
+                        <a asp-controller="Account" asp-action="Registration" class="me-auto" style="font-size: 17px;text-decoration: none">Еще не зарегистрированы?</a>
+                    </div>
+                    <div class="row mb-2">
+                        <a href="#" class="me-auto" style="font-size: 13px;text-decoration: none">сбросить пароль</a>
                     </div>
                 </div>
+                <input type="submit" class="btn btn btn-outline-light" value="Войти" form="loginModal">
             </div>
         </div >
     </div>

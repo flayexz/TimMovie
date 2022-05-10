@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Roboto&display=swap");
-
 :root {
  --actors-producers-width-column: 90px;
 }
@@ -12,27 +10,11 @@ body {
  color: white;
 }
 
-* {
- font-family: "Roboto", sans-serif;
-}
-
 h1{
  font-size: 3rem;
 }
 
 .text_color {
- color: #fff;
-}
-
-.hover_link{
- font-size: 1.3rem;
- font-weight: 500;
- text-decoration: none;
- cursor: pointer;
- color: rgba(255,255,255,0.72);
-}
-
-.hover_link:hover{
  color: #fff;
 }
 
@@ -151,11 +133,6 @@ img{
  vertical-align: baseline;
 }
 
-
-.pl-5{
-  padding-left: 40px;
-}
-
 .rating_label{
   font-family: iviSans, Arial, Helvetica, Helvetica Neue, FreeSans, sans-serif;
   font-size:56px;
@@ -203,6 +180,8 @@ max-width: 250px;
  font-size: 0.42em;
  color: rgb(190, 190, 190);
  line-height: 1.2;
+ overflow: hidden;
+ text-overflow: ellipsis;
 }
 
 .actors-producers__item__who {
@@ -293,6 +272,7 @@ max-width: 250px;
 @media screen and (min-width: 1200px) {
  #film_info_container {
   text-align: center;
+  padding-left: 40px;
  }
 
  #film_player {

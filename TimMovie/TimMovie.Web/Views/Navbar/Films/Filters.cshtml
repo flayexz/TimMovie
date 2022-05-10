@@ -247,8 +247,6 @@
 <div class="mb-5 loader hide"></div>
 </div>
 
-@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
-
 @section Scripts
 {
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
@@ -257,7 +255,6 @@
     <script src="~/js/Dropdown/dropdown_more_filters.js"></script>
     <script src="~/js/Dropdown/dropdown_filters_with_one_value.js"></script>
     <script src="~/js/Ajax/load_film_by_filters.js"></script>
-    <script src="~/js/gradeModalWindow.js"></script>
 }
 
 @section Styles
@@ -266,5 +263,4 @@
     <link rel="stylesheet" href="~/css/Dropdown/dropdownFilters.css"/>
     <link rel="stylesheet" href="~/css/Dropdown/dropdownStyle.css"/>
     <link rel="stylesheet" href="~/css/SmallPageElements/loader.css"/>
-    <link rel="stylesheet" href="/css/gradeModalWindow.css">
 }

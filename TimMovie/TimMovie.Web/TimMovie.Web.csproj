@@ -43,14 +43,12 @@
       <_ContentIncludedByDefault Remove="Views\_ViewImports.cshtml" />
       <_ContentIncludedByDefault Remove="Views\_ViewStart.cshtml" />
       <_ContentIncludedByDefault Remove="Views\FilmCard\Card.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Shared\Components\Search\Default.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Shared\Components\SearchSubscribe\Default.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Navbar\SearchSubscribe\ModalWindow.cshtml" />
-      <_ContentIncludedByDefault Remove="Views\Navbar\SearchSubscribe\SearchSubscribeResult.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Views\Shared\Components\SearchEntity\Default.cshtml" />
+      <Content Update="Views\Film\Film.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
