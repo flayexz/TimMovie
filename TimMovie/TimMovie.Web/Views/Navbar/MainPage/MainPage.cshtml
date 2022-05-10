@@ -61,16 +61,19 @@
 <h1 class="text_color pl-3 mt-5">Лучшие комедии</h1>
 <vc:carousel genre-name="@GenresNames.Comedy"></vc:carousel>
 
+@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
 
 @section Scripts{
     <script src="/js/Carousel_Script.js"></script>
     <script src="/js/resendEmailScript.js"></script>
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="~/js/gradeModalWindow.js"></script>
 }
 
 @section Styles
 {
     <link rel="stylesheet" href="/css/mainPage.css">
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
+    <link rel="stylesheet" href="~/css/gradeModalWindow.css"/>
 }
