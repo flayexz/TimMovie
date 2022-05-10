@@ -1,12 +1,13 @@
 $(function () {
         let element = $('#input-search-subscribe');
         let subBody = $('.subscribeCard-container');
+        const url = "/Subscribes/SubscribesResult";
         let allLoaded = false;
         let amountSkip = 0;
         const amountTake = 10;
 
         $.post({
-            url: "/Search/SearchSubscribeResults",
+            url: url,
             data: {take: amountTake},
             success: function (data) {
                 subBody.empty();
@@ -18,7 +19,7 @@ $(function () {
         element.keyup(function () {
             amountSkip = 0;
             $.post({
-                url: "/Search/SearchSubscribeResults",
+                url: url,
                 data: {namePart: element.val(), take: amountTake, skip: amountSkip},
                 success: function (data) {
                     subBody.empty();
@@ -45,7 +46,7 @@ $(function () {
         function getSubscribes() {
             amountSkip += amountTake;
             $.post({
-                url: "/Search/SearchSubscribeResults",
+                url: url,
                 data: {namePart: element.val(), take: amountTake, skip: amountSkip},
                 success: function (result) {
                     allLoaded = result.length < amountTake;

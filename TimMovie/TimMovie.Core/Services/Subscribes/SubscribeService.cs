@@ -35,7 +35,7 @@ public class SubscribeService
     public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take, int skip)
     {
         var query = _subscribesRepository.Query
-            .Where(new UserSubscribeByNamePart(namePart))
+            .Where(new UserSubscribeByNamePartSpec(namePart))
             .Skip(skip)
             .Take(take);
         var subscribes = new QueryExecutor<Subscribe>(query, _subscribesRepository)

@@ -4,7 +4,7 @@ $(function () {
             url: "/Search/SearchEntityResults",
             data: {namePart: $('#input-search-entities-navbar').val()},
             success: function (data) {
-                $('.subscribe-body').html(data);
+                $('.search-elements').html(data);
             }
         })
         
