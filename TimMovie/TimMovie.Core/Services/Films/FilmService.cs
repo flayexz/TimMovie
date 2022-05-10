@@ -2,6 +2,7 @@
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
+using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
@@ -13,13 +14,19 @@ public class FilmService
 {
     private readonly IRepository<Film> _filmRepository;
     private readonly IRepository<User> _userRepository;
+    private readonly Lazy<WatchedFilmService> _watchedFilmService;
     private readonly IMapper _mapper;
 
-    public FilmService(IRepository<Film> filmRepository, IRepository<User> userRepository, IMapper mapper)
+    public FilmService(
+        IRepository<Film> filmRepository,
+        IRepository<User> userRepository,
+        IMapper mapper,
+        Lazy<WatchedFilmService> watchedFilmService)
     {
         _filmRepository = filmRepository;
         _userRepository = userRepository;
         _mapper = mapper;
+        _watchedFilmService = watchedFilmService;
     }
 
     public bool IsExistInSubscribe(Film film)
@@ -31,10 +38,13 @@ public class FilmService
 
     public double? GetRating(Film film)
     {
-        return _filmRepository.Query
+        var rating = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(film.Id))
             .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
             .FirstOrDefault();
+        return rating.HasValue
+            ? Math.Round(rating.Value, 1)
+            : null;
     }
 
     public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>
@@ -50,8 +60,32 @@ public class FilmService
             .IncludeInResult(user => user.WatchingFilm)
             .FirstOrDefault();
 
-        return film is null 
-            ? null
-            : _mapper.Map<FilmForStatusDto>(film);
+        return MapToRequiredDto<User?, FilmForStatusDto>(film);
+    }
+
+    private TDto? MapToRequiredDto<T, TDto>(T entity)
+        where TDto : class => entity is null
+        ? null
+        : _mapper.Map<TDto>(entity);
+
+    public FilmDto? GetFilmById(Guid filmId)
+    {
+        var query = _filmRepository.Query
+            .Where(new EntityByIdSpec<Film>(filmId));
+        var executor = new QueryExecutor<Film>(query, _filmRepository);
+
+        var tmpFilm = executor
+            .IncludeInResult(film => film.Genres)
+            .IncludeInResult(film => film.Country)
+            .IncludeInResult(film => film.Actors)
+            .IncludeInResult(film => film.Producers)
+            .IncludeInResult(film => film.Comments)
+            .FirstOrDefault();
+
+
+        var film = MapToRequiredDto<Film?, FilmDto>(tmpFilm);
+        film!.Rating = GetRating(tmpFilm!);
+        film!.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
+        return film;
     }
 }

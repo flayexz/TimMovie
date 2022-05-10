@@ -43,11 +43,11 @@ public class FilmsController : Controller
                 new AnnualPeriodDto(2022, 2022),
                 new AnnualPeriodDto(2021, 2021),
                 new AnnualPeriodDto(2020, 2020),
-                new AnnualPeriodDto(2019, 2017),
-                new AnnualPeriodDto(2016, 2014),
-                new AnnualPeriodDto(2013, 2011),
-                new AnnualPeriodDto(2010, 2001),
-                new AnnualPeriodDto(2000, 1900)
+                new AnnualPeriodDto(2017, 2019),
+                new AnnualPeriodDto(2014, 2016),
+                new AnnualPeriodDto(2011, 2013),
+                new AnnualPeriodDto(2001, 2010),
+                new AnnualPeriodDto(1900, 2000)
             }
         };
 
