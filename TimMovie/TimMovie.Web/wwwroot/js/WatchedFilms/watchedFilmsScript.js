@@ -70,7 +70,7 @@ body.on('click', '.gradeNumber', (e) => {
     setGrade(savedFilmId, e).then(_ => {
         if (lastPressedButton !== null){
             lastPressedButton = $(lastPressedButton);
-            if (lastSettedGrade >= 1 && lastSettedGrade <= 5)
+            if (lastSettedGrade >= 1 && lastSettedGrade < 5)
             {
                 if(lastPressedButton.hasClass("goodGrade")){
 
@@ -82,7 +82,7 @@ body.on('click', '.gradeNumber', (e) => {
                     lastPressedButton.addClass("badGrade");
                 }
             }
-            if (lastSettedGrade > 5 && lastSettedGrade <= 8){
+            if (lastSettedGrade >= 5 && lastSettedGrade < 8){
                 if(lastPressedButton.hasClass("goodGrade")){
                     lastPressedButton.removeClass("goodGrade");
                     lastPressedButton.addClass("mediumGrade");
@@ -92,7 +92,7 @@ body.on('click', '.gradeNumber', (e) => {
                     lastPressedButton.addClass("mediumGrade");
                 }
             }
-            if (lastSettedGrade > 8 && lastSettedGrade <= 10){
+            if (lastSettedGrade >= 8 && lastSettedGrade <= 10){
                 if(lastPressedButton.hasClass("mediumGrade")){
                     lastPressedButton.removeClass("mediumGrade");
                     lastPressedButton.addClass("goodGrade");
