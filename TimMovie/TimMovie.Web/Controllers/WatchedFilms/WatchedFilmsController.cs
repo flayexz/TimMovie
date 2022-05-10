@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Classes;
 using TimMovie.Core.Entities;
-using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Web.ViewModels.WatchedFilms;
 
@@ -11,19 +10,16 @@ namespace TimMovie.Web.Controllers.WatchedFilms;
 
 public class WatchedFilmsController : Controller
 {
-    private readonly IUserService userService;
     private readonly UserManager<User> userManager;
     private readonly WatchedFilmService watchedFilmService;
     private readonly IMapper mapper;
 
     private const int PageSize = 9;
 
-    public WatchedFilmsController(IUserService userService,
-        UserManager<User> userManager,
+    public WatchedFilmsController(UserManager<User> userManager,
         WatchedFilmService watchedFilmService,
         IMapper mapper)
     {
-        this.userService = userService;
         this.userManager = userManager;
         this.watchedFilmService = watchedFilmService;
         this.mapper = mapper;
