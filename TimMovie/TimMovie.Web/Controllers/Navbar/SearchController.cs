@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.Services.Subscribes;
 
 namespace TimMovie.Web.Controllers.Navbar;
 
 public class SearchController : Controller
 {
     [HttpPost]
-    public IActionResult SearchResults(string namePart) =>
-        View("/Views/Navbar/Search/SearchResult.cshtml", namePart);
+    public IActionResult SearchEntityResults(string namePart) =>
+        View("/Views/Navbar/SearchEntity/SearchEntityResult.cshtml", namePart);
 }

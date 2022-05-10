@@ -16,7 +16,7 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Gu
     public DbSet<Genre> Genres { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<Producer> Producers { get; set; }
-    public DbSet<Subscribe> Subscribes { get; set; }
+    public DbSet<Subscribe?> Subscribes { get; set; }
     public DbSet<UserFilmWatched> WatchedFilms { get; set; }
     public DbSet<UserSubscribe> UserSubscribes { get; set; }
 

@@ -8,14 +8,14 @@ using TimMovie.Web.ViewModels.SearchFromLayout;
 
 namespace TimMovie.Web.ViewComponents;
 
-public class SearchViewComponent : ViewComponent
+public class SearchEntityViewComponent : ViewComponent
 {
     private readonly FilmService _filmService;
     private readonly ActorService _actorService;
     private readonly ProducerService _producerService;
     private readonly GenreService _genreService;
 
-    public SearchViewComponent(FilmService filmService, ActorService actorService, ProducerService producerService,
+    public SearchEntityViewComponent(FilmService filmService, ActorService actorService, ProducerService producerService,
         GenreService genreService)
     {
         _filmService = filmService;
@@ -34,13 +34,13 @@ public class SearchViewComponent : ViewComponent
         var actors = _actorService.GetActorsByNamePart(namePart, 2);
         var producers = _producerService.GetProducersByNamePart(namePart, 2);
 
-        var viewModel = new SearchViewModel
+        var viewModel = new SearchEntityViewModel
         {
             Films = films.Select(f => f.Title),
             Genres = genres.Select(g => g.Name),
             Actors = actors.Select(a => a.Surname is null ? $"{a.Name}" : $"{a.Name} {a.Surname}"),
             Producers = producers.Select(p => p.Surname is null ? $"{p.Name}" : $"{p.Name} {p.Surname}")
         };
-        return View(viewModel);
+        return View("~/Views/Shared/Components/SearchEntity/Default.cshtml", viewModel);
     }
 }
