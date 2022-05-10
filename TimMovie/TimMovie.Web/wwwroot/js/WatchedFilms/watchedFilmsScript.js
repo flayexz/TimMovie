@@ -57,8 +57,10 @@ function resizeToDefault(){
     document.querySelectorAll('.film-duration').forEach(x => x.style='width: 15%;');
 }
 
-$("body").on('click', '.setGradeButton', () => {
-    let filmId = $(".filmIdHidden")[0].innerText;
-    getGrade(filmId);
+$("body").on('click', '.setGradeButton', (e) => {
+    let parent = $(e.target)[0].parentNode;
+    let filmId = $(parent).find(".filmIdHidden")[0].innerText;
+    let grade = getGrade(filmId);
+    alert(grade);
 });
 
