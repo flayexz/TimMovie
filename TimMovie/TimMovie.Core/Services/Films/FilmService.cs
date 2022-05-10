@@ -29,6 +29,60 @@ public class FilmService
         _watchedFilmService = watchedFilmService;
     }
 
+    public bool TryGetUserGrade(Guid filmId, Guid userId, out int? grade)
+    {
+        grade = null;
+        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
+        if (dbFilm is null)
+            return false;
+
+        var user = _userRepository.Query.FirstOrDefault(new EntityByIdSpec<User>(userId));
+        if (user is null)
+            return false;
+
+        grade = _filmRepository.Query
+            .Where(new EntityByIdSpec<Film>(filmId))
+            .Select(f =>
+                f.UserFilmWatcheds
+                    .Where(watched => watched.WatchedUser == user)
+                    .Select(watched => watched.Grade)
+                    .FirstOrDefault())
+            .FirstOrDefault();
+        return true;
+    }
+
+    public async Task<bool> TryUpdateFilmGrade(Guid filmId, Guid userId, int grade)
+    {
+        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
+        if (dbFilm is null)
+            return false;
+
+        var userQuery = _userRepository.Query.Where(new EntityByIdSpec<User>(userId));
+        var userQueryExecutor = new QueryExecutor<User>(userQuery, _userRepository);
+        var user = userQueryExecutor
+            .IncludeInResult(user => user.WatchedFilms)
+            .FirstOrDefault();
+        if (user is null)
+            return false;
+
+        // ReSharper disable once ConstantNullCoalescingCondition
+        user.WatchedFilms ??= new List<UserFilmWatched>();
+        var watchedFilms = user.WatchedFilms.FirstOrDefault(watched => watched.Film == dbFilm);
+        if (watchedFilms is null)
+            user.WatchedFilms.Add(new UserFilmWatched
+            {
+                Date = DateTime.Now,
+                Film = dbFilm,
+                Grade = grade,
+                WatchedUser = user
+            });
+        else
+            watchedFilms.Grade = grade;
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
+    }
+
     public bool IsExistInSubscribe(Film film)
     {
         return _filmRepository.Query

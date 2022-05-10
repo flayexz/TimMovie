@@ -18,7 +18,6 @@
     </li>
     <li>&bull; <a href="#" class="hover_link">@Model.Genres.First().Name</a></li>
 </ul>
-
 <div class="row mt-5" id="film-row">
     <div class="col-xl-5 text_color order-xl-2 pl-5" id="film_info_container">
         <div id="film_info" class="mb-5">
@@ -47,7 +46,7 @@
         </div>
         <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
             <div class="d-flex flex-column">
-                <button class="buttons" id="rate_movie">
+                <button data-bs-toggle="modal" data-bs-target="#modalFilmGrade" class="buttons" id="rate_movie">
                     <svg class="mt-2 svg_size" width="2.2em" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -137,13 +136,14 @@
         }
     </div>
 </div>
-
-
+@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
 @section Styles
 {
     <link rel="stylesheet" href="/css/filmPage.css">
+    <link rel="stylesheet" href="/css/gradeModalWindow.css">
 }
 
 @section Scripts{
     <script src="~/js/filmPage.js"></script>
+    <script src="~/js/gradeModalWindow.js"></script>
 }

@@ -1,18 +1,18 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.SharedKernel.Specification;
 
-namespace TimMovie.Core.Specifications.InheritedSpecifications.ProducerSpec;
+namespace TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.ActorSpec;
 
 /// <summary>
-/// Фильтр на получение продюссеров
+/// Фильтр на получение актеро
 /// </summary>
-public class ProducerByNamePartSpec : Specification<Producer>
+public class ActorByNamePartSpec : Specification<Actor>
 {
     /// <summary>
-    /// Создает фильтр для получения продюссеров по части имени и фамилии
+    /// Создает фильтр для получения актеров по части имени и фамилии
     /// </summary>
     /// <param name="namePart"></param>
-    public ProducerByNamePartSpec(string namePart) =>
+    public ActorByNamePartSpec(string namePart) =>
         Conditional = p =>
             p.Surname == null
                 ? p.Name.ToLower().Contains(namePart.ToLower())

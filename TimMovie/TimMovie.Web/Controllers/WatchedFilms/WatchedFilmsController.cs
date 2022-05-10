@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Classes;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Services.WatchedFilms;
+using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.WatchedFilms;
 
 namespace TimMovie.Web.Controllers.WatchedFilms;
@@ -42,11 +44,13 @@ public class WatchedFilmsController : Controller
         {
             return NotFound();
         }
+        
+        var isOwner = User.Identity.IsAuthenticated && User.GetUserId() == user.Id;
 
         var watchedFilmsViewModel = mapper.Map<PaginatedList<WatchedFilmViewModel>>(watchedFilmsDto);
         watchedFilmsViewModel.PageIndex = watchedFilmsDto.PageIndex;
         watchedFilmsViewModel.TotalPages = watchedFilmsDto.TotalPages;
         watchedFilmsViewModel.PageSize = watchedFilmsDto.PageSize;
-        return View(watchedFilmsViewModel);
+        return View((watchedFilmsViewModel, isOwner));
     }
 }

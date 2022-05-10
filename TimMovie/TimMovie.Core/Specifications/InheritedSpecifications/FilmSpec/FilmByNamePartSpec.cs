@@ -12,5 +12,5 @@ public class FilmByNamePartSpec : Specification<Film>
     /// Создает фильтр для получения фильмов по части названия
     /// </summary>
     /// <param name="namePart"></param>
-    public FilmByNamePartSpec(string namePart) => Conditional = f => f.Title.Contains(namePart);
+    public FilmByNamePartSpec(string namePart) => Conditional = f => f.Title.ToLower().Contains(namePart.ToLower());
 }
