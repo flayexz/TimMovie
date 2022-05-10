@@ -62,7 +62,8 @@
                                 <span>@watched.Rating</span>
                             </div>
                             <div class="film-grade film-block">
-                                <span class="@(gradeClass)">@(watched.Grade > 0 ? watched.Grade : "-")</span>
+                                <span data-bs-toggle="modal" data-bs-target="#modalFilmGrade" class="@(gradeClass) setGradeButton">@(watched.Grade > 0 ? watched.Grade : "-")</span>
+                                <div class="filmIdHidden">@watched.Id</div>
                             </div>
                             <div class="film-watched-date film-block">
                                 <span class="watched-date-text">@watched.WatchedDate</span>
@@ -133,13 +134,16 @@
     </div>
 </div>
 
+@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
 
 @section Styles
 {
     <link rel="stylesheet" href="~/css/WatchedFilms/WatchedFilmsStyle.css">
+    <link rel="stylesheet" href="/css/gradeModalWindow.css">
 }
 
 @section Scripts
 {
     <script src="~/js/WatchedFilms/watchedFilmsScript.js"></script>
+    <script src="~/js/gradeModalWindow.js"></script>
 }
