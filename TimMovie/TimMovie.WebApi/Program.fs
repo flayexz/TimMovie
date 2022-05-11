@@ -48,7 +48,7 @@ module Program =
         builder.Services.Configure(builder.Configuration)
         builder.Host.ConfigureContainer<ContainerBuilder>
             (fun (containerBuilder: ContainerBuilder) ->
-                containerBuilder.RegisterModule<CoreModule>()
+                containerBuilder.RegisterModule(CoreModule())
                 containerBuilder.RegisterModule(InfrastructureModule(builder.Configuration))
                 |> ignore)
 
@@ -66,9 +66,11 @@ module Program =
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                         |> ignore))
+        
+        services.AddDbContext(configuration["ConnectionStrings:DefaultConnection"])
 
-        services.AddAuthentication
-            (fun options -> options.DefaultScheme <- OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
+//        services.AddAuthentication
+//            (fun options -> options.DefaultScheme <- OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
 
         services.AddAuthorization()
         
@@ -80,13 +82,8 @@ module Program =
 
         services.AddIdentity()
         
-//        services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
-//        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value)
-        
-//        services.AddScoped(fuc (x : IServiceProvider) -> x.)
-//        services.AddScoped(fun (x : IServiceProvider) -> x.GetService<IOptions<MailSetup>>().Value)
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"))
-//        services.AddScoped(typeof<IOptions<MailSetup>>)
+        services.AddScoped<MailSetup>(fun (x : IServiceProvider) -> x.GetService<IOptions<MailSetup>>().Value)
         
         services 
             .AddOpenIddict()

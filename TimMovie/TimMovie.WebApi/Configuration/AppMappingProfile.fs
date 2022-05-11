@@ -7,4 +7,4 @@ open TimMovie.Core.Entities
 type AppMappingProfile() as this =
     inherit Profile()
     do 
-        this.CreateMap<UserRegistrationDto, User> |> ignore
+        this.CreateMap<UserRegistrationDto, User>() |> ignore 
