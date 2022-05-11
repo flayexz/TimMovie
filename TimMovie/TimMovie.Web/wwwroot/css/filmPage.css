@@ -266,6 +266,12 @@ img{
  #film_info_container {
   text-align: left;
   margin-top: -50px;
+ }
+}
+
+@media screen and (max-width: 1200px) {
+ #film_description{
+  margin-top: 24px;
   border-top: 1px solid rgb(114, 114, 114);
  }
 }
