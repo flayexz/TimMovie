@@ -19,7 +19,7 @@ public class FilmCardService
 
 
     public FilmCardService(
-        IRepository<Film> filmRepository, 
+        IRepository<Film> filmRepository,
         IMapper mapper,
         FilmService filmService,
         IRepository<UserFilmWatched> userFilmWatchedRepository)
@@ -87,8 +87,11 @@ public class FilmCardService
     }
 
 
-    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount)
+    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount, Guid? filmToRemoveId)
     {
+        var isNeedToRemove = filmToRemoveId is not null;
+        if (isNeedToRemove) amount += 1;
+
         var filterBuilder = new FilmFiltersBuilder(_filmRepository);
         filterBuilder.AddFilterByGenre(new[] {genreName});
 
@@ -102,6 +105,10 @@ public class FilmCardService
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .GetEntitiesWithPagination(0, amount);
+
+        if (isNeedToRemove)
+            films = films.Where(film => film.Id != filmToRemoveId).ToList();
+
         return GetFilmCardsByFilms(films);
     }
 
@@ -111,13 +118,13 @@ public class FilmCardService
             .Where(new WatchedFilmByUserIdSpec(userId))
             .OrderByDescending(watched => watched.Date);
         var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
-        
+
         var films = queryExec
             .IncludeInResult(watched => watched.Film.Country)
             .IncludeInResult(watched => watched.Film.Genres)
             .GetEntitiesWithPagination(0, amount)
             .Select(watched => watched.Film);
-        
+
         return GetFilmCardsByFilms(films);
     }
 }

@@ -28,52 +28,52 @@
 
     <!-- Banner carousel -->
     <div class="col-10 p-0">
+
         <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <!-- slides of banners -->
             <div class="carousel-inner circleBorders">
                 @for (var i = 0; i < banners.Count; i++)
                 {
                     var active = i == 0 ? "active" : string.Empty;
-                    <div class="carousel-item @active" data-bs-interval="10000">
-                        <div class="overlay-image" style="background-image:url(@banners[i].Image)">
+                    <a asp-controller="Film" asp-action="Film" asp-route-id="@banners[i].Film.Id">
+                        <div class="carousel-item @active" data-bs-interval="10000">
+                            <div class="overlay-image" style="background-image:url(@banners[i].Image)">
+                            </div>
+                            <div class="banner-container ms-4">
+                                <h1>@banners[i].Film.Title</h1>
+                                <p>
+                                    @banners[i].Description
+                                </p>
+                                <a class="btn btn-lg btn_color" asp-controller="Film" asp-action="Film" asp-route-id="@banners[i].Film.Id">
+                                    Смотреть
+                                </a>
+                            </div>
                         </div>
-                        <div class="banner-container ms-4">
-                            <h1>@banners[i].Film.Title</h1>
-                            <p>
-                                @banners[i].Description
-                            </p>
-                            <a href="#" class="btn btn-lg btn_color">
-                                Смотреть
-                            </a>
-                        </div>
-                    </div>
+                    </a>
                 }
             </div >
         </div>
     </div>
 </div>
 <!-- Recommendations carousel -->
-@* @await Component.InvokeAsync("Carousel", cards) *@
-<h1 class="text_color pl-3 mt-5">Лучшие триллеры</h1>
+<h3 class="text_color pl-3 mt-5">Лучшие триллеры</h3>
 <vc:carousel genre-name="@GenresNames.Thrillers"></vc:carousel>
-<h1 class="text_color pl-3 mt-5">Фильмы для семьи</h1>
+<h3 class="text_color pl-3 mt-5">Фильмы для семьи</h3>
 <vc:carousel genre-name="@GenresNames.ForFamily"></vc:carousel>
-<h1 class="text_color pl-3 mt-5">Лучшие комедии</h1>
+<h3 class="text_color pl-3 mt-5">Лучшие комедии</h3>
 <vc:carousel genre-name="@GenresNames.Comedy"></vc:carousel>
 
-@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
 
 @section Scripts{
     <script src="/js/Carousel_Script.js"></script>
     <script src="/js/resendEmailScript.js"></script>
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
-    <script src="~/js/gradeModalWindow.js"></script>
 }
 
 @section Styles
 {
     <link rel="stylesheet" href="/css/mainPage.css">
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
-    <link rel="stylesheet" href="~/css/gradeModalWindow.css"/>
+    <link rel="stylesheet" href="~/css/carousel.css"/>
 }

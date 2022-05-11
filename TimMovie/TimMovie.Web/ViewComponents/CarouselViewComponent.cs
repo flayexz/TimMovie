@@ -20,9 +20,9 @@ public class CarouselViewComponent : ViewComponent
         _mapper = mapper;
     }
 
-    public IViewComponentResult Invoke(string genreName)
+    public IViewComponentResult Invoke(string genreName, Guid? filmIdToRemove = null)
     {
-        var cards = _mapper.Map<List<FilmCardViewModel>>(_filmCardService.GetFilmCardsByGenre(genreName, 15));
+        var cards = _mapper.Map<List<FilmCardViewModel>>(_filmCardService.GetFilmCardsByGenre(genreName, 15, filmIdToRemove));
         return View(cards);
     }
 }

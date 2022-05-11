@@ -49,8 +49,4 @@
       <_ContentIncludedByDefault Remove="Views\Navbar\SearchSubscribe\SearchSubscribeResult.cshtml" />
     </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Shared\Components\SearchEntity\Default.cshtml" />
-    </ItemGroup>
-
 </Project>

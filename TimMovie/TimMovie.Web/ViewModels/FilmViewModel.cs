@@ -4,6 +4,7 @@ namespace TimMovie.Web.ViewModels;
 
 public class FilmViewModel
 {
+    public Guid Id { get; set; }
     public string Title { get; set; }
     
     public int Year { get; set; }

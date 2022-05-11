@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="~/css/Navbar.css"/>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/Support/modalWindowChat.css"/>
     <link rel="stylesheet" href="~/css/Search.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -22,7 +21,7 @@
 </head>
 <body>
 <header>
-    <div class="container-xl">
+    <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark border-bottom box-shadow mb-3">
             <div>
                 <a asp-controller="MainPage" asp-action="MainPage">
@@ -89,7 +88,7 @@
         </nav>
     </div>
 </header>
-<div class="container-xl">
+<div class="container">
     <main role="main" class="pb-3">
         @{ await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); }
         @RenderBody()
