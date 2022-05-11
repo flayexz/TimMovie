@@ -5,9 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="HttpHelper.fs" />
         <Compile Include="Controllers\AccountController.fs" />
-        <Compile Include="OperationFilters\GetTokenFilter.fs" />
+        <Compile Include="Configuration\AppMappingProfile.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
@@ -21,6 +20,15 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TimMovie.Infrastructure\TimMovie.Infrastructure.csproj" />
+      <ProjectReference Include="..\TimMovie.Web\TimMovie.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="OperationFilters\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="OperationFilters\**" />
     </ItemGroup>
 
 </Project>

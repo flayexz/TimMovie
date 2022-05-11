@@ -14,6 +14,7 @@ open OpenIddict.Validation.AspNetCore
 open TimMovie.Core
 open TimMovie.Core.Classes
 open TimMovie.Infrastructure
+open TimMovie.WebApi.Configuration.AppMappingProfile
 
 module Program =
     let exitCode = 0
@@ -43,7 +44,6 @@ module Program =
     let main args =
         let builder = WebApplication.CreateBuilder(args)
 
-
         builder.Host.UseServiceProviderFactory(AutofacServiceProviderFactory())
         builder.Services.Configure(builder.Configuration)
         builder.Host.ConfigureContainer<ContainerBuilder>
@@ -54,7 +54,7 @@ module Program =
 
         let services = builder.Services
         let configuration = builder.Configuration
-
+        
         services.AddControllers()
 
         services.AddCors
@@ -72,20 +72,23 @@ module Program =
 
         services.AddAuthorization()
         
-//        let type1 = typeof<AppMappingProfile>
-//        let type2 = typeof<CoreMappingProfile>
-//        let type3 = typeof<InfrastructureMappingProfile>
-//        
-//        services.AddAutoMapper(type1, type2, type3)
+        let type1 = typeof<AppMappingProfile>
+        let type2 = typeof<CoreMappingProfile>
+        let type3 = typeof<InfrastructureMappingProfile>
+        
+        services.AddAutoMapper(type1, type2, type3)
 
         services.AddIdentity()
         
-//        services.Configure<MailSetup>(configuration.GetSection("MailSetup"))
-//        services.AddScoped(fun)
+//        services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
+//        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value)
+        
 //        services.AddScoped(fuc (x : IServiceProvider) -> x.)
 //        services.AddScoped(fun (x : IServiceProvider) -> x.GetService<IOptions<MailSetup>>().Value)
+        services.Configure<MailSetup>(configuration.GetSection("MailSetup"))
+//        services.AddScoped(typeof<IOptions<MailSetup>>)
         
-        services
+        services 
             .AddOpenIddict()
             .AddValidation(fun options ->
                 options.SetIssuer(configuration["IdentityUrl"])
@@ -94,11 +97,8 @@ module Program =
                 options.UseSystemNetHttp() |> ignore
                 options.UseAspNetCore() |> ignore)
 
-        //            config.AddSecurityDefinition("v1", info)
-//            config.OperationFilter<GetTokenFilter>()) |> ignore
         services.AddSwaggerGen
             (fun config ->
-                //            config.SwaggerDoc("v1", info)
                 config.AddSecurityDefinition("Bearer", scheme)
                 config.AddSecurityRequirement(securityRequirement))
         |> ignore

@@ -21,15 +21,15 @@ type AccountController(logger: ILogger<AccountController>, userService: IUserSer
         userRegistrationDto.UserName <- username
         userRegistrationDto.Password <- password
         userService.RegisterUserAsync(userRegistrationDto)
-        
-    [<HttpPost>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-    [<Consumes("application/x-www-form-urlencoded")>]
-    member _.SendConfirmEmail([<FromForm>] email: string, [<FromForm>] urlToAction: string) =
-        userService.SendConfirmEmailAsync(email, urlToAction)
-        
-    [<HttpPost>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-    [<Consumes("application/x-www-form-urlencoded")>]
-    member _.ConfirmEmail([<FromForm>] userId: string, [<FromForm>] code: string) =
-        userService.ConfirmEmailAsync(userId, code)
+//        
+//    [<HttpPost>]
+//    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+//    [<Consumes("application/x-www-form-urlencoded")>]
+//    member _.SendConfirmEmail([<FromForm>] email: string, [<FromForm>] urlToAction: string) =
+//        userService.SendConfirmEmailAsync(email, urlToAction)
+//        
+//    [<HttpPost>]
+//    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+//    [<Consumes("application/x-www-form-urlencoded")>]
+//    member _.ConfirmEmail([<FromForm>] userId: string, [<FromForm>] code: string) =
+//        userService.ConfirmEmailAsync(userId, code)
