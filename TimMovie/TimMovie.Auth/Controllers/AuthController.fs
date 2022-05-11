@@ -51,8 +51,10 @@ type AuthController(userManager: UserManager<User>, signInManager: SignInManager
         }
 
 
-    [<HttpPost("token"); Produces("application/json")>]
-    member this.Exchange() : IActionResult =
+    [<HttpPost("token"); Consumes("application/x-www-form-urlencoded") ;Produces("application/json")>]
+    member this.Exchange([<FromForm>]username: string,
+                         [<FromForm>]password: string,
+                         [<FromForm>]grant_type: string) : IActionResult =
         let request =
             this.HttpContext.GetOpenIddictServerRequest()
 
