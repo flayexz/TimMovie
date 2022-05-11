@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220510125310_AddEntitiesForSupport")]
+    partial class AddEntitiesForSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -618,37 +620,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("TimMovie.Core.Entities.Message", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid?>("SupportId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("ToUser")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SupportId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Messages");
-                });
-
             modelBuilder.Entity("TimMovie.Core.Entities.Notification", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1096,21 +1067,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("TimMovie.Core.Entities.Message", b =>
-                {
-                    b.HasOne("TimMovie.Core.Entities.User", "Support")
-                        .WithMany()
-                        .HasForeignKey("SupportId");
-
-                    b.HasOne("TimMovie.Core.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Support");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>

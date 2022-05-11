@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220510125731_AddDbSetForSupport")]
+    partial class AddDbSetForSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -501,6 +503,56 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.ToTable("Banners");
                 });
 
+            modelBuilder.Entity("TimMovie.Core.Entities.CallersMessageWithAuthorizedUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("FromUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ToUserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("ToUserId");
+
+                    b.ToTable("CallersMessagesWithAuthorizedUsers");
+                });
+
+            modelBuilder.Entity("TimMovie.Core.Entities.CallersMessageWithUnauthorizedUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("ToUser")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MessageId");
+
+                    b.HasIndex("SupportId");
+
+                    b.ToTable("CallersMessagesWithUnauthorizedUsers");
+                });
+
             modelBuilder.Entity("TimMovie.Core.Entities.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -564,6 +616,47 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("TimMovie.Core.Entities.CurrentCommunicationWithAuthorizedUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupportId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CurrentCommunicationsWithAuthorizedUsers");
+                });
+
+            modelBuilder.Entity("TimMovie.Core.Entities.CurrentCommunicationWithUnauthorizedUsers", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SupportId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserConnectId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupportId");
+
+                    b.ToTable("CurrentCommunicationsWithUnauthorizedUsers");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.Film", b =>
@@ -631,20 +724,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid?>("SupportId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("ToUser")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SupportId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -1050,6 +1130,52 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Navigation("Film");
                 });
 
+            modelBuilder.Entity("TimMovie.Core.Entities.CallersMessageWithAuthorizedUsers", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.User", "FromUser")
+                        .WithMany()
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimMovie.Core.Entities.Message", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimMovie.Core.Entities.User", "ToUser")
+                        .WithMany()
+                        .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FromUser");
+
+                    b.Navigation("Message");
+
+                    b.Navigation("ToUser");
+                });
+
+            modelBuilder.Entity("TimMovie.Core.Entities.CallersMessageWithUnauthorizedUsers", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.Message", "Message")
+                        .WithMany()
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimMovie.Core.Entities.User", "Support")
+                        .WithMany()
+                        .HasForeignKey("SupportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Message");
+
+                    b.Navigation("Support");
+                });
+
             modelBuilder.Entity("TimMovie.Core.Entities.Comment", b =>
                 {
                     b.HasOne("TimMovie.Core.Entities.User", "Author")
@@ -1088,6 +1214,36 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TimMovie.Core.Entities.CurrentCommunicationWithAuthorizedUsers", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.User", "Support")
+                        .WithMany()
+                        .HasForeignKey("SupportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimMovie.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Support");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("TimMovie.Core.Entities.CurrentCommunicationWithUnauthorizedUsers", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.User", "Support")
+                        .WithMany()
+                        .HasForeignKey("SupportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Support");
+                });
+
             modelBuilder.Entity("TimMovie.Core.Entities.Film", b =>
                 {
                     b.HasOne("TimMovie.Core.Entities.Country", "Country")
@@ -1096,21 +1252,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("TimMovie.Core.Entities.Message", b =>
-                {
-                    b.HasOne("TimMovie.Core.Entities.User", "Support")
-                        .WithMany()
-                        .HasForeignKey("SupportId");
-
-                    b.HasOne("TimMovie.Core.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Support");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>

@@ -1,0 +1,109 @@
+﻿.chat-page__container{
+    --margin-for-chat: 100px;
+    margin: 0 var(--margin-for-chat);
+}
+.chat-in-page__container{
+    height: 80vh;
+    background-color: #393156;
+}
+.chat-in-page__header{
+    border-bottom: 1px solid white;
+    background-color: #2e2642;
+}
+.chat-in-page__user-photo{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+.chat-in-page__body{
+    height: 80%;
+    overflow-y: scroll;
+    font-size: 15px;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+}
+.chat-in-page__body::-webkit-scrollbar {
+    width: 12px;
+}
+.chat-in-page__body::-webkit-scrollbar-track {
+    background: #6f4bcc;
+    border-radius: 5px;
+}
+.chat-in-page__body::-webkit-scrollbar-thumb {
+    background-color: blue;    
+    border-radius: 20px;     
+}
+.chat-in-page__input{
+    flex-grow: 3;
+    background-color: #2e2642;
+}
+.chat-in-page__add-file{
+    fill: #220441;
+    cursor: pointer;
+    
+}
+.chat-in-page__input__message-container{
+
+}
+.chat-in-page__input__attaching-file{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.chat-in-page__input__attaching-file:hover{
+    background-color: #530e88;
+}
+.chat-in-page__input__message-input{
+    background-color: #530e88;
+    border: 2px solid #360956;
+    border-radius: 20px;
+    color: #bda7c2;
+    resize: none;
+}
+.chat-in-page__input__message-input:focus{
+    border: 1px solid black;
+}
+.chat-in-page__input__send-btn{
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+.chat-in-page__input__send-btn:hover{
+    background-color: #530e88;
+}
+.chat-in-page__sent-messages{
+    background-color: #1554a4;
+    border-radius: 10px 10px 0 10px;
+    margin-right: 10px;
+    padding: 5px 15px;
+    max-width: 40%;
+    word-break: break-word;
+}
+.chat-in-page__received-messages{
+    background-color: #9239dc;
+    border-radius: 10px 10px 10px 0;
+    margin-left: 10px;
+    padding: 5px 15px;
+    width: 40%;
+    word-break: break-word;
+}
+.chat-in-page__notification-in-chat{
+    background-color: #757575;
+    border-radius: 20px;
+    color: white;
+    padding: 5px 10px;
+    max-width: 30%;
+    word-break: break-word;
+}
+@media (max-width: 740px) {
+    .chat-page__container{
+        --margin-for-chat: 50px;
+    }
+}
+@media (max-width: 600px) {
+    .chat-page__container{
+        --margin-for-chat: 0;
+    }
+}

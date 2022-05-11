@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using TimMovie.Core;
 using TimMovie.Infrastructure;
 using TimMovie.Web.Configuration;
+using TimMovie.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,5 +37,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=MainPage}/{action=MainPage}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<ChatHub>("/chat");
+});
 
 app.Run();

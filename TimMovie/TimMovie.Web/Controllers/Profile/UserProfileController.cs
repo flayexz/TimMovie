@@ -87,7 +87,7 @@ public class UserProfileController : Controller
         }
 
         var userId = HttpContext.User.GetUserId();
-        var resultUpdate = await _userService.UpdateUserPhotoAsync(file, userId, _webHostEnvironment.WebRootPath);
+        var resultUpdate = await _userService.UpdateUserPhotoAsync(file, userId.Value, _webHostEnvironment.WebRootPath);
 
         return Json(resultUpdate);
     }
@@ -103,7 +103,7 @@ public class UserProfileController : Controller
         }
 
         var userId = HttpContext.User.GetUserId();
-        await _userService.UpdateUserInfo(userInfo, userId);
+        await _userService.UpdateUserInfo(userInfo, userId.Value);
 
         return Json(Result.Ok());
     }
