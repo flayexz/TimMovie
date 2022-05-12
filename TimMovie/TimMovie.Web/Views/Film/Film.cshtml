@@ -2,7 +2,7 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = Model.Id;
+    ViewData["Title"] = Model.Title;
     var mainGenreName = Model.Genres.First().Name;
 }
 
@@ -47,7 +47,7 @@
         </div>
         <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
             <div class="d-flex flex-column">
-                <button class="buttons" id="rate_movie">
+                <button data-bs-toggle="modal" data-bs-target="#modalFilmGrade" class="buttons" id="rate_movie">
                     <svg class="mt-2 svg_size" width="2.2em" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -137,6 +137,7 @@
         }
     </div>
 </div>
+@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
 <div class="film__line mt-4"></div>
 <div>
     <div class="h3 mt-4">
@@ -151,6 +152,7 @@
     <link rel="stylesheet" href="/css/filmPage.css"/>
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
     <link rel="stylesheet" href="~/css/carousel.css"/>
+    <link rel="stylesheet" href="/css/gradeModalWindow.css">
 }
 
 @section Scripts{
@@ -158,4 +160,5 @@
     <script src="/js/Carousel_Script.js"></script>
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="~/js/gradeModalWindow.js"></script>
 }
