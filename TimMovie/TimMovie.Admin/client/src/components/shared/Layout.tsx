@@ -14,8 +14,9 @@ function Layout(){
                 <div className="container-xl">
                     <div className={classes.navContainer}>
                         <div className="d-flex justify-content-between align-items-center h-100">
-                            <div>
+                            <div className="justify-content-between">
                                 <NavLink className={activateLink} to="/" >Пользователи</NavLink>
+                                <NavLink className={activateLink} to="/banners">Баннеры</NavLink>
                             </div>
                             <div><Logout/></div>
                         </div>
