@@ -45,6 +45,7 @@ module Program =
         let builder = WebApplication.CreateBuilder(args)
 
         builder.Host.UseServiceProviderFactory(AutofacServiceProviderFactory())
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         builder.Services.Configure(builder.Configuration)
         builder.Host.ConfigureContainer<ContainerBuilder>
             (fun (containerBuilder: ContainerBuilder) ->
