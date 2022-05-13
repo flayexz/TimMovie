@@ -49,20 +49,20 @@
                     <div class="subscribeCard-price">@(subscribe.Price)р</div>
                 </div>
                 @{
-                    var hasUserSubscribe = Model.UserSubscribes.Any(s => s.SubscribeId == subscribe.Id);
+                    var hasUserSubscribe = Model.UserSubscribes?.Any(s => s.SubscribeId == subscribe.Id);
                     <div class="subscribeCard-subscribe-active w-100 d-flex align-items-center flex-row">
-                        @if (hasUserSubscribe)
+                        @if (hasUserSubscribe is not null && hasUserSubscribe.Value)
                         {
                             <div class="subscribeCard-subscribe-active-title">
                                 @("Действует до")
                             </div>
                             <div class="subscribeCard-subscribe-active-date">
-                                @Model.UserSubscribes.FirstOrDefault(s => s.SubscribeId == subscribe.Id)?.EndDate.ToShortDateString()
+                                @Model.UserSubscribes!.FirstOrDefault(s => s.SubscribeId == subscribe.Id)?.EndDate.ToShortDateString()
                             </div>
                         }
                     </div>
                     <a asp-controller="SubscribePayment" asp-action="Payment" asp-route-subscribeId="@subscribe.Id" class="subscribeCardInSubscribeSearch-body-button">
-                        @if (hasUserSubscribe)
+                        @if (hasUserSubscribe is not null && hasUserSubscribe.Value)
                         {
                             @("Продлить")
                         }
