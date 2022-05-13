@@ -5,7 +5,7 @@
     ViewData["Title"] = Model.Title;
     var mainGenreName = Model.Genres.First().Name;
 }
-
+<div class="filmPage_container">
 <a href="#" id="backward_link" class="hover_link">
     <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
          xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px">
@@ -26,9 +26,9 @@
             <h1>@Model.Title</h1>
             <ul id="film_links">
                 <li>
-                <a class="hover_link">@Model.Year</a>
+                <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>
                 <li>
-                    <a class="hover_link">@Model.Country?.Name</a>
+                    <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-countries="@Model.Country.Name">@Model.Country?.Name</a>
                 </li>
             </ul>
             <ul>
@@ -145,7 +145,7 @@
     </div>
     <vc:carousel genre-name="@mainGenreName" film-id-to-remove="@Model.Id"></vc:carousel>
 </div>
-
+</div>
 
 @section Styles
 {

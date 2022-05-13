@@ -4,6 +4,7 @@
 @{
     var cards = Model.ToList();
     var cardsNumber = cards.Count;
+    var genreName = Model.First().FirstGenreName;
 }
 <!-- Films carousel -->
 <div class="carousel-container">
@@ -21,10 +22,12 @@
                 if (i == cardsNumber - 1)
                 {
                     <div class="card-container column">
+                        <a asp-controller="Films" asp-action="Filters" asp-route-genres="@genreName">
                         <div class="card text-white align-items-center justify-content-center last_card_style"
                              style="background-color:#1f1b2e; height: 75%;" id ="last_card">
                             Посмотреть все
                         </div>
+                        </a>
                     </div>
                 }
             }

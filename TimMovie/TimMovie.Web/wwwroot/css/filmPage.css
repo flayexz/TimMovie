@@ -3,14 +3,14 @@
 }
 
 
-body {
- background-color: #100e19;
+.filmPage_container{
  font-weight: 500;
  font-size: 40px;
  color: white;
 }
 
-h1{
+
+.filmPage_container h1{
  font-size: 3rem;
 }
 
@@ -127,10 +127,6 @@ button{
  font-size: 0.9rem;
  color: #828187;
  height:4rem;
-}
-
-img{
- vertical-align: baseline;
 }
 
 .rating_label{

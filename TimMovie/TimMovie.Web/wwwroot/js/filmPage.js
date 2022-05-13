@@ -59,7 +59,6 @@ $("#backward_link").on("click", function () {
     history.go(-1);
 })
 
-
 //actors and producers script
 
 const showMoreActorsAndProducersBtn = $("#actorsProducersMoreBtn");
