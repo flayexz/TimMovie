@@ -6,7 +6,6 @@ const track = $('.track');
 track.each(number => {
     let index = 0;
     let item = track[number];
-    console.log(item);
 
     function getCardsAmount() {
         let windowWidth = window.innerWidth;
@@ -77,15 +76,9 @@ track.each(number => {
 
     setMoveCoefficients();
 
-    console.log(`shifts: ${shifts}`)
-    console.log(`shiftCards: ${shiftCards}`)
-    console.log(`ost: ${ost}`)
-    console.log(`isNeedToHide: ${isNeedToHide}`)
-
 
     next[number].addEventListener('click', function (e) {
         index++;
-        console.log(index)
         prev[number].style.cssText = "display: flex";
         if (cardsOnSlideAmount === 1) {
             item.style.transform = (`translateX(-${index * columnWidth * 1}px)`);
@@ -103,7 +96,6 @@ track.each(number => {
 
     prev[number].addEventListener('click', function (e) {
         index--;
-        console.log(index)
         next[number].style.cssText = "display: flex";
         if (index === 0) {
             prev[number].style.cssText = "display: none";

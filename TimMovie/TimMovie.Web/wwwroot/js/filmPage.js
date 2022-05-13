@@ -18,18 +18,23 @@ function moveDescription() {
 function cropDescriptrion() {
     let description = $("#description");
     paragraphs = description.text().trim().split("\n");
-    let descLess = $("<p>" + paragraphs[0] + "</p>").prop("id", "descLess");
-    let descMore = $("<div><p>" + paragraphs[1] + "</p></div>").prop("id", "descMore");
-    if (paragraphs.length > 2) {
-        for (var i = 2; i < paragraphs.length; i++) {
-            let paragraph = $("<p>" + paragraphs[i] + "</p>")
-            paragraph.appendTo(descMore)
+    let descLess;
+    let descMore;
+    if (paragraphs.length > 1) {
+        descLess = $("<p>" + paragraphs[0] + "</p>").prop("id", "descLess");
+        descMore = $("<div><p>" + paragraphs[1] + "</p></div>").prop("id", "descMore");
+        if (paragraphs.length > 2) {
+            for (var i = 2; i < paragraphs.length; i++) {
+                let paragraph = $("<p>" + paragraphs[i] + "</p>")
+                paragraph.appendTo(descMore)
+            }
         }
+        description.empty();
+        descLess.appendTo(description);
+        descMore.appendTo(description);
+        $("#descMore").hide();
     }
-    description.empty();
-    descLess.appendTo(description);
-    descMore.appendTo(description);
-    $("#descMore").hide();
+    else $('#more').hide();
 }
 
 function showMore() {
@@ -59,11 +64,10 @@ $("#backward_link").on("click", function () {
 
 const showMoreActorsAndProducersBtn = $("#actorsProducersMoreBtn");
 const hideActorsAndProducersBtn = $("#actorsProducersHideBtn");
-const durationForShow = 400;
+const durationForShowActors = 400;
 
 
 function hideAllActorsAndProducers() {
-    let e = $(".actors-producers__item__container_show");
     $(".actors-producers__item__container_show").each(function () {
         $(this).hide();
     })
@@ -72,24 +76,20 @@ function hideAllActorsAndProducers() {
 
 function showMoreActorsAndProducers() {
     $(".actors-producers__item__container_show").each(function () {
-        $(this).show(durationForShow);
+        $(this).show(durationForShowActors);
     })
     showMoreActorsAndProducersBtn.hide();
-    hideActorsAndProducersBtn.show(durationForShow);
+    hideActorsAndProducersBtn.show(durationForShowActors);
 }
 
 function hideActorsAndProducers() {
     $(".actors-producers__item__container_show").each(function () {
         $(this).hide();
     })
-    showMoreActorsAndProducersBtn.show(durationForShow);
+    showMoreActorsAndProducersBtn.show(durationForShowActors);
     hideActorsAndProducersBtn.hide();
 }
 
 showMoreActorsAndProducersBtn.on("click", showMoreActorsAndProducers);
 hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
 hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
-
-$("#rate_movie").click(function (){
-    getGrade(document.URL.split('/').pop());
-})
