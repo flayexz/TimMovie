@@ -6,5 +6,5 @@ public class SearchSubscribeViewModel
 {
     public IEnumerable<SubscribeDto>? Subscribes { get; set; }
     
-    public IEnumerable<UserSubscribeDto> UserSubscribes { get; set; }
+    public IEnumerable<UserSubscribeDto>? UserSubscribes { get; set; }
 }
