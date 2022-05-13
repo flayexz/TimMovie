@@ -16,7 +16,7 @@ function App() {
                 <Route path="/" element={<RequireAuth><Layout/></RequireAuth>}>
                     <Route index element={<UsersTablePage/>}/>
                     <Route path="/users/:id" element={<UserProfile/>}/>
-                    <Route path="/banners" element={<BannersPage/>}/>
+                    <Route path="/banners" element={<BannersPage borderRadius={40} photoHeight={512} photoWidth={1100} />}/>
                 </Route>
             </Routes>
         </AuthProvider>

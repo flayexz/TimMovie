@@ -1,12 +1,14 @@
 import React, {FC, useRef, useState} from "react";
 import styles from './styles/fileInput.module.css';
+import {UploadProps} from "./UploadProps";
 
-interface UploadProps {
+interface FileInputProps {
     setPreview: Function,
-    setFile: Function
+    setFile: Function,
+    uploadProps: UploadProps
 }
 
-export const FileInput: FC<UploadProps> = ({setPreview, setFile}) => {
+export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}) => {
     const [drag, setDrag] = useState(false);
 
     function dragStartHandler(e: any) {
@@ -71,6 +73,7 @@ export const FileInput: FC<UploadProps> = ({setPreview, setFile}) => {
             {
                 <div>
                     <div className={drag ? styles.input_dragAndDrop : styles.input_dragAndDrop_dropped}
+                         style={{width:uploadProps.photoWidth, height:uploadProps.photoHeight, borderRadius:uploadProps.borderRadius}}
                          onClick={onContainerClick}
                          onDragStart={e => dragStartHandler(e)}
                          onDragLeave={e => dragEndHandler(e)}
