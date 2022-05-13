@@ -1,9 +1,14 @@
 ﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-using TimMovie.Core;
-using TimMovie.Core.Classes;
+using TimMovie.Core.Const;
+using TimMovie.Core.DTO.Messages;
 using TimMovie.Core.Entities;
+using TimMovie.Core.Interfaces;
+using TimMovie.Core.Services.ChatTemplatedNotifications;
+using TimMovie.Core.SupportChat;
+using TimMovie.SharedKernel.Extensions;
 using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Web.Extensions;
 
@@ -12,159 +17,177 @@ namespace TimMovie.Web.Hubs;
 public class ChatHub : Hub
 {
     private readonly IRepository<Message> _messageRepository;
+    private readonly IUserService _userService;
     private readonly UserManager<User> _userManager;
+    private readonly IMapper _mapper;
+    private readonly ChatTemplatedNotificationService _templatedNotificationService;
 
-    public ChatHub(IRepository<Message> messageRepository, UserManager<User> userManager)
+    public ChatHub(
+        IRepository<Message> messageRepository,
+        UserManager<User> userManager,
+        IUserService userService,
+        IMapper mapper,
+        ChatTemplatedNotificationService templatedNotificationService)
     {
         _messageRepository = messageRepository;
         _userManager = userManager;
+        _userService = userService;
+        _mapper = mapper;
+        _templatedNotificationService = templatedNotificationService;
     }
 
     public async Task SendMessageToUser(string content)
     {
         var support = await _userManager.GetUserAsync(Context.User);
-        var userConnectInfo = StoresForSupport.CurrentCommunicationForSupport[(support.Id, Context.ConnectionId)];
-        var user = userConnectInfo.userId is not null
-            ? await _userManager.FindByIdAsync(userConnectInfo.userId?.ToString())
-            : null;
+        var groupName = StoresForSupport.GroupNameByConnectionId[Context.ConnectionId];
+
         var newMessage = new Message
         {
             ToUser = true,
             Content = content,
             Date = DateTime.UtcNow,
-            User = user,
-            Support = support
+            Sender = support,
+            GroupName = groupName
         };
         await _messageRepository.AddAsync(newMessage);
         await _messageRepository.SaveChangesAsync();
 
-        var messageWithContent = new MessageWithContent()
-        {
-            Content = content,
-            ToUser = true
-        };
+        var messageDto = _mapper.Map<MessageDto>(newMessage);
 
-        //Возможно нужно проверять на то, что пользователь отключился.
-        await Clients.Client(userConnectInfo.userConnectionId).SendAsync("ReceiveNewMessage", messageWithContent);
-        await Clients.Caller.SendAsync("ReceiveNewMessage", messageWithContent);
+        await Clients.Group(groupName).SendAsync("ReceiveNewMessage", messageDto);
     }
 
     public async Task SendMessageToSupport(string content)
     {
+        var groupName = StoresForSupport.GroupNameByConnectionId[Context.ConnectionId];
+        if (StoresForSupport.DisconnectedGroups.Contains(groupName))
+        {
+            if (!await TryLinkWithFreeSupport(groupName))
+            {
+                StoresForSupport.WaitingGroupsWithUser.Enqueue(groupName);
+            }
+
+            StoresForSupport.DisconnectedGroups.Remove(groupName);
+        }
+        
         var user = Context.User.Identity.IsAuthenticated 
             ? await _userManager.GetUserAsync(Context.User) 
             : null;
-        var userConnectionInfo = (user?.Id, Context.ConnectionId);
-        User? support = null;
-        if (StoresForSupport.CurrentCommunicationForSupport.Reverse.TryGetValue(
-                userConnectionInfo,
-                out var supportConnectInfo))
-        {
-            support = await _userManager.FindByIdAsync(supportConnectInfo.supportId.ToString());
-        }
-        else
-        {
-            StoresForSupport.WaitingUsers.Add(userConnectionInfo);
-        }
-        
+
         var newMessage = new Message
         {
             ToUser = false,
             Content = content,
             Date = DateTime.UtcNow,
-            User = user,
-            Support = support
+            Sender = user,
+            GroupName = groupName
         };
         await _messageRepository.AddAsync(newMessage);
         await _messageRepository.SaveChangesAsync();
 
-        var messageWithContent = new MessageWithContent()
-        {
-            Content = content,
-            ToUser = false
-        };
-
-        if (support is not null)
-        {
-            await Clients
-                .Client(supportConnectInfo.supportConectionId)
-                .SendAsync("ReceiveNewMessage", messageWithContent);    
-        }
+        var messageWithContent = _mapper.Map<MessageDto>(newMessage);
         
-        await Clients.Caller.SendAsync("ReceiveNewMessage", messageWithContent);
+        await Clients.Group(groupName).SendAsync("ReceiveNewMessage", messageWithContent);
     }
 
-    public async Task ConnectSupport()
+    public async Task ConnectSupport(bool isFirstStart)
     {
         var supportId = Context.User.GetUserId().Value;
-        if (!await TryLinkToWaitingUser(supportId))
+        
+        if (!isFirstStart)
         {
-            StoresForSupport.FreeSupports.Add((supportId, Context.ConnectionId));
+            await Clients.User(supportId.ToString()).SendAsync("OnStartWork");
+            
+            if (!await TryLinkWithWaitingUser(supportId))
+            {
+                StoresForSupport.FreeSupports.Enqueue(supportId);
+            }
+            return;
+        }
+        
+        if (StoresForSupport.ConnectionIdsByUserId.TryGetValue(supportId, out var connections))
+        {
+            await Clients.User(supportId.ToString()).SendAsync("OnStartWork");
+            StoresForSupport.ConnectionIdsByUserId[supportId].Add(Context.ConnectionId);
+            if (StoresForSupport.FreeSupports.Contains(supportId))
+            {
+                return;
+            }
+            
+            var connection = connections.First();
+            var groupName = StoresForSupport.GroupNameByConnectionId[connection];
+            await AddConnectionToGroup(Context.ConnectionId, groupName);
+            await PrepareChatAsync(groupName);
+            return;
+        }
+        
+        MapIdConnectionToUserId(supportId, Context.ConnectionId);
+        
+        await Clients.User(supportId.ToString()).SendAsync("OnStartWork");
+        
+        if (!await TryLinkWithWaitingUser(supportId))
+        {
+            StoresForSupport.FreeSupports.Enqueue(supportId);
         }
     }
 
+    public void TryRegisterConnection()
+    {
+        var supportId = Context.User.GetUserId().Value;
+        StoresForSupport.ConnectionIdsByUserId[supportId].Add(Context.ConnectionId);
+    }
+    
     public async Task ConnectUser()
     {
         var userId = Context.User?.GetUserId();
-        if (!await TryLinkToFreeSupport(userId))
+        
+        if (userId is not null && 
+            StoresForSupport.ConnectionIdsByUserId.TryGetValue(userId.Value, out var connections))
         {
-            StoresForSupport.WaitingUsers.Add((userId, Context.ConnectionId));
+            var connection = connections.First();
+            var groupName = StoresForSupport.GroupNameByConnectionId[connection];
+            await AddConnectionToGroup(Context.ConnectionId, groupName);
+            StoresForSupport.ConnectionIdsByUserId[userId.Value].Add(Context.ConnectionId);
+            return;
         }
-    }
-
-    public async Task SendMessagesFromUnauthorisedUser(MessageWithContent[] messages, string supportConnectionId)
-    {
-        await Clients.Client(supportConnectionId).SendAsync("DownloadMessagesFromUnauthorisedUser", messages);
-    }
-
-    private async Task<bool> TryLinkToWaitingUser(Guid supportId)
-    {
-        if (!StoresForSupport.WaitingUsers.Any())
-        {
-            return false;
-        }
-
-        var user = StoresForSupport.WaitingUsers.First();
-        StoresForSupport.WaitingUsers.Remove(user);
-
-        StoresForSupport.CurrentCommunicationForSupport.Add(
-            (supportId, Context.ConnectionId), (user.userId, user.userConnectionId));
-
-        if (user.userId is not null)
-        {
-            await Clients.Caller.SendAsync("DownloadMessagesFromDb", user.userId);
-        }
-        else
-        {
-            await Clients.Client(user.userConnectionId).SendAsync("GetMessages", Context.ConnectionId);
-        }
-
-        return true;
-    }
-
-    private async Task<bool> TryLinkToFreeSupport(Guid? userId)
-    {
-        if (!StoresForSupport.FreeSupports.Any())
-        {
-            return false;
-        }
-
-        var support = StoresForSupport.FreeSupports.First();
-        StoresForSupport.FreeSupports.Remove(support);
-
-        StoresForSupport.CurrentCommunicationForSupport.Add(
-            (support.supportId, support.supportConectionId), (userId, Context.ConnectionId));
 
         if (userId is not null)
         {
-            await Clients.Client(support.supportConectionId).SendAsync("DownloadMessagesFromDb", userId.Value);
-        }
-        else
-        {
-            await Clients.Caller.SendAsync("GetMessages", support.supportConectionId);
+            MapIdConnectionToUserId(userId.Value, Context.ConnectionId);
         }
 
-        return true;
+        var newGroupName = Context.User?.Identity?.Name ?? Context.ConnectionId;
+        await AddConnectionToGroup(Context.ConnectionId, newGroupName);
+        
+        if (!await TryLinkWithFreeSupport(newGroupName))
+        {
+            StoresForSupport.WaitingGroupsWithUser.Enqueue(newGroupName);
+        }
+    }
+    
+    public async Task StopWorkForSupport()
+    {
+        var supportId = Context.User.GetUserId().Value;
+        StoresForSupport.FreeSupports.Remove(supportId);
+        await Clients.User(supportId.ToString()).SendAsync("OnStopWork");
+    }
+
+    public async Task SendUserInfoToSupport()
+    {
+        var userId = Context.User.GetUserId();
+        var userInfo = userId is not null
+            ? await _userService.GetUserInfoForChat(userId.Value)
+            : null;
+
+        var groupName = StoresForSupport.GroupNameByConnectionId[Context.ConnectionId];
+        
+        await Clients.Group(groupName).SendAsync("PrepareUserInfoInChat", userInfo);
+    }
+
+    public void PutInQueueCurrentUser()
+    {
+        var groupName = StoresForSupport.GroupNameByConnectionId[Context.ConnectionId];
+        StoresForSupport.WaitingGroupsWithUser.Enqueue(groupName);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)
@@ -182,74 +205,190 @@ public class ChatHub : Hub
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task DisconnectFromChatWithUser()
+    public override async Task OnConnectedAsync()
     {
-        var supportCommunicationInfo = (supportId: Context.User.GetUserId().Value, Context.ConnectionId);
-        var userConnectionInfo = StoresForSupport.CurrentCommunicationForSupport[supportCommunicationInfo];
-        StoresForSupport.CurrentCommunicationForSupport.Remove(supportCommunicationInfo);
-        StoresForSupport.WaitingUsers.Remove(userConnectionInfo);
-        var messageWithContent = new MessageWithContent
+        if (Context.User.FindAll(ClaimTypes.Role).Any(claim => claim.Value == "support"))
         {
-            Content = "Оператор вышел из чата." +
-                      "Если у вас остались еще вопросы, то напишите сообщение.",
-            ToUser = true
-        };
-        await Clients.Client(userConnectionInfo.userConnectionId).SendAsync("ReceiveNewMessage", messageWithContent);
-        
-        if (!await TryLinkToWaitingUser(supportCommunicationInfo.supportId))
-        {
-            StoresForSupport.FreeSupports.Add(supportCommunicationInfo);
+            var supportId = Context.User.GetUserId()!.Value;
+            if (StoresForSupport.ConnectionIdsByUserId.ContainsKey(supportId))
+            {
+                await Clients.Caller.SendAsync("ConnectToCurrentSession");   
+            }
+            // if (StoresForSupport.GroupNameByConnectionId.TryGetValue(Context.ConnectionId, out var groupName))
+            // {
+            //     await Clients.Caller.SendAsync("ConnectToExistedUser");
+            //     await PrepareChatAsync(groupName);
+            //     return;
+            // }
+            //
+            // if (StoresForSupport.FreeSupports.Contains(supportId))
+            // {
+            //     await Clients.Caller.SendAsync("ToWaitingUser");
+            //     return;
+            // }
         }
+
+        await base.OnConnectedAsync();
     }
 
+    public async Task DisconnectFromChatWithUser()
+    {
+        var supportId = Context.User.GetUserId().Value;
+        var supportConnections = StoresForSupport.ConnectionIdsByUserId[supportId];
+        var groupName = StoresForSupport.GroupNameByConnectionId[supportConnections.First()];
+        await Clients.Group(groupName).SendAsync("OnDisconnectSupport");
+        
+        foreach (var connection in supportConnections)
+        {
+            await TryRemoveConnectionFromGroupAsync(connection);
+        }
+
+        StoresForSupport.DisconnectedGroups.Add(groupName);
+        var notification = _templatedNotificationService.GetValueTemplateByName(
+            ChatTemplatedNotificationName.CompletedDialogueBySupport); 
+        await Clients.Groups(groupName).SendAsync("ShowNotification", notification);
+
+        if (!await TryLinkWithWaitingUser(supportId))
+        {
+            StoresForSupport.FreeSupports.Enqueue(supportId);
+        }
+    }
+    
     private async Task DisconnectUser()
     {
-        var userConnectionInfo = (userId: Context.User?.GetUserId(), Context.ConnectionId);
-        StoresForSupport.WaitingUsers.Remove(userConnectionInfo);
-
-        if (StoresForSupport.CurrentCommunicationForSupport.Reverse.TryGetValue(
-                userConnectionInfo,
-                out var supportConnectionInfo))
+        var userId = Context.User?.GetUserId();
+        var currentConnection = Context.ConnectionId;
+        if (userId is not null && 
+            StoresForSupport.ConnectionIdsByUserId.TryGetValue(userId.Value, out  var userConnections))
         {
-            await Clients.Client(supportConnectionInfo.supportConectionId).SendAsync("OnUserDisconnect");
+            userConnections.Remove(currentConnection);
+
+            if (userConnections.Count != 0)
+            {
+                await TryRemoveConnectionFromGroupAsync(currentConnection);
+                return;
+            }
+
+            StoresForSupport.ConnectionIdsByUserId.Remove(userId.Value);
+        }
+        
+        if (StoresForSupport.GroupNameByConnectionId.TryGetValue(currentConnection, out var groupName))
+        {
+            await TryRemoveConnectionFromGroupAsync(currentConnection);
+            
+            await Clients.Groups(groupName).SendAsync("OnUserDisconnect");
+            
+            StoresForSupport.WaitingGroupsWithUser.Remove(groupName);
+            StoresForSupport.DisconnectedGroups.Remove(groupName);
         }
     }
     
     private async Task DisconnectSupport()
     {
         var supportId = Context.User.GetUserId().Value;
-        var supportConnectionInfo = (supportId, Context.ConnectionId);
-        if (StoresForSupport.CurrentCommunicationForSupport.ContainsKey(supportConnectionInfo))
+        var connectionId = Context.ConnectionId;
+        if (!StoresForSupport.ConnectionIdsByUserId.TryGetValue(supportId, out  var supportConnections))
         {
-            var userConnectionInfo =
-                StoresForSupport.CurrentCommunicationForSupport[supportConnectionInfo];
-            
-            var messageWithContent = new MessageWithContent
-            {
-                Content = "Человек из Ильдар-техподдержки отключился." +
-                          " Вам подпбирается человек, который бы смог ответить на ваши вопросы.",
-                ToUser = true
-            };
+            return;
+        }
 
-            await Clients.Client(userConnectionInfo.userConnectionId)
-                .SendAsync("ReceiveNewMessage", messageWithContent);
-            StoresForSupport.CurrentCommunicationForSupport.Remove(supportConnectionInfo);
-            
-            if (!await TryLinkToFreeSupport(userConnectionInfo.userId))
+        supportConnections.Remove(connectionId);
+        if (supportConnections.Count != 0)
+        {
+            await TryRemoveConnectionFromGroupAsync(connectionId);
+            return;
+        }
+
+        StoresForSupport.ConnectionIdsByUserId.Remove(supportId);
+        if (StoresForSupport.GroupNameByConnectionId.TryGetValue(connectionId, out var groupName))
+        {
+            await TryRemoveConnectionFromGroupAsync(connectionId);
+
+            var notification = _templatedNotificationService.GetValueTemplateByName(
+                ChatTemplatedNotificationName.SupportSuddenlyDisconnected); 
+            await Clients.Groups(groupName).SendAsync("ShowNotification", notification);
+
+            if (!await TryLinkWithFreeSupport(groupName))
             {
-                messageWithContent.Content = "К сожалению все операторы пока что заняты. Ожидайте.";
-                await Clients.Client(userConnectionInfo.userConnectionId)
-                    .SendAsync("ReceiveNewMessage", messageWithContent);
-                StoresForSupport.WaitingUsers.Add(userConnectionInfo);
+                notification = _templatedNotificationService.GetValueTemplateByName(
+                    ChatTemplatedNotificationName.AllOperatorsAreBusy);
+                await Clients.Groups(groupName).SendAsync("ShowNotification", notification);
+                await Clients.Groups(groupName).SendAsync("GetInWaitingQueue");
             }
             else
             {
-                messageWithContent.Content = "Мы перевели вас на другого оператора.";
-                await Clients.Client(userConnectionInfo.userConnectionId)
-                    .SendAsync("ReceiveNewMessage", messageWithContent);
+                notification = _templatedNotificationService.GetValueTemplateByName(
+                    ChatTemplatedNotificationName.TransferToAnotherOperator);
+                await Clients.Groups(groupName).SendAsync("ShowNotification", notification);
             }
         }
 
-        StoresForSupport.FreeSupports.Remove(supportConnectionInfo);
+        StoresForSupport.FreeSupports.Remove(supportId);
+    }
+
+    private async Task<bool> TryRemoveConnectionFromGroupAsync(string connectionId)
+    {
+        if (StoresForSupport.GroupNameByConnectionId.TryGetValue(connectionId, out var groupName))
+        {
+            StoresForSupport.GroupNameByConnectionId.Remove(connectionId);
+            await Groups.RemoveFromGroupAsync(connectionId, groupName);
+            return true;
+        }
+
+        return false;
+    }
+
+    private async Task AddConnectionToGroup(string connectionId, string groupName)
+    {
+        StoresForSupport.GroupNameByConnectionId[connectionId] = groupName;
+        await Groups.AddToGroupAsync(connectionId, groupName);
+    }
+
+    private async Task PrepareChatAsync(string groupName)
+    {
+        await Clients.Group(groupName).SendAsync("PrepareChat", groupName);
+        await Clients.Group(groupName).SendAsync("GetUserInfo");
+    }
+    
+    private void MapIdConnectionToUserId(Guid supportId, string connectionId)
+    {
+        StoresForSupport.ConnectionIdsByUserId.TryAdd(supportId, new HashSet<string>());
+        StoresForSupport.ConnectionIdsByUserId[supportId].Add(connectionId);
+    }
+
+    private async Task<bool> TryLinkWithWaitingUser(Guid supportId)
+    {
+        if (!StoresForSupport.WaitingGroupsWithUser.TryDequeue(out var groupName))
+        {
+            return false;
+        }
+
+        var connectionIds = StoresForSupport.ConnectionIdsByUserId[supportId];
+        foreach (var supportConnectionId in connectionIds)
+        {
+            await AddConnectionToGroup(supportConnectionId, groupName);
+        }
+
+        await PrepareChatAsync(groupName);
+
+        return true;
+    }
+
+    private async Task<bool> TryLinkWithFreeSupport(string groupName)
+    {
+        if (!StoresForSupport.FreeSupports.TryDequeue(out var supportId))
+        {
+            return false;
+        }
+
+        var connectionIds = StoresForSupport.ConnectionIdsByUserId[supportId];
+        foreach (var supportConnectionId in connectionIds)
+        {
+            await AddConnectionToGroup(supportConnectionId, groupName);
+        }
+        
+        await PrepareChatAsync(groupName);
+
+        return true;
     }
 }

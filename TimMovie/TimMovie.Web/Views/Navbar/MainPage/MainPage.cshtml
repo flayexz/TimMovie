@@ -1,4 +1,5 @@
 ﻿@using TimMovie.Core.Classes
+@using TimMovie.Core.Const
 @model List<TimMovie.Web.ViewModels.BannerViewModel>
 @{
     var banners = Model;
@@ -60,6 +61,7 @@
 <vc:carousel genre-name="@GenresNames.ForFamily"></vc:carousel>
 <h1 class="text_color pl-3 mt-5">Лучшие комедии</h1>
 <vc:carousel genre-name="@GenresNames.Comedy"></vc:carousel>
+@{ await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); }
 
 
 @section Scripts{
@@ -67,10 +69,13 @@
     <script src="/js/resendEmailScript.js"></script>
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="~/js/Support/modal_window_chat.js"></script>
+    <script src="~/js/Support/connection_hub_for_user_chat.js"></script>
 }
 
 @section Styles
 {
     <link rel="stylesheet" href="/css/mainPage.css">
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
+    <link rel="stylesheet" href="~/css/Support/modalWindowChat.css"/>
 }

@@ -1,4 +1,4 @@
-﻿namespace TimMovie.Core.Classes;
+﻿namespace TimMovie.Core.Const;
 
 public static class GenresNames
 {

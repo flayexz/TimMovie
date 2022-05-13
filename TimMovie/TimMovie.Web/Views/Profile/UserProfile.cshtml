@@ -53,7 +53,6 @@
 </div>
 @{
     await Html.RenderPartialAsync("~/Views/Partials/Messages/MessageOnSave.cshtml");
-    await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml");
 }
 
 @section Styles
@@ -62,7 +61,6 @@
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
     <link rel="stylesheet" href="/css/SmallPageElements/loader.css">
     <link rel="stylesheet" href="/css/Messages/MessageOnSave.css">
-     <link rel="stylesheet" href="~/css/Support/modalWindowChat.css"/>
 }
 
 @section Scripts
@@ -72,6 +70,4 @@
     <script src="~/js/Profile/profile.js"></script>
     <script src="~/js/Modals/modal_for_change_user_photo.js"></script>
     <script src="~/js/Modals/modal_for_change_user_profile.js"></script>
-    <script src="~/js/support_chat.js"></script>
-    <script src="~/js/Support/support_for_user.js"></script>
 }

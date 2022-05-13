@@ -107,4 +107,10 @@ public class UserProfileController : Controller
 
         return Json(Result.Ok());
     }
+
+    [HttpGet]
+    public async Task<UserInfoForChatDto?> GetUserInfoForChat(Guid userId)
+    {
+        return await _userService.GetUserInfoForChat(userId);
+    }
 }

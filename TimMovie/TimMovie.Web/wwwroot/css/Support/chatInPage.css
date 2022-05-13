@@ -17,7 +17,7 @@
 }
 .chat-in-page__body{
     height: 80%;
-    overflow-y: scroll;
+    overflow-y: auto;
     font-size: 15px;
     font-family: sans-serif;
     letter-spacing: 1px;
@@ -45,19 +45,9 @@
 .chat-in-page__input__message-container{
 
 }
-.chat-in-page__input__attaching-file{
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border-radius: 50%;
-}
-.chat-in-page__input__attaching-file:hover{
-    background-color: #530e88;
-}
 .chat-in-page__input__message-input{
     background-color: #530e88;
     border: 2px solid #360956;
-    border-radius: 20px;
     color: #bda7c2;
     resize: none;
 }
@@ -96,6 +86,11 @@
     padding: 5px 10px;
     max-width: 30%;
     word-break: break-word;
+}
+.message-on-new-connect-user{
+    color: #d3d3d3;
+    background-color: #232323;
+    border: 1px solid #171717;
 }
 @media (max-width: 740px) {
     .chat-page__container{
