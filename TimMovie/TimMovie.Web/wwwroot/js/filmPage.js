@@ -93,3 +93,7 @@ function hideActorsAndProducers() {
 showMoreActorsAndProducersBtn.on("click", showMoreActorsAndProducers);
 hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
 hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
+
+$("#rate_movie").click(function (){
+    getGrade(document.URL.split('/').pop());
+})
