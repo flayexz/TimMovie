@@ -17,4 +17,12 @@ public static class ClaimsPrincipalExtension
         
         return Guid.Parse(idInStr);
     }
+    
+    public static bool HasRoleClaim(this ClaimsPrincipal claimsPrincipal, string nameRole)
+    {
+        ArgumentValidator.ThrowExceptionIfNull(claimsPrincipal, nameof(claimsPrincipal));
+        ArgumentValidator.ThrowExceptionIfNull(nameRole, nameof(nameRole));
+
+        return claimsPrincipal.HasClaim(ClaimTypes.Role, nameRole);
+    }
 }

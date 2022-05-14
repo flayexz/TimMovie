@@ -80,12 +80,12 @@
     background: linear-gradient(99deg, #310e68 0%, #470f52 74%);;
     border-radius: 10px 10px 10px 0;
     margin-left: 10px;
-    padding: 10px 15px;
-    width: 40%;
+    padding: 10px 30px 10px 15px;
+    max-width: 40%;
     word-break: break-word;
 }
 .chat-in-page__notification-in-chat{
-    background-color: #757575;
+    background: linear-gradient(99deg, #a12a98 0%,  #670a60 74%);
     border-radius: 20px;
     color: white;
     padding: 5px 10px;

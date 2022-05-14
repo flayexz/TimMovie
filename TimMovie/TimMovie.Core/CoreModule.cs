@@ -5,6 +5,7 @@ using TimMovie.Core.Services.ChatTemplatedNotifications;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Genres;
+using TimMovie.Core.Services.Messages;
 using TimMovie.Core.Services.Producers;
 using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.SupportedServices;
@@ -29,6 +30,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<UserValidator>(builder);
         RegisterServiceOnSelf<WatchedFilmService>(builder);
         RegisterServiceOnSelf<ChatTemplatedNotificationService>(builder);
+        RegisterServiceOnSelf<MessageService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 

@@ -1,5 +1,5 @@
-﻿@using TimMovie.Core.Classes
-@using TimMovie.Core.Const
+﻿@using TimMovie.Core.Const
+@using TimMovie.Web.Extensions
 @model List<TimMovie.Web.ViewModels.BannerViewModel>
 @{
     var banners = Model;
@@ -61,7 +61,11 @@
 <vc:carousel genre-name="@GenresNames.ForFamily"></vc:carousel>
 <h1 class="text_color pl-3 mt-5">Лучшие комедии</h1>
 <vc:carousel genre-name="@GenresNames.Comedy"></vc:carousel>
-@{ await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); }
+@if (!User.HasRoleClaim(RoleNames.Support))
+{
+    await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); 
+}
+
 
 
 @section Scripts{

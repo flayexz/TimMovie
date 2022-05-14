@@ -1,5 +1,5 @@
 ﻿@using TimMovie.Web.Extensions
-@using System.Security.Claims
+@using TimMovie.Core.Const
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +43,7 @@
                     <li class="nav-item nav-button-left">
                         <a href="#" class="navbar-text">Смотреть позже</a>
                     </li>
-                    @if (User.FindAll(ClaimTypes.Role).Any(claim => claim.Value == "support"))
+                    @if (User.HasRoleClaim(RoleNames.Support))
                     {
                         <li class="nav-item nav-button-left">
                             <a class="navbar-text" asp-controller="TechnicalSupport" asp-action="Support">Чат</a>
@@ -72,7 +72,7 @@
                     </li>
 
                     @{
-                        if (Context.User.Identity == null || !Context.User.Identity.IsAuthenticated)
+                        if (Context.User.Identity is not {IsAuthenticated: true })
                         {
                             <li class="nav-item nav-button-right-last">
                                 <a class="navbar-text" data-bs-toggle="modal" data-bs-target="#modal1">Войти</a>

@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 200;
 }
 
 .support-chat-button:hover {
@@ -64,7 +65,7 @@
 }
 
 .chat-container-body-support-text {
-    width: auto;
+    max-width: 80%;
     background: rgb(243, 243, 243);
     font-size: 18px;
     margin-left: 20px;

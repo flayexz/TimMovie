@@ -1,39 +1,34 @@
-﻿using System.Security.Claims;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using TimMovie.Core.Const;
 using TimMovie.Core.DTO.Messages;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.ChatTemplatedNotifications;
+using TimMovie.Core.Services.Messages;
 using TimMovie.Core.SupportChat;
 using TimMovie.SharedKernel.Extensions;
-using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Web.Extensions;
 
 namespace TimMovie.Web.Hubs;
 
 public class ChatHub : Hub
 {
-    private readonly IRepository<Message> _messageRepository;
     private readonly IUserService _userService;
+    private readonly MessageService _messageService;
     private readonly UserManager<User> _userManager;
-    private readonly IMapper _mapper;
     private readonly ChatTemplatedNotificationService _templatedNotificationService;
 
     public ChatHub(
-        IRepository<Message> messageRepository,
         UserManager<User> userManager,
         IUserService userService,
-        IMapper mapper,
-        ChatTemplatedNotificationService templatedNotificationService)
+        ChatTemplatedNotificationService templatedNotificationService,
+        MessageService messageService)
     {
-        _messageRepository = messageRepository;
         _userManager = userManager;
         _userService = userService;
-        _mapper = mapper;
         _templatedNotificationService = templatedNotificationService;
+        _messageService = messageService;
     }
 
     public async Task SendMessageToUser(string content)
@@ -41,18 +36,12 @@ public class ChatHub : Hub
         var support = await _userManager.GetUserAsync(Context.User);
         var groupName = StoresForSupport.GroupNameByConnectionId[Context.ConnectionId];
 
-        var newMessage = new Message
+        var messageDto = await _messageService.CreateNewMessageToUserAsync(new NewMessageDto
         {
-            ToUser = true,
-            Content = content,
-            Date = DateTime.UtcNow,
-            Sender = support,
-            GroupName = groupName
-        };
-        await _messageRepository.AddAsync(newMessage);
-        await _messageRepository.SaveChangesAsync();
-
-        var messageDto = _mapper.Map<MessageDto>(newMessage);
+           Content = content,
+           Sender = support,
+           GroupName = groupName
+        });
 
         await Clients.Group(groupName).SendAsync("ReceiveNewMessage", messageDto);
     }
@@ -74,20 +63,14 @@ public class ChatHub : Hub
             ? await _userManager.GetUserAsync(Context.User) 
             : null;
 
-        var newMessage = new Message
+        var messageDto = await _messageService.CreateNewMessageToSupportAsync(new NewMessageDto
         {
-            ToUser = false,
-            Content = content,
-            Date = DateTime.UtcNow,
-            Sender = user,
-            GroupName = groupName
-        };
-        await _messageRepository.AddAsync(newMessage);
-        await _messageRepository.SaveChangesAsync();
-
-        var messageWithContent = _mapper.Map<MessageDto>(newMessage);
+           Content = content,
+           Sender = user,
+           GroupName = groupName
+        });
         
-        await Clients.Group(groupName).SendAsync("ReceiveNewMessage", messageWithContent);
+        await Clients.Group(groupName).SendAsync("ReceiveNewMessage", messageDto);
     }
 
     public async Task ConnectSupport(bool isFirstStart)
@@ -140,7 +123,7 @@ public class ChatHub : Hub
     public async Task ConnectUser()
     {
         var userId = Context.User?.GetUserId();
-        
+
         if (userId is not null && 
             StoresForSupport.ConnectionIdsByUserId.TryGetValue(userId.Value, out var connections))
         {
@@ -157,6 +140,7 @@ public class ChatHub : Hub
         }
 
         var newGroupName = Context.User?.Identity?.Name ?? Context.ConnectionId;
+        StoresForSupport.DisconnectedGroups.Remove(newGroupName);
         await AddConnectionToGroup(Context.ConnectionId, newGroupName);
         
         if (!await TryLinkWithFreeSupport(newGroupName))
@@ -193,7 +177,7 @@ public class ChatHub : Hub
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
         var user = Context.User;
-        if (user is not null && user.FindAll(ClaimTypes.Role).Any(claim => claim.Value == "support"))
+        if (user is not null && user.HasRoleClaim(RoleNames.Support))
         {
             await DisconnectSupport();
         }
@@ -207,25 +191,13 @@ public class ChatHub : Hub
 
     public override async Task OnConnectedAsync()
     {
-        if (Context.User.FindAll(ClaimTypes.Role).Any(claim => claim.Value == "support"))
+        if (Context.User.HasRoleClaim(RoleNames.Support))
         {
             var supportId = Context.User.GetUserId()!.Value;
             if (StoresForSupport.ConnectionIdsByUserId.ContainsKey(supportId))
             {
                 await Clients.Caller.SendAsync("ConnectToCurrentSession");   
             }
-            // if (StoresForSupport.GroupNameByConnectionId.TryGetValue(Context.ConnectionId, out var groupName))
-            // {
-            //     await Clients.Caller.SendAsync("ConnectToExistedUser");
-            //     await PrepareChatAsync(groupName);
-            //     return;
-            // }
-            //
-            // if (StoresForSupport.FreeSupports.Contains(supportId))
-            // {
-            //     await Clients.Caller.SendAsync("ToWaitingUser");
-            //     return;
-            // }
         }
 
         await base.OnConnectedAsync();
@@ -276,7 +248,9 @@ public class ChatHub : Hub
         {
             await TryRemoveConnectionFromGroupAsync(currentConnection);
             
-            await Clients.Groups(groupName).SendAsync("OnUserDisconnect");
+            var notification = _templatedNotificationService.GetValueTemplateByName(
+                ChatTemplatedNotificationName.UserDisconnectFromChat);
+            await Clients.Groups(groupName).SendAsync("ShowNotificationInSupportPage", notification);
             
             StoresForSupport.WaitingGroupsWithUser.Remove(groupName);
             StoresForSupport.DisconnectedGroups.Remove(groupName);

@@ -60,7 +60,7 @@
     }
     
     async function onKeypress(e) {
-        if ((e.key === "Enter" || e.keyCode === 13) && messageInput.is(":focus")) {
+        if ((e.key === "Enter" || e.keyCode === 13) && !e.shiftKey && messageInput.is(":focus")) {
             await sendMessage();
         }
     }

@@ -47,9 +47,10 @@
         }
     });
 
-    hubConnection.on("OnUserDisconnect", function () {
+    hubConnection.on("ShowNotificationInSupportPage", function (content) {
         $.get({
-            url: "/TechnicalSupport/NotificationAboutUserDisconnect",
+            url: "/TechnicalSupport/NotificationForSupportPage",
+            data: {content},
             success: function (messageHtml) {
                 chatBody.append(messageHtml);
                 chatBody.scrollTop(chatBody.prop('scrollHeight'));
