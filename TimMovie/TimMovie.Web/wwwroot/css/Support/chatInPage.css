@@ -3,12 +3,16 @@
     margin: 0 var(--margin-for-chat);
 }
 .chat-in-page__container{
+    margin-top: 15px !important;
+    border: 1px solid gray;
+    border-radius: 15px;
     height: 80vh;
-    background-color: #393156;
+    background: url("chatSupportBackground.svg");
 }
 .chat-in-page__header{
-    border-bottom: 1px solid white;
-    background-color: #2e2642;
+    border-radius: 15px;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.66);
+    background-color: #212121
 }
 .chat-in-page__user-photo{
     width: 25px;
@@ -26,29 +30,29 @@
     width: 12px;
 }
 .chat-in-page__body::-webkit-scrollbar-track {
-    background: #6f4bcc;
+    background: gray;
     border-radius: 5px;
 }
 .chat-in-page__body::-webkit-scrollbar-thumb {
-    background-color: blue;    
+    background-color: white;    
     border-radius: 20px;     
 }
 .chat-in-page__input{
     flex-grow: 3;
-    background-color: #2e2642;
 }
 .chat-in-page__add-file{
     fill: #220441;
     cursor: pointer;
-    
 }
 .chat-in-page__input__message-container{
 
 }
 .chat-in-page__input__message-input{
-    background-color: #530e88;
-    border: 2px solid #360956;
-    color: #bda7c2;
+    padding: 10px;
+    background-color: #212121;
+    border: 1px gray solid; 
+    border-radius: 20px;
+    color: white;
     resize: none;
 }
 .chat-in-page__input__message-input:focus{
@@ -61,21 +65,22 @@
     cursor: pointer;
 }
 .chat-in-page__input__send-btn:hover{
-    background-color: #530e88;
+    background-color: gray;
 }
 .chat-in-page__sent-messages{
-    background-color: #1554a4;
+    background: linear-gradient(315deg, #1aafd9, #0296ff, #0064e5);
     border-radius: 10px 10px 0 10px;
     margin-right: 10px;
-    padding: 5px 15px;
+    padding: 10px 15px;
     max-width: 40%;
     word-break: break-word;
 }
 .chat-in-page__received-messages{
-    background-color: #9239dc;
+    background-color: #310e68;
+    background-image: linear-gradient(316deg, #310e68 0%, #5f0f40 74%);
     border-radius: 10px 10px 10px 0;
     margin-left: 10px;
-    padding: 5px 15px;
+    padding: 10px 15px;
     width: 40%;
     word-break: break-word;
 }
