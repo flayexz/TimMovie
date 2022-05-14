@@ -20,6 +20,7 @@
     border-radius: 50%;
 }
 .chat-in-page__body{
+    padding-bottom: 20px;
     height: 80%;
     overflow-y: auto;
     font-size: 15px;
@@ -76,8 +77,7 @@
     word-break: break-word;
 }
 .chat-in-page__received-messages{
-    background-color: #310e68;
-    background-image: linear-gradient(316deg, #310e68 0%, #5f0f40 74%);
+    background: linear-gradient(99deg, #310e68 0%, #470f52 74%);;
     border-radius: 10px 10px 10px 0;
     margin-left: 10px;
     padding: 10px 15px;
