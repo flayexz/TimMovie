@@ -23,7 +23,11 @@
         await hubConnection.invoke("SendUserInfoToSupport");
     });
 
-    hubConnection.on("ShowNotification", function (content){
+    hubConnection.on("TryAddUserToDisconnectedGroups", async function () {
+        await hubConnection.invoke("AddUserGroupToDisconnected");
+    });
+
+    hubConnection.on("ShowNotificationForUserChat", function (content){
         $.post({
             url: "/TechnicalSupport/NotificationForUserChat",
             data: {content},
@@ -67,7 +71,6 @@
     
     async function openConnection(){
         await hubConnection.start();
-        await hubConnection.invoke("ConnectUser");
     }
 
     $(document).on("keypress", onKeypress);

@@ -10,17 +10,11 @@
     const sendMessageBtn = $("#sendMessageBtn")
     let chatIsPrepare = false;
     let userInfoIsPrepare = false;
-    let firstStart = true;
     
     
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/chat")
         .build();
-
-
-    hubConnection.on("ConnectToCurrentSession", async function () {
-        await hubConnection.invoke("ConnectSupport", firstStart);
-    });
     
     hubConnection.on("PrepareChat", function (groupName) {
         $.get({
@@ -81,9 +75,7 @@
         }
         
         onWaitingNewUser();
-        await hubConnection.invoke("TryRegisterConnection");
         startWorkBtn.attr("disabled", true);
-        firstStart = false;
     });
 
     hubConnection.on("OnStopWork", function (){
@@ -124,7 +116,7 @@
     
     async function startWork(){
         startWorkBtn.attr("disabled", true);
-        await hubConnection.invoke("ConnectSupport", firstStart);
+        await hubConnection.invoke("StartWorkForSupport");
     }
     
     async function stopWork(){
