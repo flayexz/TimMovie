@@ -253,6 +253,14 @@ public class UserService : IUserService
         await UpdateUserInfoForUser(userInfo, user);
     }
 
+    public async Task<UserInfoForChatDto?> GetUserInfoForChat(Guid userId)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+        return user is null
+            ? null
+            : mapper.Map<UserInfoForChatDto>(user);
+    }
+
     private async Task UpdateUserInfoForUser(ShortUserInfoDto userInfo, User user)
     {
         user.DisplayName = userInfo.DisplayName;

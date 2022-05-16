@@ -9,5 +9,6 @@ public class InfrastructureMappingProfile: Profile
     public InfrastructureMappingProfile()
     {
         CreateMap<User, UserInfoDto>();
+        CreateMap<User, UserInfoForChatDto>();
     }
 }

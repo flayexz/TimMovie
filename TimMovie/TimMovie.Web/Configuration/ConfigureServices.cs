@@ -16,6 +16,10 @@ public static class ServicesConfiguration
         services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
         
         services.AddIdentity();
+        services.AddSignalR(options =>
+        {
+            options.ClientTimeoutInterval = new TimeSpan(0, 5, 0);
+        });
         
         services.ConfigureApplicationCookie(options =>
         {

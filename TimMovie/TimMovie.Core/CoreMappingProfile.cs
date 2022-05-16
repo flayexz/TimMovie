@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Films;
+using TimMovie.Core.DTO.Messages;
 using TimMovie.Core.DTO.Person;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.WatchedFilms;
@@ -35,5 +36,7 @@ public class CoreMappingProfile: Profile
                 e => e.MapFrom(src => src.Film.Title))
             .ForMember(x => x.Image,
                 e => e.MapFrom(src => src.Film.Image));
+        CreateMap<Message, MessageDto>();
+        CreateMap<NewMessageDto, Message>();
     }
 }

@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 200;
 }
 
 .support-chat-button:hover {
@@ -44,7 +45,7 @@
 .chat-container-body {
     width: auto;
     height: 380px;
-    overflow-y: scroll;
+    overflow-y: auto;
     text-align: right;
     border-bottom: rgb(219, 219, 219);
     border-bottom-width: 1px;
@@ -64,7 +65,7 @@
 }
 
 .chat-container-body-support-text {
-    width: auto;
+    max-width: 80%;
     background: rgb(243, 243, 243);
     font-size: 18px;
     margin-left: 20px;
@@ -73,6 +74,7 @@
     padding: 10px 15px 10px 15px;
     text-align: left;
     color: black;
+    word-break: break-word;
 }
 
 .chat-container-body-user-message {
@@ -90,6 +92,7 @@
     margin-right: 20px;
     padding: 10px 15px 10px 15px;
     text-align: left;
+    word-break: break-word;
 }
 
 .chat-container-answer-field {
@@ -121,4 +124,13 @@
 
 #support-chat-clip:hover{
     cursor: pointer;
+}
+.chat-body__notification{
+    background-color: #919191;
+    border-radius: 20px;
+    color: white;
+    padding: 5px 10px;
+    max-width: 80%;
+    word-break: break-word;
+    text-align: left;
 }

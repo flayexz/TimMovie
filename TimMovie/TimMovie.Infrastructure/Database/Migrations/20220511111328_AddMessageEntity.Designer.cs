@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220511111328_AddMessageEntity")]
+    partial class AddMessageEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -501,25 +503,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.ToTable("Banners");
                 });
 
-            modelBuilder.Entity("TimMovie.Core.Entities.ChatTemplatedNotification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChatTemplatedNotifications");
-                });
-
             modelBuilder.Entity("TimMovie.Core.Entities.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -650,19 +633,20 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("GroupName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("SenderId")
+                    b.Property<Guid?>("SupportId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("ToUser")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("SupportId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -1118,11 +1102,17 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("TimMovie.Core.Entities.Message", b =>
                 {
-                    b.HasOne("TimMovie.Core.Entities.User", "Sender")
+                    b.HasOne("TimMovie.Core.Entities.User", "Support")
                         .WithMany()
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("SupportId");
 
-                    b.Navigation("Sender");
+                    b.HasOne("TimMovie.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Support");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>

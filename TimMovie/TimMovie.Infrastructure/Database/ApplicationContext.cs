@@ -19,6 +19,9 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Gu
     public DbSet<Subscribe?> Subscribes { get; set; }
     public DbSet<UserFilmWatched> WatchedFilms { get; set; }
     public DbSet<UserSubscribe> UserSubscribes { get; set; }
+    public DbSet<IdentityUserClaim<Guid>> Claims { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<ChatTemplatedNotification> ChatTemplatedNotifications { get; set; }
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)

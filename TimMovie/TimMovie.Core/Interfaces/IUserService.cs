@@ -32,4 +32,5 @@ public interface IUserService
     public Task<bool> UserIsExisted(Guid id);
     public Task<Result> UpdateUserPhotoAsync(IFormFile photo, Guid userId, string pathToContentDirectory);
     public Task UpdateUserInfo(ShortUserInfoDto userInfo, Guid userId);
+    public Task<UserInfoForChatDto?> GetUserInfoForChat(Guid userId);
 }
