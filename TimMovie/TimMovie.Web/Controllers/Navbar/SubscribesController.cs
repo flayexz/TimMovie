@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.Services.Subscribes;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.SearchFromLayout;
@@ -27,7 +26,7 @@ public class SubscribesController : Controller
             Subscribes = subscribes,
         };
         if (!User.Identity.IsAuthenticated) return View("~/Views/Subscribes/SubscribesResult.cshtml", viewModel);
-        var userSubscribes = _subscribeService.GetAllActiveUserSubscribes(User.GetUserId());
+        var userSubscribes = _subscribeService.GetAllActiveUserSubscribes(User.GetUserId().Value);
         viewModel.UserSubscribes = userSubscribes;
 
         return View("~/Views/Subscribes/SubscribesResult.cshtml", viewModel);

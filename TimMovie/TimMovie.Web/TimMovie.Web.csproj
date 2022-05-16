@@ -50,4 +50,9 @@
       <_ContentIncludedByDefault Remove="Views\Navbar\SearchSubscribe\SearchSubscribeResult.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Home\Index.cshtml" />
+      <UpToDateCheckInput Remove="Views\Home\Privacy.cshtml" />
+    </ItemGroup>
+
 </Project>

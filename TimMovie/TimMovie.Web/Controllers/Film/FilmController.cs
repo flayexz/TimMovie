@@ -28,14 +28,14 @@ public class FilmController : Controller
 
     [HttpPost]
     public int? GetGrade(Guid filmId) =>
-        !_filmService.TryGetUserGrade(filmId, User.GetUserId(), out var grade) ? null : grade;
+        !_filmService.TryGetUserGrade(filmId, User.GetUserId().Value, out var grade) ? null : grade;
 
     [HttpPost]
     public async Task<IActionResult> SetGrade(Guid filmId, int grade)
     {
         if (grade is < 1 or > 10)
             return NotFound();
-        if (!await _filmService.TryUpdateFilmGrade(filmId, User.GetUserId(), grade))
+        if (!await _filmService.TryUpdateFilmGrade(filmId, User.GetUserId().Value, grade))
             return NotFound();
         return Ok();
     }
