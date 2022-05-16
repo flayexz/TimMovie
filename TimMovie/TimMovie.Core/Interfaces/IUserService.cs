@@ -13,7 +13,7 @@ public interface IUserService
     public Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistrationDto);
 
     //
-    public Task<Result> SendConfirmEmailAsync(string email,string urlToAction);
+    public Task<Result> SendConfirmEmailAsync(string email, string urlToAction);
 
     //
     public Task<Result> ConfirmEmailAsync(string userId, string code);

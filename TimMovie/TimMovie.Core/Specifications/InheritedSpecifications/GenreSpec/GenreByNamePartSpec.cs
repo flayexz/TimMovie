@@ -12,5 +12,5 @@ public class GenreByNamePartSpec : Specification<Genre>
     /// Создает фильтр для получения жанров по части названия
     /// </summary>
     /// <param name="namePart"></param>
-    public GenreByNamePartSpec(string namePart) => Conditional = g => g.Name.Contains(namePart);
+    public GenreByNamePartSpec(string namePart) => Conditional = g => g.Name.ToLower().Contains(namePart.ToLower());
 }

@@ -35,7 +35,7 @@ public class UserService : IUserService
 
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
-        CountryService countryService, IVkService vkService, FilmService filmService)
+        CountryService countryService, IVkService vkService, FilmService filmService )
     {
         this.signInManager = signInManager;
         this.userManager = userManager;

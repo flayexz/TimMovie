@@ -14,5 +14,7 @@ public class ProducerByNamePartSpec : Specification<Producer>
     /// <param name="namePart"></param>
     public ProducerByNamePartSpec(string namePart) =>
         Conditional = p =>
-            p.Surname == null ? p.Name.Contains(namePart) : (p.Name + " " + p.Surname).Contains(namePart);
+            p.Surname == null
+                ? p.Name.ToLower().Contains(namePart.ToLower())
+                : (p.Name.ToLower() + " " + p.Surname.ToLower()).Contains(namePart.ToLower());
 }

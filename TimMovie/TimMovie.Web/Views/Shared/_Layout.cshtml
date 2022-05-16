@@ -22,7 +22,7 @@
 </head>
 <body>
 <header>
-    <div class="container-xl">
+    <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark border-bottom box-shadow mb-3">
             <div>
                 <a asp-controller="MainPage" asp-action="MainPage">
@@ -52,7 +52,7 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item nav-button-right">
-                        <a href="#" class="navbar-text">Оплатить подписку</a>
+                        <a class="navbar-text" asp-controller="Subscribes" asp-action="Subscribes">Подписки</a>
                     </li>
                     <li class="nav-item nav-button-right">
                         <a data-bs-toggle="modal" data-bs-target="#modalGlobalSearch"
@@ -97,13 +97,14 @@
         </nav>
     </div>
 </header>
-<div class="container-xl">
+<div class="container">
     <main role="main" class="pb-3">
         @RenderBody()
         @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     </main>
 </div>
-@{ await Html.RenderPartialAsync("~/Views/Navbar/Search/ModalWindow.cshtml");}
+
+@{ await Html.RenderPartialAsync("~/Views/Navbar/SearchEntity/ModalWindow.cshtml");}
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

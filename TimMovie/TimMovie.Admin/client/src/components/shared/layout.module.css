@@ -14,3 +14,7 @@
     height: 60px;
     border-bottom: 1px solid black;
 }
+
+.navLink:not(:first-child){
+    margin-left: 3em;
+}

@@ -3,8 +3,9 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = Model.Title;
+    var mainGenreName = Model.Genres.First().Name;
 }
-
+<div class="filmPage_container">
 <a href="#" id="backward_link" class="hover_link">
     <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
          xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px">
@@ -16,38 +17,37 @@
     <li>
         <a class="hover_link" asp-controller="Films" asp-action="Filters">Фильмы</a>
     </li>
-    <li>&bull; <a href="#" class="hover_link">@Model.Genres.First().Name</a></li>
+    <li>&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@mainGenreName">@mainGenreName</a></li>
 </ul>
 
 <div class="row mt-5" id="film-row">
-    <div class="col-xl-5 text_color order-xl-2 pl-5" id="film_info_container">
+    <div class="col-xl-5 text_color order-xl-2" id="film_info_container">
         <div id="film_info" class="mb-5">
             <h1>@Model.Title</h1>
             <ul id="film_links">
                 <li>
-                    <a class="hover_link">@Model.Year</a>
-                    <li>
-                        <a class="hover_link">@Model.Country?.Name</a>
-                    </li>
+                <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>
+                <li>
+                    <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-countries="@Model.Country.Name">@Model.Country?.Name</a>
                 </li>
             </ul>
             <ul>
                 @foreach (var genre in Model.Genres)
                 {
-                    <li class="d-inline-block">&bull; <a class="hover_link">@genre.Name</a></li>
+                    <li class="d-inline-block">&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@genre.Name">@genre.Name</a></li>
                 }
             </ul>
         </div>
     </div>
-    <div class="col-12 col-xl-7 order-xl-1 p-0" id="film_player">
+    <div class="col-12 col-xl-7 order-xl-1" id="film_player">
         <div class="ratio ratio-16x9 circleBorders">
-            <iframe src="@Model.FilmLink?rel=0&controls=2&modestbranding=1"
+            <iframe src="@Model.FilmLink?rel=0&controls=2&modestbranding=1&showinfo=0"
                     title="YouTube video" allowfullscreen style="border-radius: 16px;">
             </iframe>
         </div>
         <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
             <div class="d-flex flex-column">
-                <button class="buttons" id="rate_movie">
+                <button data-bs-toggle="modal" data-bs-target="#modalFilmGrade" class="buttons" id="rate_movie">
                     <svg class="mt-2 svg_size" width="2.2em" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -73,11 +73,9 @@
         </div>
     </div>
     <div id="film_description">
-        <h2 class="text_color text_bold">О фильме</h2>
+        <h2 class="text_color text_bold mt-4">О фильме</h2>
         <div id="description">
-            Драматическая история о войне в Донбассе. Май 2014 года, Луганск. Жизни многих местных жителей навсегда меняются с началом боевых действий. Кому из них суждено стать жертвой новой реальности, и кто останется человеком несмотря на страшные обстоятельства?
-            <p>Влад Новожилов – бывший солдат-афганец, который живёт в Луганске вместе с семьёй. В мае 2014 года в соседнем Донецке разворачивается настоящая война, и Новожиловы принимают решение уехать в Россию – подальше от ужасов вооружённого конфликта. На своём пути к безопасности и мирной жизни герои и их близкие сталкиваются с множеством тяжёлых испытаний. Вокруг них происходят обстрелы, гибнут невинные люди, а жители Донбасса сталкиваются с издевательствами и лишениями. Удастся ли героям остаться в живых, преодолеть все трудности и сохранить человечность? Как происходящее повлияет на их судьбы? </p>
-            <p>Приглашаем поклонников военных драм посмотреть онлайн российский фильм «Солнцепёк» режиссёров Максима Бриуса и Михаила Вассербаума, который рассказывает пронзительную историю войны в Донбассе. </p>
+            @Model.Description
         </div>
         <button id="more">Читать дальше...</button>
     </div>
@@ -94,7 +92,7 @@
         }
         @foreach (var producer in Model.Producers)
         {
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
+            <a href="#" class="d-flex flex-column actors-producers__item__container" title="@producer.Name @producer.Surname">
                 <img src=@producer.Photo class="actors-producers__item__img">
                 <div class="d-flex flex-column mt-1">
                     <div class="actors-producers__item__name">@producer.Name @producer.Surname</div>
@@ -104,7 +102,7 @@
         }
         @foreach (var actor in Model.Actors.Take(amountActorForShow))
         {
-            <a href="#" class="d-flex flex-column actors-producers__item__container">
+            <a href="#" class="d-flex flex-column actors-producers__item__container" title="@actor.Name @actor.Surname">
                 <img src=@actor.Photo class="actors-producers__item__img">
                 <div class="d-flex flex-column mt-1">
                     <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
@@ -116,7 +114,7 @@
         {
             foreach (var actor in Model.Actors.Skip(amountActorForShow))
             {
-                <div class="actors-producers__item__container_show">
+                <div class="actors-producers__item__container_show" title="@actor.Name @actor.Surname">
                     <a href="#" class="d-flex flex-column actors-producers__item__container">
                         <img src=@actor.Photo class="actors-producers__item__img">
                         <div class="d-flex flex-column mt-1">
@@ -139,13 +137,28 @@
         }
     </div>
 </div>
-
+@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
+<div class="film__line mt-4"></div>
+<div>
+    <div class="h3 mt-4">
+        Смотрите также
+    </div>
+    <vc:carousel genre-name="@mainGenreName" film-id-to-remove="@Model.Id"></vc:carousel>
+</div>
+</div>
 
 @section Styles
 {
-    <link rel="stylesheet" href="/css/filmPage.css">
+    <link rel="stylesheet" href="/css/filmPage.css"/>
+    <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
+    <link rel="stylesheet" href="~/css/carousel.css"/>
+    <link rel="stylesheet" href="/css/gradeModalWindow.css">
 }
 
 @section Scripts{
     <script src="~/js/filmPage.js"></script>
+    <script src="/js/Carousel_Script.js"></script>
+    <script src="~/js/FilmCard/animation_for_film_card.js"></script>
+    <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="~/js/gradeModalWindow.js"></script>
 }

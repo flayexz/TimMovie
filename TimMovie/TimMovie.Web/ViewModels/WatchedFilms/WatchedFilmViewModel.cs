@@ -2,7 +2,7 @@
 
 public class WatchedFilmViewModel
 {
-    public Guid Id { get; set; }
+    public Guid FilmId { get; set; }
     public string Title { get; set; } = null!;
     public int Grade { get; set; }
     public double Rating { get; set; }

@@ -1,7 +1,12 @@
 ﻿@using TimMovie.Web.ViewModels.WatchedFilms;
 @using TimMovie.Core.Classes;
 
-@model PaginatedList<WatchedFilmViewModel>  
+@model (PaginatedList<WatchedFilmViewModel> watchedFilms, bool isOwner)
+
+@{
+    var watchedFilms = Model.watchedFilms;
+    var isOwner = Model.isOwner;
+}
 
 @{
     ViewBag.Title = "Просмотренные фильмы";
@@ -37,25 +42,33 @@
             <div class="films-container">
                 @{
                     var index = 0;
-                    foreach (var watched in Model)
+                    foreach (var watched in watchedFilms)
                     {
                         index++;
-                        var filmNumber = index + (Model.PageIndex - 1) * Model.PageSize;
+                        var gradeClass = watched.Grade switch
+                        {
+                            >= 8 => "goodGrade",
+                            >= 5 => "mediumGrade",
+                            > 0 => "badGrade",
+                            _ => ""
+                            };
+                        var filmNumber = index + (watchedFilms.PageIndex - 1) * watchedFilms.PageSize;
                         <div class="films-list">
                             <div class="@(filmNumber > 9 ? "film-number-large" : "film-number") film-block">
                                 <span>@filmNumber</span>
                             </div>
                             <div class="film-card">
-                                <img class="film-photo" src="@watched.Image" alt="">
+                                 <a asp-controller="Film" asp-action="Film" asp-route-id="@watched.FilmId"><img class="film-photo" src="@watched.Image" alt=""></a>
                             </div>
                             <div class="film-title film-block">
-                                <span class="film-title-txt">@watched.Title</span>
+                                <a asp-controller="Film" asp-action="Film" asp-route-id="@watched.FilmId"> <span class="film-title-txt">@watched.Title</span></a>
                             </div>
                             <div class="film-duration film-block text-white">
                                 <span>@watched.Rating</span>
                             </div>
                             <div class="film-grade film-block">
-                                <span class="@(watched.Grade >= 8 ? "goodGrade" : watched.Grade >= 5 ? "mediumGrade" : "badGrade")">@watched.Grade</span>
+                                <span data-bs-toggle="modal" @(isOwner ? "data-bs-target=#modalFilmGrade" : "")  class="@(gradeClass) setGradeButton">@(watched.Grade > 0 ? watched.Grade : "-")</span>
+                                <div class="filmIdHidden">@watched.FilmId</div>   
                             </div>
                             <div class="film-watched-date film-block">
                                 <span class="watched-date-text">@watched.WatchedDate</span>
@@ -68,9 +81,9 @@
         <div class="pagination-numbers">
             @{
                 const int numsAfterCurrentPage = 2;
-                var pageIndex = Model.PageIndex;
+                var pageIndex = watchedFilms.PageIndex;
                 var isShownStart = false;
-                for (int i = 1; i < Model.TotalPages + 1; i++)
+                for (var i = 1; i < watchedFilms.TotalPages + 1; i++)
                 {
                     var currentIndex = i;
                     var paginationIndex = currentIndex < pageIndex ? pageIndex - (pageIndex - currentIndex) : i;
@@ -96,7 +109,7 @@
                         if (paginationIndex > pageIndex + numsAfterCurrentPage)
                         {
                             <span class="ms-2">...</span>
-                            <a asp-controller="WatchedFilms" asp-action="WatchedFilms" asp-route-page="@Model.TotalPages" style="text-decoration: none" class="ms-2">@Model.TotalPages</a>
+                            <a asp-controller="WatchedFilms" asp-action="WatchedFilms" asp-route-page="@watchedFilms.TotalPages" style="text-decoration: none" class="ms-2">@watchedFilms.TotalPages</a>
                             break;
                         }
                         <a asp-controller="WatchedFilms" asp-action="WatchedFilms" asp-route-page="@paginationIndex" style="text-decoration: none" class="ms-3">@paginationIndex</a>
@@ -106,33 +119,39 @@
             }
         </div>
         <div class="pagination-buttons-area">
-            @if (Model.HasPreviousPage)
+            @if (watchedFilms.HasPreviousPage)
             {
                 <a asp-action="WatchedFilms" asp-controller="WatchedFilms"
-                   asp-route-page="@(Model.PageIndex - 1)"
+                   asp-route-page="@(watchedFilms.PageIndex - 1)"
                    class="btn btn-outline-dark pagination-button">
-                    Назад
+                    ←
                 </a>
             }
-            @if (Model.HasNextPage)
+            @if (watchedFilms.HasNextPage)
             {
                 <a asp-action="WatchedFilms" asp-controller="WatchedFilms"
-                   asp-route-page="@(Model.PageIndex + 1)"
+                   asp-route-page="@(watchedFilms.PageIndex + 1)"
                    class="btn btn-outline-dark pagination-button ms-3">
-                    Вперед
+                    →
                 </a>
             }
         </div>
     </div>
 </div>
 
+@if (isOwner)
+{
+    await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");
+}
 
 @section Styles
 {
     <link rel="stylesheet" href="~/css/WatchedFilms/WatchedFilmsStyle.css">
+    <link rel="stylesheet" href="/css/gradeModalWindow.css">
 }
 
 @section Scripts
 {
     <script src="~/js/WatchedFilms/watchedFilmsScript.js"></script>
+    <script src="~/js/gradeModalWindow.js"></script>
 }

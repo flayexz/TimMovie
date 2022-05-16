@@ -15,7 +15,7 @@ import {RoleController} from "./controllers/role/role.controller";
   imports: [
       TypeOrmModule.forRoot(),
       ConfigModule.forRoot({
-          envFilePath: '.env.' + process.env.NODE_ENV
+          envFilePath: '.env.'+process.env.NODE_ENV
       }),
       JwtModule.register({})
   ],
