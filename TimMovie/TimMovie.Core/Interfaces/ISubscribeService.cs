@@ -5,7 +5,7 @@ namespace TimMovie.Core.Interfaces;
 
 public interface ISubscribeService
 {
-    public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take, int skip);
+    public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take = int.MaxValue, int skip = 0);
 
     public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid userId);
 

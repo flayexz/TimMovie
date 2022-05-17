@@ -33,7 +33,7 @@ public class SubscribeService : ISubscribeService
     /// <param name="take"></param>
     /// <param name="skip"></param>
     /// <returns></returns>
-    public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take, int skip)
+    public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take = int.MaxValue, int skip = 0)
     {
         var query = _subscribesRepository.Query
             .Where(new UserSubscribeByNamePartSpec(namePart))

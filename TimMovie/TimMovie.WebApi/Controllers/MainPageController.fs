@@ -23,4 +23,14 @@ type MainPageController(logger: ILogger<MainPageController>, searchEntityService
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
     member _.GetUserSubscribes([<FromForm>] userGuid: Guid) =
-          subscribeService.GetAllActiveUserSubscribes(userGuid);
+          subscribeService.GetAllActiveUserSubscribes(userGuid)
+          
+    [<HttpPost>]
+    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+    [<Consumes("application/x-www-form-urlencoded")>]
+    member _.GetAllSubscribes([<FromForm>] namePart: string, [<FromForm>] take: int , [<FromForm>] skip: int) =
+          if (namePart = null) then
+            subscribeService.GetSubscribesByNamePart(namePart)
+          else
+            subscribeService.GetSubscribesByNamePart(namePart, take, skip);
+          
