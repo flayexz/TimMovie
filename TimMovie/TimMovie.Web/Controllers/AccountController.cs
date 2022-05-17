@@ -174,7 +174,7 @@ public class AccountController : Controller
             return View("Error");
         }
 
-        logger.LogError("не удалось отправить повторное сообщение на почту");
+        logger.LogError($"не удалось отправить повторное сообщение на почту: {sendResult.Error}");
         return View("Error");
     }
 
