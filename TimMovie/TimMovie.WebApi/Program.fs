@@ -70,8 +70,8 @@ module Program =
         
         services.AddDbContext(configuration["ConnectionStrings:DefaultConnection"])
 
-//        services.AddAuthentication
-//            (fun options -> options.DefaultScheme <- OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
+        services.AddAuthentication
+            (fun options -> options.DefaultScheme <- OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
 
         services.AddAuthorization()
         

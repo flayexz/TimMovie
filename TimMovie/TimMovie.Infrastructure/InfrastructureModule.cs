@@ -22,6 +22,7 @@ public class InfrastructureModule: Module
         builder.RegisterType<MailKitService>().As<IMailService>().InstancePerLifetimeScope();
         builder.RegisterType<IpService>().As<IIpService>().InstancePerDependency();
         builder.RegisterType<UserMessageService>().As<IUserMessageService>().InstancePerLifetimeScope();
+        builder.RegisterType<SearchEntityService>().As<ISearchEntityService>().InstancePerLifetimeScope();
         builder.RegisterType<VkService>().As<IVkService>().WithParameters(new[]
         {
             new NamedParameter("accessToken", _configuration["VkSettings:AccessToken"]),

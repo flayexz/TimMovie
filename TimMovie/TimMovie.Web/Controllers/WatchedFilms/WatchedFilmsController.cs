@@ -10,6 +10,7 @@ using TimMovie.Web.ViewModels.WatchedFilms;
 
 namespace TimMovie.Web.Controllers.WatchedFilms;
 
+[ApiExplorerSettings(IgnoreApi=true)]
 public class WatchedFilmsController : Controller
 {
     private readonly UserManager<User> userManager;

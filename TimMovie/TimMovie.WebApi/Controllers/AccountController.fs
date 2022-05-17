@@ -45,11 +45,13 @@ type AccountController(logger: ILogger<AccountController>, userService: IUserSer
         result
 
     [<HttpPost>]
+    [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
     member _.SendConfirmEmail([<FromForm>] email: string) =
         userService.SendConfirmEmailAsync(email, this.UrlToConfirmEmail)
 
     [<HttpGet>]
+    [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
     member _.ConfirmEmail(userId: string, code: string) =
         userService.ConfirmEmailAsync(userId, code)

@@ -6,6 +6,7 @@
 
     <ItemGroup>
         <Compile Include="Controllers\AccountController.fs" />
+        <Compile Include="Controllers\MainPageController.fs" />
         <Compile Include="Configuration\AppMappingProfile.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>

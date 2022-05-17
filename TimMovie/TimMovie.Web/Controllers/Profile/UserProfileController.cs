@@ -17,6 +17,7 @@ using TimMovie.Web.ViewModels.UserSubscribes;
 
 namespace TimMovie.Web.Controllers.Profile;
 
+[ApiExplorerSettings(IgnoreApi=true)]
 public class UserProfileController : Controller
 {
     private readonly IUserService _userService;
