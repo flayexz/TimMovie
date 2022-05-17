@@ -28,6 +28,13 @@ type AuthController(userManager: UserManager<User>, signInManager: SignInManager
         let properties = AuthenticationProperties(errors)
         properties
 
+    member private this.GetUnconfirmedEmailException() =
+        let errors = Dictionary<string, string>()
+        errors.Add(Properties.Error, OpenIddictConstants.Errors.AccessDenied)
+        errors.Add(Properties.ErrorDescription, "email for this user is not confirmed")
+        let properties = AuthenticationProperties(errors)
+        properties
+    
     member private this.GetDestinations(principal: ClaimsPrincipal, claim: Claim) =
         seq {
             match claim.Type with
@@ -87,7 +94,6 @@ type AuthController(userManager: UserManager<User>, signInManager: SignInManager
                             (set (request.GetScopes() |> List.ofSeq))
                     )
                     |> ignore
-
                     if System.String.IsNullOrEmpty(principal.FindFirstValue(OpenIddictConstants.Claims.Subject)) then
                         principal.SetClaim(OpenIddictConstants.Claims.Subject, user.Id |> string)
                         |> ignore
@@ -97,8 +103,16 @@ type AuthController(userManager: UserManager<User>, signInManager: SignInManager
                         |> ignore
 
                     this.SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)
+                
+                
                 else
-                    this.Forbid(this.GetAuthPropertiesErrors(), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)
+                    if result.IsNotAllowed && userManager.CheckPasswordAsync(user,request.Password)
+                                              |> Async.AwaitTask
+                                              |> Async.RunSynchronously
+                                              then
+                        this.Forbid(this.GetUnconfirmedEmailException(), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)
+                    else
+                        this.Forbid(this.GetAuthPropertiesErrors(), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)
 
         else
             this.BadRequest()
