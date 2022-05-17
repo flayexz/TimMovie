@@ -19,9 +19,6 @@ namespace TimMovie.Infrastructure.Services;
 
 public class UserService : IUserService
 {
-    private const string PathToDirectoryWithUserPhoto = "img/user_photo/";
-    private const string PathToDefaultUserPhoto = "/img/user_photo/default.jpg";
-
     private readonly SignInManager<User> signInManager;
     private readonly UserManager<User> userManager;
     private readonly IMapper mapper;
@@ -31,11 +28,11 @@ public class UserService : IUserService
     private readonly CountryService countryService;
     private readonly IVkService vkService;
     private readonly FilmService _filmService;
-
-
+    private readonly IFileService _fileService;
+    
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
-        CountryService countryService, IVkService vkService, FilmService filmService )
+        CountryService countryService, IVkService vkService, FilmService filmService, IFileService fileService)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
@@ -46,6 +43,7 @@ public class UserService : IUserService
         this.countryService = countryService;
         this.vkService = vkService;
         _filmService = filmService;
+        _fileService = fileService;
     }
 
     public async Task<IdentityResult> RegisterUserAsync(UserRegistrationDto userRegistrationDto)
@@ -54,7 +52,7 @@ public class UserService : IUserService
         user.RegistrationDate = DateTime.Now;
         user.DisplayName = userRegistrationDto.UserName;
         user.BirthDate = DateOnly.FromDateTime(DateTime.Today);
-        user.PathToPhoto =  PathToDefaultUserPhoto;
+        user.PathToPhoto = await _fileService.GetLinkToDefaultUserPhoto();
         if (userRegistrationDto.Ip != null)
             await AddCountryByIpAsync(user, userRegistrationDto.Ip);
         var registerResult = await userManager.CreateAsync(user, userRegistrationDto.Password);
@@ -213,31 +211,20 @@ public class UserService : IUserService
             return Result.Fail("Пользователя с таким id не существует");
         }
         
-        var randomFileName = GenerateRandomFileNameWithExtension(Path.GetExtension(photo.FileName));
-        var relativeUserPhotoLink = Path.Combine($"/{PathToDirectoryWithUserPhoto}", randomFileName);
-        var userPhotoLink = Path.Combine(pathToContentDirectory, PathToDirectoryWithUserPhoto, randomFileName);
-        
         try
         {
-            await using var fs = File.OpenWrite(userPhotoLink);
-            await photo.CopyToAsync(fs);
-
-            user.PathToPhoto = relativeUserPhotoLink;
+            user.PathToPhoto = await _fileService.SaveUserPhoto(photo);
+            
             await userManager.UpdateAsync(user);
             
             return Result.Ok();
         }
         catch (Exception e)
         {
-            if (File.Exists(userPhotoLink))
-            {
-                File.Delete(userPhotoLink);
-            }
-            
             return Result.Fail(e.Message);
         }
     }
-
+    
     public async Task UpdateUserInfo(ShortUserInfoDto userInfo, Guid userId)
     {
         var user = await userManager.Users
@@ -307,7 +294,7 @@ public class UserService : IUserService
             DisplayName = vkInfo.FirstName + " " + vkInfo.LastName,
             BirthDate = vkInfo.Birthday,
             RegistrationDate = DateTime.Now,
-            PathToPhoto =  PathToDefaultUserPhoto
+            PathToPhoto = await _fileService.GetLinkToDefaultUserPhoto()
         };
         if (ip != null)
             await AddCountryByIpAsync(user, ip);

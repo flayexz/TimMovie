@@ -81,6 +81,7 @@
                     saveImgProfileBtn.attr("disabled", false);
                     outputError(response?.error 
                         ?? "Фотогорафия не соотвутствует требованиям, попробуйте еще раз;");
+                    return;
                 }
                 
                 userPhotoInProfile.attr("src", currentImg.attr("src"));

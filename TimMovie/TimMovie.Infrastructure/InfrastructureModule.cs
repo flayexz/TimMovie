@@ -30,5 +30,7 @@ public class InfrastructureModule: Module
         }).InstancePerDependency();
         builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
         builder.RegisterType<PaymentService>().As<IPaymentService>().InstancePerLifetimeScope();
+        builder.RegisterType<ConfigurationService>().As<IConfigurationService>().InstancePerLifetimeScope();
+        builder.RegisterType<FileService>().As<IFileService>().InstancePerLifetimeScope();
     }
 }

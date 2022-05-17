@@ -3,6 +3,7 @@ using Autofac.Extensions.DependencyInjection;
 using TimMovie.Core;
 using TimMovie.Infrastructure;
 using TimMovie.Web.Configuration;
+using TimMovie.Web.Extensions;
 using TimMovie.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseFileService();
 app.UseStaticFiles();
 
 app.UseRouting();

@@ -12,6 +12,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TimMovie.Auth", "TimMovie.A
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TimMovie.WebApi", "TimMovie.WebApi\TimMovie.WebApi.fsproj", "{FDA6DD23-0311-4273-92B9-58A770EA24D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilesApi", "FilesApi\FilesApi.csproj", "{D00677F5-84B3-4C38-811D-937280580752}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{FDA6DD23-0311-4273-92B9-58A770EA24D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDA6DD23-0311-4273-92B9-58A770EA24D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDA6DD23-0311-4273-92B9-58A770EA24D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D00677F5-84B3-4C38-811D-937280580752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D00677F5-84B3-4C38-811D-937280580752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D00677F5-84B3-4C38-811D-937280580752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D00677F5-84B3-4C38-811D-937280580752}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
