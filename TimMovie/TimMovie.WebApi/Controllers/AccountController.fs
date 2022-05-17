@@ -1,18 +1,20 @@
 ﻿namespace TimMovie.WebApi.Controllers.AuthorizationController
 
 open Microsoft.AspNetCore.Authorization
-open Microsoft.AspNetCore.Identity
+open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Extensions.Logging
-open OpenIddict.Validation.AspNetCore
 open TimMovie.Core.DTO.Account
-open TimMovie.Core.Entities
 open TimMovie.Core.Interfaces
+open TimMovie.SharedKernel.Classes
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
-type AccountController(logger: ILogger<AccountController>, userService: IUserService) =
+type AccountController(logger: ILogger<AccountController>, userService: IUserService) as this =
     inherit ControllerBase()
+
+    member private _.UrlToConfirmEmail =
+        this.Url.Action("ConfirmEmail", "Account", null, this.HttpContext.Request.Scheme)
 
     [<HttpPost>]
     [<AllowAnonymous>]
@@ -22,18 +24,32 @@ type AccountController(logger: ILogger<AccountController>, userService: IUserSer
         userRegistrationDto.Email <- email
         userRegistrationDto.UserName <- username
         userRegistrationDto.Password <- password
-        userService.RegisterUserAsync(userRegistrationDto)
-        |> Async.AwaitTask
-        |> Async.RunSynchronously
-//        
-//    [<HttpPost>]
-//    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-//    [<Consumes("application/x-www-form-urlencoded")>]
-//    member _.SendConfirmEmail([<FromForm>] email: string, [<FromForm>] urlToAction: string) =
-//        userService.SendConfirmEmailAsync(email, urlToAction)
-//        
-//    [<HttpPost>]
-//    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-//    [<Consumes("application/x-www-form-urlencoded")>]
-//    member _.ConfirmEmail([<FromForm>] userId: string, [<FromForm>] code: string) =
-//        userService.ConfirmEmailAsync(userId, code)
+
+        let registerResult =
+            userService.RegisterUserAsync(userRegistrationDto)
+            |> Async.AwaitTask
+            |> Async.RunSynchronously
+
+        let result =
+            if registerResult.Succeeded then
+                userService.SendConfirmEmailAsync(email, this.UrlToConfirmEmail)
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
+            else
+                let sb = System.Text.StringBuilder()
+                for error in registerResult.Errors do
+                    sb.Append($" {error.Description}") |> ignore
+
+                Result.Fail($"{sb.ToString()}")
+
+        result
+
+    [<HttpPost>]
+    [<Consumes("application/x-www-form-urlencoded")>]
+    member _.SendConfirmEmail([<FromForm>] email: string) =
+        userService.SendConfirmEmailAsync(email, this.UrlToConfirmEmail)
+
+    [<HttpGet>]
+    [<Consumes("application/x-www-form-urlencoded")>]
+    member _.ConfirmEmail(userId: string, code: string) =
+        userService.ConfirmEmailAsync(userId, code)
