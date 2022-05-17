@@ -2,6 +2,7 @@
 using AutoMapper;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.Entities;
+using TimMovie.Core.Interfaces;
 using TimMovie.Core.Query;
 using TimMovie.Core.Specifications.InheritedSpecifications.SubscribeSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
@@ -10,7 +11,7 @@ using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Subscribes;
 
-public class SubscribeService
+public class SubscribeService : ISubscribeService
 {
     private readonly IRepository<UserSubscribe> _userSubscribeRepository;
     private readonly IRepository<Subscribe> _subscribesRepository;

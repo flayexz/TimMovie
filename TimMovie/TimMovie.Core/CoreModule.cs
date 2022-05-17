@@ -1,4 +1,5 @@
 using Autofac;
+using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Actors;
 using TimMovie.Core.Services.Banners;
 using TimMovie.Core.Services.ChatTemplatedNotifications;
@@ -25,7 +26,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<BannerService>(builder);
         RegisterServiceOnSelf<ActorService>(builder);
         RegisterServiceOnSelf<ProducerService>(builder);
-        RegisterServiceOnSelf<SubscribeService>(builder);
+        builder.RegisterType<SubscribeService>().As<ISubscribeService>().InstancePerLifetimeScope();
         RegisterServiceOnSelf<FileService>(builder);
         RegisterServiceOnSelf<UserValidator>(builder);
         RegisterServiceOnSelf<WatchedFilmService>(builder);
