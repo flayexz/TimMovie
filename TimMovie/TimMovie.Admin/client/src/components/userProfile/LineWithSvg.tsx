@@ -1,25 +1,32 @@
 import React from 'react';
-import SvgIcon from "./svgComponents/SvgIcon";
 import classes from './userProfile.module.css'
 import './userProfile.css';
+import Icon from "../../svg-icons/Icon";
 
-interface LineProps{
+interface LineProps {
     icon: string,
-    line:string | undefined,
-    isBold?:boolean
+    line: string | null | undefined,
+    isBold?: boolean
+    isHeader?: boolean
+    iconWidth?:number
+    iconHeight?:number
 }
 
-const LineWithSvg:React.FC<LineProps> = ({icon, line, isBold}:LineProps) => {
+const LineWithSvg: React.FC<LineProps> = ({icon, line, isBold, isHeader = false, iconWidth = 22, iconHeight = 22}: LineProps) => {
     return (
-        <div>
-            <div className={`${classes.line} d-flex align-items-center`}>
-                <div className={classes.circleForIcon}>
-                    <SvgIcon icon={icon}/>
-                </div>
-                <span className={classes.content_str} style={{fontWeight: isBold ? 'bold' : 'normal'}}>
+        <div className={`${classes.line} d-flex align-items-center`}>
+            <div className={classes.circleForIcon}>
+                <Icon name={icon} width={iconWidth} height={iconHeight}/>
+            </div>
+            <span className={classes.content_str}
+                  style={{
+                      fontWeight: isBold ? 'bold' : 'normal',
+                      textDecoration: isHeader ? 'underline' : 'normal',
+                      textDecorationThickness: '2px',
+                      textUnderlineOffset: "6px"
+                  }}>
                     {line}
                 </span>
-            </div>
         </div>
     );
 };

@@ -19,4 +19,6 @@
 
 .content_str {
     margin-left: 10px;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 5px;
 }

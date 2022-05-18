@@ -63,3 +63,18 @@
 .mr-2 {
     margin-right: 8px;
 }
+
+.svg_sprite{
+    width: 35px;
+    height: 35px;
+}
+
+.containerHeader{
+    line-height: 45px;
+}
+
+@media screen and (max-width: 576px) {
+    .containers{
+        padding-top: 40px;
+    }
+}
