@@ -1,5 +1,5 @@
 export interface UploadProps{
     photoHeight: number,
     photoWidth: number,
-    borderRadius: number | 0
+    borderRadius?: number | 0
 }
