@@ -1,0 +1,11 @@
+version: "3"
+services:
+  filesapi:
+    build: ./FilesApi
+    ports:
+      - "9000:80"
+    restart: always
+  web:
+    build: ./TimMovie.Web
+    ports:
+      - "80:80"

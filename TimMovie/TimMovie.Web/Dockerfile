@@ -5,10 +5,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["TimMovie.Web/TimMovie.Web.csproj", "TimMovie.Web/"]
-COPY ["TimMovie.Core/TimMovie.Core.csproj", "TimMovie.Core/"]
-COPY ["TimMovie.SharedKernel/TimMovie.SharedKernel.csproj", "TimMovie.SharedKernel/"]
-COPY ["TimMovie.Infrastructure/TimMovie.Infrastructure.csproj", "TimMovie.Infrastructure/"]
+COPY ["TimMovie.Web.csproj", "TimMovie.Web/"]
+COPY ["TimMovie.Core.csproj", "TimMovie.Core/"]
+COPY ["TimMovie.SharedKernel.csproj", "TimMovie.SharedKernel/"]
+COPY ["TimMovie.Infrastructure.csproj", "TimMovie.Infrastructure/"]
 RUN dotnet restore "TimMovie.Web/TimMovie.Web.csproj"
 COPY . .
 WORKDIR "/src/TimMovie.Web"
