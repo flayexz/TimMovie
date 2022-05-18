@@ -1,13 +1,13 @@
 ﻿import {Injectable} from '@nestjs/common';
-import {IUserRoleDto} from "../dto/IUserRoleDto";
 import {getRepository} from "typeorm";
-import {AspNetUserClaim} from "../../entities/AspNetUserClaim";
-import {IRoleDto} from "../dto/IRoleDto";
-import {AspNetUser} from "../../entities/AspNetUser";
+import {RoleDto} from "../../dto/RoleDto";
+import {AspNetUserClaim} from "../../../entities/AspNetUserClaim";
+import {AspNetUser} from "../../../entities/AspNetUser";
+import {UserRoleDto} from "../../dto/UserRoleDto";
 
 @Injectable()
 export class RoleService {
-   public async getUserRolesAndAllRemaining(id: string): Promise<IUserRoleDto[]> {
+   public async getUserRolesAndAllRemaining(id: string): Promise<UserRoleDto[]> {
        let allRoles = await getRepository(AspNetUserClaim)
            .createQueryBuilder()
            .addSelect("AspNetUserClaim.Id", "id")
@@ -18,7 +18,7 @@ export class RoleService {
        console.log(allRoles);
        let userRoles = await this.getAllUserRoles(id);
        
-       let roles: IUserRoleDto[] = allRoles.map(role => {
+       let roles: UserRoleDto[] = allRoles.map(role => {
           return  {
               role: {
                   id: role.id,
@@ -31,7 +31,7 @@ export class RoleService {
        return roles;
    }
    
-   public async getAllUserRoles(id: string): Promise<IRoleDto[]>{
+   public async getAllUserRoles(id: string): Promise<RoleDto[]>{
        let user = await getRepository(AspNetUser)
            .findOne({
               where: {
@@ -40,7 +40,7 @@ export class RoleService {
                relations: ["aspNetUserClaims"]
            });
        
-       let userRoles: IRoleDto[] = user.aspNetUserClaims
+       let userRoles: RoleDto[] = user.aspNetUserClaims
            .filter(claim => claim.claimType === process.env.CLAIM_ROLE)
            .map(claim => {
                return {

@@ -1,4 +1,4 @@
-﻿export interface ISubscribeDto{
+﻿export interface SubscribeDto {
     id: string;
     subscribeName: string;
 }
