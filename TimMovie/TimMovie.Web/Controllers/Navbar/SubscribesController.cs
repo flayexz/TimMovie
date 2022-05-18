@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Subscribes;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.SearchFromLayout;
@@ -7,9 +8,9 @@ namespace TimMovie.Web.Controllers.Navbar;
 
 public class SubscribesController : Controller
 {
-    private readonly SubscribeService _subscribeService;
+    private readonly ISubscribeService _subscribeService;
 
-    public SubscribesController(SubscribeService subscribeService)
+    public SubscribesController(ISubscribeService subscribeService)
     {
         _subscribeService = subscribeService;
     }

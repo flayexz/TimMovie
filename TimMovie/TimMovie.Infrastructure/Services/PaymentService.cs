@@ -7,9 +7,9 @@ namespace TimMovie.Infrastructure.Services;
 
 public class PaymentService : IPaymentService
 {
-    private readonly SubscribeService userSubscribeService;
+    private readonly ISubscribeService userSubscribeService;
 
-    public PaymentService(SubscribeService userSubscribeService)
+    public PaymentService(ISubscribeService userSubscribeService)
     {
         this.userSubscribeService = userSubscribeService;
     }

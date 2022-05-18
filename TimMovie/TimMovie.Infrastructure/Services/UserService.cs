@@ -70,9 +70,9 @@ public class UserService : IUserService
     {
         var userFromDb = await userManager.FindByEmailAsync(email);
         if (userFromDb is null)
-        {
             return Result.Fail("can`t find user by userName while sending email");
-        }
+        if (userFromDb.EmailConfirmed)
+            return Result.Fail("mail has already been confirmed");
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
         var confirmUrl = CreateUrlToConfirmEmail(urlToAction, userFromDb, token);
