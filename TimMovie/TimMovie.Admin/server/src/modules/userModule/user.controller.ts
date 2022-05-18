@@ -1,11 +1,10 @@
 import {Body, Controller, Get, Post, Query} from '@nestjs/common';
-import {IShortInformationAboutUserDto} from 'src/dto/IShortInformationAboutUserDto';
-import {UserService} from "../../services/UserService";
-import {IAllInformationAboutUserDto} from "../../dto/IAllInformationAboutUserDto";
-import {SubscribeService} from "../../services/SubscribeService";
-import {RoleService} from "../../services/RoleService";
-import {Admin} from "../../auth/adminAuth";
-
+import {ShortInformationAboutUserDto} from 'src/dto/ShortInformationAboutUserDto';
+import {AllInformationAboutUserDto} from "../../dto/AllInformationAboutUserDto";
+import {UserService} from "./UserService";
+import {SubscribeService} from "../subscribesModule/SubscribeService";
+import {Admin} from "../authModule/adminAuth";
+import {RoleService} from "../roleModule/RoleService";
 
 @Admin()
 @Controller('users')
@@ -18,7 +17,7 @@ export class UserController{
     public async getUsersWithFilterByLogin(
             @Query("incomingText") incomingText: string, 
             @Query("skip") skip: number, 
-            @Query("take") take: number): Promise<IShortInformationAboutUserDto[]> {
+            @Query("take") take: number): Promise<ShortInformationAboutUserDto[]> {
         console.log(`${skip} ${take} ${incomingText}`);
         
         const users = await this.userService.getUsersWithFilterByLogin(incomingText, skip, take);
@@ -26,8 +25,8 @@ export class UserController{
     }
 
     @Get('user')
-    public async getAllInfoAboutUser(@Query('id') id: string): Promise<IAllInformationAboutUserDto | null> {
-        const user: IAllInformationAboutUserDto = await this.userService.getAllInfoAboutUser(id);
+    public async getAllInfoAboutUser(@Query('id') id: string): Promise<AllInformationAboutUserDto | null> {
+        const user: AllInformationAboutUserDto = await this.userService.getAllInfoAboutUser(id);
         return user;
     }
     

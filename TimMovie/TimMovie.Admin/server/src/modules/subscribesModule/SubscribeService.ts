@@ -1,17 +1,17 @@
 ﻿import {Injectable} from "@nestjs/common";
-import {IUserSubscribeDto} from "../dto/IUserSubscribeDto";
 import {getRepository} from "typeorm";
-import {Subscribe} from "../../entities/Subscribe";
-import {UserSubscribe} from "../../entities/UserSubscribe";
-import {ISubscribeDto} from "../dto/ISubscribeDto";
 import {Guid} from "guid-typescript";
+import {Subscribe} from "../../../entities/Subscribe";
+import {UserSubscribeDto} from "../../dto/UserSubscribeDto";
+import {UserSubscribe} from "../../../entities/UserSubscribe";
+import {SubscribeDto} from "../../dto/SubscribeDto";
 
 @Injectable()
 export class SubscribeService {
-    public async getUserSubscribesAndAllRemaining(userId: string): Promise<IUserSubscribeDto[]>{
+    public async getUserSubscribesAndAllRemaining(userId: string): Promise<UserSubscribeDto[]>{
         let allSubscribes = await getRepository(Subscribe).find();
         let userSubscribes = await this.getAllUserSubscribes(userId); 
-        let userSubscribesAndAllRemaining: IUserSubscribeDto[] = allSubscribes.map(subscribe =>{
+        let userSubscribesAndAllRemaining: UserSubscribeDto[] = allSubscribes.map(subscribe =>{
             return {
                 subscribe: {
                     id: subscribe.id,
@@ -25,13 +25,13 @@ export class SubscribeService {
         return userSubscribesAndAllRemaining;
     }
     
-    public async getAllUserSubscribes(userId: string): Promise<ISubscribeDto[]>{
+    public async getAllUserSubscribes(userId: string): Promise<SubscribeDto[]>{
         let subscribes  = await getRepository(UserSubscribe).find({
             where:{ subscribedUserId: userId },
             relations: ["subscribe"],
         })
         
-        let subscribesDto: ISubscribeDto[] = subscribes.map(subscribe => {
+        let subscribesDto: SubscribeDto[] = subscribes.map(subscribe => {
            return {
                id: subscribe.subscribeId,
                subscribeName: subscribe.subscribe.name,

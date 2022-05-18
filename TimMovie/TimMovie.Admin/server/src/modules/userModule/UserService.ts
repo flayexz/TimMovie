@@ -1,12 +1,12 @@
 ﻿import {Injectable} from '@nestjs/common';
 import {getRepository, Raw} from "typeorm";
-import {AspNetUser} from "../../entities/AspNetUser";
-import {IShortInformationAboutUserDto} from "../dto/IShortInformationAboutUserDto";
-import {IAllInformationAboutUserDto} from "../dto/IAllInformationAboutUserDto";
+import {ShortInformationAboutUserDto} from "../../dto/ShortInformationAboutUserDto";
+import {AspNetUser} from "../../../entities/AspNetUser";
+import {AllInformationAboutUserDto} from "../../dto/AllInformationAboutUserDto";
 
 @Injectable()
 export class UserService {
-    public async getUsersWithFilterByLogin(incomingText: string, skip: number, take: number): Promise<IShortInformationAboutUserDto[]>{
+    public async getUsersWithFilterByLogin(incomingText: string, skip: number, take: number): Promise<ShortInformationAboutUserDto[]>{
         let lowerText = incomingText.toLowerCase();
         
         const userRepository = getRepository(AspNetUser);
@@ -19,7 +19,7 @@ export class UserService {
             take
         });
         
-        let usersDto: IShortInformationAboutUserDto[] = users.map(user => {
+        let usersDto: ShortInformationAboutUserDto[] = users.map(user => {
             return {
                 id: user.id,
                 login: user.userName,
@@ -33,7 +33,7 @@ export class UserService {
         return usersDto;
     }
     
-    public async getAllInfoAboutUser(id: string): Promise<IAllInformationAboutUserDto>{
+    public async getAllInfoAboutUser(id: string): Promise<AllInformationAboutUserDto>{
         const userRepository = getRepository(AspNetUser);
         let user = await userRepository.findOne({
             where: {
@@ -46,7 +46,7 @@ export class UserService {
             return null;
         }
 
-        let userDto: IAllInformationAboutUserDto = {
+        let userDto: AllInformationAboutUserDto = {
             id: user.id,
             login: user.userName,
             email: user.email,
