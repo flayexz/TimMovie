@@ -52,6 +52,6 @@ type AccountController(logger: ILogger<AccountController>, userService: IUserSer
 
     [<HttpGet>]
     [<AllowAnonymous>]
-    [<Consumes("application/x-www-form-urlencoded")>]
+    [<ApiExplorerSettings(IgnoreApi=true)>]
     member _.ConfirmEmail(userId: string, code: string) =
         userService.ConfirmEmailAsync(userId, code)

@@ -22,7 +22,7 @@ public class UserProfileController : Controller
 {
     private readonly IUserService _userService;
     private readonly FilmCardService _filmCardService;
-    private readonly SubscribeService _subscribeService;
+    private readonly ISubscribeService _subscribeService;
     private readonly CountryService _countryService;
     private readonly FileService _fileService;
     private readonly UserValidator _userValidator;
@@ -33,7 +33,7 @@ public class UserProfileController : Controller
         IUserService userService,
         IMapper mapper,
         FilmCardService filmCardService,
-        SubscribeService subscribeService,
+        ISubscribeService subscribeService,
         FileService fileService,
         IWebHostEnvironment webHostEnvironment, 
         CountryService countryService, 
