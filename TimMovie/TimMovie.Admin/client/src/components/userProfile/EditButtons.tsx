@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import ReactDOM from 'react-dom';
 import Icon from "../../svg-icons/Icon";
-import {ClickHook} from "../userProfile/ClickHook/ClickHook"
+import {ClickHook} from "./ClickHook/ClickHook"
 
 function addButtons() {
     const addBtn = <div className="add_remove_btns add_btn">

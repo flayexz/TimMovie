@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import classes from './userProfile.module.css'
 import './userProfile.css';
 import Icon from "../../svg-icons/Icon";
-import {ClickHook} from "../userProfile/ClickHook/ClickHook"
+import {ClickHook} from "./ClickHook/ClickHook"
 
 interface LineProps {
     icon: string,

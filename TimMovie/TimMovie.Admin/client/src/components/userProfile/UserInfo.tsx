@@ -24,11 +24,11 @@ const UserInfo = (props: { userId: string | undefined }) => {
         setInfo(response.data);
     }
 
-    const [clickState, setCLickState] = useState<boolean>(false)
+    const [clickState, setClickState] = useState<boolean>(false)
 
     return (
         <div className="container">
-            <EditButtons clickHook= {{clickState: clickState, setClickState: setCLickState}}/>
+            <EditButtons clickHook= {{clickState: clickState, setClickState: setClickState}}/>
             <div className="row mt-5">
                 <div className="user_info_container col-12 col-md-3">
                     <UserInfoContainer info={info}/>
@@ -37,12 +37,12 @@ const UserInfo = (props: { userId: string | undefined }) => {
                 <div className="containers roles_container col-12 col-md-3 offset-md-1">
                     <LineWithSvg icon={"Roles"} line={"Роли пользователя"} isHeader={true} iconWidth={28}
                                  iconHeight={21}/>
-                    <Container info={info?.roles} clickHook= {{clickState: clickState, setClickState: setCLickState}}/>
+                    <Container info={info?.roles} clickHook= {{clickState: clickState, setClickState: setClickState}}/>
                 </div>
 
                 <div className="containers subscribes_container col-12 col-md-4 offset-md-1">
                     <LineWithSvg icon={"Subscribes"} line={"Доступные подписки"} isHeader={true} iconWidth={28} iconHeight={21}/>
-                    <Container info={info?.subscribes} clickHook= {{clickState: clickState, setClickState: setCLickState}}/>
+                    <Container info={info?.subscribes} clickHook= {{clickState: clickState, setClickState: setClickState}}/>
                 </div>
             </div>
         </div>
