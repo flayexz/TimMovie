@@ -1,6 +1,6 @@
 ﻿namespace TimMovie.Core.Entities.Enums;
 
-public enum UserStatus
+public enum UserStatusEnum
 {
     Offline,
     Online,
