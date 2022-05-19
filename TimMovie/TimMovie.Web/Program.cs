@@ -40,7 +40,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseUserStatusService();
+app.UseUserStatusUpdateService();
+// app.UseUserStatusDeleteService();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=MainPage}/{action=MainPage}/{id?}");

@@ -8,7 +8,10 @@ public class InfrastructureMappingProfile: Profile
 {
     public InfrastructureMappingProfile()
     {
-        CreateMap<User, UserInfoDto>();
+        CreateMap<User, UserInfoDto>()
+            .ForMember(
+                x => x.UserStatusEnum,
+                e => e.MapFrom(src => src.Status.UserStatusEnum));
         CreateMap<User, UserInfoForChatDto>();
     }
 }

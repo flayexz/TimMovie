@@ -37,10 +37,5 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Gu
             .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<User>().HasOne(x => x.Country).WithMany(x => x.Users).OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<Film>().HasOne(x => x.Country).WithMany(x => x.Films).OnDelete(DeleteBehavior.SetNull);
-        modelBuilder.Entity<User>()
-            .HasOne(x => x.Status)
-            .WithOne(x => x.User)
-            .HasForeignKey<UserStatus>(x => x.UserForeignKey)
-            .OnDelete(DeleteBehavior.SetNull);
     }
 }

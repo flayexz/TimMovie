@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using TimMovie.Core.Entities.Enums;
+﻿using TimMovie.Core.Entities.Enums;
 using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
 
 public class UserStatus : BaseEntity
 {
-    public Guid UserForeignKey { get; set; }
+    public Guid UserId { get; set; }
     
     public User User { get; set; }
     

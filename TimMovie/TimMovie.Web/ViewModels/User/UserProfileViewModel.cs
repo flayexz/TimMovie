@@ -1,4 +1,5 @@
-﻿using TimMovie.Web.ViewModels.FilmCard;
+﻿using TimMovie.Core.Entities;
+using TimMovie.Web.ViewModels.FilmCard;
 using TimMovie.Web.ViewModels.UserSubscribes;
 
 namespace TimMovie.Web.ViewModels.User;

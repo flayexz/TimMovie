@@ -32,6 +32,7 @@ public class UserProfileController : Controller
     private readonly UserValidator _userValidator;
     private readonly UserManager<User> _userManager;
     private readonly ILogger<UserProfileController> _logger;
+    private readonly FilmService _filmService;
     private readonly IMapper _mapper;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -45,7 +46,8 @@ public class UserProfileController : Controller
         CountryService countryService,
         UserValidator userValidator,
         UserManager<User> userManager,
-        ILogger<UserProfileController> logger)
+        ILogger<UserProfileController> logger,
+        FilmService filmService)
     {
         _userService = userService;
         _mapper = mapper;
@@ -57,6 +59,7 @@ public class UserProfileController : Controller
         _userValidator = userValidator;
         _userManager = userManager;
         _logger = logger;
+        _filmService = filmService;
     }
 
     [HttpGet("[controller]/{id:guid}")]
@@ -70,14 +73,15 @@ public class UserProfileController : Controller
         var userInfo = await _userService.GetInfoAboutUserAsync(id);
         var filmCards = _filmCardService.GetLatestFilmsViewedByUser(id, 6);
         var subscribes = _subscribeService.GetAllActiveUserSubscribes(id);
-
+        
         var userProfile = new UserProfileViewModel
         {
             IsOwner = User.Identity.IsAuthenticated && User.GetUserId() == id,
             UserInfo = _mapper.Map<UserInfoViewModel>(userInfo),
             FilmCards = _mapper.Map<IEnumerable<FilmCardViewModel>>(filmCards),
             UserSubscribes = _mapper.Map<IEnumerable<UserSubscribeViewModel>>(subscribes),
-            CountryNames = _countryService.GetCountryNames()
+            CountryNames = _countryService.GetCountryNames(),
+            
         };
         userProfile.UserInfo.Id = id;
 
@@ -127,20 +131,22 @@ public class UserProfileController : Controller
     }
 
     [HttpGet]
-    public async Task UpdateUserStatusWatchingFilm()
+    public async Task UpdateUserStatusWatchingFilm(Guid filmId)
     {
         var userId = HttpContext.User.GetUserId();
         if (userId is null)
             return;
-        var dbUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        var dbUser = await _userManager.Users.Include(u => u.Status).FirstOrDefaultAsync(u => u.Id == userId);
         if (dbUser is null)
             return;
-        dbUser.Status ??= new UserStatus
-        {
-            UserStatusEnum = UserStatusEnum.Watching
-        };
+        var film = _filmService.GetDbFilmById(filmId);
+        if (film is null)
+            return;
+        dbUser.Status ??= new UserStatus();
+        dbUser.Status.UserStatusEnum = UserStatusEnum.Watching;
         dbUser.Status.DateLastChange = DateTime.Now;
-        var result = await _userManager.UpdateAsync(dbUser);
+        dbUser.WatchingFilm = film;
+        await _userManager.UpdateAsync(dbUser);
         _logger.LogInformation("Статус юзера обновлен джсом");
     }
 }

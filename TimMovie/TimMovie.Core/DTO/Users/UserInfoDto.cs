@@ -5,7 +5,7 @@ namespace TimMovie.Core.DTO.Users;
 
 public class UserInfoDto
 {
-    public UserStatusEnum StatusEnum { get; set; }
+    public UserStatusEnum UserStatusEnum { get; set; }
     public string DisplayName { get; set; }
     public string PathToPhoto { get; set; }
     public string CountryName { get; set; }
