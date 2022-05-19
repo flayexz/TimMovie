@@ -1,6 +1,6 @@
-﻿import {IShortInformationAboutUserDto} from "./IShortInformationAboutUserDto";
+﻿import {ShortInformationAboutUserDto} from "./ShortInformationAboutUserDto";
 
-export interface IAllInformationAboutUserDto extends IShortInformationAboutUserDto{
+export interface AllInformationAboutUserDto extends ShortInformationAboutUserDto{
   displayName: string;
   registrationDate: Date;
   birthDate: string;
