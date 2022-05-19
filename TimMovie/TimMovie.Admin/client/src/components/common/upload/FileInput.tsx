@@ -33,7 +33,7 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
         uploadFiles(files);
     }
 
-    function uploadFiles(files: any) {
+    function uploadFiles(files: File[]) {
         setFile(files[0]);
         setPreview(URL.createObjectURL(files[0]));
         console.log(files);
