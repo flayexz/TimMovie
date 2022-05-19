@@ -1,6 +1,8 @@
-import {Controller, Get, Query} from '@nestjs/common';
-import {SubscribeService} from "../../services/SubscribeService";
+﻿import {Controller, Get, Query} from '@nestjs/common';
+import {SubscribeService} from "./SubscribeService";
+import {Admin} from "../authModule/adminAuth";
 
+@Admin()
 @Controller('subscribes')
 export class SubscribeController {
     constructor(private readonly subscribeService: SubscribeService) {}

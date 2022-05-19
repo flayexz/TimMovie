@@ -1,4 +1,4 @@
-﻿export interface IShortInformationAboutUserDto {
+﻿export interface ShortInformationAboutUserDto {
     id: string;
     login: string | null;
     email: string | null;

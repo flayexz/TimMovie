@@ -20,7 +20,7 @@ public class AccountController : Controller
     private string? UserIp => HttpContext.Connection.RemoteIpAddress?.ToString();
     private string UrlToConfirmEmail => Url.Action("ConfirmEmail", "Account", null, HttpContext.Request.Scheme)!;
 
-    public AccountController(UserManager<User> userManager, 
+    public AccountController(UserManager<User> userManager,
         IMapper mapper,
         ILogger<AccountController> logger,
         IUserService userService)
@@ -183,21 +183,21 @@ public class AccountController : Controller
     public async Task<IActionResult> LoginAsync()
     {
         var isLogin = Request.Form.TryGetValue("userName", out var login);
-        var isPassword = Request.Form.TryGetValue("password",out var password);
+        var isPassword = Request.Form.TryGetValue("password", out var password);
         var isRememberMe = Request.Form.TryGetValue("rememberMe", out _);
 
-        if (!isLogin || !isPassword )
+        if (!isLogin || !isPassword)
         {
             return View();
         }
-        
+
         var loginDto = new LoginDto
         {
             Login = login,
             Password = password,
             RememberMe = isRememberMe
         };
-        
+
 
         var loginResult = await userService.LoginAsync(loginDto);
 
@@ -206,14 +206,14 @@ public class AccountController : Controller
             logger.LogInformation($"пользователь {login} вошел в свой акканут");
             return RedirectToAction("MainPage", "MainPage");
         }
-        
+
         if (loginResult.IsNotAllowed)
         {
             var userFromDb = await userManager.FindByNameAsync(login) ?? await userManager.FindByEmailAsync(login);
-            
+
             return PartialView("MailSend", (userFromDb.Email, userFromDb.DisplayName));
         }
-        
+
         logger.LogInformation($"неудачная попытка входа с использованием логина {login}");
         ModelState.AddModelError(string.Empty, "Неверный логин/почта или пароль");
         return RedirectToAction("MainPage", "MainPage");
@@ -224,7 +224,7 @@ public class AccountController : Controller
     {
         return View("Denied");
     }
-    
+
     private void AddErrors(IdentityResult result)
     {
         foreach (var error in result.Errors)
