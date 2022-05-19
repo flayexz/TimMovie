@@ -29,9 +29,6 @@ export class AspNetUser {
   @Column("uuid", { primary: true, name: "Id" })
   id: string;
 
-  @Column("integer", { name: "Status" })
-  status: number;
-
   @Column("uuid", { name: "WatchingFilmId", nullable: true })
   watchingFilmId: string | null;
 
