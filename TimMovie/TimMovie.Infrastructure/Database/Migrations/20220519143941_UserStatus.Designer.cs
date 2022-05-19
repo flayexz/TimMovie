@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220519143941_UserStatus")]
+    partial class UserStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -856,7 +858,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<DateTime>("DateLastChange")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("UserForeignKey")
+                    b.Property<Guid>("UserGuid")
                         .HasColumnType("uuid");
 
                     b.Property<int>("UserStatusEnum")
@@ -864,7 +866,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserForeignKey")
+                    b.HasIndex("UserGuid")
                         .IsUnique();
 
                     b.ToTable("UserStatus");
@@ -1185,8 +1187,8 @@ namespace TimMovie.Infrastructure.Database.Migrations
                 {
                     b.HasOne("TimMovie.Core.Entities.User", "User")
                         .WithOne("Status")
-                        .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserForeignKey")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");

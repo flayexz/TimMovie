@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.Users;
+using TimMovie.Core.Entities;
+using TimMovie.Core.Entities.Enums;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
@@ -17,7 +21,7 @@ using TimMovie.Web.ViewModels.UserSubscribes;
 
 namespace TimMovie.Web.Controllers.Profile;
 
-[ApiExplorerSettings(IgnoreApi=true)]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class UserProfileController : Controller
 {
     private readonly IUserService _userService;
@@ -26,6 +30,8 @@ public class UserProfileController : Controller
     private readonly CountryService _countryService;
     private readonly FileService _fileService;
     private readonly UserValidator _userValidator;
+    private readonly UserManager<User> _userManager;
+    private readonly ILogger<UserProfileController> _logger;
     private readonly IMapper _mapper;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -35,9 +41,11 @@ public class UserProfileController : Controller
         FilmCardService filmCardService,
         ISubscribeService subscribeService,
         FileService fileService,
-        IWebHostEnvironment webHostEnvironment, 
-        CountryService countryService, 
-        UserValidator userValidator)
+        IWebHostEnvironment webHostEnvironment,
+        CountryService countryService,
+        UserValidator userValidator,
+        UserManager<User> userManager,
+        ILogger<UserProfileController> logger)
     {
         _userService = userService;
         _mapper = mapper;
@@ -47,6 +55,8 @@ public class UserProfileController : Controller
         _webHostEnvironment = webHostEnvironment;
         _countryService = countryService;
         _userValidator = userValidator;
+        _userManager = userManager;
+        _logger = logger;
     }
 
     [HttpGet("[controller]/{id:guid}")]
@@ -70,10 +80,10 @@ public class UserProfileController : Controller
             CountryNames = _countryService.GetCountryNames()
         };
         userProfile.UserInfo.Id = id;
-        
+
         return View("~/Views/Profile/UserProfile.cshtml", userProfile);
     }
-    
+
     [Authorize]
     [HttpPost]
     public async Task<JsonResult> SaveUserPhotoAsync(IFormFile file)
@@ -93,7 +103,7 @@ public class UserProfileController : Controller
 
         return Json(resultUpdate);
     }
-    
+
     [Authorize]
     [HttpPost]
     public async Task<JsonResult> SaveUserInfo(ShortUserInfoDto userInfo)
@@ -114,5 +124,23 @@ public class UserProfileController : Controller
     public async Task<UserInfoForChatDto?> GetUserInfoForChat(Guid userId)
     {
         return await _userService.GetUserInfoForChat(userId);
+    }
+
+    [HttpGet]
+    public async Task UpdateUserStatusWatchingFilm()
+    {
+        var userId = HttpContext.User.GetUserId();
+        if (userId is null)
+            return;
+        var dbUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (dbUser is null)
+            return;
+        dbUser.Status ??= new UserStatus
+        {
+            UserStatusEnum = UserStatusEnum.Watching
+        };
+        dbUser.Status.DateLastChange = DateTime.Now;
+        var result = await _userManager.UpdateAsync(dbUser);
+        _logger.LogInformation("Статус юзера обновлен джсом");
     }
 }

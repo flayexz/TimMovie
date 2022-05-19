@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TimMovie.Infrastructure.Database;
@@ -11,9 +12,10 @@ using TimMovie.Infrastructure.Database;
 namespace TimMovie.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220519143634_AddUserStatusEnum")]
+    partial class AddUserStatusEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -794,6 +796,9 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -845,29 +850,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasIndex("WatchedUserId");
 
                     b.ToTable("WatchedFilms");
-                });
-
-            modelBuilder.Entity("TimMovie.Core.Entities.UserStatus", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateLastChange")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("UserForeignKey")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("UserStatusEnum")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserForeignKey")
-                        .IsUnique();
-
-                    b.ToTable("UserStatus");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.UserSubscribe", b =>
@@ -1181,17 +1163,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Navigation("WatchedUser");
                 });
 
-            modelBuilder.Entity("TimMovie.Core.Entities.UserStatus", b =>
-                {
-                    b.HasOne("TimMovie.Core.Entities.User", "User")
-                        .WithOne("Status")
-                        .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserForeignKey")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TimMovie.Core.Entities.UserSubscribe", b =>
                 {
                     b.HasOne("TimMovie.Core.Entities.Subscribe", "Subscribe")
@@ -1241,8 +1212,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>
                 {
-                    b.Navigation("Status");
-
                     b.Navigation("WatchedFilms");
                 });
 #pragma warning restore 612, 618
