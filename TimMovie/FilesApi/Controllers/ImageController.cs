@@ -32,7 +32,10 @@ public class ImageController : ControllerBase
     [HttpGet("user-photo/default")]
     public async Task<string> GetLinkToDefaultUserPhoto()
     {
-        return GetUrlToImage(_imageService.GetLinkToDefaultUserPhoto());
+        return Url.Action(
+            "GetImage",
+            "Image",
+            new {relativePath = _imageService.GetLinkToDefaultUserPhoto()})!;
     }
     
     
