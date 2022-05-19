@@ -10,6 +10,7 @@ public static class ConfigureVkontakte
     {
         builder.AddOAuth("VK", "VKontakte", config =>
         {
+            config.CorrelationCookie.SameSite = SameSiteMode.Lax;
             config.ClientId =  configuration["VkSettings:AppId"];
             config.ClientSecret =  configuration["VkSettings:AppSecret"];
             config.ClaimsIssuer = "VKontakte";
