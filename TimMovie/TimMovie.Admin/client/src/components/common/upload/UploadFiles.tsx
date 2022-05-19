@@ -2,18 +2,21 @@ import React, {FC, useState} from "react";
 import {FileInput} from "./FileInput";
 import {Preview} from "./Preview";
 import {UploadProps} from "./UploadProps";
+import {UploadHooks} from "./UploadHooks";
 
-interface Props{
-    uploadProps: UploadProps
+interface Props {
+    uploadProps: UploadProps,
+    uploadHooks: UploadHooks
 }
 
-export const UploadFiles: FC<Props> = ({uploadProps}) => {
-    const [preview, setPreview] = useState(null);
-    const [file, setFile] = useState([]);
+export const UploadFiles: FC<Props> = ({uploadProps, uploadHooks}) => {
+
     return (
         <>
             {
-                preview ? <Preview uploadProps={uploadProps} setPreview={setPreview} preview={preview} /> : <FileInput uploadProps={uploadProps} setPreview={setPreview} setFile={setFile}/>
+                uploadHooks.preview ? <Preview uploadProps={uploadProps} setPreview={uploadHooks.setPreview}
+                                   preview={uploadHooks.preview}/> :
+                    <FileInput uploadProps={uploadProps} setPreview={uploadHooks.setPreview} setFile={uploadHooks.setFile}/>
             }
         </>
     );
