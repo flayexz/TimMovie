@@ -6,7 +6,6 @@ import Layout from "./components/shared/Layout";
 import UserProfile from "./components/userProfile/UserProfile";
 import AuthProvider from "./components/auth/AuthProvider";
 import RequireAuth from "./components/auth/RequireAuth";
-import BannersPage from "./components/banners/BannersPage";
 
 function App() {
     return (
@@ -16,7 +15,6 @@ function App() {
                 <Route path="/" element={<RequireAuth><Layout/></RequireAuth>}>
                     <Route index element={<UsersTablePage/>}/>
                     <Route path="/users/:id" element={<UserProfile/>}/>
-                    <Route path="/banners" element={<BannersPage borderRadius={40} photoHeight={512} photoWidth={1100} />}/>
                 </Route>
             </Routes>
         </AuthProvider>
