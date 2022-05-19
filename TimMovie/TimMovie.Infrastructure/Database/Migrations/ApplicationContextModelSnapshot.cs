@@ -856,7 +856,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<DateTime>("DateLastChange")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("UserForeignKey")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("UserStatusEnum")
@@ -864,7 +864,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserForeignKey")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("UserStatus");
@@ -1185,8 +1185,8 @@ namespace TimMovie.Infrastructure.Database.Migrations
                 {
                     b.HasOne("TimMovie.Core.Entities.User", "User")
                         .WithOne("Status")
-                        .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserForeignKey")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
