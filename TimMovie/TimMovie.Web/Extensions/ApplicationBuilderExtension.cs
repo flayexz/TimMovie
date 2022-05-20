@@ -8,4 +8,9 @@ public static class ApplicationBuilderExtension
     {
         return builder.UseMiddleware<FileServiceMiddleware>();
     } 
+    
+    public static IApplicationBuilder UseUserStatusUpdateService(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<UserStatusUpdateServiceMiddleware>();
+    }
 }
