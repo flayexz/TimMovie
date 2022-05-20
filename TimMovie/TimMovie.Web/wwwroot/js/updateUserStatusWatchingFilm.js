@@ -10,12 +10,6 @@
 
 function updateStatus() {
     $.get({
-        url: `/UserProfile/UpdateUserStatusWatchingFilm?filmId=${document.URL.split("/").pop()}`,
-        success: function () {
-            alert("Заебумба");
-        },
-        error: function () {
-            alert("не заебумба :(");
-        }
+        url: `/UserProfile/UpdateUserStatusWatchingFilm?filmId=${document.URL.split("/").pop()}`
     })
 }
