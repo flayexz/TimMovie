@@ -27,7 +27,7 @@ const Container = ({info, isSubscribes = false, clickHook} :IContainerProps) => 
         console.log(icon)
         item = item.charAt(0).toUpperCase() + item.slice(1)
         if (icon === "") icon = item;
-        return <LineWithSvg icon={icon} line={item}/>
+        return <LineWithSvg icon={icon} line={item} clickHook={clickHook}/>
     }
 
     return (

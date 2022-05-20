@@ -22,7 +22,7 @@ const EditButtons: React.FC<EditButtonProps> = ({clickHook}:EditButtonProps) => 
         <div className="row">
             <div className="col-md-2 col-6">
                 <button className="btns" id="edit_btn"
-                        onClick={clickHook.setClickState(!clickHook.clickState)}>Изменить
+                        onClick={() => clickHook.setClickState(!clickHook.clickState)}>Изменить
                 </button>
             </div>
             <div className="col-md-2 col-6">

@@ -46,7 +46,8 @@ const LineWithSvg: React.FC<LineProps> = ({
                   }}>
                     {line}
             </span>
-                {clickHook?.clickState ?
+
+            {clickHook?.clickState ?
                     <div className="add_remove_btns add_btn">
                         <Icon name={"Add"}/>
                     </div>
