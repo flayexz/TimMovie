@@ -109,11 +109,11 @@ public class FilmService
         var query = _userRepository.Query
             .Where(new EntityByIdSpec<User>(userId));
         var executor = new QueryExecutor<User>(query, _userRepository);
-
+    
         var film = executor
             .IncludeInResult(user => user.WatchingFilm)
             .FirstOrDefault();
-
+    
         return MapToRequiredDto<User?, FilmForStatusDto>(film);
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
-using TimMovie.Core.Entities.Enums;
 using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Interfaces;
 

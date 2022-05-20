@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using TimMovie.Core.Entities.Enums;
+﻿using TimMovie.Core.Entities.Enums;
 using TimMovie.SharedKernel.BaseEntities;
 
 namespace TimMovie.Core.Entities;
