@@ -7,7 +7,8 @@ namespace TimMovie.Core.Entities;
 
 public class UserStatus : BaseEntity
 {
-    [ForeignKey("UserGuid")]
+    public Guid UserId { get; set; }
+    
     public User User { get; set; }
     
     public UserStatusEnum UserStatusEnum { get; set; }
