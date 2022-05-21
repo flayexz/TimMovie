@@ -16,8 +16,6 @@ function getGrade(filmId) {
                     choseButton = $(`.gradeNumber:contains(${grade})`).first();
                     choseButton.css("background", "#302a45");
                     return grade;
-                } else {
-                    document.location.pathname = data;
                 }
             }
         }

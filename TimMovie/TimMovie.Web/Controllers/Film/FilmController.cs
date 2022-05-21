@@ -28,12 +28,12 @@ public class FilmController : Controller
     }
 
     [HttpPost]
-    public string? GetGrade(Guid filmId)
+    public int? GetGrade(Guid filmId)
     {
         var userId = User.GetUserId();
         if (userId is null)
-            return $"{nameof(AccountController)}/{nameof(AccountController.Registration)}".Replace("Controller", "");
-        return !_filmService.TryGetUserGrade(filmId, userId.Value, out var grade) ? null : grade.ToString();
+            return null;
+        return !_filmService.TryGetUserGrade(filmId, userId.Value, out var grade) ? null : grade;
     }
 
     [HttpPost]

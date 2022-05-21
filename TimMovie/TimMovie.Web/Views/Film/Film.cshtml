@@ -47,7 +47,10 @@
         </div>
         <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
             <div class="d-flex flex-column">
-                <button data-bs-toggle="modal" data-bs-target="#modalFilmGrade" class="buttons" id="rate_movie">
+                <button data-bs-toggle="modal" data-bs-target=@(Context.User.Identity is {IsAuthenticated: true } 
+                                                                  ? "#modalFilmGrade" 
+                                                                  : "#modal1")  
+                        class="buttons" id="rate_movie">
                     <svg class="mt-2 svg_size" width="2.2em" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
                          xmlns="http://www.w3.org/2000/svg">
                         <path
