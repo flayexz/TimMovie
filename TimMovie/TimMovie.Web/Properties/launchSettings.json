@@ -14,7 +14,17 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7011;http://localhost:5011",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DATABASE_URL": "Host=62.109.29.6:32246;Username=postgres;Password=azjkgB7Tmd;Database=TimMovie;",
+        "VK_APP_ID": "8128735",
+        "VK_ACCESS_TOKEN": "1e8c22a61e8c22a61e8c22a6e21ef02a7911e8c1e8c22a67cc15d80e5986013d9e8f230",
+        "VK_APP_SECRET": "Rto6XyWARGwu3lFCUgx4",
+        "FILE_SERVER_URI": "http://193.124.118.5:9000",
+        "MAIL_HOST": "smtp.gmail.com",
+        "MAIL_PORT": "465",
+        "MAIL_PASSWORD": "azjkgB7Tmd",
+        "MAIL_FROM_COMPANY_NAME": "TimMovie",
+        "MAIL_FROM_COMPANY_ADDRESS": "TMovieTeam@gmail.com" 
       }
     },
     "IIS Express": {

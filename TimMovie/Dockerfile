@@ -20,4 +20,5 @@ RUN dotnet publish "TimMovie.Web.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TimMovie.Web.dll"]
+#ENTRYPOINT ["dotnet", "TimMovie.Web.dll"]
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet NETToDoDemo.dll
