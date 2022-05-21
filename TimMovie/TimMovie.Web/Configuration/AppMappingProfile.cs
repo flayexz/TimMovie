@@ -37,5 +37,6 @@ public class AppMappingProfile : Profile
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
         CreateMap<FilmDto, FilmViewModel>();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
+        CreateMap<BigFilmCardDto, BigFilmCardViewModel>();
     }
 }

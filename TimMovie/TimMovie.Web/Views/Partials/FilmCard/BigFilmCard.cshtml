@@ -1,0 +1,67 @@
+﻿@model TimMovie.Web.ViewModels.FilmCard.BigFilmCardViewModel
+
+@{
+    var film = Model;
+    var actors = film.Actors.ToList();
+}
+
+<div class="movie_card" id="movie_card">
+    <div class="info_section">
+        <div class="watch_later_btn" title="Добавить в смотреть позже">
+            <svg width="2.2em" fill="white" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="m536.2 12.824h-372.4c-8.5117 0-15.625 7-15.625 15.625v502.77c0 12.938 14.895 20.328 25.258 12.434l176.62-139.95 176.62 140.28c10.305 7.8945 25.145 0.50391 25.145-12.434l-0.003906-503.11c0-8.625-7-15.625-15.625-15.625zm-15.625 486.98-161-128.3c-5.6016-4.2578-13.328-4.3672-19.039 0l-161.11 127.96v-455.34h341.15z"/>
+            </svg>
+        </div>
+        <div class="info_container d-flex flex-wrap justify-content-center">
+            <div class="movie_header text-center">
+                <h1>@film.Title</h1>
+                <h4>
+                    <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>,
+                    <a class="hover_link" href="#">@film.Producer.Name @film.Producer.Surname</a>,
+                </h4>
+
+                <ul class="type">
+                    @foreach (var genre in film.Genres)
+                    {
+                        <li class="d-inline-block">&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@genre.Name">@genre.Name</a></li>
+                    }
+                </ul>
+            </div>
+            <div class="movie_desc">
+                <p class="text">
+                    @film.Description.Trim().Split("\n")[0];
+                </p>
+            </div>
+            <div class="actors d-flex align-content-center justify-content-between mt-3">
+                <a class="actor">
+                    <div id="film_rating" class="content">@film.Rating</div>
+                    <div class="caption">Рейтинг TimMovie</div>
+                </a>
+                @for (var i = 0; i < actors.Count && i < 3; i++)
+                {
+                    <a class="actor">
+                        <div class="content">
+                            <img src="@actors[i].Photo" class="rounded-3 actor_img">
+                        </div>
+                        <div class="caption">@actors[i].Name @actors[i].Surname</div>
+                    </a>        
+                }
+            </div>
+        </div>
+    </div>
+    <div class="blur_back">
+        <img class="movie_img" src="@film.FilmImage">
+    </div>
+</div>
+
+
+@section Styles
+{
+    <link rel="stylesheet" href="css/BigFilmCard.scss">
+}
+
+@section Scripts
+{
+    <script src="js/watchLater.js"></script>
+}

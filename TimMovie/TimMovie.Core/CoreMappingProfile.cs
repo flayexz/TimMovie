@@ -38,5 +38,6 @@ public class CoreMappingProfile: Profile
                 e => e.MapFrom(src => src.Film.Image));
         CreateMap<Message, MessageDto>();
         CreateMap<NewMessageDto, Message>();
+        CreateMap<Film, BigFilmCardDto>();
     }
 }
