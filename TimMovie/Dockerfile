@@ -11,7 +11,7 @@ COPY ["TimMovie.SharedKernel/TimMovie.SharedKernel.csproj", "TimMovie.SharedKern
 COPY ["TimMovie.Infrastructure/TimMovie.Infrastructure.csproj", "TimMovie.Infrastructure/"]
 RUN dotnet restore "TimMovie.Web/TimMovie.Web.csproj"
 COPY . .
-WORKDIR "/src/TimMovie/TimMovie.Web"
+WORKDIR "/src/TimMovie.Web"
 RUN dotnet build "TimMovie.Web.csproj" -c Release -o /app/build
 
 FROM build AS publish
