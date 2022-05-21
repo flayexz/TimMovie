@@ -11,13 +11,15 @@ function getGrade(filmId) {
         data: {filmId: filmId},
         success: function (data) {
             if (data != null) {
-                choseButton = $(`.gradeNumber:contains(${data})`).first();
-                choseButton.css("background", "#302a45");
-                return data;
+                let grade = Number(data);
+                if (!isNaN(grade)) {
+                    choseButton = $(`.gradeNumber:contains(${grade})`).first();
+                    choseButton.css("background", "#302a45");
+                    return grade;
+                } else {
+                    document.location.pathname = data;
+                }
             }
-        },
-        error: function () {
-            return null;
         }
     });
 
@@ -61,4 +63,4 @@ gradeNumber.mouseleave(function (e) {
         "border-color": "#1e1a2e",
         "cursor": "default"
     });
-})
+});

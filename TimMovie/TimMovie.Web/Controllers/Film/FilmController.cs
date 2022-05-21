@@ -28,8 +28,13 @@ public class FilmController : Controller
     }
 
     [HttpPost]
-    public int? GetGrade(Guid filmId) =>
-        !_filmService.TryGetUserGrade(filmId, User.GetUserId().Value, out var grade) ? null : grade;
+    public string? GetGrade(Guid filmId)
+    {
+        var userId = User.GetUserId();
+        if (userId is null)
+            return $"{nameof(AccountController)}/{nameof(AccountController.Registration)}".Replace("Controller", "");
+        return !_filmService.TryGetUserGrade(filmId, userId.Value, out var grade) ? null : grade.ToString();
+    }
 
     [HttpPost]
     public async Task<IActionResult> SetGrade(Guid filmId, int grade)
