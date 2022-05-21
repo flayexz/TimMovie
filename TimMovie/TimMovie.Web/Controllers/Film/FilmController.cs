@@ -41,7 +41,10 @@ public class FilmController : Controller
     {
         if (grade is < 1 or > 10)
             return NotFound();
-        if (!await _filmService.TryUpdateFilmGrade(filmId, User.GetUserId().Value, grade))
+        var userId = User.GetUserId();
+        if (userId is null)
+            return NotFound();
+        if (!await _filmService.TryUpdateFilmGrade(filmId, userId.Value, grade))
             return NotFound();
         return Ok();
     }
