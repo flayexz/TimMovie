@@ -43,6 +43,9 @@ export class Film {
   @Column("integer", { name: "Year", default: () => "0" })
   year: number;
 
+  @Column("boolean", { name: "IsFree" })
+  isFree: boolean;
+
   @ManyToMany(() => Actor, (actors) => actors.films)
   actors: Actor[];
 
