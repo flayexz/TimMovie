@@ -12,7 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables();
+} 
+builder.Services.ConfigureServices(builder.Configuration);
 
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
