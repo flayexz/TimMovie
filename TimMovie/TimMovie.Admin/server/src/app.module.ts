@@ -5,6 +5,7 @@ import {UserModule} from "./modules/userModule/user.module";
 import {SubscribeModule} from "./modules/subscribesModule/subscribe.module";
 import {AuthModule} from "./modules/authModule/auth.module";
 import {RoleModule} from "./modules/roleModule/role.module";
+import {BannerModule} from "./modules/bannerModule/bannerModule";
 
 @Module({
     imports: [
@@ -16,6 +17,7 @@ import {RoleModule} from "./modules/roleModule/role.module";
         RoleModule,
         UserModule,
         SubscribeModule,
+        BannerModule
     ]
 })
 export class AppModule {}
