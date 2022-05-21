@@ -21,7 +21,7 @@ $(window).resize(function () {
     if ($(window).width() < 401 && !isRemoved) {
         $(".actor").last().hide();
         isRemoved = true;
-    } else if (isRemoved) {
+    } else if ($(window).width() > 400 && isRemoved) {
         $(".actor").last().show();
         isRemoved = false;
     }

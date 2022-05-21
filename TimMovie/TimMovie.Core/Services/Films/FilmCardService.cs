@@ -117,9 +117,9 @@ public class FilmCardService
         var query = _userFilmWatchedRepository.Query
             .Where(new WatchedFilmByUserIdSpec(userId))
             .OrderByDescending(watched => watched.Date);
-        var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
+        var queryExecutor = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
 
-        var films = queryExec
+        var films = queryExecutor
             .IncludeInResult(watched => watched.Film.Country)
             .IncludeInResult(watched => watched.Film.Genres)
             .GetEntitiesWithPagination(0, amount)

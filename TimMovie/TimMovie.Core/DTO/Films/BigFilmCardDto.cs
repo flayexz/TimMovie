@@ -9,7 +9,7 @@ public class BigFilmCardDto
     public int Year { get; set; }
     public string? Description { get; set; }
     public string CountryName { get; set; } = null!;
-    public string FilmImage { get; set; } = null!;
+    public string Image { get; set; } = null!;
     public List<Genre> Genres { get; set; }
     public List<Actor> Actors { get; set; }
     public Producer Producer { get; set; }

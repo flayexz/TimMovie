@@ -5,7 +5,6 @@
 
 body {
   margin: 0;
-  background: black;
   font-weight: 400;
 }
 
@@ -13,11 +12,11 @@ body {
   width: 60%;
 }
 
-
 .movie_card {
   position: relative;
   display: block;
   width: 800px;
+  height: 450px;
   margin: 100px auto;
   overflow: hidden;
   border-radius: 10px;
@@ -36,12 +35,14 @@ body {
   background-blend-mode: multiply;
   z-index: 2;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .movie_card .info_section .movie_header {
   position: relative;
-  padding: 0px 25px 10px 25px;
+  padding: 10px 25px 10px 25px;
   height: 40%;
+  z-index: 3;
 }
 
 .movie_card .info_section .movie_header h1 {
@@ -59,45 +60,17 @@ body {
   color: #cee4fd;
 }
 
-.movie_card .info_section .movie_header .locandina {
+
+.movie_desc{
+  height: 150px;
   position: relative;
-  float: left;
-  margin-right: 20px;
-  height: 120px;
-  box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
 }
 
 .movie_card .info_section .movie_desc .text {
+  height: 100%;
   color: #cfd6e1;
-}
-
-.movie_card .info_section .movie_social {
-  height: 10%;
-  padding-left: 15px;
-  padding-bottom: 20px;
-}
-
-.movie_card .info_section .movie_social ul {
-  list-style: none;
-  padding: 0;
-}
-
-.movie_card .info_section .movie_social ul li {
-  display: inline-block;
-  color: rgba(255, 255, 255, 0.4);
-  transition: color 0.3s;
-  transition-delay: 0.15s;
-  margin: 0 10px;
-}
-
-.movie_card .info_section .movie_social ul li:hover {
-  transition: color 0.3s;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.movie_card .info_section .movie_social ul li i {
-  font-size: 19px;
-  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .movie_card .blur_back {
@@ -124,6 +97,8 @@ body {
 
 /* actors */
 .actors{
+  position: relative;
+  z-index: 3;
   width: 80%;
 }
 
@@ -140,10 +115,13 @@ body {
 
 .caption {
   max-width: 68.8px;
+  max-height: 40px;
   text-align: center;
   font-size: 0.9rem;
   color: #828187;
   height: 4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .content {
@@ -161,8 +139,12 @@ body {
 }
 
 .watch_later_btn{
-  cursor: pointer;
+  z-index: 10;
+  position: absolute;
+  top:2px;
+  left: 10px;
   padding: 10px;
+  cursor: pointer;
 }
 
 .actor:hover .content {
@@ -178,7 +160,6 @@ body {
   background-color: #494850;
 }
 
-
 #film_rating {
   display: flex;
   justify-content: center;
@@ -188,19 +169,37 @@ body {
   color: #fff;
 }
 
+.hover_link{
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
 
+.hover_link:hover{
+  color: rgba(206, 228, 253, 0.5);
+}
+
+#movie_card {
+  box-shadow: 0 0 150px -45px rgba(255, 51, 0, 0.5);
+}
+
+#movie_card:hover {
+  box-shadow: 0 0 120px -55px rgba(255, 51, 0, 0.5);
+}
 
 @media screen and (min-width: 768px) {
   .movie_header {
-    width: 70%;
+    width: 100%;
   }
 
   .movie_desc {
-    width: 70%;
+    width: 80%;
+    text-align: center;
   }
 
   .info_section {
-    background: linear-gradient(to right, #0d0d0c 50%, transparent 100%);
+    background:  linear-gradient(to right, #03071e 50%, transparent 100%)
   }
 
   .blur_back {
@@ -215,7 +214,7 @@ body {
   }
 
   .movie_card {
-    width: 95%;
+    width: 90%;
     margin: 70px auto;
     min-height: 350px;
     height: auto;
@@ -238,11 +237,11 @@ body {
   }
 
   .movie_desc {
-    width: 100%;
+    width: 90%;
   }
-
+  
   .info_section {
-    background: linear-gradient(to top, #141413 50%, transparent 100%);
+    background: linear-gradient(to top, #03071e 50%, transparent 100%);
     display: inline-grid;
   }
 
@@ -252,22 +251,4 @@ body {
   }
 }
 
-.hover_link{
-  font-size: 1.3rem;
-  font-weight: 500;
-  text-decoration: none;
-  cursor: pointer;
-  color: rgba(255,255,255,0.72);
-}
 
-.hover_link:hover{
-  color: #fff;
-}
-
-#movie_card {
-  box-shadow: 0 0 150px -45px rgba(255, 51, 0, 0.5);
-}
-
-#movie_card:hover {
-  box-shadow: 0 0 120px -55px rgba(255, 51, 0, 0.5);
-}

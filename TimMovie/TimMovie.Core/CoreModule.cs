@@ -32,6 +32,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<WatchedFilmService>(builder);
         RegisterServiceOnSelf<ChatTemplatedNotificationService>(builder);
         RegisterServiceOnSelf<MessageService>(builder);
+        RegisterServiceOnSelf<WatchLaterService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 

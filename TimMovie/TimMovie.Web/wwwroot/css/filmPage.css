@@ -133,14 +133,6 @@ button{
  color: #fff;
 }
 
-.caption{
- max-width: 68.8px;
- text-align: center;
- font-size: 0.9rem;
- color: #828187;
- height:4rem;
-}
-
 .rating_label{
  font-family: iviSans, Arial, Helvetica, Helvetica Neue, FreeSans, sans-serif;
  font-size:56px;
