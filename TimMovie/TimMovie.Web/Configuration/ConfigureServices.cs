@@ -25,8 +25,8 @@ public static class ServicesConfiguration
             options.AccessDeniedPath = new PathString("/Account/Denied");
         });
         
-        services.AddAuthentication().AddVkontakte(configuration.GetRequiredSection("VkSettings:AppId").Value,
-                configuration.GetRequiredSection("VkSettings:AppSecret").Value);
+        services.AddAuthentication().AddVkontakte(configuration.GetRequiredSection("VkSettings")["AppId"],
+                configuration.GetRequiredSection("VkSettings")["AppSecret"]);
         
         services.AddTransient<IAuthorizationHandler, AgeHandler>();
         services.AddAuthorization(opt =>
