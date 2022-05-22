@@ -109,11 +109,11 @@ public class FilmService
         var query = _userRepository.Query
             .Where(new EntityByIdSpec<User>(userId));
         var executor = new QueryExecutor<User>(query, _userRepository);
-
+    
         var film = executor
             .IncludeInResult(user => user.WatchingFilm)
             .FirstOrDefault();
-
+    
         return MapToRequiredDto<User?, FilmForStatusDto>(film);
     }
 
@@ -121,7 +121,6 @@ public class FilmService
         where TDto : class => entity is null
         ? null
         : _mapper.Map<TDto>(entity);
-
 
     public FilmDto GetFilmById(Guid filmId)
     {
@@ -138,13 +137,12 @@ public class FilmService
             .Where(new EntityByIdSpec<Film>(filmId));
         var executor = new QueryExecutor<Film>(query, _filmRepository);
 
-        var film = executor
+        return executor
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .IncludeInResult(film => film.Actors)
             .IncludeInResult(film => film.Producers)
             .IncludeInResult(film => film.Comments)
             .FirstOrDefault();
-        return film;
     }
 }

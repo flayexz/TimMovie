@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.Users;
+using TimMovie.Core.Entities;
+using TimMovie.Core.Entities.Enums;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
@@ -10,6 +14,7 @@ using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.SupportedServices;
 using TimMovie.Core.ValidatorServices;
 using TimMovie.SharedKernel.Classes;
+using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.FilmCard;
 using TimMovie.Web.ViewModels.User;
@@ -26,6 +31,9 @@ public class UserProfileController : Controller
     private readonly CountryService _countryService;
     private readonly FileService _fileService;
     private readonly UserValidator _userValidator;
+    private readonly UserManager<User> _userManager;
+    private readonly FilmService _filmService;
+    private readonly IRepository<Subscribe> _repository;
     private readonly IMapper _mapper;
     private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -37,7 +45,10 @@ public class UserProfileController : Controller
         FileService fileService,
         IWebHostEnvironment webHostEnvironment, 
         CountryService countryService, 
-        UserValidator userValidator)
+        UserValidator userValidator,
+        UserManager<User> userManager,
+        FilmService filmService,
+        IRepository<Subscribe> repository)
     {
         _userService = userService;
         _mapper = mapper;
@@ -47,6 +58,9 @@ public class UserProfileController : Controller
         _webHostEnvironment = webHostEnvironment;
         _countryService = countryService;
         _userValidator = userValidator;
+        _userManager = userManager;
+        _filmService = filmService;
+        _repository = repository;
     }
 
     [HttpGet("[controller]/{id:guid}")]
@@ -115,4 +129,7 @@ public class UserProfileController : Controller
     {
         return await _userService.GetUserInfoForChat(userId);
     }
+    
+    [HttpGet]
+    public void UpdateUserStatusWatchingFilm(Guid filmId) { }
 }
