@@ -12,11 +12,7 @@ public static class ServicesConfiguration
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDistributedMemoryCache();
-        if (Environment.GetEnvironmentVariable("ASPNET_ENVIRONMENT") == "Production")
-        {
-            services.AddDbContext(Environment.GetEnvironmentVariable("DATABASE_URL")!);
-        }
-        services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
+        services.AddDbContext(configuration["ConnectionStrings:DefaultConnection"]);
         services.AddIdentity();
         services.AddSignalR(options => { options.ClientTimeoutInterval = new TimeSpan(0, 5, 0); });
 
