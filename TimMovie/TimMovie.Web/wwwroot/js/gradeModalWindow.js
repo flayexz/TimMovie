@@ -1,7 +1,8 @@
 let choseButton = null;
 let gradeNumber = $(".gradeNumber");
 let savedFilmId = null;
-let lastSettedGrade = null;
+let gradeSet = "Изменить оценку фильма";
+let gradeUnset = "Поставить оценку фильму";
 
 function getGrade(filmId) {
     savedFilmId = filmId;
@@ -15,8 +16,12 @@ function getGrade(filmId) {
                 if (!isNaN(grade)) {
                     choseButton = $(`.gradeNumber:contains(${grade})`).first();
                     choseButton.css("background", "#302a45");
+                    updateGradeAfterSet();
                     return grade;
                 }
+            }
+            else{
+                updateGradeAfterUnset();
             }
         }
     });
@@ -31,13 +36,29 @@ function setGrade(filmId, e) {
             gradeNumber.css("background", "#1e1a2e");
             $(e.target).css("background", "#302a45");
             $('#modalFilmGrade').modal('hide');
-            choseButton = $(e.target);
-            lastSettedGrade = e.target.innerText;
-        },
-        error: function () {
-            return null;
+            if (choseButton != null && choseButton[0].innerText === $(e.target)[0].innerText){
+                choseButton = null;
+                updateGradeAfterUnset();
+            }
+            else
+            {
+                choseButton = $(e.target);
+                updateGradeAfterSet();
+            }
         }
     });
+}
+
+function updateGradeAfterSet(){
+    $("#rate_movie_label")[0].innerText = gradeSet;
+    $(".svg-grade-unset").css({"display": "none"});
+    $(".svg-grade-set").css({"display": "block"});
+}
+
+function updateGradeAfterUnset(){
+    $("#rate_movie_label")[0].innerText = gradeUnset;
+    $(".svg-grade-unset").css({"display": "block"});
+    $(".svg-grade-set").css({"display": "none"});
 }
 
 gradeNumber.click(function (e) {

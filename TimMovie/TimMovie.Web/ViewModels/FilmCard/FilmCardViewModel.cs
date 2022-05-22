@@ -10,4 +10,5 @@ public class FilmCardViewModel
     public string FirstGenreName { get; set; } = null!;
     public double? Rating { get; set; }
     public bool IsFree { get; set; }
+    public bool IsGradeSet { get; set; }
 }

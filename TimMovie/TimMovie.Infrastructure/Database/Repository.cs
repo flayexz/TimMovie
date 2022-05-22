@@ -61,4 +61,18 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 
         return includable.ThenInclude(navigationPathToProperty);
     }
+    
+    public IQueryable<TEntity> ThenIncludeEnumerable<TIncludableEntity, TProperty>
+        (IQueryable<TEntity> query, Expression<Func<TIncludableEntity, TProperty>> navigationPathToProperty)
+    {
+        var includable = query as IIncludableQueryable<TEntity, IEnumerable<TIncludableEntity>>;
+        if (includable is null)
+        {
+            throw new InvalidOperationException(
+                $"{nameof(ThenIncludeEnumerable)} был применен к запросу, к которуму не был применен {nameof(Include)}." +
+                $"Либо при {nameof(Include)} не был {nameof(IEnumerable<TIncludableEntity>)}.");
+        }
+
+        return includable.ThenInclude(navigationPathToProperty);
+    }
 }
