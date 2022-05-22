@@ -18,16 +18,17 @@ if (builder.Environment.EnvironmentName == "Development") {
 }
 else
 {
+    defaultConnectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
     // Use connection string provided at runtime by Heroku.
-    var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+    // var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-    var parsedUrl = connectionUrl.Split(";");
-    var host = parsedUrl[0].Split("=")[1];
-    var user = parsedUrl[1].Split("=")[1];
-    var password = parsedUrl[2].Split("=")[1];
-    var database = parsedUrl[3].Split("=")[1];
+    // var parsedUrl = connectionUrl.Split(";");
+    // var host = parsedUrl[0].Split("=")[1];
+    // var user = parsedUrl[1].Split("=")[1];
+    // var password = parsedUrl[2].Split("=")[1];
+    // var database = parsedUrl[3].Split("=")[1];
 
-    defaultConnectionString = $"Host={host};Database={database};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=true";
+    // defaultConnectionString = $"Host={host};Database={database};Username={user};Password={password};SSL Mode=Require;Trust Server Certificate=true";
 }
 
 builder.Services.AddDbContext(defaultConnectionString);
