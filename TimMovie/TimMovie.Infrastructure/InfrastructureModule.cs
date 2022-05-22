@@ -24,7 +24,7 @@ public class InfrastructureModule: Module
         builder.RegisterType<SearchEntityService>().As<ISearchEntityService>().InstancePerLifetimeScope();
         builder.RegisterType<VkService>().As<IVkService>().WithParameters(new[]
         {
-            new NamedParameter("accessToken", _configuration["VkSettings:AccessToken"]),
+            new NamedParameter("accessToken", _configuration.GetRequiredSection("VkSettings:AccessToken").Value),
             new NamedParameter("client", new HttpClient())
         }).InstancePerDependency();
         builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
