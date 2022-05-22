@@ -13,10 +13,10 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-    var configurationBuilder = new ConfigurationBuilder()
-        .SetBasePath(builder.Environment.ContentRootPath)
-        .AddEnvironmentVariables();
-    builder.Configuration.AddConfiguration(configurationBuilder.Build());
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables();
+}
 
 builder.Services.ConfigureServices(builder.Configuration);
 
