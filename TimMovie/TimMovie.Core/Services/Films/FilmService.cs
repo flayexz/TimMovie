@@ -122,23 +122,29 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
 
+
     public FilmDto GetFilmById(Guid filmId)
+    {
+        var dbFilm = GetDbFilmById(filmId);
+        var filmDto = MapToRequiredDto<Film?, FilmDto>(dbFilm);
+        filmDto!.Rating = GetRating(dbFilm!);
+        filmDto.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
+        return filmDto;
+    }
+
+    public Film? GetDbFilmById(Guid filmId)
     {
         var query = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(filmId));
         var executor = new QueryExecutor<Film>(query, _filmRepository);
 
-        var tmpFilm = executor
+        var film = executor
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .IncludeInResult(film => film.Actors)
             .IncludeInResult(film => film.Producers)
+            .IncludeInResult(film => film.Comments)
             .FirstOrDefault();
-
-
-        var film = MapToRequiredDto<Film?, FilmDto>(tmpFilm);
-        film!.Rating = GetRating(tmpFilm!);
-        film.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
         return film;
     }
 }
