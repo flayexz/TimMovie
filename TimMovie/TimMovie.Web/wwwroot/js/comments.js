@@ -21,6 +21,7 @@ $(".leave-comment-container").on('click', '.button-comment-send', () => {
         url: "/Film/LeaveComment",
         data: {filmId: document.URL.split('/').pop(), content: element.value},
         success: function (data) {
+            element.value = "";
             $(".comments-container-body-comments").prepend(data);
             changeButtonColorAndText("Комментарий добавлен", successColor);
         }
