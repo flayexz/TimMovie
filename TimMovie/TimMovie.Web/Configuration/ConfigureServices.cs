@@ -12,7 +12,6 @@ public static class ServicesConfiguration
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
-        CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
         services.AddDistributedMemoryCache();
         services.AddDbContext(environment.IsDevelopment()
             ? configuration.GetConnectionString("DefaultConnection")
