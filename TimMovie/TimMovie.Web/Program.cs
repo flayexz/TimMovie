@@ -9,14 +9,11 @@ using TimMovie.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
-if (!builder.Environment.IsDevelopment())
-{
-    builder.Configuration.AddEnvironmentVariables();
-}
 
 builder.Services.ConfigureServices(builder.Configuration);
 
