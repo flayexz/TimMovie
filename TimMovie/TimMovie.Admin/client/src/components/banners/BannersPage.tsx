@@ -10,7 +10,7 @@ function BannersPage(uploadProps: UploadProps) {
         <div className="justify-content-center d-flex flex-column align-items-center">
             <h1 className="mt-4">Добавить новый баннер</h1>
             <div className="mt-2">
-                <UploadFiles uploadProps={uploadProps} uploadHooks={{preview:preview, setPreview: setPreview, file: file, setFile: setFile}}/>
+                <UploadFiles uploadProps={uploadProps} uploadHooks={{preview:preview, setPreview: setPreview, setFile: setFile}}/>
             </div>
             {preview ? <AddBannerInputs/> : ''}
             <hr className="w-100"/>

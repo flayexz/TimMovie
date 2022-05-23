@@ -29,7 +29,7 @@ public class UserService : IUserService
     private readonly IVkService vkService;
     private readonly FilmService _filmService;
     private readonly IFileService _fileService;
-    
+
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
         CountryService countryService, IVkService vkService, FilmService filmService, IFileService fileService)
