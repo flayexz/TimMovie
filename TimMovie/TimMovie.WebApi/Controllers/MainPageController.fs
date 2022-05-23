@@ -1,24 +1,27 @@
 ﻿namespace TimMovie.WebApi.Controllers.AuthorizationController
 
 open System
-open System.IdentityModel.Tokens.Jwt
 open System.Text.Json
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Mvc
-open Microsoft.Extensions.Logging
+open Microsoft.FSharp.Core
+open Newtonsoft.Json
 open OpenIddict.Validation.AspNetCore
 open TimMovie.Core.Interfaces
-open TimMovie.Core.Services.Subscribes
+open TimMovie.SharedKernel.Classes
+open TimMovie.WebApi.Services.JwtService
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
 type MainPageController
     (
-        logger: ILogger<MainPageController>,
         searchEntityService: ISearchEntityService,
-        subscribeService: ISubscribeService
+        subscribeService: ISubscribeService,
+        notificationService: INotificationService
     ) as this =
     inherit ControllerBase()
+
+    member private _.jwtService = JwtService()
 
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -35,37 +38,51 @@ type MainPageController
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetAllSubscribes([<FromForm>] namePart: string) =
-        let headerToken =
-            this.HttpContext.Request.Headers
-            
-        let subscribes =
-            subscribeService.GetSubscribesByNamePart(namePart)
+    member _.GetAllUserNotifications([<FromForm>] userGuid: Guid) =
+        let jwtTokenOption =
+            this.jwtService.GetUserJwtToken(this.HttpContext.Request.Headers)
 
-        JsonSerializer.Serialize subscribes
+        if jwtTokenOption.IsSome then
+            let userGuidOption =
+                this.jwtService.GetUserGuid(jwtTokenOption.Value)
 
-    [<HttpPost>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-    [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetAllSubscribesWithPagination
-        (
-            [<FromForm>] namePart: string,
-            [<FromForm>] take: int,
-            [<FromForm>] skip: int
-        ) =
-        let subscribes =
-            subscribeService.GetSubscribesByNamePart(namePart, take, skip)
+            if userGuidOption.IsSome then
+                if (userGuidOption.Value <> userGuid.ToString()) then
+                    Result.Fail<string>("Access denied")
+                else
+                    let notifications =
+                        notificationService.GetAllUserNotifications(userGuid)
 
-        JsonSerializer.Serialize subscribes
-        
-//    member private _.GetUserIdFromJwtToken(token : string) = 
-//        let handler = JwtSecurityTokenHandler()
-//        let jwtSecurityToken = handler.ReadJwtToken(token)
-//        let headerToken =
-//            this.HttpContext.Request.Headers;
-//        "123"
-//        let jwtSecurityToken = handler.ReadJwtToken(token = token1)
-//        "123"
-//        var token = "[encoded jwt]";  
-//var handler = new JwtSecurityTokenHandler();
-//var jwtSecurityToken = handler.ReadJwtToken(token);
+                    let json =
+                        JsonConvert.SerializeObject notifications
+
+                    Result.Ok(json)
+            else
+                Result.Fail<string>("Error occurred while decoding the jwt token")
+        else
+            Result.Fail<string>("Error occurred while getting user jwt token")
+
+//    //TODO: доделать сериализацию
+//    [<HttpPost>]
+//    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+//    [<Consumes("application/x-www-form-urlencoded")>]
+//    member _.GetAllSubscribes([<FromForm>] namePart: string) =
+//        let subscribes =
+//            subscribeService.GetSubscribesByNamePart(namePart)
+//
+//        JsonSerializer.Serialize subscribes
+//
+//    //TODO: доделать сериализацию
+//    [<HttpPost>]
+//    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+//    [<Consumes("application/x-www-form-urlencoded")>]
+//    member _.GetAllSubscribesWithPagination
+//        (
+//            [<FromForm>] namePart: string,
+//            [<FromForm>] take: int,
+//            [<FromForm>] skip: int
+//        ) =
+//        let subscribes =
+//            subscribeService.GetSubscribesByNamePart(namePart, take, skip)
+//
+//        JsonSerializer.Serialize subscribes
