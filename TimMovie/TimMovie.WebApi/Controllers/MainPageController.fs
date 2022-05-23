@@ -1,6 +1,7 @@
 ﻿namespace TimMovie.WebApi.Controllers.AuthorizationController
 
 open System
+open System.IdentityModel.Tokens.Jwt
 open System.Text.Json
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Mvc
@@ -35,6 +36,9 @@ type MainPageController
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
     member _.GetAllSubscribes([<FromForm>] namePart: string) =
+        let headerToken =
+            this.HttpContext.Request.Headers
+            
         let subscribes =
             subscribeService.GetSubscribesByNamePart(namePart)
 
@@ -53,3 +57,15 @@ type MainPageController
             subscribeService.GetSubscribesByNamePart(namePart, take, skip)
 
         JsonSerializer.Serialize subscribes
+        
+//    member private _.GetUserIdFromJwtToken(token : string) = 
+//        let handler = JwtSecurityTokenHandler()
+//        let jwtSecurityToken = handler.ReadJwtToken(token)
+//        let headerToken =
+//            this.HttpContext.Request.Headers;
+//        "123"
+//        let jwtSecurityToken = handler.ReadJwtToken(token = token1)
+//        "123"
+//        var token = "[encoded jwt]";  
+//var handler = new JwtSecurityTokenHandler();
+//var jwtSecurityToken = handler.ReadJwtToken(token);

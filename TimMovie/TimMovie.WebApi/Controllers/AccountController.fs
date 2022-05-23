@@ -24,7 +24,7 @@ type AccountController(logger: ILogger<AccountController>, userService: IUserSer
         userRegistrationDto.Email <- email
         userRegistrationDto.UserName <- username
         userRegistrationDto.Password <- password
-
+        
         let registerResult =
             userService.RegisterUserAsync(userRegistrationDto)
             |> Async.AwaitTask
