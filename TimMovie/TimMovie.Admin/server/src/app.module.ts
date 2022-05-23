@@ -22,7 +22,7 @@ import {GenreModule} from "./modules/genreModule/genre.module";
         RoleModule,
         UserModule,
         SubscribeModule,
-        BannerModule
+        BannerModule,
         FilmModule,
         ActorModule,
         ProducerModule,
