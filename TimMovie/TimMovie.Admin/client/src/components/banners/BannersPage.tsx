@@ -24,7 +24,7 @@ function BannersPage(uploadProps: UploadProps) {
             <h1 className="mt-4">Добавить новый баннер</h1>
             <div className="mt-2 position-relative text-break">
                 <UploadFiles uploadProps={uploadProps}
-                             uploadHooks={{preview: preview, setPreview: setPreview, file: file, setFile: setFile}}/>
+                             uploadHooks={{preview: preview, setPreview: setPreview, setFile: setFile}}/>
                 {description && preview ? <div className={styles.bannerContainer}>
                     <h1 className={styles.bannerFilmTitle}>Название типа</h1>
                     <p className={styles.bannerFilmDescription}>{description}</p>
