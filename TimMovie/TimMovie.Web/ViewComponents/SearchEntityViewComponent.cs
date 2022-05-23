@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.DTO.Search;
 using TimMovie.Core.Interfaces;
 using TimMovie.Web.ViewModels.SearchFromLayout;
 
@@ -13,17 +14,28 @@ public class SearchEntityViewComponent : ViewComponent
         _searchEntityService = searchEntityService;
     }
 
-    
+
     public IViewComponentResult Invoke(string namePart)
     {
         var searchResult = _searchEntityService.GetSearchEntityResultByNamePart(namePart);
 
         var viewModel = new SearchEntityViewModel
         {
-            Films = searchResult.Films.Select(f => $"{f.Title}@{f.Year}"),
-            Genres = searchResult.Genres.Select(g => g.Name),
-            Actors = searchResult.Actors.Select(a => a.Surname is null ? $"{a.Name}" : $"{a.Name} {a.Surname}"),
-            Producers = searchResult.Producers.Select(p => p.Surname is null ? $"{p.Name}" : $"{p.Name} {p.Surname}")
+            Films = searchResult.Films.Select(f => new SearchFilmDto
+                {Id = f.Id, Title = f.Title, Year = f.Year}),
+            Genres = searchResult.Genres.Select(g => new SearchGenreDto {Name = g.Name}),
+            Actors = searchResult.Actors.Select(a => new SearchActorDto
+            {
+                Id = a.Id,
+                Name = a.Name,
+                Surname = a.Surname
+            }),
+            Producers = searchResult.Producers.Select(p => new SearchProducerDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Surname = p.Surname
+            })
         };
         return View("~/Views/Shared/Components/SearchEntity/Default.cshtml", viewModel);
     }
