@@ -7,7 +7,6 @@ interface Props{
     setFile: Function
     preview: string,
     uploadProps: UploadProps,
-    setFile: Function
 }
 
 export const Preview: FC<Props> = ({setPreview, preview,uploadProps, setFile}) => {
