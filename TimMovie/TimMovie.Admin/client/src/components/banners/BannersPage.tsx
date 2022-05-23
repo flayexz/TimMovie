@@ -9,11 +9,12 @@ import styles from "./banner.module.css";
 
 function BannersPage(uploadProps: UploadProps) {
 
+    const initialValueForFilm = 'Фильм';
     const [preview, setPreview] = useState<string | null>(null);
     const [description, setDescription] = useState<string>('')
     const [file, setFile] = useState<File>()
     const [banners, setBanners] = useState<Array<BannerDto>>([])
-    const [film, setFilm] = useState()
+    const [film, setFilm] = useState(initialValueForFilm)
     const [isSubmitted, setIsSubmitted] = useState<boolean>(true)
 
     useEffect(() => {
@@ -46,6 +47,7 @@ function BannersPage(uploadProps: UploadProps) {
     }
 
     function resetFields(){
+        setFilm(initialValueForFilm)
         setDescription('')
         setPreview(null)
         setFile(undefined)
@@ -55,7 +57,7 @@ function BannersPage(uploadProps: UploadProps) {
         let formData = new FormData()
         formData.append("img", file!);
         formData.append("description", description!);
-        formData.append("filmTitle", "Гери");
+        formData.append("filmTitle", film!);
         return formData
     }
 
@@ -65,13 +67,13 @@ function BannersPage(uploadProps: UploadProps) {
             <div className="mt-2 position-relative text-break">
                 <UploadFiles uploadProps={uploadProps}
                              uploadHooks={{preview: preview, setPreview: setPreview, setFile: setFile}}/>
-                {description && preview ? <div className={styles.bannerContainer} style={{position:"absolute",bottom:"13%"}}>
-                    <h1 className={styles.bannerFilmTitle}>Название типа</h1>
+                {preview && (description || film) ? <div className={styles.bannerContainer} style={{position:"absolute",bottom:"13%"}}>
+                    <h1 className={styles.bannerFilmTitle}>{film}</h1>
                     <p className={styles.bannerFilmDescription}>{description}</p>
-                    <input type="button" className="btn btn-lg btn-success" value="Сохранить" onClick={trySaveBanner}/>
+                        {film != initialValueForFilm && description ? <input type="button" className="btn btn-lg btn-success" value="Сохранить" onClick={trySaveBanner}/> : ''}
                 </div> : ''}
             </div>
-            <AddBannerInputs preview={preview} description={description} setDescription={setDescription}/>
+            <AddBannerInputs preview={preview} description={description} setDescription={setDescription} film={film} setFilm={setFilm} initialValueForFilm={initialValueForFilm}/>
             <hr className="w-100"/>
             <Banners setIsSubmitted={setIsSubmitted} banners={banners}/>
         </div>
