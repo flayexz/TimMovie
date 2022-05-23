@@ -33,4 +33,18 @@ export class ActorService{
         });
         return actorsDto;
     }
+    
+    async getActorsByFullName(fullName: string[]): Promise<Actor[]>{
+        return await getRepository(Actor)
+            .find({
+                where: fullName.map(value => {
+                    let nameAndSurname = value.split(" ");
+
+                    return {
+                        name: nameAndSurname[0],
+                        surname: nameAndSurname[1] ?? ""
+                    }
+                })
+            });
+    }
 }

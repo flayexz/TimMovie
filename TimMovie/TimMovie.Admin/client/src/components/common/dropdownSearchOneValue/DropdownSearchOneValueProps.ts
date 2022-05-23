@@ -4,4 +4,5 @@
     readonly urlRequestForEntity: string;
     readonly pagination: number;
     readonly title: string;
+    readonly onClickDropdownButton?: () => void;
 }

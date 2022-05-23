@@ -10,8 +10,8 @@ export function useValidation<TValue>(value: TValue, validations: Validation<TVa
     useEffect(() => {
         let inputIsValid = true;
         let errorMessage = "";
-        if (validations.predicates){
-            validations.predicates.forEach(predicate => {
+        if (validations.validations){
+            validations.validations.forEach(predicate => {
                 let isValid = predicate.valueIsValid(value);
                 
                 if (!isValid){

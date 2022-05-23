@@ -1,5 +1,5 @@
-﻿import PredicateWithError from "./PredicateWithError";
+﻿import ValidationWithError from "./ValidationWithError";
 
 export default interface Validation<TValue>{
-    readonly predicates?: PredicateWithError<TValue>[]
+    readonly validations?: ValidationWithError<TValue>[]
 }

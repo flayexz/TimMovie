@@ -4,6 +4,7 @@ import {getRepository} from "typeorm";
 import {includeNamePart} from "../../common/queryFunction";
 import {Producer} from "../../../entities/Producer";
 import {Country} from "../../../entities/Country";
+import {Genre} from "../../../entities/Genre";
 
 @Injectable()
 export class CountryService {
@@ -31,5 +32,14 @@ export class CountryService {
             }
         });
         return countriesDto;
+    }
+
+    async getCountryFullName(name: string): Promise<Country>{
+        return await getRepository(Country)
+            .findOne({
+                where:{
+                    name: name
+                }
+            });
     }
 }

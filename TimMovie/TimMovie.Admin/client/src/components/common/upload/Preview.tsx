@@ -5,13 +5,15 @@ import {UploadProps} from "./UploadProps";
 interface Props{
     setPreview: Function,
     preview: string,
-    uploadProps: UploadProps
+    uploadProps: UploadProps,
+    setFile: Function
 }
 
-export const Preview: FC<Props> = ({setPreview, preview,uploadProps}) => {
+export const Preview: FC<Props> = ({setPreview, preview,uploadProps, setFile}) => {
 
     function removePreview() {
-        setPreview(null)
+        setPreview(null);
+        setFile(undefined);
     }
 
     return(<>
