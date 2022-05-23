@@ -6,7 +6,8 @@ interface Props{
     setPreview: Function,
     setFile: Function
     preview: string,
-    uploadProps: UploadProps
+    uploadProps: UploadProps,
+    setFile: Function
 }
 
 export const Preview: FC<Props> = ({setPreview, preview,uploadProps, setFile}) => {

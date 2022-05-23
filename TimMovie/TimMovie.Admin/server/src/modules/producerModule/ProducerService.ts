@@ -3,6 +3,7 @@ import NameDto from "../../dto/NameDto";
 import {getRepository} from "typeorm";
 import {includeNamePart} from "../../common/queryFunction";
 import {Producer} from "../../../entities/Producer";
+import {Actor} from "../../../entities/Actor";
 
 @Injectable()
 export class ProducerService{
@@ -32,5 +33,19 @@ export class ProducerService{
             }
         });
         return producersDto;
+    }
+
+    async getProducersByFullName(fullName: string[]): Promise<Producer[]>{
+        return await getRepository(Producer)
+            .find({
+                where: fullName.map(value => {
+                    let nameAndSurname = value.split(" ");
+
+                    return {
+                        name: nameAndSurname[0],
+                        surname: nameAndSurname[1] ?? ""
+                    }
+                })
+            });
     }
 }

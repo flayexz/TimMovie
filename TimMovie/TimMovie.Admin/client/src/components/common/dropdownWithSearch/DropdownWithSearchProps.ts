@@ -5,4 +5,5 @@
     readonly title: string;
     showMenu: boolean;
     setShowMenu: (value: boolean) => void;
+    onClickDropdown?: () => void
 }

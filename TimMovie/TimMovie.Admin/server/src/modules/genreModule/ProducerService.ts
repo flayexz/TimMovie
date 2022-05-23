@@ -32,4 +32,15 @@ export class GenreService{
         });
         return genresDto;
     }
+
+    async getGenresByFullName(genreNames: string[]): Promise<Genre[]>{
+        return await getRepository(Genre)
+            .find({
+                where: genreNames.map(value => {
+                    return {
+                        name: value
+                    }
+                })
+            });
+    }
 }

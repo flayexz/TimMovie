@@ -13,9 +13,13 @@ function DropdownWithMultipleSelector({values, ...props}: DropdownWithMultipleSe
         if(values.current.has(value)){
             values.current.delete(value);
         } else {
-            values.current.add(value)
+            values.current.add(value);
         }
         setSelectedValuesIsChanged(!selectedValuesIsChanged);
+        
+        if(props.onChangeSelectedValues){
+            props.onChangeSelectedValues();
+        }
     }
     
     const parsedResultFunction = (entity: NameDto) => {
@@ -37,14 +41,17 @@ function DropdownWithMultipleSelector({values, ...props}: DropdownWithMultipleSe
     }
     
     return (
-        <DropdownWithSearch
-            url={props.urlRequestForEntity}
-            pagination={props.pagination}
-            parsedResultFunction={parsedResultFunction}
-            title={props.title}
-            showMenu={showDropdown}
-            setShowMenu={setShowDropdown}
-        />
+        <>
+            <DropdownWithSearch
+                url={props.urlRequestForEntity}
+                pagination={props.pagination}
+                parsedResultFunction={parsedResultFunction}
+                title={props.title}
+                showMenu={showDropdown}
+                setShowMenu={setShowDropdown}
+                onClickDropdown={props.onClickDropdownButton}
+            />
+        </>
     );
 }
 
