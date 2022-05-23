@@ -6,8 +6,6 @@ import $api from "../../http";
 import {BannerDto} from "../../dto/BannerDto";
 import Banners from "./Banner";
 import styles from "./banner.module.css";
-import {useInput} from "../../hook/input/useInput";
-import {checkOnEmpty} from "../../templeteForPredicateWithErrorMessage/templetes";
 
 function BannersPage(uploadProps: UploadProps) {
 
