@@ -55,7 +55,7 @@ function BannersPage(uploadProps: UploadProps) {
         let formData = new FormData()
         formData.append("img", file!);
         formData.append("description", description!);
-        formData.append("filmTitle", "Брат");
+        formData.append("filmTitle", "Гери");
         return formData
     }
 
