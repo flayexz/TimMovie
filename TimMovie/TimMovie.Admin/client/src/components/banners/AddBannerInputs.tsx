@@ -11,9 +11,7 @@ function AddBannerInputs(props : Props) {
 
     function onDescriptionChange(description:any){
         description.preventDefault()
-        if(props.preview){
-            props.setDescription(description.target.value)
-        }
+        props.setDescription(description.target.value)
     }
 
     return (<>
@@ -21,7 +19,7 @@ function AddBannerInputs(props : Props) {
             <div className="d-flex flex-column">
                 <label htmlFor="bannerDescriptionInput" className="text-center"><h5>Описание</h5></label>
                 <textarea maxLength={250} id="bannerDescriptionInput" style={{resize: "none"}}
-                          className={styles.adminInput} cols={60} rows={5} onChange={desc => onDescriptionChange(desc)} />
+                          className={styles.adminInput} cols={60} rows={5} value={props.description!}  onChange={desc => onDescriptionChange(desc)} />
             </div>
             <div className="d-flex flex-column">
                 <label htmlFor="bannerSelectFilm"><h5>Фильм</h5></label>

@@ -10,7 +10,7 @@ import styles from "./banner.module.css";
 function BannersPage(uploadProps: UploadProps) {
 
     const [preview, setPreview] = useState<string | null>(null);
-    const [description, setDescription] = useState<string | null>(null)
+    const [description, setDescription] = useState<string>('')
     const [file, setFile] = useState<File>()
     const [banners, setBanners] = useState<Array<BannerDto>>([])
     const [film, setFilm] = useState()
@@ -46,6 +46,7 @@ function BannersPage(uploadProps: UploadProps) {
     }
 
     function resetFields(){
+        setDescription('')
         setPreview(null)
         setFile(undefined)
     }
