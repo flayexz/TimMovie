@@ -1,11 +1,12 @@
 ﻿import messageErrorClasses from "../../css/messageError.module.css"
 import React from "react";
 import ValidationInputProps from "./ValidationInputProps";
+import RequiredFieldIcon from "../../symbols/RequiredFieldIcon";
 
 function InputWithValidation({inputInfo, label, ...props}: ValidationInputProps){
     return (
         <>
-            <div>{label}</div>
+            <div>{label} {props.isRequired && <RequiredFieldIcon/>}</div>
             <input onChange={inputInfo.onChange} onBlur={inputInfo.onBlur}
                    value={inputInfo.value} type={props.typeInput}  
                    className={props.inputClasses}/>

@@ -5,4 +5,5 @@ export default interface ValidationInputProps{
     label: string;
     inputClasses?: string;
     typeInput: string;
+    isRequired: boolean;
 }

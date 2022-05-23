@@ -1,22 +1,27 @@
 ﻿import {Injectable} from "@nestjs/common";
-import {NewFilm} from "../../dto/NewFilm";
+import {NewFilmDto} from "../../dto/NewFilmDto";
 import {Result} from "../../dto/Result";
 import {FileService} from "../FileService";
-import {getRepository, Raw} from "typeorm";
-import {Actor} from "../../../entities/Actor";
+import {getRepository} from "typeorm";
 import {Film} from "../../../entities/Film";
-import {Producer} from "../../../entities/Producer";
-import {Genre} from "../../../entities/Genre";
-import {Country} from "../../../entities/Country";
 import {Guid} from "guid-typescript";
+import {plainToInstance} from "class-transformer";
+import {ActorService} from "../actorModule/ActorService";
+import {ProducerService} from "../producerModule/ProducerService";
+import {GenreService} from "../genreModule/ProducerService";
+import {CountryService} from "../countryModule/country.service";
 
 
 @Injectable()
 export class FilmService{
-    constructor(private readonly fileService: FileService) {
+    constructor(private readonly fileService: FileService,
+                private readonly actorService: ActorService,
+                private readonly producerService: ProducerService,
+                private readonly genreService: GenreService,
+                private readonly countryService: CountryService) {
     }
     
-    async addNewFilm(newFilm: NewFilm, image: Express.Multer.File): Promise<Result<string>>{
+    async addNewFilm(newFilm: NewFilmDto, image: Express.Multer.File): Promise<Result<string>>{
         let resultSaveImage = await this.fileService.saveFilmImage(image);
         
         if (!resultSaveImage.success){
@@ -25,78 +30,33 @@ export class FilmService{
                 textError: "Во время сохранения  произошла ошибка",
             }
         }
-        console.log(Guid.create().toString());
-        let film = getRepository(Film).create({
-            id: Guid.create().toString(),
-            title: newFilm.title,
-            description: newFilm.description,
-            image: resultSaveImage.result,
-            filmLink: newFilm.filmLink,
-            isFree: newFilm.isFree,
-            year: newFilm.year
-        })
+        
+        let filmRepo = getRepository(Film);
+        let film = filmRepo.create(plainToInstance(Film, newFilm));
+        
+        film.id = Guid.create().toString();
+        film.image = resultSaveImage.result;
 
         if (newFilm.actorNames != null){
-            let actors = await getRepository(Actor)
-                .find({
-                    where: newFilm.actorNames?.map(value => {
-                        let nameAndSurname = value.split(" ");
-
-                        return {
-                            name: nameAndSurname[0],
-                            surname: nameAndSurname[1] ?? ""
-                        }
-                    })
-                });
-            console.log(actors);
             
+            let actors = await this.actorService.getActorsByFullName(newFilm.actorNames);
             film.actors = actors;
         }
 
         if (newFilm.producerNames != null){
-            let producers = await getRepository(Producer)
-                .find({
-                    where: newFilm.producerNames?.map(value => {
-                        let nameAndSurname = value.split(" ");
-
-                        return {
-                            name: nameAndSurname[0],
-                            surname: nameAndSurname[1] ?? ""
-                        }
-                    })
-                });
-            console.log(producers);
-
+            let producers = await this.producerService.getProducersByFullName(newFilm.producerNames);
             film.producers = producers;
         }
 
         if (newFilm.genreNames != null){
-            let genres = await getRepository(Genre)
-                .find({
-                    where: newFilm.genreNames?.map(value => {
-                        return {
-                           name: value
-                        }
-                    })
-                });
-            console.log(genres);
-
+            let genres = await this.genreService.getGenresByFullName(newFilm.genreNames);
             film.genres = genres;
         }
         
-        let country = await getRepository(Country)
-            .findOne({
-                where:{
-                    name: newFilm.countryName
-                }
-            });
-        console.log(country);
+        let country = await this.countryService.getCountryFullName(newFilm.countryName);
         film.country = country;
-
-        console.log(film);
         
-        await getRepository(Film)
-            .save(film);
+        await filmRepo.save(film);
         
         return {
             success: true,

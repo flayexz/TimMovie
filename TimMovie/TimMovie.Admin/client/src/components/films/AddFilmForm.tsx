@@ -3,15 +3,21 @@ import {UploadFiles} from "../common/upload/UploadFiles";
 import filmFormClasses from "./filmForm.module.css";
 import {classNameConcat} from "../../common/classNameConcat";
 import DropdownWithMultipleSelector from "../common/dropdownWithMultipleSelector/DropdownWithMultipleSelector";
-import DropdownSearchOneValue from "../common/dropdownSearchOneValue/DropdownSearchOneValue";
 import {useInput} from "../../hook/input/useInput";
-import {checkOnEmpty} from "../../templeteForPredicateWithErrorMessage/templetes";
 import InputWithValidation from "../common/input/validation/InputWithValidation";
 import TextareaWithValidation from "../common/textarea/validation/TextareaWithValidation";
 import $api from "../../http";
 import {Modal, Toast, ToastContainer} from "react-bootstrap";
 import {AxiosResponse} from "axios";
 import Result from "../../dto/Result";
+import {checkOnEmpty} from "../../templeteForValidationWithError/templetes";
+import {useValidationDropdown} from "../../hook/dropdown/useValidationDropdown";
+import DropdownWithMultipleSelectorWithError
+    from "../common/dropdownWithMultipleSelector/DropdownWithMultipleSelectorWithError";
+import DropdownSearchOneValueWithError from "../common/dropdownSearchOneValue/DropdownSearchOneValueWithError";
+import RequiredFieldIcon from "../common/symbols/RequiredFieldIcon";
+
+const initialValueForCountry = "Выбрать";
 
 function AddFilmForm() {
     const [preview, setPreview] = useState<string | null>(null);
@@ -19,18 +25,26 @@ function AddFilmForm() {
     const selectedActors = useRef(new Set<string>());
     const selectedProducers = useRef(new Set<string>());
     const selectedGenres = useRef(new Set<string>());
-    const title = useInput({predicates: [checkOnEmpty]});
-    const iframeLink = useInput({predicates: [checkOnEmpty]});
+    const validationGenres = useValidationDropdown(selectedGenres.current, {validations: [{
+            valueIsValid: genres => genres.size != 0,
+            errorMessage: "Нужно выбрать хотя бы один жанр"
+        }]});
+    const title = useInput({validations: [checkOnEmpty]});
+    const iframeLink = useInput({validations: [checkOnEmpty]});
     const description = useInput({});
     const [isFree, setIsFree] = useState(false);
-    const year = useInput({predicates: [
+    const year = useInput({validations: [
             {
                 valueIsValid: value => Number(value) >= 1900 && Number(value) <= new Date().getFullYear(),
                 errorMessage: `Дата должна находится в промежутке от 1900 до ${new Date().getFullYear()}`
             },
             checkOnEmpty
         ]});
-    const [selectedCountry, setSelectedCountry] = useState("Выберете страну");
+    const [selectedCountry, setSelectedCountry] = useState(initialValueForCountry);
+    const validationCountry = useValidationDropdown(selectedCountry, {validations: [{
+            valueIsValid: country => country != initialValueForCountry,
+            errorMessage: "Нужно выбрать страну"
+        }]});
     const [formIsValid, setFormIsValid] = useState(false);
     const [messageAboutAddIsShow, setMessageAboutAddIsShow] = useState(false);
     const [errorMessageIsShow, setErrorMessageIsShow] = useState(false);
@@ -97,12 +111,16 @@ function AddFilmForm() {
         description.resetInput();
         setIsFree(false);
         year.resetInput();
-        setSelectedCountry("Выберете страну");
+        setSelectedCountry(initialValueForCountry);
+        validationGenres.setFirstClickOnDropdownButton(false);
+        validationCountry.setFirstClickOnDropdownButton(false);
     }
     
     function checkFormOnValid(): boolean{
         return title.validationState.inputIsValid && iframeLink.validationState.inputIsValid
-        && description.validationState.inputIsValid && year.validationState.inputIsValid;
+        && description.validationState.inputIsValid && year.validationState.inputIsValid 
+            && validationGenres.validation.inputIsValid && validationCountry.validation.inputIsValid
+            && !!file;
     }
     
     return (
@@ -135,11 +153,11 @@ function AddFilmForm() {
                 <form className={classNameConcat("d-flex flex-column flex-grow-1 mt-1", filmFormClasses.formWithFieldsFilm)}>
                     <div className="d-flex justify-content-between">
                         <div>
-                            <InputWithValidation inputInfo={title} label="Название"
+                            <InputWithValidation inputInfo={title} label="Название" isRequired={true}
                                                  inputClasses={"mt-2 form-control"} typeInput="text"/>
                         </div>
                         <div className="col-6">
-                            <InputWithValidation inputInfo={iframeLink} label="Ссылка на iframe"
+                            <InputWithValidation inputInfo={iframeLink} label="Ссылка на iframe" isRequired={true}
                                 inputClasses={"mt-2 form-control"} typeInput="text"/>
                         </div>
                     </div>
@@ -149,29 +167,44 @@ function AddFilmForm() {
                                                     filmFormClasses.filmDescription)}/>
                     </div>
                     <div className="d-flex justify-content-between mt-4">
-                        <div>
+                        <div className="col-3">
+                            <div className="mb-2">Актеры</div>
                             <DropdownWithMultipleSelector pagination={30} values={selectedActors}
                                                           urlRequestForEntity={"/actors/collection"}
-                                                          title="Выберете актеров"/>
+                                                          title="Выбрать"/>
                         </div>
-                         <DropdownWithMultipleSelector pagination={30} values={selectedProducers}
-                                                       urlRequestForEntity={"/producers/collection"} 
-                                                       title="Выберете продюсеров"/>
-                        <DropdownWithMultipleSelector pagination={30} values={selectedGenres}
-                                                      urlRequestForEntity={"/genres/collection"}
-                                                      title="Выберете жанр"/>
+                        <div className="col-3">
+                            <div className="mb-2">Режиссеры</div>
+                            <DropdownWithMultipleSelector pagination={30} values={selectedProducers}
+                                                          urlRequestForEntity={"/producers/collection"}
+                                                          title="Выбрать"/>
+                        </div>
+                        <div className="col-3">
+                            <div className="mb-2">Жанры <RequiredFieldIcon/></div>
+                            <DropdownWithMultipleSelectorWithError 
+                                dropdownWithMultipleSelector={{
+                                    title: "Выбрать",
+                                    values: selectedGenres,
+                                    urlRequestForEntity: "/genres/collection",
+                                    pagination: 30
+                            }} 
+                                validationDropdown={validationGenres}/>
+                        </div>
                     </div>
                     <div className="d-flex justify-content-between mt-4">
                         <div className="col-4">
-                            <InputWithValidation inputInfo={year} label="Год"
+                            <InputWithValidation inputInfo={year} label="Год" isRequired={true}
                                                  inputClasses={"mt-2 form-control"} typeInput="number"/>
                         </div>
                         <div className="col-3">
-                            <div className="mb-2">Страна</div>
-                            <DropdownSearchOneValue pagination={30} value={selectedCountry}
-                                                    setValue={setSelectedCountry}
-                                                          urlRequestForEntity={"/countries/collection"}
-                                                          title={selectedCountry}/>
+                            <div className="mb-2">Страна <RequiredFieldIcon/></div>
+                            <DropdownSearchOneValueWithError dropdownSearchOneValue={{
+                               value: selectedCountry,
+                               setValue: setSelectedCountry,
+                               title: selectedCountry,
+                               pagination: 30,
+                               urlRequestForEntity: "/countries/collection"
+                            }} validations={validationCountry}/>
                         </div>
                     </div>
                     <div className="d-flex justify-content-between mt-4 align-items-center">

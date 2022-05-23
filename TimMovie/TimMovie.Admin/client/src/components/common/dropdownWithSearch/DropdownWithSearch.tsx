@@ -16,6 +16,9 @@ function DropdownWithSearch<T>({showMenu, setShowMenu, ...props}: DropdownWithSe
     const dropdown = useRef<HTMLDivElement>(null);
 
     function toggleDropdownMenu(): void{
+        if (props.onClickDropdown){
+            props.onClickDropdown();
+        }
         setShowMenu(!showMenu);
     }
 

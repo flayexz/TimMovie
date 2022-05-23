@@ -32,6 +32,7 @@ function DropdownSearchOneValue({value, ...props}: DropdownSearchOneValueProps){
             title={props.title}
             setShowMenu={setShowDropdown}
             showMenu={showDropdown}
+            onClickDropdown={props.onClickDropdownButton}
         />
     );
 }
