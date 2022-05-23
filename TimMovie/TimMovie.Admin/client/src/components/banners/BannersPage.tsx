@@ -5,6 +5,7 @@ import AddBannerInputs from "./AddBannerInputs";
 import $api from "../../http";
 import {BannerDto} from "../../dto/BannerDto";
 import Banners from "./Banner";
+import styles from "./banner.module.css";
 
 function BannersPage(uploadProps: UploadProps) {
 
@@ -24,8 +25,9 @@ function BannersPage(uploadProps: UploadProps) {
             <div className="mt-2 position-relative text-break">
                 <UploadFiles uploadProps={uploadProps}
                              uploadHooks={{preview: preview, setPreview: setPreview, file: file, setFile: setFile}}/>
-                {description && preview ? <div style={{position:'absolute',bottom:'10%'}}>
-                    <p>{description}</p>
+                {description && preview ? <div className={styles.bannerContainer}>
+                    <h1 className={styles.bannerFilmTitle}>Название типа</h1>
+                    <p className={styles.bannerFilmDescription}>{description}</p>
                 </div> : ''}
             </div>
             <AddBannerInputs preview={preview} description={description} setDescription={setDescription}/>
