@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import {FileInput} from "./FileInput";
 import {Preview} from "./Preview";
 import {UploadProps} from "./UploadProps";
