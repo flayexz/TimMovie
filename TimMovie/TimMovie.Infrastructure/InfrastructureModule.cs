@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Microsoft.Extensions.Configuration;
-using TimMovie.Infrastructure.Services;
-using TimMovie.SharedKernel.Interfaces;
 using TimMovie.Core.Interfaces;
 using TimMovie.Infrastructure.Database;
+using TimMovie.Infrastructure.Services;
+using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Infrastructure;
 
@@ -15,7 +15,6 @@ public class InfrastructureModule: Module
     {
         _configuration = configuration;
     }
-    
     protected override void Load(ContainerBuilder builder)
     {
         builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
@@ -25,7 +24,7 @@ public class InfrastructureModule: Module
         builder.RegisterType<SearchEntityService>().As<ISearchEntityService>().InstancePerLifetimeScope();
         builder.RegisterType<VkService>().As<IVkService>().WithParameters(new[]
         {
-            new NamedParameter("accessToken", _configuration["VkSettings:AccessToken"]),
+            new NamedParameter("accessToken", _configuration.GetRequiredSection("VkSettings:AccessToken").Value),
             new NamedParameter("client", new HttpClient())
         }).InstancePerDependency();
         builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();

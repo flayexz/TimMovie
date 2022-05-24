@@ -51,6 +51,16 @@ public class FilmService
         return true;
     }
 
+    public async Task<bool> TryAddCommentToFilm(Comment comment)
+    {
+        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(comment.Film.Id));
+        if (dbFilm is null)
+            return false;
+        dbFilm.Comments.Add(comment);
+        await _filmRepository.SaveChangesAsync();
+        return true;
+    }
+
     public async Task<bool> TryUpdateFilmGrade(Guid filmId, Guid userId, int grade)
     {
         var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
@@ -77,7 +87,12 @@ public class FilmService
                 WatchedUser = user
             });
         else
-            watchedFilms.Grade = grade;
+        {
+            if (watchedFilms.Grade == grade)
+                watchedFilms.Grade = null;
+            else
+                watchedFilms.Grade = grade;
+        }
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
         return true;
@@ -109,11 +124,11 @@ public class FilmService
         var query = _userRepository.Query
             .Where(new EntityByIdSpec<User>(userId));
         var executor = new QueryExecutor<User>(query, _userRepository);
-
+    
         var film = executor
             .IncludeInResult(user => user.WatchingFilm)
             .FirstOrDefault();
-
+    
         return MapToRequiredDto<User?, FilmForStatusDto>(film);
     }
 

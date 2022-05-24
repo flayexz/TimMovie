@@ -29,7 +29,7 @@ public class UserService : IUserService
     private readonly IVkService vkService;
     private readonly FilmService _filmService;
     private readonly IFileService _fileService;
-    
+
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
         IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
         CountryService countryService, IVkService vkService, FilmService filmService, IFileService fileService)
@@ -189,6 +189,7 @@ public class UserService : IUserService
     public async Task<UserInfoDto> GetInfoAboutUserAsync(Guid userId)
     {
         var user = await userManager.Users
+            .Include(u => u.Status)
             .Include(u => u.Country)
             .FirstOrDefaultAsync(new EntityByIdSpec<User>(userId));
         

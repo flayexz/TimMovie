@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import {FileInput} from "./FileInput";
 import {Preview} from "./Preview";
 import {UploadProps} from "./UploadProps";
@@ -15,7 +15,7 @@ export const UploadFiles: FC<Props> = ({uploadProps, uploadHooks}) => {
         <>
             {
                 uploadHooks.preview ? <Preview uploadProps={uploadProps} setPreview={uploadHooks.setPreview}
-                                   preview={uploadHooks.preview}/> :
+                                   preview={uploadHooks.preview} setFile={uploadHooks.setFile}/> :
                     <FileInput uploadProps={uploadProps} setPreview={uploadHooks.setPreview} setFile={uploadHooks.setFile}/>
             }
         </>
