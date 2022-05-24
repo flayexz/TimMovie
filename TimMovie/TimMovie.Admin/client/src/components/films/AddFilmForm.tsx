@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useRef, useState} from "react";
+﻿import React, {SyntheticEvent, useEffect, useRef, useState} from "react";
 import {UploadFiles} from "../common/upload/UploadFiles";
 import filmFormClasses from "./filmForm.module.css";
 import {classNameConcat} from "../../common/classNameConcat";
@@ -16,12 +16,15 @@ import DropdownWithMultipleSelectorWithError
     from "../common/dropdownWithMultipleSelector/DropdownWithMultipleSelectorWithError";
 import DropdownSearchOneValueWithError from "../common/dropdownSearchOneValue/DropdownSearchOneValueWithError";
 import RequiredFieldIcon from "../common/symbols/RequiredFieldIcon";
+import errorMessageClasses from "../common/css/messageError.module.css";
+import AddFilmFormProps from "./AddFilmFormProps";
 
 const initialValueForCountry = "Выбрать";
 
-function AddFilmForm() {
+function AddFilmForm(props: AddFilmFormProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [file, setFile] = useState<File>();
+    const [imgIsValid, setImgIsValid] = useState(true);
     const selectedActors = useRef(new Set<string>());
     const selectedProducers = useRef(new Set<string>());
     const selectedGenres = useRef(new Set<string>());
@@ -29,7 +32,13 @@ function AddFilmForm() {
             valueIsValid: genres => genres.size != 0,
             errorMessage: "Нужно выбрать хотя бы один жанр"
         }]});
-    const title = useInput({validations: [checkOnEmpty]});
+    const title = useInput({validations: [
+            checkOnEmpty,
+            {
+                valueIsValid: title => title.length < 200,
+                errorMessage: "Максимальная длина 200 символов"
+            }
+        ]});
     const iframeLink = useInput({validations: [checkOnEmpty]});
     const description = useInput({});
     const [isFree, setIsFree] = useState(false);
@@ -70,6 +79,17 @@ function AddFilmForm() {
         setFormIsValid(checkFormOnValid())
     }, [title, iframeLink, description, year]);
 
+    function onLoadImage(e: SyntheticEvent<HTMLImageElement>): void{
+        let img = e.currentTarget;
+        
+        let validResult = img.naturalWidth >= 250 && img.naturalHeight >= 350;
+        setImgIsValid(validResult);
+        if (!validResult){
+            setPreview(null);
+            setFile(undefined);
+        }
+    }
+    
     function appendCollection(formData: FormData, set: Iterable<string>, name: string){
         let i = 0;
         
@@ -96,7 +116,8 @@ function AddFilmForm() {
             
             resetValueFields();
             setMessageAboutAddIsShow(true);
-            console.log(response);
+            props.resetTable();
+            props.setFetching(true);
         })
     }
     
@@ -147,9 +168,14 @@ function AddFilmForm() {
                 </Toast>
             </ToastContainer>
             <div className="d-flex">
-                <UploadFiles
-                    uploadProps={{photoWidth: 234, photoHeight:360, borderRadius: 10}}
-                    uploadHooks={{preview:preview, setPreview: setPreview, setFile: setFile}}/>
+                <div className="">
+                    <UploadFiles
+                        uploadProps={{photoWidth: 234, photoHeight:360, borderRadius: 10}}
+                        uploadHooks={{preview:preview, setPreview: setPreview, setFile: setFile}}
+                        onLoadPreview={onLoadImage}/>
+                    {!imgIsValid && <div className={errorMessageClasses.messageError}>Минимальный размер по ширине 
+                        <br/> 250px, а по высоте 350px</div>}
+                </div>
                 <form className={classNameConcat("d-flex flex-column flex-grow-1 mt-1", filmFormClasses.formWithFieldsFilm)}>
                     <div className="d-flex justify-content-between">
                         <div>

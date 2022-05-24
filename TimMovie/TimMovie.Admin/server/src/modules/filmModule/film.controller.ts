@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Query, UploadedFile, UseInterceptors} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Query, UploadedFile, UseInterceptors} from '@nestjs/common';
 import {FilmService} from "./FilmService";
 import {NewFilmDto} from "../../dto/NewFilmDto";
 import {FileInterceptor} from "@nestjs/platform-express";
@@ -6,6 +6,8 @@ import {Result} from "../../dto/Result";
 import PaginationLoading from "../../dto/PaginationLoading";
 import FilmForTableDto from "../../dto/FilmForTableDto";
 import NameDto from "../../dto/NameDto";
+import {getRepository} from "typeorm";
+import {Film} from "../../../entities/Film";
 
 @Controller('films')
 export class FilmController {
@@ -36,5 +38,10 @@ export class FilmController {
         @Query("skip") skip:number,
         @Query("take") take: number): Promise<NameDto[]>{
         return await this.filmService.getFilmsTitlesByNamePart(namePart, skip, take);
+    }
+    
+    @Delete(":id")
+    async deleteFilmById(@Param("id") id: string): Promise<Result<string>>{
+        return await this.filmService.deleteFilmById(id);
     }
 }
