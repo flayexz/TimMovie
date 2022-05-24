@@ -10,6 +10,8 @@ import {ActorService} from "../actorModule/ActorService";
 import {ProducerService} from "../producerModule/ProducerService";
 import {GenreService} from "../genreModule/ProducerService";
 import {CountryService} from "../countryModule/country.service";
+import PaginationLoading from "../../dto/PaginationLoading";
+import FilmForTableDto from "../../dto/FilmForTableDto";
 import {includeNamePart} from "../../common/queryFunction";
 import NameDto from "../../dto/NameDto";
 
@@ -63,6 +65,33 @@ export class FilmService {
         return {
             success: true,
         };
+    }
+    
+    async getFilmByNamePart(pagination: PaginationLoading): Promise<FilmForTableDto[]> {
+        let films = await getRepository(Film)
+            .find({
+                where: {
+                    title: includeNamePart(pagination.namePart)
+                },
+                relations: ["country", "genres", "actors", "producers"],
+                take: pagination.take,
+                skip: pagination.skip
+            });
+
+        console.log(films);
+
+        let filmsDto = films
+            .map(film => {
+                film.image = process.env.FILE_SERVICE_URL + film.image;
+                let dto = plainToInstance(FilmForTableDto, film);
+                dto.countryName = film.country.name;
+                dto.genreNames = film.genres.map(value => value.name);
+                dto.actorsAndProducers = film.producers.map(producer => `${producer.name} ${producer.surname}`)
+                    .concat(film.actors.map(actor => `${actor.name} ${actor.surname}`))
+                return dto;
+            });
+        console.log(filmsDto)
+        return filmsDto;
     }
 
     async getFilmsTitlesByNamePart(namePart: string, skip: number, take: number): Promise<NameDto[]> {
