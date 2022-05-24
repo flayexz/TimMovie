@@ -26,15 +26,15 @@ export class FilmController {
     }
 
     @Get("pagination")
-    async getFilmByNamePart(@Query() pagination: PaginationLoading): Promise<FilmForTableDto[]>{
+    async getFilmByNamePart(@Query() pagination: PaginationLoading): Promise<FilmForTableDto[]> {
         return await this.filmService.getFilmByNamePart(pagination);
-
+    }
+    
     @Get("collection")
     async getFilmsTitlesByNamePart(
         @Query("namePart") namePart: string,
         @Query("skip") skip:number,
         @Query("take") take: number): Promise<NameDto[]>{
         return await this.filmService.getFilmsTitlesByNamePart(namePart, skip, take);
-
     }
 }

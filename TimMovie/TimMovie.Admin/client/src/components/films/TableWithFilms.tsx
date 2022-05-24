@@ -8,7 +8,7 @@ import {Table} from "react-bootstrap";
 
 function TableWithFilms(){
     let urlQuery = useRef<NamePart>({namePart: ""});
-    const pagination = usePagination<FilmForTableDto, NamePart>({pagination: 30, url: `/films/collection`, urlQuery});
+    const pagination = usePagination<FilmForTableDto, NamePart>({pagination: 30, url: `/films/pagination`, urlQuery});
     
     return (
         <div className="mt-5 mb-5">

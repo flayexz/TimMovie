@@ -13,7 +13,6 @@ import {CountryService} from "../countryModule/country.service";
 import PaginationLoading from "../../dto/PaginationLoading";
 import FilmForTableDto from "../../dto/FilmForTableDto";
 import {includeNamePart} from "../../common/queryFunction";
-import {includeNamePart} from "../../common/queryFunction";
 import NameDto from "../../dto/NameDto";
 
 
@@ -68,7 +67,7 @@ export class FilmService {
         };
     }
     
-    async getFilmByNamePart(pagination: PaginationLoading): Promise<FilmForTableDto[]>{
+    async getFilmByNamePart(pagination: PaginationLoading): Promise<FilmForTableDto[]> {
         let films = await getRepository(Film)
             .find({
                 where: {
@@ -80,7 +79,7 @@ export class FilmService {
             });
 
         console.log(films);
-        
+
         let filmsDto = films
             .map(film => {
                 film.image = process.env.FILE_SERVICE_URL + film.image;
@@ -93,6 +92,7 @@ export class FilmService {
             });
         console.log(filmsDto)
         return filmsDto;
+    }
 
     async getFilmsTitlesByNamePart(namePart: string, skip: number, take: number): Promise<NameDto[]> {
         if (namePart == null) {
