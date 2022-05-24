@@ -8,6 +8,10 @@ import {NewBannerDto} from "../../dto/NewBannerDto";
 import {Result} from "../../dto/Result";
 import {Guid} from "guid-typescript";
 import {FileService} from "../FileService";
+import PaginationLoading from "../../dto/PaginationLoading";
+import FilmForTableDto from "../../dto/FilmForTableDto";
+import {includeNamePart} from "../../common/queryFunction";
+import {plainToInstance} from "class-transformer";
 
 @Injectable()
 export class BannerService {
@@ -18,6 +22,23 @@ export class BannerService {
         const banners = await getRepository(Banner).find({relations: ['film']})
         return banners.map(banner => {
             return {
+                description: banner.description,
+                image: banner.image,
+                filmTitle: banner.film.title,
+                bannerId: banner.id
+            }
+        })
+    }
+
+    async getBannersByPart(pagination: PaginationLoading): Promise<BannerDto[]> {
+        let banners = await getRepository(Banner)
+            .find({
+                relations: ['film'],
+                take: pagination.take,
+                skip: pagination.skip
+            });
+        return banners.map(banner => {
+            return{
                 description: banner.description,
                 image: banner.image,
                 filmTitle: banner.film.title,

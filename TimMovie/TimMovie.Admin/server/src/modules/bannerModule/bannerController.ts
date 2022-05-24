@@ -5,6 +5,7 @@ import {BannerDto} from "../../dto/BannerDto";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {NewBannerDto} from "../../dto/NewBannerDto";
 import {Result} from "../../dto/Result";
+import PaginationLoading from "../../dto/PaginationLoading";
 
 
 @Admin()
@@ -18,13 +19,18 @@ export class BannerController {
         return await this.bannerService.GetAllBanners();
     }
 
+    @Get('pagination')
+    public async getBannersByPart(@Query() pagination: PaginationLoading):Promise<BannerDto[]>{
+        return await this.bannerService.getBannersByPart(pagination)
+    }
+
     @Post('add')
     @UseInterceptors(FileInterceptor('img'))
     async addNewBanner(@Body() newBanner:NewBannerDto, @UploadedFile() image: Express.Multer.File) : Promise<Result<string>>{
         if (image == null){
             return {
                 success: false,
-                textError: "Необходимо добавить обложку для фильма",
+                textError: "Необходимо добавить обложку для баннера",
             }
         }
 
