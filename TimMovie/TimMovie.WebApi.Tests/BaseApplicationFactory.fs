@@ -6,8 +6,8 @@ open Microsoft.AspNetCore.Mvc.Testing
 open Microsoft.EntityFrameworkCore
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
+open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
-open Microsoft.EntityFrameworkCore.Utilities
 
 type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
     inherit WebApplicationFactory<Program>()
@@ -35,7 +35,8 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
                 
                 db.Database.EnsureCreated() |> ignore
                 try
-                    Utilities.InitializeDbForTests(db)
+                    db.Genres.Add(Genre(Name = "Жанр")) |> ignore
+                    db.SaveChanges() |> ignore
                 with
                     | :? Exception as ex -> logger.LogInformation(ex.Message)
                 scope.Dispose())

@@ -1,7 +1,14 @@
-module Tests
+namespace TimMovie.WebApi.Tests.Tests
 
+open TimMovie.Infrastructure.Database
+open TimMovie.WebApi.Tests
 open Xunit
 
-[<Fact>]
-let ``My test`` () =
-    Assert.True(true)
+type UpdateTests(factory: BaseApplicationFactory<Program>) =
+    interface IClassFixture<BaseApplicationFactory<Program>>
+    
+    [<Fact>]
+    member this.``My test``() =
+        let client = factory.CreateClient()
+        let genres = appContext.Genres |> Seq.toList
+        Assert.True(true)
