@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO.Payment;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
-using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.SharedKernel.Classes;
-using TimMovie.SharedKernel.Interfaces;
+using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.Payment;
 
 namespace TimMovie.Web.Controllers.Payment;
@@ -15,70 +14,51 @@ namespace TimMovie.Web.Controllers.Payment;
 [Authorize]
 public class SubscribePaymentController : Controller
 {
-    private readonly UserManager<User> userManager;
-    private readonly IRepository<Subscribe> subscribeRepository;
-    private readonly IPaymentService paymentService;
-    private readonly IMapper mapper;
+    private readonly IPaymentService _paymentService;
+    private readonly IMapper _mapper;
+    private readonly ISubscribeService _subscribeService;
+    private readonly UserManager<User> _userManager;
 
-    public SubscribePaymentController(UserManager<User> userManager, IRepository<Subscribe> subscribeRepository,
-        IPaymentService paymentService, IMapper mapper)
+    public SubscribePaymentController(IPaymentService paymentService, IMapper mapper,
+        ISubscribeService subscribeService, UserManager<User> userManager
+    )
     {
-        this.userManager = userManager;
-        this.subscribeRepository = subscribeRepository;
-        this.paymentService = paymentService;
-        this.mapper = mapper;
+        _paymentService = paymentService;
+        _mapper = mapper;
+        _subscribeService = subscribeService;
+        _userManager = userManager;
     }
 
 
     [HttpGet]
     public async Task<IActionResult> Payment(Guid subscribeId, string? returnUrl)
     {
-        var subscribe = subscribeRepository.Query.FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
+        var subscribe = _subscribeService.GetSubscribeById(subscribeId);
         if (subscribe is null)
             return BadRequest();
-        var user = await userManager.FindByNameAsync(User.Identity!.Name);
+        var user = await _userManager.FindByNameAsync(User.Identity!.Name);
         var payment = new SubscribePaymentViewModel
         {
             User = user,
             Subscribe = subscribe
         };
-        return View("~/Views/Payment/Payment.cshtml", new SubscribePaymentWithCardViewModel {SubscribePaymentViewModel = payment, CardViewModel = new CardViewModel()});
+        return View("~/Views/Payment/Payment.cshtml",
+            new SubscribePaymentWithCardViewModel
+                {SubscribePaymentViewModel = payment, CardViewModel = new CardViewModel()});
     }
 
 
     [HttpPost]
     public async Task<JsonResult> Payment(CardViewModel cardViewModel, Guid subscribeId, string? returnUrl)
     {
-        var subscribeFromDb =
-            subscribeRepository.Query.FirstOrDefault(
-                new EntityByIdSpec<Subscribe>(subscribeId));
-
-        if (subscribeFromDb is null)
-            return new JsonResult(Result.Fail("данной подписки не существует"));
-
-        var user = await userManager.FindByNameAsync(User.Identity!.Name);
-
-        var subscribePaymentViewModel = new SubscribePaymentViewModel
-        {
-            User = user,
-            Subscribe = subscribeFromDb
-        };
-
-        if (!string.IsNullOrEmpty(returnUrl))
-            subscribePaymentViewModel.ReturnUrl = returnUrl;
-
         if (!ModelState.IsValid)
             return new JsonResult(Result.Fail("неверные данные карты"));
-        
-        var subscribeDto = mapper.Map<SubscribePaymentDto>(subscribePaymentViewModel);
-        var cardDto = mapper.Map<CardDto>(cardViewModel);
-        var paymentResult = await paymentService.PaySubscribeAsync(subscribeDto, cardDto);
 
-        if (paymentResult.IsFailure)
-        {
-            return new JsonResult(Result.Fail(paymentResult.Error));
-        }
+        var cardDto = _mapper.Map<CardDto>(cardViewModel);
+        var paymentResult = await _paymentService.PaySubscribeAsync(User.GetUserId(), subscribeId, cardDto);
 
-        return new JsonResult(Result.Ok());
+        return paymentResult.IsFailure 
+            ? new JsonResult(Result.Fail(paymentResult.Error)) 
+            : new JsonResult(Result.Ok());
     }
 }

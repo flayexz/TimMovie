@@ -47,3 +47,8 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
+//For F# tests
+public partial class Program
+{
+}

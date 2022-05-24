@@ -122,7 +122,7 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
 
-    public FilmDto? GetFilmById(Guid filmId)
+    public FilmDto GetFilmById(Guid filmId)
     {
         var query = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(filmId));
@@ -139,7 +139,7 @@ public class FilmService
 
         var film = MapToRequiredDto<Film?, FilmDto>(tmpFilm);
         film!.Rating = GetRating(tmpFilm!);
-        film!.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
+        film.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
         return film;
     }
 }

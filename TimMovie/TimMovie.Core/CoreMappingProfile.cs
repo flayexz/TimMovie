@@ -18,7 +18,17 @@ public class CoreMappingProfile: Profile
                 dto => dto.FirstGenreName,
                 expression => expression.MapFrom(film => film.Genres.First().Name));
         CreateMap<UserSubscribe, UserSubscribeDto>();
-        CreateMap<Subscribe, SubscribeDto>();
+        CreateMap<Subscribe, SubscribeDto>()
+            .ForMember(
+                subscribeDto => subscribeDto.Films,
+                expression => expression.MapFrom(subscribe => subscribe.Films)
+                )
+            .ForMember(
+                subscribeDto => subscribeDto.Genres,
+                expression => expression.MapFrom(subscribe => subscribe.Genres)
+            ).ReverseMap();
+        CreateMap<Film, SubscribeFilmDto>();
+        CreateMap<Genre, SubscribeGenreDto>();
         CreateMap<Film, FilmDto>();
         CreateMap<User, FilmForStatusDto>()
             .ForMember(

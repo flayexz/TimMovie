@@ -89,7 +89,6 @@ module Program =
 
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"))
         services.AddScoped<MailSetup>(fun (x: IServiceProvider) -> x.GetService<IOptions<MailSetup>>().Value)
-
         services
             .AddOpenIddict()
             .AddValidation(fun options ->

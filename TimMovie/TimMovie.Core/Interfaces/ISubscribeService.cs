@@ -12,4 +12,6 @@ public interface ISubscribeService
     public Task AddUserToSubscribeAsync(User user, Subscribe subscribe);
 
     public Task AddUserToSubscribeAsync(User user, Subscribe subscribe, DateTime startDate, DateTime endDate);
+
+    public Subscribe? GetSubscribeById(Guid subscribeId);
 }

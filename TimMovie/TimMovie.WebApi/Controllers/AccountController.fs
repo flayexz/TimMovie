@@ -1,4 +1,4 @@
-﻿namespace TimMovie.WebApi.Controllers.AuthorizationController
+﻿namespace TimMovie.WebApi.Controllers.AccountController
 
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Http
@@ -10,7 +10,7 @@ open TimMovie.SharedKernel.Classes
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
-type AccountController(logger: ILogger<AccountController>, userService: IUserService) as this =
+type AccountController(userService: IUserService) as this =
     inherit ControllerBase()
 
     member private _.UrlToConfirmEmail =
