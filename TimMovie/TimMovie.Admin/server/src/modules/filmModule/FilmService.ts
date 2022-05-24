@@ -114,4 +114,22 @@ export class FilmService {
             }
         });
     }
+    
+    async deleteFilmById(id: string): Promise<Result<string>>{
+        let result = await getRepository(Film)
+            .delete({
+                id: id
+            });
+
+        if (result.affected == 0){
+            return {
+                success:false,
+                textError:`Фильм с id ${id} не найден`
+            }
+        }
+
+        return {
+            success:true,
+        }
+    }
 }
