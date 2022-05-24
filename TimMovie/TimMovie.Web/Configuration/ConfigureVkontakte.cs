@@ -6,12 +6,13 @@ namespace TimMovie.Web.Configuration;
 
 public static class ConfigureVkontakte
 {
-    public static AuthenticationBuilder AddVkontakte(this AuthenticationBuilder builder,IConfiguration configuration)
+    public static AuthenticationBuilder AddVkontakte(this AuthenticationBuilder builder, string clientId, string appSecret)
     {
         builder.AddOAuth("VK", "VKontakte", config =>
         {
-            config.ClientId =  configuration["VkSettings:AppId"];
-            config.ClientSecret =  configuration["VkSettings:AppSecret"];
+            config.CorrelationCookie.SameSite = SameSiteMode.Lax;
+            config.ClientId = clientId;
+            config.ClientSecret = appSecret;
             config.ClaimsIssuer = "VKontakte";
             config.CallbackPath = new PathString("/signin-vkontakte-token");
             config.AuthorizationEndpoint = "https://oauth.vk.com/authorize";

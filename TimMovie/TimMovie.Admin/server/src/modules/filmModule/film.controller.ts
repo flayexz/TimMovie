@@ -5,6 +5,7 @@ import {FileInterceptor} from "@nestjs/platform-express";
 import {Result} from "../../dto/Result";
 import PaginationLoading from "../../dto/PaginationLoading";
 import FilmForTableDto from "../../dto/FilmForTableDto";
+import NameDto from "../../dto/NameDto";
 
 @Controller('films')
 export class FilmController {
@@ -24,8 +25,16 @@ export class FilmController {
         return await this.filmService.addNewFilm(newFilmInfo, image);
     }
 
-    @Get("collection")
+    @Get("pagination")
     async getFilmByNamePart(@Query() pagination: PaginationLoading): Promise<FilmForTableDto[]>{
         return await this.filmService.getFilmByNamePart(pagination);
+
+    @Get("collection")
+    async getFilmsTitlesByNamePart(
+        @Query("namePart") namePart: string,
+        @Query("skip") skip:number,
+        @Query("take") take: number): Promise<NameDto[]>{
+        return await this.filmService.getFilmsTitlesByNamePart(namePart, skip, take);
+
     }
 }

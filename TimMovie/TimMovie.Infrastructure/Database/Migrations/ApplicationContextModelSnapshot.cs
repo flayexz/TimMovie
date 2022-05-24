@@ -794,9 +794,6 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
@@ -848,6 +845,29 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.HasIndex("WatchedUserId");
 
                     b.ToTable("WatchedFilms");
+                });
+
+            modelBuilder.Entity("TimMovie.Core.Entities.UserStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateLastChange")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("UserGuid")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("UserStatusEnum")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserGuid")
+                        .IsUnique();
+
+                    b.ToTable("UserStatus");
                 });
 
             modelBuilder.Entity("TimMovie.Core.Entities.UserSubscribe", b =>
@@ -1161,6 +1181,17 @@ namespace TimMovie.Infrastructure.Database.Migrations
                     b.Navigation("WatchedUser");
                 });
 
+            modelBuilder.Entity("TimMovie.Core.Entities.UserStatus", b =>
+                {
+                    b.HasOne("TimMovie.Core.Entities.User", "User")
+                        .WithOne("Status")
+                        .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TimMovie.Core.Entities.UserSubscribe", b =>
                 {
                     b.HasOne("TimMovie.Core.Entities.Subscribe", "Subscribe")
@@ -1210,6 +1241,8 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>
                 {
+                    b.Navigation("Status");
+
                     b.Navigation("WatchedFilms");
                 });
 #pragma warning restore 612, 618

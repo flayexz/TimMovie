@@ -20,7 +20,7 @@ public class SearchEntityViewComponent : ViewComponent
 
         var viewModel = new SearchEntityViewModel
         {
-            Films = searchResult.Films.Select(f => f.Title),
+            Films = searchResult.Films.Select(f => $"{f.Title}@{f.Year}"),
             Genres = searchResult.Genres.Select(g => g.Name),
             Actors = searchResult.Actors.Select(a => a.Surname is null ? $"{a.Name}" : $"{a.Name} {a.Surname}"),
             Producers = searchResult.Producers.Select(p => p.Surname is null ? $"{p.Name}" : $"{p.Name} {p.Surname}")

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
@@ -9,17 +10,17 @@ namespace TimMovie.Web.Configuration;
 
 public static class ServicesConfiguration
 {
-    public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddDistributedMemoryCache();
-        
-        services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
-        
+        services.AddDbContext(environment.IsDevelopment()
+            ? configuration.GetConnectionString("DefaultConnection")
+            : Environment.GetEnvironmentVariable("DATABASE_URL")!);
         services.AddIdentity();
-        services.AddSignalR(options =>
-        {
-            options.ClientTimeoutInterval = new TimeSpan(0, 5, 0);
-        });
+        services.AddSignalR(options => { options.ClientTimeoutInterval = new TimeSpan(0, 5, 0); });
+
+        services.Configure<MailSetup>(configuration.GetRequiredSection("MailSetup"));
+        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
         
         services.ConfigureApplicationCookie(options =>
         {
@@ -28,8 +29,9 @@ public static class ServicesConfiguration
             options.AccessDeniedPath = new PathString("/Account/Denied");
         });
 
-        services.AddAuthentication().AddVkontakte(configuration);
-
+        services.AddAuthentication().AddVkontakte(configuration.GetRequiredSection("VkSettings:AppId").Value!,
+                configuration.GetRequiredSection("VkSettings:AppSecret").Value!);
+        
         services.AddTransient<IAuthorizationHandler, AgeHandler>();
         services.AddAuthorization(opt =>
             opt.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new AgeRequirement(18))));
@@ -41,10 +43,7 @@ public static class ServicesConfiguration
             typeof(CoreMappingProfile),
             typeof(InfrastructureMappingProfile));
         services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
-      
-        services.Configure<MailSetup>(configuration.GetSection("MailSetup"));
-        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
-        
+
         return services;
     }
 }

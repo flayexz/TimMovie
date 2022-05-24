@@ -189,6 +189,7 @@ public class UserService : IUserService
     public async Task<UserInfoDto> GetInfoAboutUserAsync(Guid userId)
     {
         var user = await userManager.Users
+            .Include(u => u.Status)
             .Include(u => u.Country)
             .FirstOrDefaultAsync(new EntityByIdSpec<User>(userId));
         
