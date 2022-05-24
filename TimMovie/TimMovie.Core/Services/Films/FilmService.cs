@@ -153,7 +153,7 @@ public class FilmService
             : null;
     }
 
-    public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>
+    public IEnumerable<Film> GetFilmsByNamePart(string? namePart, int count = int.MaxValue) =>
         _filmRepository.Query.Where(new FilmByNamePartSpec(namePart)).Take(count);
 
     public FilmForStatusDto? GetCurrentWatchingFilmByUser(Guid userId)

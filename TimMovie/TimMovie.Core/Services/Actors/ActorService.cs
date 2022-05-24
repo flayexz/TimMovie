@@ -21,7 +21,7 @@ public class ActorService
         _mapper = mapper;
     }
 
-    public IEnumerable<Actor> GetActorsByNamePart(string namePart, int count = int.MaxValue) =>
+    public IEnumerable<Actor> GetActorsByNamePart(string? namePart, int count = int.MaxValue) =>
         _actorRepository.Query
             .Where(new ActorByNamePartSpec(namePart))
             .Take(count);
