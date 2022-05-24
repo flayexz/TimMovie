@@ -108,3 +108,8 @@
 .comment-author-img-container:hover{
     cursor: default;
 }
+
+.comment-author-img:hover{
+    cursor: pointer;
+}
+
