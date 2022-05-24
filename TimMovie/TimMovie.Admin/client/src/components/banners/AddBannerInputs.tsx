@@ -31,7 +31,7 @@ function AddBannerInputs(props : Props) {
                 <textarea maxLength={250} id="bannerDescriptionInput" style={{resize: "none"}}
                           className={styles.adminInput} cols={60} rows={5} value={props.description!}  onChange={desc => onDescriptionChange(desc)} />
             </div>
-            <div className="d-flex flex-column" style={{color:'black'}}>
+            <div style={{color:'black'}}>
                     <div className="mb-2">Фильм<RequiredFieldIcon/></div>
                         <DropdownSearchOneValueWithError dropdownSearchOneValue={{
                             value: props.film,
