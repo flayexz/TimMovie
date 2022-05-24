@@ -29,7 +29,7 @@ public class CoreMappingProfile: Profile
                 expression => expression.MapFrom(subscribe => subscribe.Genres)
             ).ReverseMap();
         CreateMap<Film, SubscribeFilmDto>();
-        CreateMap<Genre, GenreDto>();
+        CreateMap<Genre, GenreDto>().ReverseMap();
         CreateMap<User, FilmForStatusDto>()
             .ForMember(
                 film => film.Id,
