@@ -7,6 +7,29 @@ window.onload = function () {
     skip = 0;
 }
 
+$(document).on("keypress", e =>{
+    let element = $(".textarea-comment")
+    if (e.key === "Enter" && !e.shiftKey && element.is(":focus")){
+        event.preventDefault();
+        if (element[0].value.length < 2) {
+            changeButtonColorAndText("Слишком короткое сообщение", errorColor);
+            return;
+        }
+        if (element[0].value.length > 1000) {
+            changeButtonColorAndText("Cлишком длинное сообщение", errorColor);
+            return;
+        }
+        $.post({
+            url: "/Film/LeaveComment",
+            data: {filmId: document.URL.split('/').pop(), content: element[0].value},
+            success: function (data) {
+                element[0].value = "";
+                $(".comments-container-body-comments").prepend(data);
+                changeButtonColorAndText("Комментарий добавлен", successColor);
+            }
+        });
+    }
+})
 $(".leave-comment-container").on('click', '.button-comment-send', () => {
     let element = $(".textarea-comment")[0];
     if (element.value.length < 2) {
