@@ -7,8 +7,11 @@ public class Country : BaseEntity
 {
     [Required]
     [MaxLength(100)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
+    [System.Text.Json.Serialization.JsonIgnore]
     public List<User> Users { get; set; }
+    
+    [System.Text.Json.Serialization.JsonIgnore]
     public List<Film> Films { get; set; }
 }

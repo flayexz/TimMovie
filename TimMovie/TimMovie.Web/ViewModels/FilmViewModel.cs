@@ -1,4 +1,5 @@
-﻿using TimMovie.Core.Entities;
+﻿using TimMovie.Core.DTO.Comments;
+using TimMovie.Core.Entities;
 
 namespace TimMovie.Web.ViewModels;
 
@@ -15,7 +16,7 @@ public class FilmViewModel
     public double? Rating { get; set; }
     public int? GradesNumber { get; set; }
     public string? FilmLink { get; set; }
-    public List<Comment> Comments { get; set; }
+    public List<CommentsDto> Comments { get; set; }
 
     public List<Producer> Producers { get; set; }
 

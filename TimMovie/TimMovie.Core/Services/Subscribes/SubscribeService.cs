@@ -1,9 +1,11 @@
-﻿using Autofac;
+﻿using System.Linq;
+using Autofac;
 using AutoMapper;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Query;
+using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.SubscribeSpec;
 using TimMovie.Core.Specifications.StaticSpecification;
 using TimMovie.SharedKernel.Classes;
@@ -95,6 +97,9 @@ public class SubscribeService : ISubscribeService
         await _userSubscribeRepository.AddAsync(userSubscribe);
         await _userSubscribeRepository.SaveChangesAsync();
     }
+
+    public Subscribe? GetSubscribeById(Guid subscribeId) =>
+        _subscribesRepository.Query.FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
 
     private async Task ExtendUserSubscribeAsync(UserSubscribe userSubscribe)
     {

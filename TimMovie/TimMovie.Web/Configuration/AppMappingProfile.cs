@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Account;
+using TimMovie.Core.DTO.Comments;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.DTO.Payment;
 using TimMovie.Core.DTO.Subscribes;
@@ -36,6 +37,10 @@ public class AppMappingProfile : Profile
                     src.CardNumber.Trim())).ReverseMap();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
         CreateMap<FilmDto, FilmViewModel>();
+        CreateMap<Film, FilmDto>()
+            .ForMember(
+                filmDto => filmDto.Comments,
+                expression => expression.MapFrom(film => film.Comments)).ReverseMap();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
     }
 }
