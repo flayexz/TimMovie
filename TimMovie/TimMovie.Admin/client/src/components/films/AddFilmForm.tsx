@@ -174,7 +174,7 @@ function AddFilmForm() {
                                                           title="Выбрать"/>
                         </div>
                         <div className="col-3">
-                            <div className="mb-2">Режиссеры</div>
+                            <div className="mb-2">Продюсеры</div>
                             <DropdownWithMultipleSelector pagination={30} values={selectedProducers}
                                                           urlRequestForEntity={"/producers/collection"}
                                                           title="Выбрать"/>
