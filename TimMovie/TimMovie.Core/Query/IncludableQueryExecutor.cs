@@ -18,4 +18,12 @@ public class IncludableQueryExecutor<TEntity, TIncludableProperty> : QueryExecut
         
         return new IncludableQueryExecutor<TEntity,TProperty>(Query, Repository);
     }
+    
+    public IncludableEnumerableQueryExecutor<TEntity, TProperty> ThenIncludeEnumerableInResult<TProperty>(
+        Expression<Func<TIncludableProperty,IEnumerable<TProperty>>> navigationPathToProperty)
+    {
+        Query = Repository.ThenInclude(Query, navigationPathToProperty);
+        
+        return new IncludableEnumerableQueryExecutor<TEntity,TProperty>(Query, Repository);
+    }
 }

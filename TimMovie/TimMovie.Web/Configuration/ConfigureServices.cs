@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
@@ -18,15 +19,18 @@ public static class ServicesConfiguration
         services.AddIdentity();
         services.AddSignalR(options => { options.ClientTimeoutInterval = new TimeSpan(0, 5, 0); });
 
+        services.Configure<MailSetup>(configuration.GetRequiredSection("MailSetup"));
+        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
+        
         services.ConfigureApplicationCookie(options =>
         {
             options.Cookie.Name = "auth";
             options.LoginPath = new PathString("/Account/Registration");
             options.AccessDeniedPath = new PathString("/Account/Denied");
         });
-        
-        services.AddAuthentication().AddVkontakte(configuration.GetRequiredSection("VkSettings")["AppId"],
-                configuration.GetRequiredSection("VkSettings")["AppSecret"]);
+
+        services.AddAuthentication().AddVkontakte(configuration.GetRequiredSection("VkSettings:AppId").Value!,
+                configuration.GetRequiredSection("VkSettings:AppSecret").Value!);
         
         services.AddTransient<IAuthorizationHandler, AgeHandler>();
         services.AddAuthorization(opt =>
@@ -39,10 +43,7 @@ public static class ServicesConfiguration
             typeof(CoreMappingProfile),
             typeof(InfrastructureMappingProfile));
         services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
-        
-        services.Configure<MailSetup>(configuration.GetRequiredSection("MailSetup"));
-        services.AddScoped(x => x.GetService<IOptions<MailSetup>>()!.Value);
-            
+
         return services;
     }
 }

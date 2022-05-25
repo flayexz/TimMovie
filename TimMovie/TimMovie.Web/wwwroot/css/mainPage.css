@@ -28,6 +28,7 @@
 }
 
 .banner-container {
+  word-wrap: break-word;
   width: 90%;
   position: absolute;
   bottom: 3%;

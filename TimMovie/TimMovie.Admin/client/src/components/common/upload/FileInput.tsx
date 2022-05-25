@@ -1,4 +1,4 @@
-import React, {FC, useRef, useState} from "react";
+import React, {FC, useState} from "react";
 import styles from './styles/fileInput.module.css';
 import {UploadProps} from "./UploadProps";
 
@@ -34,6 +34,11 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
     }
 
     function uploadFiles(files: File[]) {
+        if(!(files[0].name.includes('.jpg') || files[0].name.includes('.png'))){
+            alert('Неверное расширение файла. Фотография должна быть с расширением jpg или png')
+            setDrag(false);
+            return
+        }
         setFile(files[0]);
         setPreview(URL.createObjectURL(files[0]));
         console.log(files);

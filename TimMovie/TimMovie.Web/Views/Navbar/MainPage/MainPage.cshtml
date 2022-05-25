@@ -64,6 +64,8 @@
 <vc:carousel genre-name="@GenresNames.ForFamily"></vc:carousel>
 <h3 class="text_color pl-3 mt-5">Лучшие комедии</h3>
 <vc:carousel genre-name="@GenresNames.Comedy"></vc:carousel>
+<h3 class="text_color pl-3 mt-5">Лучшие драмы</h3>
+<vc:carousel genre-name="@GenresNames.Dramas"></vc:carousel>
 @if (!User.HasRoleClaim(RoleNames.Support))
 {
     await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml");

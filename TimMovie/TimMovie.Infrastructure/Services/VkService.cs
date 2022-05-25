@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using TimMovie.Core.Classes;
 using TimMovie.Core.Interfaces;
 using TimMovie.SharedKernel.Classes;
@@ -44,7 +45,7 @@ public class VkService : IVkService
             var lastName = jsonElement.GetProperty("last_name").ToString();
             var isBirthday = jsonElement.TryGetProperty("bdate", out var birthday);
             return Result.Ok(new VkUserInfo(id, firstName, lastName,
-                isBirthday ? DateOnly.Parse(birthday.ToString()) : DateOnly.FromDateTime(DateTime.Today)));
+                isBirthday ? DateOnly.Parse(birthday.ToString(),CultureInfo.GetCultureInfo("ru-RU")) : DateOnly.FromDateTime(DateTime.Today)));
         }
         catch (Exception e)
         {

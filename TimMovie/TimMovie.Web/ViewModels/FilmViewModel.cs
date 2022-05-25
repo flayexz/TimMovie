@@ -20,4 +20,8 @@ public class FilmViewModel
     public List<Actor> Actors { get; set; }
 
     public List<Genre> Genres { get; set; }
+    
+    public bool IsGradeSet { get; set; }
+    
+    public string? PathToUserPhoto { get; set; }
 }

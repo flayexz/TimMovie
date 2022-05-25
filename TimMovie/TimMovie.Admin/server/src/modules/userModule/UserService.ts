@@ -3,16 +3,15 @@ import {getRepository, Raw} from "typeorm";
 import {ShortInformationAboutUserDto} from "../../dto/ShortInformationAboutUserDto";
 import {AspNetUser} from "../../../entities/AspNetUser";
 import {AllInformationAboutUserDto} from "../../dto/AllInformationAboutUserDto";
+import {includeNamePart} from "../../common/queryFunction";
 
 @Injectable()
 export class UserService {
     public async getUsersWithFilterByLogin(incomingText: string, skip: number, take: number): Promise<ShortInformationAboutUserDto[]>{
-        let lowerText = incomingText.toLowerCase();
-        
         const userRepository = getRepository(AspNetUser);
         let users = await userRepository.find({
             where: {
-                userName: Raw(alias => `lower(${alias}) LIKE '%${lowerText}%'`),
+                userName: includeNamePart(incomingText),
             },
             relations: ["aspNetUserClaims","userSubscribes", "userSubscribes.subscribe"],
             skip,
