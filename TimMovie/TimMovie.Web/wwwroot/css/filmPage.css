@@ -63,6 +63,18 @@ button{
  margin-top: 10px;
 }
 
+.hover_link{
+ font-size: 1.3rem;
+ font-weight: 500;
+ text-decoration: none;
+ cursor: pointer;
+ color: rgba(255,255,255,0.72);
+}
+
+.hover_link:hover{
+ color: #fff;
+}
+
 .buttons:hover{
  background-color: #36353e;
 }
@@ -119,14 +131,6 @@ button{
  font-size: 1.2rem;
  background-color: #36353e;
  color: #fff;
-}
-
-.caption{
- max-width: 68.8px;
- text-align: center;
- font-size: 0.9rem;
- color: #828187;
- height:4rem;
 }
 
 .rating_label{

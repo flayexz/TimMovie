@@ -1,6 +1,8 @@
-$(document).ready(function () {
-    moveDescription();
+$('description').ready(function (){
     cropDescriptrion();
+})
+
+$(document).ready(function () {
     hideAllActorsAndProducers();
 });
 

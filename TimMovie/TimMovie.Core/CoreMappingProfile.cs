@@ -8,7 +8,7 @@ using TimMovie.Core.Entities;
 
 namespace TimMovie.Core;
 
-public class CoreMappingProfile: Profile
+public class CoreMappingProfile : Profile
 {
     public CoreMappingProfile()
     {
@@ -38,5 +38,11 @@ public class CoreMappingProfile: Profile
                 e => e.MapFrom(src => src.Film.Image));
         CreateMap<Message, MessageDto>();
         CreateMap<NewMessageDto, Message>();
+        CreateMap<FilmDto, BigFilmCardDto>()
+            .ForMember(f => f.Producer,
+                e =>
+                    e.MapFrom(src => src.Producers.First()))
+            .ForMember(f => f.CountryName, e => e.MapFrom(src => src.Country.Name))
+            .ForMember(f => f.Image, e => e.MapFrom(src => src.Image));
     }
 }

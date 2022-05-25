@@ -5,6 +5,7 @@
     var banners = Model;
     ViewBag.Title = "Главная";
 }
+
 <div class="row mb-2 justify-content-center">
     <div class="col-1 p-0">
         <a href="#bannerCarousel" class="prev_next_buttons h-100 d-flex align-items-center justify-content-end"
@@ -67,11 +68,11 @@
 <vc:carousel genre-name="@GenresNames.Dramas"></vc:carousel>
 @if (!User.HasRoleClaim(RoleNames.Support))
 {
-    await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml"); 
+    await Html.RenderPartialAsync("~/Views/Support/ModalWindowChat/Chat.cshtml");
 }
 
 
-@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
+@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml"); }
 
 
 @section Scripts{

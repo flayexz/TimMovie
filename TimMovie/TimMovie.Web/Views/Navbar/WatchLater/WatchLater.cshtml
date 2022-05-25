@@ -1,0 +1,20 @@
+﻿@model List<TimMovie.Web.ViewModels.FilmCard.BigFilmCardViewModel>
+@{
+    ViewBag.Title = "Смотреть позже";
+}
+
+@foreach (var card in Model)
+{
+    await Html.RenderPartialAsync("~/Views/Partials/FilmCard/BigFilmCard.cshtml", card);
+}
+
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/FilmCard/BigFilmCard.css"/>
+}
+
+@section Scripts
+{
+    <script src="~/js/FilmCard/BigFilmCard.js"></script>
+}

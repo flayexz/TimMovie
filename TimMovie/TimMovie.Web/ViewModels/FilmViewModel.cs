@@ -15,8 +15,6 @@ public class FilmViewModel
     public double? Rating { get; set; }
     public int? GradesNumber { get; set; }
     public string? FilmLink { get; set; }
-    public List<Comment> Comments { get; set; }
-
     public List<Producer> Producers { get; set; }
 
     public List<Actor> Actors { get; set; }

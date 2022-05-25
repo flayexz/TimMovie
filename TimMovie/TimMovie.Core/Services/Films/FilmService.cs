@@ -140,10 +140,10 @@ public class FilmService
     public FilmDto GetFilmById(Guid filmId)
     {
         var dbFilm = GetDbFilmById(filmId);
-        var film = MapToRequiredDto<Film?, FilmDto>(dbFilm);
-        film!.Rating = GetRating(dbFilm!);
-        film!.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
-        return film;
+        var filmDto = MapToRequiredDto<Film?, FilmDto>(dbFilm);
+        filmDto!.Rating = GetRating(dbFilm!);
+        filmDto.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
+        return filmDto;
     }
 
     public Film? GetDbFilmById(Guid filmId)
@@ -152,7 +152,7 @@ public class FilmService
             .Where(new EntityByIdSpec<Film>(filmId));
         var executor = new QueryExecutor<Film>(query, _filmRepository);
 
-        var tmpFilm = executor
+        return executor
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .IncludeInResult(film => film.Actors)
@@ -160,6 +160,5 @@ public class FilmService
             .IncludeEnumerableInResult(film => film.Comments)
             .ThenIncludeInResult(comment => comment.Author)
             .FirstOrDefault();
-        return tmpFilm;
     }
 }
