@@ -20,6 +20,7 @@ public class FilmViewModel
     public List<Actor> Actors { get; set; }
 
     public List<Genre> Genres { get; set; }
+    public List<Comment> Comments { get; set; }
     
     public bool IsGradeSet { get; set; }
     
