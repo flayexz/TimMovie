@@ -29,16 +29,36 @@ public class FilmService
         _watchedFilmService = watchedFilmService;
     }
 
+    private bool TryGetFirstOrDefaultFilm(Guid filmId, out Film? dbFilm)
+    {
+        dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
+        return dbFilm is not null;
+    }
+
+    private bool TryGetFirstOrDefaultUser(Guid userId, out User? user)
+    {
+        user = _userRepository.Query.FirstOrDefault(new EntityByIdSpec<User>(userId));
+        return user is not null;
+    }
+
+    private bool TryGetFilmAndUser(Guid filmId, Guid userId, out Film? dbFilm, out User? user) =>
+        TryGetFirstOrDefaultFilm(filmId, out dbFilm)
+        & TryGetFirstOrDefaultUser(userId, out user);
+
+    private async Task<bool> TryUpdateUserRepository(User? user)
+    {
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
+    }
+
     public bool TryGetUserGrade(Guid filmId, Guid userId, out int? grade)
     {
         grade = null;
-        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
-        if (dbFilm is null)
-            return false;
-
-        var user = _userRepository.Query.FirstOrDefault(new EntityByIdSpec<User>(userId));
-        if (user is null)
-            return false;
+        TryGetFilmAndUser(filmId, userId, out _, out var user);
+        // if (!TryGetFirstOrDefaultFilm(filmId, out _)
+        //     | !TryGetFirstOrDefaultUser(userId, out var user))
+        //     return false;
 
         grade = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(filmId))
@@ -53,16 +73,12 @@ public class FilmService
 
     public async Task<bool> TryUpdateFilmGrade(Guid filmId, Guid userId, int grade)
     {
-        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
-        if (dbFilm is null)
-            return false;
-
         var userQuery = _userRepository.Query.Where(new EntityByIdSpec<User>(userId));
         var userQueryExecutor = new QueryExecutor<User>(userQuery, _userRepository);
         var user = userQueryExecutor
             .IncludeInResult(user => user.WatchedFilms)
             .FirstOrDefault();
-        if (user is null)
+        if (user is null | !TryGetFirstOrDefaultFilm(filmId, out var dbFilm))
             return false;
 
         // ReSharper disable once ConstantNullCoalescingCondition
@@ -72,16 +88,31 @@ public class FilmService
             user.WatchedFilms.Add(new UserFilmWatched
             {
                 Date = DateTime.Now,
-                Film = dbFilm,
+                Film = dbFilm!,
                 Grade = grade,
                 WatchedUser = user
             });
         else
             watchedFilms.Grade = grade;
-        _userRepository.Update(user);
-        await _userRepository.SaveChangesAsync();
-        return true;
+        return await TryUpdateUserRepository(user);
     }
+
+    public async Task<bool> TryAddFilmToWatchLater(Guid filmId, Guid userId)
+    {
+        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
+
+        user!.FilmsWatchLater.Add(dbFilm!);
+        return await TryUpdateUserRepository(user);
+    }
+
+    public async Task<bool> TryRemoveFilmFromWatchLater(Guid filmId, Guid userId)
+    {
+        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
+
+        user!.FilmsWatchLater.Remove(dbFilm!);
+        return await TryUpdateUserRepository(user);
+    }
+
 
     public bool IsExistInSubscribe(Film film)
     {
@@ -109,11 +140,11 @@ public class FilmService
         var query = _userRepository.Query
             .Where(new EntityByIdSpec<User>(userId));
         var executor = new QueryExecutor<User>(query, _userRepository);
-    
+
         var film = executor
             .IncludeInResult(user => user.WatchingFilm)
             .FirstOrDefault();
-    
+
         return MapToRequiredDto<User?, FilmForStatusDto>(film);
     }
 

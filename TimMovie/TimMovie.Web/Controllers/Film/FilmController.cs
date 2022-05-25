@@ -6,13 +6,13 @@ using TimMovie.Web.ViewModels;
 
 namespace TimMovie.Web.Controllers.Film;
 
-[ApiExplorerSettings(IgnoreApi=true)]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class FilmController : Controller
 {
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
 
-    
+
     public FilmController(IMapper mapper, FilmService filmService)
     {
         _mapper = mapper;
@@ -36,8 +36,19 @@ public class FilmController : Controller
     {
         if (grade is < 1 or > 10)
             return NotFound();
-        if (!await _filmService.TryUpdateFilmGrade(filmId, User.GetUserId().Value, grade))
-            return NotFound();
-        return Ok();
+        return !await _filmService.TryUpdateFilmGrade(filmId, User.GetUserId().Value, grade)
+            ? NotFound()
+            : Ok();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AddToWatchLater(Guid filmId) =>
+        !await _filmService.TryAddFilmToWatchLater(filmId, User.GetUserId().Value)
+            ? NotFound()
+            : Ok();
+
+    public async Task<IActionResult> RemoveFromWatchLater(Guid filmId) =>
+        !await _filmService.TryRemoveFilmFromWatchLater(filmId, User.GetUserId().Value)
+            ? NotFound()
+            : Ok();
 }
