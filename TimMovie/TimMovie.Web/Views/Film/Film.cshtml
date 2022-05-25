@@ -6,146 +6,151 @@
     var mainGenreName = Model.Genres.First().Name;
 }
 <div class="filmPage_container">
-<a href="#" id="backward_link" class="hover_link">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
-         xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px">
-        <path
-            d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z"/>
-    </svg>
-</a>
-<ul id="film_with_genre_links">
-    <li>
-        <a class="hover_link" asp-controller="Films" asp-action="Filters">Фильмы</a>
-    </li>
-    <li>&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@mainGenreName">@mainGenreName</a></li>
-</ul>
+    <a href="#" id="backward_link" class="hover_link">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 129 129"
+             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px">
+            <path
+                d="m88.6,121.3c0.8,0.8 1.8,1.2 2.9,1.2s2.1-0.4 2.9-1.2c1.6-1.6 1.6-4.2 0-5.8l-51-51 51-51c1.6-1.6 1.6-4.2 0-5.8s-4.2-1.6-5.8,0l-54,53.9c-1.6,1.6-1.6,4.2 0,5.8l54,53.9z"/>
+        </svg>
+    </a>
+    <ul id="film_with_genre_links">
+        <li>
+            <a class="hover_link" asp-controller="Films" asp-action="Filters">Фильмы</a>
+        </li>
+        <li>&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@mainGenreName">@mainGenreName</a></li>
+    </ul>
 
-<div class="row mt-5" id="film-row">
-    <div class="col-xl-5 text_color order-xl-2" id="film_info_container">
-        <div id="film_info" class="mb-5">
-            <h1>@Model.Title</h1>
-            <ul id="film_links">
-                <li>
-                <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>
-                <li>
-                    <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-countries="@Model.Country.Name">@Model.Country?.Name</a>
-                </li>
-            </ul>
-            <ul>
-                @foreach (var genre in Model.Genres)
-                {
-                    <li class="d-inline-block">&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@genre.Name">@genre.Name</a></li>
-                }
-            </ul>
+    <div class="row mt-5" id="film-row">
+        <div class="col-xl-5 text_color order-xl-2" id="film_info_container">
+            <div id="film_info" class="mb-5">
+                <h1>@Model.Title</h1>
+                <ul id="film_links">
+                    <li>
+                    <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>
+                    <li>
+                        <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-countries="@Model.Country.Name">@Model.Country?.Name</a>
+                    </li>
+                </ul>
+                <ul>
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <li class="d-inline-block">&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@genre.Name">@genre.Name</a></li>
+                    }
+                </ul>
+            </div>
+            <div id="film_description">
+                <h2 class="text_color text_bold mt-4">О фильме</h2>
+                <div id="description">
+                    @Model.Description
+                </div>
+                <button id="more">Читать дальше...</button>
+            </div>
         </div>
-    </div>
-    <div class="col-12 col-xl-7 order-xl-1" id="film_player">
-        <div class="ratio ratio-16x9 circleBorders">
-            <iframe src="@Model.FilmLink?rel=0&controls=2&modestbranding=1&showinfo=0"
-                    title="YouTube video" allowfullscreen style="border-radius: 16px;">
-            </iframe>
-        </div>
-        <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
-            <div class="d-flex flex-column">
-                <button data-bs-toggle="modal" data-bs-target="#modalFilmGrade" class="buttons" id="rate_movie">
-                    <svg class="mt-2 svg_size" width="2.2em" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="m153.84 102.23c-26.82 21.855-43.027 54.121-44.547 88.68-1.6094 34.418 11.344 67.926 35.684 92.312l180.28 180.28c6.5664 6.5547 15.469 10.234 24.746 10.234s18.18-3.6797 24.746-10.234l180.28-180.28c24.332-24.391 37.285-57.891 35.684-92.305-1.5156-34.562-17.719-66.828-44.535-88.688-24.383-19.027-54.926-28.398-85.785-26.324-30.859 2.0703-59.871 15.445-81.492 37.562l-28.898 28.898-28.898-28.898c-21.617-22.121-50.629-35.496-81.488-37.566-30.859-2.0742-61.398 7.3008-85.777 26.328zm142.52 35.984 41.273 41.273-0.003906-0.003906c3.2812 3.2852 7.7344 5.1289 12.375 5.1289s9.0898-1.8438 12.371-5.1289l41.273-41.273v0.003906c15.434-16.016 36.227-25.781 58.406-27.441 22.18-1.6602 44.191 4.9062 61.836 18.441 19.066 15.633 30.633 38.594 31.852 63.215 1.2148 24.621-8.0312 48.609-25.457 66.047l-180.28 180.28-180.28-180.28c-17.43-17.438-26.676-41.426-25.457-66.051 1.2188-24.621 12.793-47.582 31.859-63.211 15.137-12.332 34.109-18.984 53.637-18.805 25 0.10156 48.945 10.098 66.598 27.805z"/>
-                    </svg>
-                    <span id="rate_movie_label">Поставить оценку фильму</span>
-                </button>
-                <div class="d-flex justify-content-end">
-                    <button class="buttons" id="watch_later">
-                        <svg class="svg_size mt-2" width="2.2rem" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="m536.2 12.824h-372.4c-8.5117 0-15.625 7-15.625 15.625v502.77c0 12.938 14.895 20.328 25.258 12.434l176.62-139.95 176.62 140.28c10.305 7.8945 25.145 0.50391 25.145-12.434l-0.003906-503.11c0-8.625-7-15.625-15.625-15.625zm-15.625 486.98-161-128.3c-5.6016-4.2578-13.328-4.3672-19.039 0l-161.11 127.96v-455.34h341.15z"/>
+        <div class="col-12 col-xl-7 order-xl-1" id="film_player">
+            <div class="ratio ratio-16x9 circleBorders">
+                <iframe src="@Model.FilmLink?rel=0&controls=2&modestbranding=1&showinfo=0"
+                        title="YouTube video" allowfullscreen style="border-radius: 16px;">
+                </iframe>
+            </div>
+            <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
+                <div class="d-flex flex-column">
+                    <button data-bs-toggle="modal" data-bs-target=@(Context.User.Identity is {IsAuthenticated: true } ? "#modalFilmGrade" : "#modal1")
+                            class="buttons" id="rate_movie">
+                        <svg style="@(Model.IsGradeSet ? "display: none" : "display: block")" xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#c6c6c9" class="svg_size svg-grade-unset me-2" viewBox="0 0 16 16">
+                          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                         </svg>
-                        <span id="watch_later_label">Смотреть позже</span>
+                        <svg style="@(Model.IsGradeSet ? "display: block" : "display: none")" xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#b22222" class="svg_size svg-grade-set me-2" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                        </svg>
+                        <span id="rate_movie_label">@(Model.IsGradeSet ? "Изменить оценку фильма" : "Поставить оценку фильму")</span>
                     </button>
+                    <div class="d-flex justify-content-end">
+                        <button class="buttons" id="watch_later">
+                            <svg class="svg_size mt-2" width="2.2rem" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="m536.2 12.824h-372.4c-8.5117 0-15.625 7-15.625 15.625v502.77c0 12.938 14.895 20.328 25.258 12.434l176.62-139.95 176.62 140.28c10.305 7.8945 25.145 0.50391 25.145-12.434l-0.003906-503.11c0-8.625-7-15.625-15.625-15.625zm-15.625 486.98-161-128.3c-5.6016-4.2578-13.328-4.3672-19.039 0l-161.11 127.96v-455.34h341.15z"/>
+                            </svg>
+                            <span id="watch_later_label">Смотреть позже</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex flex-column justify-content-center text-center">
+                    <h1 class="text_color rating_label">@Model.Rating</h1>
+                    <span class="rating_under_label">Оценили: @Model.GradesNumber</span>
                 </div>
             </div>
-            <div class="d-flex flex-column justify-content-center text-center">
-                <h1 class="text_color rating_label">@Model.Rating</h1>
-                <span class="rating_under_label">Оценили: @Model.GradesNumber</span>
-            </div>
+            <button id="more">Читать дальше...</button>
         </div>
     </div>
-    <div id="film_description">
-        <h2 class="text_color text_bold mt-4">О фильме</h2>
-        <div id="description">
-            @Model.Description
+    <div class="film__line mt-4"></div>
+    <div class="d-flex flex-column mt-4">
+        <div class="h3">
+            Актеры и режиссеры
         </div>
-        <button id="more">Читать дальше...</button>
-    </div>
-</div>
-<div class="film__line mt-4"></div>
-<div class="d-flex flex-column mt-4">
-    <div class="h3">
-        Актеры и режиссеры
-    </div>
-    <div class="actors-producers__container mt-3">
-        @{
-            var amountActorForShow = 10 - Model.Producers.Count;
-            var actorsAndProducersMoreTen = Model.Producers.Count + Model.Actors.Count > 10;
-        }
-        @foreach (var producer in Model.Producers)
-        {
-            <a href="#" class="d-flex flex-column actors-producers__item__container" title="@producer.Name @producer.Surname">
-                <img src=@producer.Photo class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">@producer.Name @producer.Surname</div>
-                    <div class="actors-producers__item__who">Продюсер</div>
-                </div>
-            </a>
-        }
-        @foreach (var actor in Model.Actors.Take(amountActorForShow))
-        {
-            <a href="#" class="d-flex flex-column actors-producers__item__container" title="@actor.Name @actor.Surname">
-                <img src=@actor.Photo class="actors-producers__item__img">
-                <div class="d-flex flex-column mt-1">
-                    <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
-                    <div class="actors-producers__item__who">Актёр</div>
-                </div>
-            </a>
-        }
-        @if (actorsAndProducersMoreTen)
-        {
-            foreach (var actor in Model.Actors.Skip(amountActorForShow))
+        <div class="actors-producers__container mt-3">
+            @{
+                var amountActorForShow = 10 - Model.Producers.Count;
+                var actorsAndProducersMoreTen = Model.Producers.Count + Model.Actors.Count > 10;
+            }
+            @foreach (var producer in Model.Producers)
             {
-                <div class="actors-producers__item__container_show" title="@actor.Name @actor.Surname">
-                    <a href="#" class="d-flex flex-column actors-producers__item__container">
-                        <img src=@actor.Photo class="actors-producers__item__img">
-                        <div class="d-flex flex-column mt-1">
-                            <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
-                            <div class="actors-producers__item__who">Актёр</div>
-                        </div>
-                    </a>
+                <a href="#" class="d-flex flex-column actors-producers__item__container" title="@producer.Name @producer.Surname">
+                    <img src=@producer.Photo class="actors-producers__item__img">
+                    <div class="d-flex flex-column mt-1">
+                        <div class="actors-producers__item__name">@producer.Name @producer.Surname</div>
+                        <div class="actors-producers__item__who">Продюсер</div>
+                    </div>
+                </a>
+            }
+            @foreach (var actor in Model.Actors.Take(amountActorForShow))
+            {
+                <a href="#" class="d-flex flex-column actors-producers__item__container" title="@actor.Name @actor.Surname">
+                    <img src=@actor.Photo class="actors-producers__item__img">
+                    <div class="d-flex flex-column mt-1">
+                        <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
+                        <div class="actors-producers__item__who">Актёр</div>
+                    </div>
+                </a>
+            }
+            @if (actorsAndProducersMoreTen)
+            {
+                foreach (var actor in Model.Actors.Skip(amountActorForShow))
+                {
+                    <div class="actors-producers__item__container_show" title="@actor.Name @actor.Surname">
+                        <a href="#" class="d-flex flex-column actors-producers__item__container">
+                            <img src=@actor.Photo class="actors-producers__item__img">
+                            <div class="d-flex flex-column mt-1">
+                                <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
+                                <div class="actors-producers__item__who">Актёр</div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                <div id="actorsProducersMoreBtn">
+                    <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
+                        Еще
+                    </div>
+                </div>
+                <div id="actorsProducersHideBtn">
+                    <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
+                        Скрыть
+                    </div>
                 </div>
             }
-            <div id="actorsProducersMoreBtn">
-                <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
-                    Еще
-                </div>
-            </div>
-            <div id="actorsProducersHideBtn">
-                <div class="d-flex align-items-center justify-content-center actors-producers__more-btn">
-                    Скрыть
-                </div>
-            </div>
-        }
+        </div>
+    </div>
+    @{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml"); }
+    <div class="film__line mt-4"></div>
+    <div>
+        <div class="h3 mt-4">
+            Смотрите также
+        </div>
+        <vc:carousel genre-name="@mainGenreName" film-id-to-remove="@Model.Id"></vc:carousel>
     </div>
 </div>
-@{ await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");}
-<div class="film__line mt-4"></div>
-<div>
-    <div class="h3 mt-4">
-        Смотрите также
-    </div>
-    <vc:carousel genre-name="@mainGenreName" film-id-to-remove="@Model.Id"></vc:carousel>
-</div>
-</div>
+
+@{ await Html.RenderPartialAsync("~/Views/Film/Comments.cshtml", (Model.Comments, Model.PathToUserPhoto));}
 
 @section Styles
 {
@@ -153,6 +158,7 @@
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
     <link rel="stylesheet" href="~/css/carousel.css"/>
     <link rel="stylesheet" href="/css/gradeModalWindow.css">
+    <link rel="stylesheet" href="/css/comments.css">
 }
 
 @section Scripts{
@@ -162,4 +168,5 @@
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
     <script src="~/js/gradeModalWindow.js"></script>
     <script src="~/js/updateUserStatusWatchingFilm.js"></script>
+    <script src="~/js/comments.js"></script>
 }

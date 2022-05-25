@@ -14,6 +14,6 @@ public class ConfigurationService: IConfigurationService
 
     public string GetFileServiceUri()
     {
-        return _configuration["FileService:Uri"];
+        return _configuration.GetRequiredSection("FileService:Uri").Value;
     }
 }

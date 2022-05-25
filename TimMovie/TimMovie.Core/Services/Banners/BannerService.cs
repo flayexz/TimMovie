@@ -17,6 +17,6 @@ public class BannerService
     {
         var executor = new QueryExecutor<Banner>(_bannerRepository.Query, _bannerRepository);
         executor.IncludeInResult(b => b.Film);
-        return executor.GetEntitiesWithPagination(0, 3);
+        return executor.GetEntities();
     } 
 }

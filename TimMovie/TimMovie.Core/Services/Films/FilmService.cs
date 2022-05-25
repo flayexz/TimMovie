@@ -56,9 +56,6 @@ public class FilmService
     {
         grade = null;
         TryGetFilmAndUser(filmId, userId, out _, out var user);
-        // if (!TryGetFirstOrDefaultFilm(filmId, out _)
-        //     | !TryGetFirstOrDefaultUser(userId, out var user))
-        //     return false;
 
         grade = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(filmId))
@@ -68,6 +65,16 @@ public class FilmService
                     .Select(watched => watched.Grade)
                     .FirstOrDefault())
             .FirstOrDefault();
+        return true;
+    }
+
+    public async Task<bool> TryAddCommentToFilm(Comment comment)
+    {
+        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(comment.Film.Id));
+        if (dbFilm is null)
+            return false;
+        dbFilm.Comments.Add(comment);
+        await _filmRepository.SaveChangesAsync();
         return true;
     }
 
@@ -173,7 +180,8 @@ public class FilmService
             .IncludeInResult(film => film.Country)
             .IncludeInResult(film => film.Actors)
             .IncludeInResult(film => film.Producers)
-            .IncludeInResult(film => film.Comments)
+            .IncludeEnumerableInResult(film => film.Comments)
+            .ThenIncludeInResult(comment => comment.Author)
             .FirstOrDefault();
     }
 }

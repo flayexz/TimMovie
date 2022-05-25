@@ -1,14 +1,14 @@
-﻿using TimMovie.Core.Entities;
+﻿using TimMovie.Core.DTO.Search;
 
 namespace TimMovie.Web.ViewModels.SearchFromLayout;
 
 public class SearchEntityViewModel
 {
-    public IEnumerable<string>? Films { get; set; }
+    public IEnumerable<SearchFilmDto>? Films { get; set; }
     
-    public IEnumerable<string>? Genres { get; set; }
+    public IEnumerable<SearchGenreDto>? Genres { get; set; }
     
-    public IEnumerable<string>? Actors { get; set; }
+    public IEnumerable<SearchActorDto>? Actors { get; set; }
     
-    public IEnumerable<string>? Producers { get; set; }
+    public IEnumerable<SearchProducerDto>? Producers { get; set; }
 }
