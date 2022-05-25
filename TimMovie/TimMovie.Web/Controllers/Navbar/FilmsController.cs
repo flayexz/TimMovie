@@ -1,13 +1,14 @@
-﻿using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
+using TimMovie.Core.Entities;
 using TimMovie.Core.Enums;
-using TimMovie.Core.Services;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Genres;
+using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.FilmCard;
 using TimMovie.Web.ViewModels.FilmFilter;
 
@@ -19,17 +20,20 @@ public class FilmsController : Controller
     private readonly GenreService _genreService;
     private readonly FilmCardService _filmCardService;
     private readonly IMapper _mapper;
+    private readonly UserManager<User> _userManager;
 
     public FilmsController(
         FilmCardService filmsFilterService,
         CountryService countryService,
         GenreService genreService,
-        IMapper mapper)
+        IMapper mapper,
+        UserManager<User> userManager)
     {
         _filmCardService = filmsFilterService;
         _countryService = countryService;
         _genreService = genreService;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     [HttpGet]
@@ -82,7 +86,7 @@ public class FilmsController : Controller
     }
 
     [HttpPost]
-    public IActionResult FilmFilters(GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
+    public async Task<IActionResult> FilmFilters(GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
     {
         var cardsDto = _filmCardService.GetFilmCardsByFilters(filtersWithPagination);
         if (filtersWithPagination?.DataDto is null)

@@ -1,6 +1,5 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
 import ColumnTable from "./ColumnTable";
 import ColumnTableWithList from "./ColumnTableWithList";
 import Search from '../common/search/Search';
@@ -21,7 +20,7 @@ function UsersTablePage(){
         const offsetHeight = document.body.offsetHeight;
         const innerHeight = window.innerHeight;
         const scrollY = window.scrollY;
-        
+    
         setFetching(1.5 * innerHeight >= offsetHeight - scrollY && !allLoaded.current);
     }
     
@@ -75,11 +74,11 @@ function UsersTablePage(){
             window.removeEventListener("scroll", tryLoadMoreUsers);
             window.removeEventListener("keypress", trySearch);
         }
-    }, [])
+    }, []);
     
     return (
         <div className="d-flex flex-column justify-content-center mt-4">
-            <Search ref={searchBar} label='Поиск по логину' onClickSearchBtn={searchByLogin}/>
+            <Search ref={searchBar} label='Поиск по логину' onClickSearchBtn={searchByLogin} className="form-control"/>
             <div className="d-flex justify-content-between mb-4 mt-3">
                 <ColumnTable nameColumn={"Логин"} users={users} userPropName={"login"} isLinked={true}/>
                 <ColumnTable nameColumn={"Почта"} users={users} userPropName={"email"} isLinked={false}/>
