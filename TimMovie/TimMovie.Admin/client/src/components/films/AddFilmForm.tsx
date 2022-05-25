@@ -18,6 +18,10 @@ import DropdownSearchOneValueWithError from "../common/dropdownSearchOneValue/Dr
 import RequiredFieldIcon from "../common/symbols/RequiredFieldIcon";
 import errorMessageClasses from "../common/css/messageError.module.css";
 import AddFilmFormProps from "./AddFilmFormProps";
+import ModalWindow from "../common/modal/ModalWindow";
+import useModalWindow from "../../hook/modal/useModalWindow";
+import {AxiosResponseValidator} from "../../common/AxiosResponseValidator";
+import ToastNotification from "../common/modal/ToastNotification";
 
 const initialValueForCountry = "Выбрать";
 
@@ -55,10 +59,9 @@ function AddFilmForm(props: AddFilmFormProps) {
             errorMessage: "Нужно выбрать страну"
         }]});
     const [formIsValid, setFormIsValid] = useState(false);
-    const [messageAboutAddIsShow, setMessageAboutAddIsShow] = useState(false);
-    const [errorMessageIsShow, setErrorMessageIsShow] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    
+    const modalControl = useModalWindow();
+    const messageAboutAddFilm = useModalWindow("Фильм успешно добавлен");
+
     function generateRequestData(){
         const formData = new FormData();
         formData.append("img", file!);
@@ -76,7 +79,7 @@ function AddFilmForm(props: AddFilmFormProps) {
     }
     
     useEffect(() => {
-        setFormIsValid(checkFormOnValid())
+        setFormIsValid(checkFormOnValid());
     }, [title, iframeLink, description, year]);
 
     function onLoadImage(e: SyntheticEvent<HTMLImageElement>): void{
@@ -107,15 +110,19 @@ function AddFilmForm(props: AddFilmFormProps) {
         let data = generateRequestData();
         
         $api.post("/films/add", data).then((response: AxiosResponse<Result<string>>) => {
+            if(AxiosResponseValidator.checkResponseStatusAndLogIfError(response)){
+                return;
+            }
+            
             if (!response.data.success){
-                setErrorMessage(response.data.textError ??
+                modalControl.setMessageText(response.data.textError ??
                     "Произошла неизвестная ошибка, перезагрузите страницу и попробуйте снова");
-                setErrorMessageIsShow(true);
+                modalControl.setMessageIsShow(true);
                 return;
             }
             
             resetValueFields();
-            setMessageAboutAddIsShow(true);
+            messageAboutAddFilm.setMessageIsShow(true);
             props.resetTable();
             props.setFetching(true);
         })
@@ -146,27 +153,9 @@ function AddFilmForm(props: AddFilmFormProps) {
     
     return (
         <>
-            <Modal
-                size="sm"
-                show={errorMessageIsShow}
-                onHide={() => setErrorMessageIsShow(false)}
-                aria-labelledby="example-modal-sizes-title-sm"
-            >
-                <Modal.Header closeButton className={filmFormClasses.errorMessageHeader}>
-                    <Modal.Title id="example-modal-sizes-title-sm" >
-                        Ошибка
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{errorMessage}</Modal.Body>
-            </Modal>
-            <ToastContainer className="p-3" position="top-center">
-                <Toast show={messageAboutAddIsShow} bg="dark" onClose={() => setMessageAboutAddIsShow(false)}>
-                    <Toast.Header>
-                        <strong className="me-auto">TimMovie</strong>
-                    </Toast.Header>
-                    <Toast.Body className="text-white">Фильм успешно добавлен</Toast.Body>
-                </Toast>
-            </ToastContainer>
+            <ModalWindow modalControl={modalControl} headerText="Ошибка"
+                         headerClass={filmFormClasses.errorMessageHeader}/>
+            <ToastNotification modalControl={messageAboutAddFilm}/>
             <div className="d-flex">
                 <div className="">
                     <UploadFiles
