@@ -12,6 +12,7 @@ import PaginationLoading from "../../dto/PaginationLoading";
 import FilmForTableDto from "../../dto/FilmForTableDto";
 import {includeNamePart} from "../../common/queryFunction";
 import {plainToInstance} from "class-transformer";
+import {UpdateBannerDto} from "../../dto/UpdateBannerDto";
 
 @Injectable()
 export class BannerService {
@@ -38,7 +39,7 @@ export class BannerService {
                 skip: pagination.skip
             });
         return banners.map(banner => {
-            return{
+            return {
                 description: banner.description,
                 image: banner.image,
                 filmTitle: banner.film.title,
@@ -93,6 +94,28 @@ export class BannerService {
         } catch (e) {
             return {success: false, textError: e.message}
         }
+    }
+
+    public async updateBanner(banner: UpdateBannerDto, image: Express.Multer.File | null): Promise<Result<string>> {
+        let bannerRepository = await getRepository(Banner)
+        try {
+             await bannerRepository.update(banner.bannerId, {description: banner.description});
+            if (image != null) {
+                let resultSaveImage = await this.fileService.saveImage(image, 'banner');
+                if (resultSaveImage.success) {
+                    await bannerRepository.update(banner.bannerId,{image: resultSaveImage.result})
+                } else {
+                    return {
+                        success: false,
+                        textError: `не удалось сохранить новое изображение: ${resultSaveImage.textError}`
+                    }
+                }
+            }
+        } catch (e) {
+            return {success: false, textError: `не удалось обновить баннер: ${e.message}`}
+        }
+
+        return {success: true}
     }
 
 }

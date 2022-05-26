@@ -4,11 +4,14 @@ import {UploadFiles} from "../common/upload/UploadFiles";
 import AddBannerInputs from "./AddBannerInputs";
 import $api from "../../http";
 import {BannerDto} from "../../dto/BannerDto";
-import Banners from "./Banner";
 import styles from "./banner.module.css";
 import NamePart from "../../common/interfaces/NamePart";
 import usePagination from "../../hook/dynamicLoading/usePagination";
 import DynamicScrolling from "../common/dynamicLoading/DynamicScrolling";
+import useModalWindow from "../../hook/modal/useModalWindow";
+import ToastNotification from "../common/modal/ToastNotification";
+import ModalWindow from "../common/modal/ModalWindow";
+import Banner from "./Banner";
 
 function BannersPage(uploadProps: UploadProps) {
 
@@ -20,6 +23,10 @@ function BannersPage(uploadProps: UploadProps) {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
     let urlQuery = useRef<NamePart>({namePart: ""});
     const pagination = usePagination<BannerDto, NamePart>({pagination: 5, url: `/banners/pagination`, urlQuery})
+    const bannerAddedText = 'Баннер успешно добавлен'
+    const bannerDeletedText = 'Банер успешно удален'
+    const bannerNotification = useModalWindow('')
+    const bannerModalNotification = useModalWindow()
 
     useEffect(() => {
         if (isSubmitted) {
@@ -28,28 +35,33 @@ function BannersPage(uploadProps: UploadProps) {
         }
     }, [isSubmitted])
 
-    // function initBanners() {
-    //     let url = '/banners/getAllBanners'
-    //     $api.get(url).then(response => setBanners([...response.data]))
-    // }
-
-    function update(){
+    function update() {
         pagination.reset()
         pagination.setFetching(true)
+    }
+
+    function notify(text: string) {
+        bannerNotification.setMessageText(text)
+        bannerNotification.setMessageIsShow(true)
+    }
+
+    function notifyModal(text: string) {
+        bannerModalNotification.setMessageText(text)
+        bannerModalNotification.setMessageIsShow(true)
     }
 
     async function trySaveBanner(): Promise<void> {
         if (!description) {
             return;
         }
-        let data = generateRequestData()
+        let data = generateRequestDataForAdd()
         $api.post('/banners/add', data).then(response => {
             if (!response.data.success) {
                 alert(response.data.textError ?? 'произошла ошибка')
             } else {
                 setIsSubmitted(true)
                 resetFields()
-                alert('баннер успешно добавлен')
+                notify(bannerAddedText)
             }
         })
     }
@@ -61,7 +73,7 @@ function BannersPage(uploadProps: UploadProps) {
         setFile(undefined)
     }
 
-    function generateRequestData() {
+    function generateRequestDataForAdd() {
         let formData = new FormData()
         formData.append("img", file!);
         formData.append("description", description!);
@@ -69,8 +81,23 @@ function BannersPage(uploadProps: UploadProps) {
         return formData
     }
 
+    function onDelete(bannerId: string) {
+        let formData = new FormData()
+        formData.append('bannerId', bannerId)
+        $api.delete(`/banners/${bannerId}`).then(response => {
+            if (response.data.success) {
+                setIsSubmitted(true)
+                notifyModal(bannerDeletedText)
+            } else {
+                notifyModal(response.data.textError)
+            }
+        })
+    }
+
     return (<>
         <div className="justify-content-center d-flex flex-column align-items-center">
+            <ToastNotification modalControl={bannerNotification} headerClass={'text-success'}/>
+            <ModalWindow modalControl={bannerModalNotification} headerText={'Удаление баннера'}/>
             <h1 className="mt-4">Добавить новый баннер</h1>
             <div className="mt-2 position-relative text-break">
                 <UploadFiles uploadProps={uploadProps}
@@ -87,18 +114,12 @@ function BannersPage(uploadProps: UploadProps) {
             <AddBannerInputs preview={preview} description={description} setDescription={setDescription} film={film}
                              setFilm={setFilm} initialValueForFilm={initialValueForFilm}/>
             <hr className="w-100"/>
-
             <DynamicScrolling paginationResult={pagination} amountScreenBeforeLoading={1.5}>
-                <Banners setIsSubmitted={setIsSubmitted} banners={pagination.records.map(x => {
-                        return {
-                            description: x.description,
-                            image: x.image,
-                            filmTitle: x.filmTitle,
-                            bannerId: x.bannerId
-                        }
-                    }
-                )
-                }/>
+                <div className="d-flex flex-column">
+                    {pagination.records.map(banner =>
+                        <Banner onDelete={onDelete} banner={banner} key={banner.bannerId}/>
+                    )}
+                </div>
             </DynamicScrolling>
         </div>
     </>)
