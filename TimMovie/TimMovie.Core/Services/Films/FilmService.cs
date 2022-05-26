@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
@@ -29,6 +30,37 @@ public class FilmService
         _watchedFilmService = watchedFilmService;
     }
 
+    private bool TryGetFirstOrDefaultFilm(Guid filmId, out Film? dbFilm)
+    {
+        dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
+        return dbFilm is not null;
+    }
+
+    private bool TryGetFirstOrDefaultUser(Guid userId, out User? user)
+    {
+        user = _userRepository.Query.Include(u => u.FilmsWatchLater)
+            .FirstOrDefault(new EntityByIdSpec<User>(userId));
+        return user is not null;
+    }
+
+    private bool TryGetFilmAndUser(Guid filmId, Guid userId, out Film? dbFilm, out User? user) =>
+        TryGetFirstOrDefaultFilm(filmId, out dbFilm)
+        & TryGetFirstOrDefaultUser(userId, out user);
+
+    private async Task<bool> TryUpdateUserRepository(User? user)
+    {
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
+    }
+
+    public bool IsWatchLaterFilm(Guid filmId, Guid userId)
+    {
+        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user))
+            return false;
+        return user!.FilmsWatchLater.Contains(dbFilm!);
+    }
+    
     public bool TryGetUserGrade(Guid filmId, Guid userId, out int? grade)
     {
         grade = null;

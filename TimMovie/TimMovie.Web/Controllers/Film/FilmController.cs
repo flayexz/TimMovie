@@ -107,4 +107,10 @@ public class FilmController : Controller
         var result = film?.Comments.OrderByDescending(c => c.Date).Skip(skip).Take(take).ToList();
         return result;
     }
+
+    [HttpGet]
+    public bool IsFilmAddedToWatchLater(Guid filmId)
+    {
+        return _filmService.IsWatchLaterFilm(filmId, User.GetUserId().Value);
+    }
 }
