@@ -17,9 +17,9 @@ interface Props {
 function Banner(props: Props) {
 
     const [isEdit, setIsEdit] = useState<boolean>(false)
+    const [originDescription, setOriginDescription] = useState(props.banner.description)
     const [description, setDescription] = useState<string>('')
     const initialTextAreaHeight = description.length / 82;
-    const [originDescription, setOriginDescription] = useState(props.banner.description)
     const [textareaHeight, setTextAreaHeight] = useState(initialTextAreaHeight)
     const [file, setFile] = useState<File | null>()
     const [preview, setPreview] = useState<string | null>()
@@ -29,7 +29,7 @@ function Banner(props: Props) {
         setIsEdit(false)
         setPreview(null)
         setDescription(originDescription)
-        setTextAreaHeight(initialTextAreaHeight)
+        setTextAreaHeight(description.length / 82 + 1)
     }
 
     function validateForm(): Result<string> {
@@ -58,7 +58,7 @@ function Banner(props: Props) {
                 if(preview != null){
                     setImage(preview)
                 }
-                alert('zaebis')
+                alert('баннер обновлен')
             } else {
                 alert(response.data.textError)
             }

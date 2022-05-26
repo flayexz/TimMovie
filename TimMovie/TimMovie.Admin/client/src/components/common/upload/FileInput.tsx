@@ -37,7 +37,8 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
     }
 
     function uploadFiles(files: File[]) {
-        if(!(files[0].name.includes('.jpg') || files[0].name.includes('.png'))){
+        let fileName = files[0].name.toLowerCase()
+        if(!(fileName.includes('.jpg') || fileName.includes('.png'))){
             setDrag(false);
             invalidFileExtension.setMessageIsShow(true)
             return
