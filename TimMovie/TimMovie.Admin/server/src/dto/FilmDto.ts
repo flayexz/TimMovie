@@ -1,4 +1,4 @@
-﻿export class NewFilmDto {
+﻿export class FilmDto {
     title: string;
     description: string | null;
     countryName: string | null;

@@ -18,7 +18,7 @@ function TableWithFilms({paginationResult, urlQuery}: TableWithFilmsProps){
         let url = `/films/${id}`;
         let response = await $api.delete<Result<string>>(url);
 
-        if(AxiosResponseValidator.checkResponseStatusAndLogIfError(response)){
+        if(!AxiosResponseValidator.checkSuccessResponseStatusAndLogIfError(response)){
             return;
         }
 

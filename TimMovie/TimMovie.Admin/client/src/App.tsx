@@ -8,6 +8,7 @@ import AuthProvider from "./components/auth/AuthProvider";
 import RequireAuth from "./components/auth/RequireAuth";
 import BannersPage from "./components/banners/BannersPage";
 import FilmsPage from "./components/films/FilmsPage";
+import FilmEditPage from "./components/films/FilmEditPage";
 
 function App() {
     return (
@@ -18,7 +19,8 @@ function App() {
                     <Route index element={<UsersTablePage/>}/>
                     <Route path="/users/:id" element={<UserProfile/>}/>
                     <Route path="/banners" element={<BannersPage borderRadius={40} photoHeight={512} photoWidth={1100} />}/>
-                    <Route path="/films" element={<FilmsPage/>}/>
+                    <Route path="/films/collection" element={<FilmsPage/>}/>
+                    <Route path="/films/:id" element={<FilmEditPage/>}/>
                 </Route>
             </Routes>
         </AuthProvider>

@@ -7,7 +7,13 @@ function ModalWindow({modalControl, headerText, ...props}: ModalWindowProps){
         <Modal
             size="sm"
             show={modalControl.messageIsShow}
-            onHide={() => modalControl.setMessageIsShow(false)}>
+            onHide={() => {
+                modalControl.setMessageIsShow(false)
+                
+                if (props.onHide){
+                    props.onHide();
+                }
+            }}>
             <Modal.Header closeButton className={props.headerClass}>
                 <Modal.Title>
                     {headerText}
