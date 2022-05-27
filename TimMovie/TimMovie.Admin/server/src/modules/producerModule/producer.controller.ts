@@ -1,7 +1,9 @@
 import {Controller, Get, Query} from '@nestjs/common';
 import NameDto from "../../dto/NameDto";
 import {ProducerService} from "./ProducerService";
+import {Admin} from "../authModule/adminAuth";
 
+@Admin()
 @Controller('producers')
 export class ProducerController {
     constructor(private readonly producerService: ProducerService) {

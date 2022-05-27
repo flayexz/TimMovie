@@ -8,7 +8,7 @@ function UserProfile() {
     
     return (
         <div>
-            <UserInfo userId={userId}/>
+            <UserInfo userId={userId!}/>
         </div>
     );
 }
