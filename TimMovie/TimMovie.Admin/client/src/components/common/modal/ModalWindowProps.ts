@@ -5,4 +5,5 @@ export default interface ModalWindowProps {
     readonly headerText: string;
     readonly bodyClass?: string;
     readonly headerClass?: string;
+    readonly onHide?: () => void;
 }

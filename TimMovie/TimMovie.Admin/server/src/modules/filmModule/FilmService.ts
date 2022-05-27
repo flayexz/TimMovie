@@ -1,5 +1,5 @@
 ﻿import {Injectable} from "@nestjs/common";
-import {NewFilmDto} from "../../dto/NewFilmDto";
+import {FilmDto} from "../../dto/FilmDto";
 import {Result} from "../../dto/Result";
 import {FileService} from "../FileService";
 import {getRepository} from "typeorm";
@@ -14,6 +14,8 @@ import PaginationLoading from "../../dto/PaginationLoading";
 import FilmForTableDto from "../../dto/FilmForTableDto";
 import {includeNamePart} from "../../common/queryFunction";
 import NameDto from "../../dto/NameDto";
+import FullInfoAboutFilmDto from "../../dto/FullInfoAboutFilmDto";
+import {log} from "util";
 
 
 @Injectable()
@@ -25,7 +27,7 @@ export class FilmService {
                 private readonly countryService: CountryService) {
     }
 
-    async addNewFilm(newFilm: NewFilmDto, image: Express.Multer.File): Promise<Result<string>> {
+    async addNewFilm(newFilm: FilmDto, image: Express.Multer.File): Promise<Result<string>> {
         let resultSaveImage = await this.fileService.saveFilmImage(image);
 
         if (!resultSaveImage.success) {
@@ -78,8 +80,6 @@ export class FilmService {
                 skip: pagination.skip
             });
 
-        console.log(films);
-
         let filmsDto = films
             .map(film => {
                 film.image = process.env.FILE_SERVICE_URL + film.image;
@@ -90,7 +90,7 @@ export class FilmService {
                     .concat(film.actors.map(actor => `${actor.name} ${actor.surname}`))
                 return dto;
             });
-        console.log(filmsDto)
+
         return filmsDto;
     }
 
@@ -132,4 +132,76 @@ export class FilmService {
             success:true,
         }
     }
+    
+    async getFilmById(id: string): Promise<FullInfoAboutFilmDto | null>{
+        let film = await getRepository(Film)
+            .findOne({
+                where: {
+                    id: id,
+                },
+                relations: ["country", "genres", "actors", "producers"],
+            });
+        console.log(film);
+        
+        if (!film){
+            return null;
+        }
+
+        film.image = process.env.FILE_SERVICE_URL + film.image;
+        let filmsDto = plainToInstance(FullInfoAboutFilmDto, film);
+        filmsDto.countryName = film.country.name;
+        filmsDto.genreNames = film.genres.map(value => value.name);
+        filmsDto.actorNames = film.actors.map(actor => `${actor.name} ${actor.surname}`);
+        filmsDto.producerNames = film.producers.map(producer => `${producer.name} ${producer.surname}`);
+        
+        return filmsDto;
+    }
+
+    async updateFilm(id: string, updatedFilm: FilmDto, image?: Express.Multer.File): Promise<Result<string>> {
+        let film = plainToInstance(Film, updatedFilm);
+        film.id = id;
+        
+        if (!!image){
+            let resultSaveImage = await this.fileService.saveImage(image, "film");
+
+            if (!resultSaveImage.success) {
+                return {
+                    success: false,
+                    textError: "Во время сохранения обложки фильма произошла ошибка",
+                }
+            }
+            
+            film.image = resultSaveImage.result;
+        }
+
+
+        film.actors = [];
+        if (updatedFilm.actorNames != null) {
+
+            let actors = await this.actorService.getActorsByFullName(updatedFilm.actorNames);
+            film.actors = actors;
+        }
+
+        film.producers = [];
+        if (updatedFilm.producerNames != null) {
+            let producers = await this.producerService.getProducersByFullName(updatedFilm.producerNames);
+            film.producers = producers;
+        }
+
+        if (updatedFilm.genreNames != null) {
+            let genres = await this.genreService.getGenresByFullName(updatedFilm.genreNames);
+            film.genres = genres;
+        }
+
+        let country = await this.countryService.getCountryFullName(updatedFilm.countryName);
+        film.country = country;
+        
+        await getRepository(Film)
+            .save(film);
+
+        return {
+            success: true,
+        };
+    }
+    
 }
