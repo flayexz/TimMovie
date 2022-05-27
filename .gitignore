@@ -392,4 +392,3 @@ MigrationBackup/
 # Editor-based HTTP Client requests
 /httpRequests/
 
-**/appsettings.json

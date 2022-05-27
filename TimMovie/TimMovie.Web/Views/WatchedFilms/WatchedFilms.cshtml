@@ -67,7 +67,7 @@
                                 <span>@watched.Rating</span>
                             </div>
                             <div class="film-grade film-block">
-                                <span data-bs-toggle="modal" @(isOwner ? "data-bs-target=#modalFilmGrade" : "")  class="@(gradeClass) setGradeButton">@(watched.Grade > 0 ? watched.Grade : "-")</span>
+                                <span data-bs-toggle="modal" @(isOwner ? "data-bs-target=#modalFilmGrade" : "")  class="@(gradeClass) @(isOwner ? "setGradeButton" : "")">@(watched.Grade > 0 ? watched.Grade : "-")</span>
                                 <div class="filmIdHidden">@watched.FilmId</div>   
                             </div>
                             <div class="film-watched-date film-block">

@@ -1184,7 +1184,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
             modelBuilder.Entity("TimMovie.Core.Entities.UserStatus", b =>
                 {
                     b.HasOne("TimMovie.Core.Entities.User", "User")
-                        .WithOne("UserStatus")
+                        .WithOne("Status")
                         .HasForeignKey("TimMovie.Core.Entities.UserStatus", "UserGuid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1241,7 +1241,7 @@ namespace TimMovie.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("TimMovie.Core.Entities.User", b =>
                 {
-                    b.Navigation("UserStatus");
+                    b.Navigation("Status");
 
                     b.Navigation("WatchedFilms");
                 });

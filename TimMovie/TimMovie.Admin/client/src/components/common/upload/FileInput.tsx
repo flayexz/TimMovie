@@ -1,6 +1,8 @@
-import React, {FC, useRef, useState} from "react";
+import React, {FC, useState} from "react";
 import styles from './styles/fileInput.module.css';
 import {UploadProps} from "./UploadProps";
+import useModalWindow from "../../../hook/modal/useModalWindow";
+import ToastNotification from "../modal/ToastNotification";
 
 interface FileInputProps {
     setPreview: Function,
@@ -10,6 +12,7 @@ interface FileInputProps {
 
 export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}) => {
     const [drag, setDrag] = useState(false);
+    const invalidFileExtension = useModalWindow("Неверное расширение файла. Фотография должна быть с расширением jpg или png");
 
     function dragStartHandler(e: any) {
         e.preventDefault();
@@ -34,6 +37,12 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
     }
 
     function uploadFiles(files: File[]) {
+        let fileName = files[0].name.toLowerCase()
+        if(!(fileName.includes('.jpg') || fileName.includes('.png'))){
+            setDrag(false);
+            invalidFileExtension.setMessageIsShow(true)
+            return
+        }
         setFile(files[0]);
         setPreview(URL.createObjectURL(files[0]));
         console.log(files);
@@ -72,6 +81,7 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
         <>
             {
                 <div>
+                    <ToastNotification modalControl={invalidFileExtension} headerClass='text-danger'/>
                     <div className={drag ? styles.input_dragAndDrop : styles.input_dragAndDrop_dropped}
                          style={{width:uploadProps.photoWidth, height:uploadProps.photoHeight, borderRadius:uploadProps.borderRadius}}
                          onClick={onContainerClick}

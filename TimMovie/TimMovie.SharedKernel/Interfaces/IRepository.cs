@@ -17,4 +17,8 @@ public interface IRepository<TEntity> where TEntity : class
 
     IQueryable<TEntity> ThenInclude<TIncludableEntity, TProperty>
         (IQueryable<TEntity> query, Expression<Func<TIncludableEntity, TProperty>> navigationPathToProperty);
+    
+    IQueryable<TEntity> ThenIncludeEnumerable<TIncludableEntity, TProperty>
+        (IQueryable<TEntity> query, Expression<Func<TIncludableEntity, TProperty>> navigationPathToProperty);
+
 }
