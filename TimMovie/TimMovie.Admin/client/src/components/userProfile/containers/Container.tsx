@@ -1,38 +1,51 @@
-import React from 'react';
-import {IFullUserInfoDto} from "../../../dto/IFullUserInfoDto";
+import React, {useEffect, useState} from 'react';
 import LineWithSvg from "../LineWithSvg";
-import ContainerHeader from "./ContainerHeader";
-import Icon from "../../../svg-icons/Icon";
-import {ClickHook} from "../ClickHook/ClickHook";
+import $api from "../../../http";
+import NameDto from "../../../dto/NameDto";
+import {AxiosResponseValidator} from "../../../common/AxiosResponseValidator";
 
 interface IContainerProps{
-    info: string[] | undefined
-    isSubscribes?: boolean
-    clickHook: ClickHook
+    readonly urlForLoadAllInfo: string;
+    readonly namesIncludedInUser: Set<string>;
+    readonly iconName: string;
+    readonly isEdit: boolean;
 }
 
-const addBtn = <div className="add_remove_btns add_btn">
-    <Icon name={"Add"}/>
-</div>
-
-const removeBtn = <div className="add_remove_btns remove_btn">
-    <Icon name={"Remove"}/>
-</div>
-
-
-
-const Container = ({info, isSubscribes = false, clickHook} :IContainerProps) => {
-
-    function getItemTextWithIcon(item: string, icon: string){
-        console.log(icon)
-        item = item.charAt(0).toUpperCase() + item.slice(1)
-        if (icon === "") icon = item;
-        return <LineWithSvg icon={icon} line={item} clickHook={clickHook}/>
-    }
+const Container = ({namesIncludedInUser, isEdit, ...props} :IContainerProps) => {
+    const [infoAbout, setInfoAbout] = useState<NameDto[]>();
+    const [namesIsChanged, setNamesIsChanged] = useState(false);
+    
+    useEffect(() => {
+        $api.get<NameDto[]>(props.urlForLoadAllInfo)
+            .then(response => {
+                if (!AxiosResponseValidator.checkSuccessResponseStatusAndLogIfError(response)){
+                    return;
+                }
+                
+                setInfoAbout(response.data);
+            })
+    }, []);
 
     return (
         <div>
-            {info?.map(item => getItemTextWithIcon(item, isSubscribes? "Subscribe" : ""))}
+            {
+                infoAbout?.map(item => 
+                    <div key={item.id}>
+                        {(namesIncludedInUser.has(item.name) || isEdit) &&
+                            <LineWithSvg line={item.name} isEdit={isEdit} icon={props.iconName} 
+                            onAdd={() => {
+                              namesIncludedInUser.add(item.name);
+                              setNamesIsChanged(!namesIsChanged);
+                            }}
+                            onRemove={() => {
+                                namesIncludedInUser.delete(item.name);
+                                setNamesIsChanged(!namesIsChanged);
+                            }}
+                            isAdded={namesIncludedInUser.has(item.name)}/>
+                        }
+                    </div>
+                )
+            }
         </div>
     );
 };

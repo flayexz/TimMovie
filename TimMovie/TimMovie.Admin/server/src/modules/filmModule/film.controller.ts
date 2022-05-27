@@ -9,7 +9,9 @@ import NameDto from "../../dto/NameDto";
 import {getRepository} from "typeorm";
 import {Film} from "../../../entities/Film";
 import FullInfoAboutFilmDto from "../../dto/FullInfoAboutFilmDto";
+import {Admin} from "../authModule/adminAuth";
 
+@Admin()
 @Controller('films')
 export class FilmController {
     constructor(private readonly filmService: FilmService) {

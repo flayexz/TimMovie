@@ -1,57 +1,48 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import classes from './userProfile.module.css'
 import './userProfile.css';
 import Icon from "../../svg-icons/Icon";
-import {ClickHook} from "./ClickHook/ClickHook"
 
 interface LineProps {
-    icon: string,
-    line: string | null | undefined,
-    isBold?: boolean
-    isHeader?: boolean
-    iconWidth?: number
-    iconHeight?: number
-    clickHook?: ClickHook
+    icon: string;
+    line: string | null | undefined;
+    onAdd?: () => void;
+    onRemove?: () => void;
+    isAdded?: boolean;
+    isEdit?: boolean;
+    title?: string;
+    isBold?: boolean;
+    isHeader?: boolean;
+    iconWidth?: number;
+    iconHeight?: number;
 }
 
-const addBtn = <div className="add_remove_btns add_btn">
-    <Icon name={"Add"}/>
-</div>
-
-const removeBtn = <div className="add_remove_btns remove_btn">
-    <Icon name={"Remove"}/>
-</div>
-
-const LineWithSvg: React.FC<LineProps> = ({
-                                              icon,
-                                              line,
-                                              isBold,
-                                              isHeader = false,
-                                              iconWidth = 24,
-                                              iconHeight = 24,
-                                              clickHook
-                                          }: LineProps) => {
+const LineWithSvg: React.FC<LineProps> = ({isEdit = false, iconWidth = 22, ...props}: LineProps) => {
 
     return (
-        <div className={`${classes.line} d-flex align-items-center`}>
+        <div title={props.title} className={`${classes.line} d-flex align-items-center`}>
             <div className={classes.circleForIcon}>
-                <Icon name={icon} width={iconWidth} height={iconHeight}/>
+                <Icon name={props.icon} width={iconWidth} height={props.iconHeight}/>
             </div>
             <span className={classes.content_str}
                   style={{
-                      fontWeight: isBold ? 'bold' : 'normal',
-                      textDecoration: isHeader ? 'underline' : 'normal',
+                      fontWeight: props.isBold ? 'bold' : 'normal',
+                      textDecoration: props.isHeader ? 'underline' : 'normal',
                       textDecorationThickness: '2px',
                       textUnderlineOffset: "6px"
                   }}>
-                    {line}
+                    {props.line}
             </span>
 
-            {clickHook?.clickState ?
-                    <div className="add_remove_btns add_btn">
-                        <Icon name={"Add"}/>
-                    </div>
-                    : ''}
+            {isEdit &&
+                    <div className="ms-auto ">
+                        <div hidden={props.isAdded} onClick={props.onAdd} className="add_remove_btns add_btn">
+                            <Icon height={iconWidth} name={"Add"}/>
+                        </div>
+                        <div hidden={!props.isAdded} onClick={props.onRemove} className="add_remove_btns remove_btn">
+                            <Icon height={iconWidth} name={"Remove"}/>
+                        </div>
+                    </div>}
         </div>
     );
 };
