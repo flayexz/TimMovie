@@ -17,8 +17,8 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/" element={<RequireAuth><Layout/></RequireAuth>}>
                     <Route index element={<UsersTablePage/>}/>
-                    <Route path="/users/:id" element={<UserProfile/>}/>
                     <Route path="/banners" element={<BannersPage borderRadius={40} photoHeight={512} photoWidth={1100} />}/>
+                    <Route path="/users/:id" element={<UserProfile/>}/>
                     <Route path="/films/collection" element={<FilmsPage/>}/>
                     <Route path="/films/:id" element={<FilmEditPage/>}/>
                 </Route>
