@@ -12,7 +12,6 @@ interface FileInputProps {
 
 export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}) => {
     const [drag, setDrag] = useState(false);
-    const invalidFileExtension = useModalWindow("Неверное расширение файла. Фотография должна быть с расширением jpg или png");
 
     function dragStartHandler(e: any) {
         e.preventDefault();
@@ -40,12 +39,11 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
         let fileName = files[0].name.toLowerCase()
         if(!(fileName.includes('.jpg') || fileName.includes('.png'))){
             setDrag(false);
-            invalidFileExtension.setMessageIsShow(true)
+            alert('Неверное расширение файла. Фотография должна быть с расширением jpg или png')
             return
         }
         setFile(files[0]);
         setPreview(URL.createObjectURL(files[0]));
-        console.log(files);
         setDrag(false);
     }
 
@@ -81,7 +79,6 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
         <>
             {
                 <div>
-                    <ToastNotification modalControl={invalidFileExtension} headerClass='text-danger'/>
                     <div className={drag ? styles.input_dragAndDrop : styles.input_dragAndDrop_dropped}
                          style={{width:uploadProps.photoWidth, height:uploadProps.photoHeight, borderRadius:uploadProps.borderRadius}}
                          onClick={onContainerClick}
