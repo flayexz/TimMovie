@@ -29,6 +29,12 @@ type DatabaseFillerNavbarSearch() =
          dbContext.Films.Add(Film(Title="F1A1P0G0")) |> ignore
          dbContext.Films.Add(Film(Title="F1A1P1G1")) |> ignore
          dbContext.Films.Add(Film(Title="F3A3P3G3")) |> ignore
+         dbContext.Films.Add(Film(Title="F3A3P3G3")) |> ignore
+         dbContext.Films.Add(Film(Title="F3A3P3G3")) |> ignore
+         dbContext.Films.Add(Film(Title="F5A3P3G3")) |> ignore
+         dbContext.Films.Add(Film(Title="F5A3P3G3")) |> ignore
+         dbContext.Films.Add(Film(Title="F5A3P3G3")) |> ignore
+         dbContext.Films.Add(Film(Title="F5A3P3G3")) |> ignore
          dbContext.Films.Add(Film(Title="F5A3P3G3")) |> ignore
         
      member private this.AddActors(dbContext: ApplicationContext) =
@@ -42,6 +48,10 @@ type DatabaseFillerNavbarSearch() =
          dbContext.Actors.Add(Actor(Name="F1A1P0G0")) |> ignore
          dbContext.Actors.Add(Actor(Name="F1A1P1G1")) |> ignore
          dbContext.Actors.Add(Actor(Name="F3A3P3G3")) |> ignore
+         dbContext.Actors.Add(Actor(Name="F3A3P3G3")) |> ignore
+         dbContext.Actors.Add(Actor(Name="F3A3P3G3")) |> ignore
+         dbContext.Actors.Add(Actor(Name="F5A3P3G3")) |> ignore
+         dbContext.Actors.Add(Actor(Name="F5A3P3G3")) |> ignore
          dbContext.Actors.Add(Actor(Name="F5A3P3G3")) |> ignore
      
      
@@ -55,6 +65,10 @@ type DatabaseFillerNavbarSearch() =
          dbContext.Producers.Add(Producer(Name="F0A0P3G0")) |> ignore
          dbContext.Producers.Add(Producer(Name="F1A1P1G1")) |> ignore
          dbContext.Producers.Add(Producer(Name="F3A3P3G3")) |> ignore
+         dbContext.Producers.Add(Producer(Name="F3A3P3G3")) |> ignore
+         dbContext.Producers.Add(Producer(Name="F3A3P3G3")) |> ignore
+         dbContext.Producers.Add(Producer(Name="F5A3P3G3")) |> ignore
+         dbContext.Producers.Add(Producer(Name="F5A3P3G3")) |> ignore
          dbContext.Producers.Add(Producer(Name="F5A3P3G3")) |> ignore
          
      member private this.AddGenres(dbContext: ApplicationContext) =
@@ -66,5 +80,9 @@ type DatabaseFillerNavbarSearch() =
          dbContext.Genres.Add(Genre(Name="F0A0P0G3")) |> ignore
          dbContext.Genres.Add(Genre(Name="F1A1P1G1")) |> ignore
          dbContext.Genres.Add(Genre(Name="F3A3P3G3")) |> ignore
+         dbContext.Genres.Add(Genre(Name="F3A3P3G3")) |> ignore
+         dbContext.Genres.Add(Genre(Name="F3A3P3G3")) |> ignore
+         dbContext.Genres.Add(Genre(Name="F5A3P3G3")) |> ignore
+         dbContext.Genres.Add(Genre(Name="F5A3P3G3")) |> ignore
          dbContext.Genres.Add(Genre(Name="F5A3P3G3")) |> ignore
     

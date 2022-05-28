@@ -11,20 +11,66 @@ open TimMovie.WebApi
 
 type SearchTests(factory: BaseApplicationFactory<Program>) =
     interface IClassFixture<BaseApplicationFactory<Program>>
-    
-    [<Fact>]
-     member this.``[TEST] [WITH JWT]Получить единственный фильм``() =
+
+    [<Theory>]
+    [<InlineData("F1A0P0G0", 1, 0, 0, 0)>]
+    [<InlineData("F2A0P0G0", 2, 0, 0, 0)>]
+    [<InlineData("F3A0P0G0", 3, 0, 0, 0)>]
+    [<InlineData("F4A0P0G0", 4, 0, 0, 0)>]
+    [<InlineData("F5A0P0G0", 4, 0, 0, 0)>]
+    [<InlineData("F1A1P0G0", 1, 1, 0, 0)>]
+    [<InlineData("F1A1P0G0", 1, 1, 0, 0)>]
+    [<InlineData("F1A1P1G1", 1, 1, 1, 1)>]
+    [<InlineData("F3A3P3G3", 3, 2, 2, 2)>]
+    [<InlineData("F5A3P3G3", 4, 2, 2, 2)>]
+    [<InlineData("F0A1P0G0", 0, 1, 0, 0)>]
+    [<InlineData("F0A2P0G0", 0, 2, 0, 0)>]
+    [<InlineData("F0A3P0G0", 0, 2, 0, 0)>]
+    [<InlineData("F0A0P1G0", 0, 0, 1, 0)>]
+    [<InlineData("F0A0P2G0", 0, 0, 2, 0)>]
+    [<InlineData("F0A0P3G0", 0, 0, 2, 0)>]
+    [<InlineData("F0A0P0G1", 0, 0, 0, 1)>]
+    [<InlineData("F0A0P0G2", 0, 0, 0, 2)>]
+    [<InlineData("F0A0P0G3", 0, 0, 0, 2)>]
+    [<InlineData("F1", 3, 2, 1, 1)>]
+    [<InlineData("actorName", 0, 1, 0, 0)>]
+    [<InlineData("actorSurname", 0, 1, 0, 0)>]
+    [<InlineData("actorName actorSurname", 0, 1, 0, 0)>]
+    [<InlineData("actorName acto", 0, 1, 0, 0)>]
+    [<InlineData("actorNameactorSurname", 0, 0, 0, 0)>]
+    [<InlineData("producerName", 0, 0, 1, 0)>]
+    [<InlineData("producerSurname", 0, 0, 1, 0)>]
+    [<InlineData("producerName producerSurname", 0, 0, 1, 0)>]
+    [<InlineData("producerName prod", 0, 0, 1, 0)>]
+    [<InlineData("producerNameproducerSurname", 0, 0, 0, 0)>]
+    member this.``Test search``
+        (
+            value: string,
+            filmsCount: int,
+            actorsCount: int,
+            producersCount: int,
+            genresCount: int
+        ) =
         let route = RouteConstants.NavbarSearch
         let client = factory.CreateClient()
-        let data = List<KeyValuePair<string, string>>();
-        data.Add(KeyValuePair<string, string>("namePart", "F1A0P0G0"));
+        let data = List<KeyValuePair<string, string>>()
+        data.Add(KeyValuePair<string, string>("namePart", value))
         task {
             let! response = client.PostAsync(route, new FormUrlEncodedContent(data))
             Assert.True(response.StatusCode = HttpStatusCode.OK)
             let! content = response.Content.ReadAsStringAsync()
-            let result = JsonConvert.DeserializeObject<SearchEntityResultDto> content
-            Assert.True(result <> null &&
-                        result <> SearchEntityResultDto() &&
-                        result.Films <> null &&
-                        result.Films |> Seq.length = 1)
+            let result =
+                JsonConvert.DeserializeObject<SearchEntityResultDto> content
+            Assert.True(
+                result <> null
+                && result <> SearchEntityResultDto()
+                && result.Films <> null
+                && result.Films |> Seq.length = filmsCount
+                && result.Actors <> null
+                && result.Actors |> Seq.length = actorsCount
+                && result.Producers <> null
+                && result.Producers |> Seq.length = producersCount
+                && result.Genres <> null
+                && result.Genres |> Seq.length = genresCount
+            )
         }
