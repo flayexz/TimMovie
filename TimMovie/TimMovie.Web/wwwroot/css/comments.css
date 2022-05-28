@@ -1,15 +1,17 @@
 .comments-container-header{
-    /*text-align: center;*/
-    margin-top: 30px;
-    margin-bottom: 60px;
+    margin-top: 50px;
 }
 
-.comment-container,
-.leave-comment-container{
+.comment-container{
     background: rgb(31,27,46);
     border-radius: 7px;
     padding-bottom: 20px;
     margin-bottom: 20px;
+}
+
+.leave-comment-container{
+    border-radius: 7px;
+    padding-bottom: 20px;
 }
 
 .comment-author-img{
