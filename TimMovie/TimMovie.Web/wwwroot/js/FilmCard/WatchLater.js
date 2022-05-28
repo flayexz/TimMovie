@@ -1,14 +1,28 @@
-﻿let isWatchLaterFilm
+﻿watchLaterAddText = 'Смотреть позже';
+watchLaterRemoveText = 'Убрать из смотреть позже';
 
-function isWatched(filmId) {
-    return $.get({
-        url: "/Film/IsFilmAddedToWatchLater",
+function AddToWatchLater(filmId, watchLaterBtn = null) {
+    $.post({
+        url: "/Film/AddFilmToWatchLater",
         data: {filmId: filmId},
         datatype: Boolean,
         success: function (data) {
             if (data != null) {
-                isWatchLaterFilm = data;
-            }
+                ChangeWatchLaterSvg(watchLaterBtn);
+            } 
         }
-    });
+    })
+}
+
+function RemoveFilmFromWatchLater(filmId, watchLaterBtn = null, isBigFilmCard = false) {
+    $.post({
+        url: "/Film/RemoveFilmFromWatchLater",
+        data: {filmId: filmId},
+        datatype: Boolean,
+        success: function (data) {
+            if (data != null && !isBigFilmCard) {
+                ChangeWatchLaterSvg(watchLaterBtn);
+            } 
+        }
+    })
 }

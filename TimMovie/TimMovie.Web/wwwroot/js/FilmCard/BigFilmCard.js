@@ -26,3 +26,13 @@ $(window).resize(function () {
         isRemoved = false;
     }
 });
+
+$(".watch_later_films").on('click', '.watch_later', function (e) {
+    e.preventDefault();
+    let filmInfo = $(this).closest(".info_section");
+    let filmId = filmInfo.children(".stretched-link").attr("href").split("/").pop();
+    RemoveFilmFromWatchLater(filmId, null, true);
+    filmInfo.closest("#movie_card").remove()
+    if ($(".watch_later_films").find(".movie_card").length === 0)
+        $(".watch_later_films_empty_text").text("Вы ещё не добавили фильмы в смотреть позже")
+})

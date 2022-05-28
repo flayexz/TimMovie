@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Services.Films;
 using TimMovie.Web.Extensions;
-using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.FilmCard;
 
 namespace TimMovie.Web.Controllers.WatchLaterController;
@@ -17,20 +16,35 @@ public class WatchLaterController : Controller
         _mapper = mapper;
         _watchLaterService = watchLaterService;
     }
-    
-    
-    
-    [HttpGet("[controller]/{userId:guid}")]
-    public IActionResult WatchLater(Guid userId)
+
+    [HttpGet("[controller]")]
+    public IActionResult WatchLater()
     {
-        var isOwner = User.Identity.IsAuthenticated && User.GetUserId() == userId;
-        if (!isOwner)
-        {
+        // var userId = User.GetUserId();
+        // if (userId is null)
+        //     return BadRequest();
+        // var isOwner = User.Identity.IsAuthenticated;
+        // if (!isOwner) return BadRequest();
+        // var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId.Value);
+        //
+        // var watchedFilmsList = _mapper.Map<List<BigFilmCardViewModel>>(watchLaterFilms);
+        return View("~/Views/Navbar/WatchLater/WatchLater.cshtml");
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> WatchLaterFilms(int take, int skip)
+    {
+        var userId = User.GetUserId();
+        if (userId is null)
             return BadRequest();
-        }
-        var watchLaterFilms =  _watchLaterService.GetWatchLaterFilmsAsync(userId);
+        var isOwner = User.Identity.IsAuthenticated;
+        if (!isOwner) return BadRequest();
         
-        var watchedFilmsList = _mapper.Map<List<BigFilmCardViewModel>>(watchLaterFilms);
-        return View("~/Views/Navbar/WatchLater/WatchLater.cshtml", watchedFilmsList);
+        var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId.Value, take, skip);
+
+        var cardsViewModel = _mapper.Map<IEnumerable<BigFilmCardViewModel>>(watchLaterFilms);
+
+        return PartialView("~/Views/Partials/FilmCard/BigFilmCards.cshtml", cardsViewModel);
     }
 }

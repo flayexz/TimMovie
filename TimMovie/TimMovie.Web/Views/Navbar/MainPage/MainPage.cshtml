@@ -31,13 +31,13 @@
     <!-- Banner carousel -->
     <div class="col-10 p-0">
 
-        <div id="bannerCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
             <!-- slides of banners -->
             <div class="carousel-inner circleBorders">
                 @for (var i = 0; i < banners.Count; i++)
                 {
                     var active = i == 0 ? "active" : string.Empty;
-                    <a asp-controller="Film" asp-action="Film" asp-route-id="@banners[i].Film.Id">
+                    <a asp-controller="Film" asp-action="Film" asp-route-filmId="@banners[i].Film.Id">
                         <div class="carousel-item @active" data-bs-interval="10000">
                             <div class="overlay-image" style="background-image:url(@banners[i].Image)">
                             </div>
@@ -46,7 +46,7 @@
                                 <p>
                                     @banners[i].Description
                                 </p>
-                                <a class="btn btn-lg btn_color" asp-controller="Film" asp-action="Film" asp-route-id="@banners[i].Film.Id">
+                                <a class="btn btn-lg btn_color" asp-controller="Film" asp-action="Film" asp-route-filmId="@banners[i].Film.Id">
                                     Смотреть
                                 </a>
                             </div>
@@ -83,6 +83,7 @@
     <script src="~/js/Support/modal_window_chat.js"></script>
     <script src="~/js/Support/connection_hub_for_user_chat.js"></script>
     <script src="~/js/gradeModalWindow.js"></script>
+    <script src="~/js/svgLogic.js"></script>
     <script src="~/js/FilmCard/WatchLater.js"></script>
 }
 
@@ -93,4 +94,6 @@
     <link rel="stylesheet" href="~/css/Support/modalWindowChat.css"/>
     <link rel="stylesheet" href="~/css/carousel.css"/>
     <link rel="stylesheet" href="~/css/gradeModalWindow.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    
 }

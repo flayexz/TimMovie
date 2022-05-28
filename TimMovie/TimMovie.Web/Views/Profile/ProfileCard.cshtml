@@ -32,7 +32,7 @@
                         </svg>
                         <div class="ms-2">Смотрит фильм:</div>
                     </div>
-                    <a class="ms-4 [ filmLinkInProfile ]" asp-controller="Film" asp-action="Film" asp-route-id="@Model.UserInfo.FilmForStatusDto?.Id">@(Model.UserInfo.FilmForStatusDto?.Title ?? "Фильм не известен")</a>
+                    <a class="ms-4 [ filmLinkInProfile ]" asp-controller="Film" asp-action="Film" asp-route-filmId="@Model.UserInfo.FilmForStatusDto?.Id">@(Model.UserInfo.FilmForStatusDto?.Title ?? "Фильм не известен")</a>
                     break;
                 case UserStatusEnum.Offline:
                     <div class="d-flex align-items-center [ offline_status ]">

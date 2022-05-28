@@ -31,7 +31,7 @@ public class FilmCardService
     }
 
     public IEnumerable<FilmCardDto> GetFilmCardsByFilters(
-        GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
+        GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination, Guid userId = default)
     {
         ArgumentValidator.ThrowExceptionIfNull(filtersWithPagination, nameof(filtersWithPagination));
         ArgumentValidator.ThrowExceptionIfNull(
@@ -44,18 +44,20 @@ public class FilmCardService
 
         var films = GetFilmsWithCountryAndGenres(filtersWithPagination, queryExecutor);
 
-        var filmCard = GetFilmCardsByFilms(films);
+        var filmCard = GetFilmCardsByFilms(films, userId);
 
         return filmCard;
     }
 
-    private List<FilmCardDto> GetFilmCardsByFilms(IEnumerable<Film> films)
+    private List<FilmCardDto> GetFilmCardsByFilms(IEnumerable<Film> films, Guid userId = default)
     {
         return films
             .Select(film =>
             {
                 var filmCard = _mapper.Map<FilmCardDto>(film);
                 filmCard.Rating = _filmService.GetRating(film);
+                if (userId != default)
+                    AddGradeAndWatchLater(filmCard, userId);
                 return filmCard;
             })
             .ToList();
@@ -87,7 +89,8 @@ public class FilmCardService
     }
 
 
-    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount, Guid? filmToRemoveId)
+    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount, Guid? filmToRemoveId,
+        Guid userId = default)
     {
         var isNeedToRemove = filmToRemoveId is not null;
         if (isNeedToRemove) amount += 1;
@@ -105,11 +108,18 @@ public class FilmCardService
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .GetEntitiesWithPagination(0, amount);
-
+        
         if (isNeedToRemove)
             films = films.Where(film => film.Id != filmToRemoveId).ToList();
 
-        return GetFilmCardsByFilms(films);
+        return GetFilmCardsByFilms(films, userId);
+    }
+
+    private void AddGradeAndWatchLater(FilmCardDto filmCardDto, Guid userId)
+    {
+        _filmService.TryGetUserGrade(filmCardDto.Id, userId, out var tmpGrade);
+        filmCardDto.IsGradeSet = tmpGrade is not null;
+        filmCardDto.IsAddedToWatchLater = _filmService.IsWatchLaterFilm(filmCardDto.Id, userId);
     }
 
     public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid userId, int amount)

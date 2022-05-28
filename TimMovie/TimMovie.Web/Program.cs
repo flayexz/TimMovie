@@ -49,6 +49,7 @@ app.UseUserStatusUpdateService();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=MainPage}/{action=MainPage}/{id?}");
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<ChatHub>("/chat");

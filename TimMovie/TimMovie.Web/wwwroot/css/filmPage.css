@@ -50,18 +50,6 @@ button{
  border: 0;
 }
 
-.buttons{
- background-color: #23212b;
- color:rgba(255, 255, 255, .72);
- font-size: 1.2rem;
- border-radius: 8px;
- height: 40px;
- display: flex;
- align-items: center;
- justify-content: center;
- padding: 10px;
- margin-top: 10px;
-}
 
 .hover_link{
  font-size: 1.3rem;
@@ -73,10 +61,6 @@ button{
 
 .hover_link:hover{
  color: #fff;
-}
-
-.buttons:hover{
- background-color: #36353e;
 }
 
 #more{
@@ -145,10 +129,9 @@ button{
  color: rgba(255, 255, 255, 0.72);
 }
 
-#watch_later{
- max-width: 250px;
+.under_film_buttons{
+ max-width: max-content;
 }
-
 
 .film__line {
  border-bottom: 1px solid rgb(114, 114, 114);
@@ -222,9 +205,6 @@ button{
 
  #watch_later_label {
   display: none;
- }
- .svg_size{
-  width: 4em;
  }
 }
 

@@ -39,3 +39,26 @@
     display: flex;
     flex-direction: column;
 }
+
+.buttons{
+    background-color: #23212b;
+    color:rgba(255, 255, 255, .72);
+    font-size: 1.2rem;
+    border-radius: 8px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.buttons:hover{
+    background-color: #36353e;
+}
+
+.zindex-2{
+    position: relative;
+    z-index: 2;
+}

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
+using TimMovie.Core.Query.Films;
 using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.SharedKernel.Interfaces;
@@ -27,14 +28,13 @@ public class WatchLaterService
 
     
     
-    public List<BigFilmCardDto> GetWatchLaterFilmsAsync(Guid userId)
+    public List<BigFilmCardDto> GetWatchLaterFilmsAsync(Guid userId, int take, int skip)
     {
-        var user = _userManager.Users
+        var filmsWatchLater = _userManager.Users
             .Where(u => u.Id == userId)
-            .Include(u => u.FilmsWatchLater)
-            .First();
+            .Select(u => u.FilmsWatchLater.Skip(skip).Take(take))
+            .FirstOrDefault();
 
-        var filmsWatchLater = user.FilmsWatchLater;
         if (filmsWatchLater is null) return new List<BigFilmCardDto>();
 
         var filmDtoList = filmsWatchLater.Select(f => _filmService.GetFilmById(f.Id));

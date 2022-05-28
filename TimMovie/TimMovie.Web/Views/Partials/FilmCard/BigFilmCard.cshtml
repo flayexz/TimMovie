@@ -7,24 +7,29 @@
 
 <div class="movie_card" id="movie_card">
     <div class="info_section">
-        <a class="stretched-link" asp-controller="Film" asp-action="Film" asp-route-id="@film.Id"></a>
-        <div class="watch_later_btn" title="Убрать из смотреть позже">
-            <svg xmlns="http://www.w3.org/2000/svg" width="2.2em" height="2.2em" fill="#EFF9F0" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
-                <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-            </svg>
-        </div>
+        <a class="stretched-link" asp-controller="Film" asp-action="Film" asp-route-filmId="@film.Id"></a>
         <div class="info_container d-flex flex-wrap justify-content-center">
+            <div class="watch_later_btn" title="Убрать из смотреть позже">
+                <button class="watch_later buttons bg-transparent border-0 p-0 m-0">
+                    <svg class="watch_later_svg"
+                         width="2.2em" height="2.2em"
+                         xmlns="http://www.w3.org/2000/svg"
+                         fill="#c6c6c9">
+                        <use xlink:href="/img/svgIcons/sprite.svg#RemoveFromWatchLater"/>
+                    </svg>
+                </button>
+            </div>
             <div class="movie_header text-center">
                 <h1>@film.Title</h1>
                 <h4>
-                    <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>,
-                    <a class="hover_link" href="#">@film.Producer.Name @film.Producer.Surname</a>
+                    <a class="hover_link zindex-3" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>,
+                    <a class="hover_link zindex-3" href="#">@film.Producer.Name @film.Producer.Surname</a>
                 </h4>
 
                 <ul class="type">
                     @foreach (var genre in film.Genres)
                     {
-                        <li class="d-inline-block">&bull; <a class="hover_link" asp-controller="Films" asp-action="Filters" asp-route-genres="@genre.Name">@genre.Name</a></li>
+                        <li class="d-inline-block">&bull; <a class="hover_link zindex-3" asp-controller="Films" asp-action="Filters" asp-route-genres="@genre.Name">@genre.Name</a></li>
                     }
                 </ul>
             </div>
