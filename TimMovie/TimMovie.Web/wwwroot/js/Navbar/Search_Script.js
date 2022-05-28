@@ -1,21 +1,22 @@
 $(function () {
     let element = $('#input-search-entities-navbar')
-    element.keyup(function (e) {
+    let previousRequest;
+    let currentRequest;
+    element.keyup(function () {
         let value = element.val();
         if (value == null || value.trim() === '')
             return;
-        $.post({
+        previousRequest = currentRequest;
+        currentRequest = $.post({
             url: "/Search/SearchEntityResults",
             data: {namePart: value},
             success: function (data) {
                 $('.search-elements').html(data);
-                element.focus();
-            },
-            error: function (){
-                element.focus();
+                previousRequest = null;
             }
         })
-        element.blur();
+        if (previousRequest !== null)
+            currentRequest.abort();
     });
     $("#buttonClose").click(function () {
         $('#dialogContent').html();
