@@ -26,6 +26,7 @@ function Banner(props: Props) {
     const [image, setImage] = useState<string>(process.env.REACT_APP_FILESERVER + props.banner.image)
 
     function onCancelClick() {
+        setFile(null)
         setIsEdit(false)
         setPreview(null)
         setDescription(originDescription)

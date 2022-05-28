@@ -21,7 +21,7 @@ function ActorsProducersRaw(person: ActorsProducersRowProps) {
     const [originPhoto, setOriginPhoto] = useState(person.photo)
     const [name, setName] = useState(originName)
     const [surname, setSurname] = useState(originSurname)
-    const [file, setFile] = useState<File>()
+    const [file, setFile] = useState<File | null>()
     const [preview, setPreview] = useState<string | null>(originPhoto)
 
     function isFieldsValid(): boolean {
@@ -29,6 +29,7 @@ function ActorsProducersRaw(person: ActorsProducersRowProps) {
     }
 
     function cancelEdit() {
+        setFile(null)
         setName(originName)
         setSurname(originSurname)
         setPreview(originPhoto)
