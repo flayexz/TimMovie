@@ -18,6 +18,7 @@ function Layout(){
                                 <NavLink className={activateLink} to="/" >Пользователи</NavLink>
                                 <NavLink className={activateLink} to="/banners">Баннеры</NavLink>
                                 <NavLink className={activateLink} to="/films/collection">Фильмы</NavLink>
+                                <NavLink className={activateLink} to="/actorsProducers">Актеры и режиссеры</NavLink>
                                 <NavLink className={activateLink} to="/genres">Жанры</NavLink>
                             </div>
                             <div><Logout/></div>

@@ -3,10 +3,16 @@ import NameDto from "../../dto/NameDto";
 import {getRepository} from "typeorm";
 import {includeNamePart} from "../../common/queryFunction";
 import {Producer} from "../../../entities/Producer";
-import {Actor} from "../../../entities/Actor";
+import {PersonDto} from "../../dto/PersonDto";
+import {Result} from "../../dto/Result";
+import {Guid} from "guid-typescript";
+import {FileService} from "../FileService";
 
 @Injectable()
 export class ProducerService{
+    constructor(private readonly fileService: FileService) {
+    }
+
     async getActorsByNamePart(namePart: string, skip: number, take: number): Promise<NameDto[]>{
         if (namePart == null){
             return [];
@@ -47,5 +53,40 @@ export class ProducerService{
                     }
                 })
             });
+    }
+
+    async addProducer(newProducer: PersonDto, image: Express.Multer.File): Promise<Result<string>>{
+        let resultSaveImage = await this.fileService.saveImage(image, 'producer');
+        if (!resultSaveImage.success) {
+            return {
+                success: false,
+                textError: "Во время сохранения  произошла ошибка",
+            }
+        }
+
+        const repository = getRepository(Producer)
+
+        let producer = repository.create({
+            id: Guid.create().toString(),
+            name: newProducer.name,
+            surname: newProducer.surname,
+            photo: resultSaveImage.result
+        })
+        try {
+            await repository.save(producer);
+            return {success: true}
+        } catch (e) {
+            return {success: false, textError: e.message}
+        }
+    }
+
+    async deleteProducer(id: string){
+        try {
+            const repository = getRepository(Producer)
+            await repository.delete(id)
+            return {success: true}
+        } catch (e) {
+            return {success: false, textError: e.message}
+        }
     }
 }

@@ -3,15 +3,11 @@ import {getRepository} from "typeorm";
 import {BannerDto} from "../../dto/BannerDto";
 import {Banner} from "../../../entities/Banner";
 import {Film} from "../../../entities/Film";
-import {relationName} from "typeorm-model-generator/dist/src/NamingStrategy";
 import {NewBannerDto} from "../../dto/NewBannerDto";
 import {Result} from "../../dto/Result";
 import {Guid} from "guid-typescript";
 import {FileService} from "../FileService";
 import PaginationLoading from "../../dto/PaginationLoading";
-import FilmForTableDto from "../../dto/FilmForTableDto";
-import {includeNamePart} from "../../common/queryFunction";
-import {plainToInstance} from "class-transformer";
 import {UpdateBannerDto} from "../../dto/UpdateBannerDto";
 
 @Injectable()

@@ -46,6 +46,7 @@ function Banner(props: Props) {
     function onSaveClick() {
         const validationResult = validateForm()
         if (!validationResult.success) {
+            alert(validationResult.textError)
             return
         }
         let data = generateRequestData()

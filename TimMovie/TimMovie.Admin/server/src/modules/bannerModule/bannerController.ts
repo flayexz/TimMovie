@@ -40,7 +40,6 @@ export class BannerController {
 
     @Delete('/:bannerId')
     async deleteBanner(@Param("bannerId") bannerId: string): Promise<Result<string>> {
-        console.log(bannerId)
         return await this.bannerService.deleteBanner(bannerId)
     }
 
