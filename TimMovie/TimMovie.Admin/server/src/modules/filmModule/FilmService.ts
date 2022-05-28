@@ -8,14 +8,13 @@ import {Guid} from "guid-typescript";
 import {plainToInstance} from "class-transformer";
 import {ActorService} from "../actorModule/ActorService";
 import {ProducerService} from "../producerModule/ProducerService";
-import {GenreService} from "../genreModule/ProducerService";
 import {CountryService} from "../countryModule/country.service";
 import PaginationLoading from "../../dto/PaginationLoading";
 import FilmForTableDto from "../../dto/FilmForTableDto";
 import {includeNamePart} from "../../common/queryFunction";
 import NameDto from "../../dto/NameDto";
 import FullInfoAboutFilmDto from "../../dto/FullInfoAboutFilmDto";
-import {log} from "util";
+import {GenreService} from "../genreModule/GenreService";
 
 
 @Injectable()
