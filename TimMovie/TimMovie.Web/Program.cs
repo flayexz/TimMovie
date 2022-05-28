@@ -24,7 +24,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
 
-builder.Services.AddHostedService<UserStatusWorker>();
+// builder.Services.AddHostedService<UserStatusWorker>();
 
 var app = builder.Build();
 
@@ -45,6 +45,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseUserStatusUpdateService();
+app.UseUserStatusDeleteService();
 
 app.MapControllerRoute(
     name: "default",
