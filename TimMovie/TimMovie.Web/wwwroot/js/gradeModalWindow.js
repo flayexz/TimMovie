@@ -3,6 +3,7 @@ let gradeNumber = $(".gradeNumber");
 let savedFilmId = null;
 let gradeSet = "Изменить оценку фильма";
 let gradeUnset = "Поставить оценку фильму";
+let buttonSetGrade = $("#rate_movie_label");
 
 function getGrade(filmId) {
     savedFilmId = filmId;
@@ -50,13 +51,15 @@ function setGrade(filmId, e) {
 }
 
 function updateGradeAfterSet(){
-    $("#rate_movie_label")[0].innerText = gradeSet;
+    if (buttonSetGrade[0] !== undefined)
+        buttonSetGrade[0].innerText = gradeSet;
     $(".svg-grade-unset").css({"display": "none"});
     $(".svg-grade-set").css({"display": "block"});
 }
 
 function updateGradeAfterUnset(){
-    $("#rate_movie_label")[0].innerText = gradeUnset;
+    if (buttonSetGrade[0] !== undefined)
+        buttonSetGrade[0].innerText = gradeUnset;
     $(".svg-grade-unset").css({"display": "block"});
     $(".svg-grade-set").css({"display": "none"});
 }

@@ -5,6 +5,8 @@ import {UserService} from "./UserService";
 import {SubscribeService} from "../subscribesModule/SubscribeService";
 import {Admin} from "../authModule/adminAuth";
 import {RoleService} from "../roleModule/RoleService";
+import {Result} from "../../dto/Result";
+import {UserInfoDto} from "../../dto/UserInfoDto";
 
 @Admin()
 @Controller('users')
@@ -29,19 +31,16 @@ export class UserController{
         const user: AllInformationAboutUserDto = await this.userService.getAllInfoAboutUser(id);
         return user;
     }
-    
-    @Post("updateSubscribes")
-    public async updateAllSubscribes(
-        @Body("userId")userId: string, 
-        @Body("subscribeIds")subscribeIds: string[]): Promise<void>{
-        await this.subscribeService.updateSubscribeForUser(userId, subscribeIds);
-    }
 
-    @Post("updateRoles")
-    public async updateAllRoles(
-        @Body("userId")userId: string,
-        @Body("roleNames")roleNames: string[]): Promise<void>{
-        await this.roleService.updateRolesForUser(userId, roleNames);
+    @Post("updateRolesAndSub")
+    public async updateRolesAndSubscribes(@Body() userInfo: UserInfoDto): Promise<Result<string>>{
+        console.log(userInfo);
+        await this.subscribeService.updateSubscribeForUser(userInfo.userId, userInfo.subscribeNames);
+        await this.roleService.updateRolesForUser(userInfo.userId, userInfo.roleNames);
+        
+        return {
+            success: true
+        }
     }
 
     @Get("isExist")

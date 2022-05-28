@@ -1,7 +1,9 @@
 import {Controller, Get, Query} from '@nestjs/common';
 import NameDto from "../../dto/NameDto";
 import {CountryService} from "./country.service";
+import {Admin} from "../authModule/adminAuth";
 
+@Admin()
 @Controller('countries')
 export class CountryController {
     constructor(private readonly cityService: CountryService) {

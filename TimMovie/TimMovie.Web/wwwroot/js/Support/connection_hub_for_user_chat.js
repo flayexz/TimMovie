@@ -41,9 +41,16 @@
     hubConnection.on("GetInWaitingQueue", async function (){
         await hubConnection.invoke("PutInQueueCurrentUser");
     });
-    
+
+    function hubIsConnect(){
+        return hubConnection.state === "Connected";
+    }
 
     async function sendMessage() {
+        if(!hubIsConnect()){
+            return;
+        }
+        
         let textMessage = messageInput.val();
         if (textMessage == null || textMessage.length === 0 || !/\S/.test(textMessage)){
             return;

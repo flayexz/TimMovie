@@ -3,14 +3,21 @@ import {getRepository} from "typeorm";
 import {Actor} from "../../../entities/Actor";
 import {includeNamePart} from "../../common/queryFunction";
 import NameDto from "../../dto/NameDto";
+import {PersonDto} from "../../dto/PersonDto";
+import {Result} from "../../dto/Result";
+import {Guid} from "guid-typescript";
+import {FileService} from "../FileService";
 
 @Injectable()
-export class ActorService{
-    async getActorsByNamePart(namePart: string, skip: number, take: number): Promise<NameDto[]>{
-        if (namePart == null){
+export class ActorService {
+    constructor(private readonly fileService: FileService) {
+    }
+
+    async getActorsByNamePart(namePart: string, skip: number, take: number): Promise<NameDto[]> {
+        if (namePart == null) {
             return [];
         }
-        
+
         let actors = await getRepository(Actor)
             .find({
                 where: [
@@ -24,7 +31,7 @@ export class ActorService{
                     surname: "ASC"
                 }
             });
-        
+
         let actorsDto = actors.map(actor => {
             return {
                 id: actor.id,
@@ -33,8 +40,8 @@ export class ActorService{
         });
         return actorsDto;
     }
-    
-    async getActorsByFullName(fullName: string[]): Promise<Actor[]>{
+
+    async getActorsByFullName(fullName: string[]): Promise<Actor[]> {
         return await getRepository(Actor)
             .find({
                 where: fullName.map(value => {
@@ -46,5 +53,40 @@ export class ActorService{
                     }
                 })
             });
+    }
+
+    async addActor(newActor: PersonDto, image: Express.Multer.File): Promise<Result<string>> {
+        let resultSaveImage = await this.fileService.saveImage(image, 'actor');
+        if (!resultSaveImage.success) {
+            return {
+                success: false,
+                textError: "Во время сохранения  произошла ошибка",
+            }
+        }
+
+        const repository = getRepository(Actor)
+
+        let actor = repository.create({
+            id: Guid.create().toString(),
+            name: newActor.name,
+            surname: newActor.surname,
+            photo: resultSaveImage.result
+        })
+        try {
+            await repository.save(actor);
+            return {success: true}
+        } catch (e) {
+            return {success: false, textError: e.message}
+        }
+    }
+
+    async deleteActor(id: string){
+        try {
+            const repository = getRepository(Actor)
+            await repository.delete(id)
+            return {success: true}
+        } catch (e) {
+            return {success: false, textError: e.message}
+        }
     }
 }

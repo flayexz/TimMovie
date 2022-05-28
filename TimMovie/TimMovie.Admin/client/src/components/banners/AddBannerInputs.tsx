@@ -27,11 +27,11 @@ function AddBannerInputs(props : Props) {
     return (<>
         <div className="mt-4 w-100 d-flex flex-row justify-content-around">
             <div className="d-flex flex-column">
-                <label htmlFor="bannerDescriptionInput" className="text-center"><h5>Описание</h5></label>
+                <label htmlFor="bannerDescriptionInput" className="text-center"><h5>Описание<RequiredFieldIcon/></h5></label>
                 <textarea maxLength={250} id="bannerDescriptionInput" style={{resize: "none"}}
-                          className={styles.adminInput} cols={60} rows={5} value={props.description!}  onChange={desc => onDescriptionChange(desc)} />
+                          className={styles.adminInput} cols={60} rows={5} value={props.description!}  onChange={desc => onDescriptionChange(desc)}/>
             </div>
-            <div className="d-flex flex-column" style={{color:'black'}}>
+            <div style={{color:'black'}}>
                     <div className="mb-2">Фильм<RequiredFieldIcon/></div>
                         <DropdownSearchOneValueWithError dropdownSearchOneValue={{
                             value: props.film,
