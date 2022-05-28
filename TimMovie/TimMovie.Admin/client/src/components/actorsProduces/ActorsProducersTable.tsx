@@ -15,7 +15,7 @@ interface ActorsProducersTableProps {
 }
 
 function getTypeInRussian(type: string): string{
-    return type == 'actor' ? 'Актер' : 'Продюссер'
+    return type == 'actor' ? 'Актер' : 'Режиссер'
 }
 
 function ActorsProducersTable(props: ActorsProducersTableProps) {
