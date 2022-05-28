@@ -1,8 +1,10 @@
 ﻿namespace TimMovie.WebApi.Tests.Tests
 
+open System.Collections.Generic
+open System.Net
 open System.Net.Http
-open Microsoft.AspNetCore.Http
 open Newtonsoft.Json
+open TimMovie.Core.DTO
 open TimMovie.WebApi.Tests
 open Xunit
 open TimMovie.WebApi
@@ -14,11 +16,15 @@ type SearchTests(factory: BaseApplicationFactory<Program>) =
      member this.``[TEST] [WITH JWT]Получить единственный фильм``() =
         let route = RouteConstants.NavbarSearch
         let client = factory.CreateClient()
-        let body = {| namePart  = "F1" |}
-        let httpMessage = client.GetAsync(route) |> Async.AwaitTask |> Async.RunSynchronously
-        Assert.True(httpMessage.StatusCode = System.Net.HttpStatusCode.OK)
-//        task {
-////            let! httpMessage = client.PostAsync(route, new StringContent(JsonConvert.SerializeObject body))
-//            let! httpMessage = client.GetAsync(route)
-//            Assert.True(httpMessage.StatusCode = System.Net.HttpStatusCode.OK)
-//        }
+        let data = List<KeyValuePair<string, string>>();
+        data.Add(KeyValuePair<string, string>("namePart", "F1A0P0G0"));
+        task {
+            let! response = client.PostAsync(route, new FormUrlEncodedContent(data))
+            Assert.True(response.StatusCode = HttpStatusCode.OK)
+            let! content = response.Content.ReadAsStringAsync()
+            let result = JsonConvert.DeserializeObject<SearchEntityResultDto> content
+            Assert.True(result <> null &&
+                        result <> SearchEntityResultDto() &&
+                        result.Films <> null &&
+                        result.Films |> Seq.length = 1)
+        }

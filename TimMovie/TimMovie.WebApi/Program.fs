@@ -6,7 +6,6 @@ open System
 open Autofac
 open Autofac.Extensions.DependencyInjection
 open Microsoft.Extensions.Options
-open Microsoft.OpenApi.Models
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Hosting

@@ -26,11 +26,6 @@ type MainPageController
 
     member private _.jwtService = JwtService()
 
-    [<HttpGet>]
-//    [<Consumes("application/x-www-form-urlencoded")>]
-    member _.Get123() =
-        "123"
-        
     [<HttpPost>]
     [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
