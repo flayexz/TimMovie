@@ -1,60 +1,57 @@
 ﻿import {Injectable} from "@nestjs/common";
-import {getRepository} from "typeorm";
+import {getRepository, In, Not} from "typeorm";
 import {Guid} from "guid-typescript";
 import {Subscribe} from "../../../entities/Subscribe";
-import {UserSubscribeDto} from "../../dto/UserSubscribeDto";
 import {UserSubscribe} from "../../../entities/UserSubscribe";
-import {SubscribeDto} from "../../dto/SubscribeDto";
+import NameDto from "../../dto/NameDto";
+import {plainToInstance} from "class-transformer";
+import {addMonths} from "../../common/dateExtensions";
 
 @Injectable()
 export class SubscribeService {
-    public async getUserSubscribesAndAllRemaining(userId: string): Promise<UserSubscribeDto[]>{
+    public async getAllSubscribes(): Promise<NameDto[]>{
         let allSubscribes = await getRepository(Subscribe).find();
-        let userSubscribes = await this.getAllUserSubscribes(userId); 
-        let userSubscribesAndAllRemaining: UserSubscribeDto[] = allSubscribes.map(subscribe =>{
-            return {
-                subscribe: {
-                    id: subscribe.id,
-                    subscribeName: subscribe.name
-                },
-                userIsIncludedInSubscribe: userSubscribes
-                    .find(value => value.subscribeName === subscribe.name) != undefined,
-            }
-        })
+        let subscribesDto = plainToInstance(NameDto, allSubscribes);
         
-        return userSubscribesAndAllRemaining;
-    }
-    
-    public async getAllUserSubscribes(userId: string): Promise<SubscribeDto[]>{
-        let subscribes  = await getRepository(UserSubscribe).find({
-            where:{ subscribedUserId: userId },
-            relations: ["subscribe"],
-        })
-        
-        let subscribesDto: SubscribeDto[] = subscribes.map(subscribe => {
-           return {
-               id: subscribe.subscribeId,
-               subscribeName: subscribe.subscribe.name,
-           } 
-        });
+        console.log(subscribesDto);
         
         return subscribesDto;
     }
     
-    public async updateSubscribeForUser(userId: string, subscribeIds: string[]): Promise<void>{
-        await getRepository(UserSubscribe)
-            .delete({
-                subscribedUserId: userId
-            });
+    public async updateSubscribeForUser(userId: string, subscribeNames: string[]): Promise<void>{
+        let subscribeIds = (await getRepository(Subscribe)
+            .find({
+                where: {
+                    name: In(subscribeNames)
+                }
+            })).map(value => value.id);
         
-        await getRepository(UserSubscribe)
-            .insert(subscribeIds.map(subscribeId => {
+        let userSubscribeRep = getRepository(UserSubscribe);
+        
+        let notChangedSubscribes = (await userSubscribeRep
+            .find({
+                where: {
+                    subscribedUserId: userId,
+                    subscribeId: In(subscribeIds)
+                }
+            })).map(value => value.subscribeId);
+
+        let subscribeForAdd = subscribeIds.filter(id => !notChangedSubscribes.includes(id));
+ 
+        
+        await userSubscribeRep.delete({
+            subscribedUserId: userId,
+            subscribeId: Not(In(subscribeIds))
+        });
+        
+        await userSubscribeRep
+            .insert(subscribeForAdd.map(id => {
                 return {
                     id: Guid.create().toString(),
+                    subscribeId: id,
                     subscribedUserId: userId,
-                    subscribeId: subscribeId,
                     startDay: new Date(),
-                    endDate: new Date()
+                    endDate: addMonths(new Date(), 1)
                 }
             }));
     }

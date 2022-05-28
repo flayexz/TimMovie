@@ -4,7 +4,10 @@ import NameDto from "../../dto/NameDto";
 import {Result} from "../../dto/Result";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {PersonDto} from "../../dto/PersonDto";
+import {Admin} from "../authModule/adminAuth";
 
+
+@Admin()
 @Controller('actors')
 export class ActorController {
     constructor(private readonly actorService: ActorService) {

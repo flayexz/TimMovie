@@ -4,7 +4,10 @@ import {ProducerService} from "./ProducerService";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {PersonDto} from "../../dto/PersonDto";
 import {Result} from "../../dto/Result";
+import {Admin} from "../authModule/adminAuth";
 
+
+@Admin()
 @Controller('producers')
 export class ProducerController {
     constructor(private readonly producerService: ProducerService) {

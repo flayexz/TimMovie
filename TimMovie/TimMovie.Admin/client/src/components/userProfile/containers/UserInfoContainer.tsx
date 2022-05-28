@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import LineWithSvg from "../LineWithSvg";
 import {IFullUserInfoDto} from "../../../dto/IFullUserInfoDto";
+import moment from "moment";
 
 interface IUserInfoContainerProps {
     info: IFullUserInfoDto | undefined
@@ -9,12 +10,12 @@ interface IUserInfoContainerProps {
 const UserInfoContainer: React.FC<IUserInfoContainerProps> = ({info}:IUserInfoContainerProps) => {
     return (
         <div className="user_info">
-            <LineWithSvg icon={"Profile"} line={info?.displayName} isBold={true}/>
-            <LineWithSvg icon={"Login"} line={info?.login}/>
-            <LineWithSvg icon={"Mail"} line={info?.email}/>
-            <LineWithSvg icon={"BirthDate"} line={info?.birthDate}/>
-            <LineWithSvg icon={"Country"} line={info?.countryName}/>
-            <LineWithSvg icon={"RegisterDate"} line={info?.registrationDate?.toString()}/>
+            <LineWithSvg title="Отображаемый ник" icon={"Profile"} line={info?.displayName} isBold={true}/>
+            <LineWithSvg title="Логин" icon={"Login"} line={info?.login}/>
+            <LineWithSvg title="Почта" icon={"Mail"} line={info?.email}/>
+            <LineWithSvg title="Дата рождения" icon={"BirthDate"} line={info?.birthDate ?? "Не указано"}/>
+            <LineWithSvg title="Страна проживания" icon={"Country"} line={info?.countryName ?? "Не указано"}/>
+            <LineWithSvg title="Дата регистрации" icon={"RegisterDate"} line={moment(info?.registrationDate).format("DD-MM-YYYY HH:mm")}/>
         </div>
     );
 };

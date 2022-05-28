@@ -1,65 +1,34 @@
 ﻿import {Injectable} from '@nestjs/common';
 import {getRepository} from "typeorm";
-import {RoleDto} from "../../dto/RoleDto";
 import {AspNetUserClaim} from "../../../entities/AspNetUserClaim";
-import {AspNetUser} from "../../../entities/AspNetUser";
-import {UserRoleDto} from "../../dto/UserRoleDto";
+import NameDto from "../../dto/NameDto";
+import {RoleNames} from "../../consts/RoleNames";
+import {Guid} from "guid-typescript";
 
 @Injectable()
 export class RoleService {
-   public async getUserRolesAndAllRemaining(id: string): Promise<UserRoleDto[]> {
-       let allRoles = await getRepository(AspNetUserClaim)
-           .createQueryBuilder()
-           .addSelect("AspNetUserClaim.Id", "id")
-           .addSelect("AspNetUserClaim.claimValue", "claimValue")
-           .where(`AspNetUserClaim.claimType = :claimType`, {claimType: process.env.CLAIM_ROLE})
-           .distinctOn(["AspNetUserClaim.claimValue"])
-           .execute();
-       console.log(allRoles);
-       let userRoles = await this.getAllUserRoles(id);
-       
-       let roles: UserRoleDto[] = allRoles.map(role => {
-          return  {
-              role: {
-                  id: role.id,
-                  roleName: role.claimValue
-              },
-              userIsIncludedInRole: userRoles.find(userRole => userRole.roleName === role.claimValue) != undefined
-          }
+   public getAllRoles(): NameDto[] {
+       let names: NameDto[] = [...RoleNames].map(role => {
+           return {
+               id: Guid.create().toString(),
+               name: role
+           }
        });
        
-       return roles;
-   }
-   
-   public async getAllUserRoles(id: string): Promise<RoleDto[]>{
-       let user = await getRepository(AspNetUser)
-           .findOne({
-              where: {
-                  id: id,
-              },
-               relations: ["aspNetUserClaims"]
-           });
-       
-       let userRoles: RoleDto[] = user.aspNetUserClaims
-           .filter(claim => claim.claimType === process.env.CLAIM_ROLE)
-           .map(claim => {
-               return {
-                   id: claim.id,
-                   roleName: claim.claimValue
-               }
-           });
-       return userRoles;
+       return names;
    }
 
     public async updateRolesForUser(userId: string, roleNames: string[]): Promise<void>{
-        await getRepository(AspNetUserClaim)
+       let userClaimRep = getRepository(AspNetUserClaim);
+        await userClaimRep
             .delete({
                 claimType: process.env.CLAIM_ROLE,
                 userId: userId
             });
+        let checkedRoles = roleNames.filter(value => RoleNames.has(value));
 
-        await getRepository(AspNetUserClaim)
-            .insert(roleNames.map(roleName => {
+        await userClaimRep
+            .insert(checkedRoles.map(roleName => {
                 return {
                     claimType: process.env.CLAIM_ROLE,
                     claimValue: roleName,
