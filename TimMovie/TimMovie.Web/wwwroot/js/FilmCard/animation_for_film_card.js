@@ -71,5 +71,7 @@ $(".film_card_btns").on('click', function (e) {
 });
 
 $("#container_film_card").on("click", ".film_card_btns", function (e) {
+    console.log('clicked')
     handleCardButtons(this, e)
 });
+

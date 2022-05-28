@@ -20,14 +20,6 @@ public class WatchLaterController : Controller
     [HttpGet("[controller]")]
     public IActionResult WatchLater()
     {
-        // var userId = User.GetUserId();
-        // if (userId is null)
-        //     return BadRequest();
-        // var isOwner = User.Identity.IsAuthenticated;
-        // if (!isOwner) return BadRequest();
-        // var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId.Value);
-        //
-        // var watchedFilmsList = _mapper.Map<List<BigFilmCardViewModel>>(watchLaterFilms);
         return View("~/Views/Navbar/WatchLater/WatchLater.cshtml");
     }
 

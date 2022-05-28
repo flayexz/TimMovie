@@ -12,7 +12,6 @@ public class BigFilmCardViewModel
     public string Image { get; set; } = null!;
     public List<Genre> Genres { get; set; }
     public List<Actor> Actors { get; set; }
-    public Producer Producer { get; set; }
+    public Producer? Producer { get; set; }
     public double? Rating { get; set; }
-    public bool IsFree { get; set; }
 }

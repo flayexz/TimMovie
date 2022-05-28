@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     showOptimalActorCardsNumber();
+    if ($(".movie_header").height() > 80){
+        $(".movie_header").find("h1").css("font-size", "2rem")
+    }
 });
 
 function showOptimalActorCardsNumber() {

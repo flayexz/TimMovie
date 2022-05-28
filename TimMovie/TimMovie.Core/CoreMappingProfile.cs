@@ -41,7 +41,7 @@ public class CoreMappingProfile : Profile
         CreateMap<FilmDto, BigFilmCardDto>()
             .ForMember(f => f.Producer,
                 e =>
-                    e.MapFrom(src => src.Producers.First()))
+                    e.MapFrom(src => src.Producers.FirstOrDefault()))
             .ForMember(f => f.CountryName, e => e.MapFrom(src => src.Country.Name))
             .ForMember(f => f.Image, e => e.MapFrom(src => src.Image));
     }
