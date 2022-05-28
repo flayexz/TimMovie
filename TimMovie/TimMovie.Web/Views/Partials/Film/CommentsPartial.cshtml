@@ -4,21 +4,20 @@
     var comments = Model;
     Layout = null;
 }
-
 @foreach (var comment in comments)
 {
-    <div class="comment-container">
-        <div class="comment-header d-flex">
-            <a class="comment-author-img-container" asp-controller="UserProfile" asp-action="Profile" asp-route-id="@comment.Author.Id">
-                <img class="comment-author-img" src="@comment.Author.PathToPhoto" alt=""/>
+<div class="comment-container">
+    <div class="comment-header d-flex">
+        <a class="comment-author-img-container" asp-controller="UserProfile" asp-action="Profile" asp-route-id="@comment.Author.Id">
+            <img class="comment-author-img" src="@comment.Author.PathToPhoto" alt=""/>
+        </a>
+        <div class="comment-author-data">
+            <a class="comment-author-nick" asp-controller="UserProfile" asp-action="Profile" asp-route-id="@comment.Author.Id">
+                @comment.Author.DisplayName
             </a>
-            <div class="comment-author-data">
-                <a class="comment-author-nick" asp-controller="UserProfile" asp-action="Profile" asp-route-id="@comment.Author.Id">
-                    @comment.Author.DisplayName
-                </a>
-                <div class="comment-author-publish-date">@comment.Date</div>
-            </div>
+            <div class="comment-author-publish-date">@comment.Date</div>
         </div>
-        <div class="comment-body">@comment.Content</div>
     </div>
+    <div class="comment-body">@comment.Content</div>
+</div>
 }

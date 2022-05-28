@@ -9,12 +9,18 @@
     window.addEventListener("scroll", tryLoadMoreComments);
     window.addEventListener("resize", tryLoadMoreComments);
 
+    if ($(".comments-container-body-comments")[0].innerHTML.trim() === "") {
+        $(".comments-container-body-comments").append("<div class=\"comments-stub h5\">Здесь пока ничего нет</div>")
+    }
+
 
     window.onload = function () {
         skip = 0;
     }
 
     $(".leave-comment-container").on('click', '.button-comment-send', () => {
+        if ($(".comments-stub")[0] !== undefined)
+            $(".comments-stub")[0].innerHTML = "";
         let element = $(".textarea-comment")[0];
         if (element.value.length < 2) {
             changeButtonColorAndText("Слишком короткое сообщение", errorColor);
@@ -60,6 +66,10 @@
                 skip: skip
             },
             success: function (data) {
+                if ($(".comments-stub")[0] !== undefined) {
+                    allLoaded = true;
+                    return;
+                }
                 allLoaded = data.length < take;
                 $(".comments-container-body-comments").append(data);
             }
