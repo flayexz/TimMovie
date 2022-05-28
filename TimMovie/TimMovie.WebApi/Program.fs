@@ -14,36 +14,14 @@ open OpenIddict.Validation.AspNetCore
 open TimMovie.Core
 open TimMovie.Core.Classes
 open TimMovie.Infrastructure
+open TimMovie.WebApi.Configuration
 open TimMovie.WebApi.Configuration.AppMappingProfile
 
-module Program =
-    let exitCode = 0
-
-    let info =
-        OpenApiInfo(Title = "WebAPI server", Version = "v1")
-
-    let scheme =
-        OpenApiSecurityScheme(
-            Name = "Authorization",
-            Type = SecuritySchemeType.ApiKey,
-            Scheme = "Bearer",
-            BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-            Description =
-                "JWT Authorization header using the Bearer scheme.
-        \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.
-        \r\n\r\nExample: \"Bearer 1safsfsdfdfd\""
-        )
-
-    let securityRequirement = OpenApiSecurityRequirement()
-
-    securityRequirement.Add(
-        OpenApiSecurityScheme(Reference = OpenApiReference(Type = ReferenceType.SecurityScheme, Id = "Bearer")),
-        Array.empty
-    )
+type public Program() =
 
     [<EntryPoint>]
-    let main args =
+    static let main args =
+        
         let builder = WebApplication.CreateBuilder(args)
 
         builder.Host.UseServiceProviderFactory(AutofacServiceProviderFactory())
@@ -89,6 +67,7 @@ module Program =
 
         services.Configure<MailSetup>(configuration.GetSection("MailSetup"))
         services.AddScoped<MailSetup>(fun (x: IServiceProvider) -> x.GetService<IOptions<MailSetup>>().Value)
+
         services
             .AddOpenIddict()
             .AddValidation(fun options ->
@@ -100,8 +79,8 @@ module Program =
 
         services.AddSwaggerGen
             (fun config ->
-                config.AddSecurityDefinition("Bearer", scheme)
-                config.AddSecurityRequirement(securityRequirement))
+                config.AddSecurityDefinition("Bearer", SwaggerSettings.GetScheme())
+                config.AddSecurityRequirement(SwaggerSettings.GetSecurityRequirement()))
         |> ignore
 
         let app = builder.Build()
@@ -118,4 +97,4 @@ module Program =
 
         app.Run()
 
-        exitCode
+        0

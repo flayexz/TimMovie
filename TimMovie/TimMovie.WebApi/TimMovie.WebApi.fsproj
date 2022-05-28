@@ -11,6 +11,7 @@
         <Compile Include="Controllers\ProfileController.fs" />
         <Compile Include="Controllers\FilmController.fs" />
         <Compile Include="Configuration\AppMappingProfile.fs" />
+        <Compile Include="Configuration\SwaggerSettings.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

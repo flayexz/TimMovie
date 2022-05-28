@@ -6,12 +6,12 @@ open Microsoft.AspNetCore.Mvc.Testing
 open Microsoft.EntityFrameworkCore
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
-open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
+open TimMovie.WebApi
 
 type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
     inherit WebApplicationFactory<Program>()
-
+    
     override this.ConfigureWebHost(builder) =
         builder.ConfigureServices
             (fun (services: IServiceCollection) ->
@@ -21,7 +21,6 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
                         .SingleOrDefault()
 
                 services.Remove(descriptor) |> ignore
-
                 services.AddDbContext<ApplicationContext>
                     (fun options ->
                         options.UseInMemoryDatabase("InMemoryDbForTesting")
@@ -35,7 +34,7 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
                 
                 db.Database.EnsureCreated() |> ignore
                 try
-                    db.Genres.Add(Genre(Name = "Жанр")) |> ignore
+                    DatabaseFillerCommon.Start(db) |> ignore
                     db.SaveChanges() |> ignore
                 with
                     | :? Exception as ex -> logger.LogInformation(ex.Message)

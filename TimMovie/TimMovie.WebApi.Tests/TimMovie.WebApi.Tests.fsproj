@@ -8,8 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="DatabaseFillers\DatabaseFillerNavbarSearch.fs" />
+        <Compile Include="DatabaseFillers\DatabaseFillerCommon.fs" />
         <Compile Include="BaseApplicationFactory.fs" />
-        <Compile Include="Tests.fs" />
+        <Compile Include="RouteConstants.fs" />
+        <Compile Include="Tests\SearchTests.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
