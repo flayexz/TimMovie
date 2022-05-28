@@ -9,6 +9,7 @@ import RequireAuth from "./components/auth/RequireAuth";
 import BannersPage from "./components/banners/BannersPage";
 import FilmsPage from "./components/films/FilmsPage";
 import FilmEditPage from "./components/films/FilmEditPage";
+import GenresPage from "./components/genres/GenresPage";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/users/:id" element={<UserProfile/>}/>
                     <Route path="/films/collection" element={<FilmsPage/>}/>
                     <Route path="/films/:id" element={<FilmEditPage/>}/>
+                    <Route path="/genres" element={<GenresPage/>}/>
                 </Route>
             </Routes>
         </AuthProvider>

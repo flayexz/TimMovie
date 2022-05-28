@@ -1,9 +1,10 @@
-import {FC} from "react";
+import {CSSProperties, FC} from "react";
 
 interface IconProps {
     name: string;
     width?: number;
     height?: number;
+    styles?: CSSProperties;
 }
 
 const Icon: FC<IconProps> = (props) => {
@@ -20,6 +21,7 @@ const Icon: FC<IconProps> = (props) => {
             style={{
                 width: `${width}px`,
                 height: `${height}px`,
+                ...props.styles
             }}
         >
             <use xlinkHref={`/sprite.svg#${name}`}/>
