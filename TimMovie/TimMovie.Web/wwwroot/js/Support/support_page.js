@@ -84,8 +84,12 @@
         chatBody.empty();
     });
     
+    function hubIsConnect(){
+        return hubConnection.state === "Connected";
+    }
+    
     async function sendMessage() {
-        if(hubConnection.state !== "Connected" || !chatIsPrepare){
+        if(!hubIsConnect() || !chatIsPrepare){
             return;
         }
         
@@ -115,6 +119,10 @@
     }
     
     async function startWork(){
+        if (!hubIsConnect()){
+            return;
+        }
+        
         startWorkBtn.attr("disabled", true);
         await hubConnection.invoke("StartWorkForSupport");
     }

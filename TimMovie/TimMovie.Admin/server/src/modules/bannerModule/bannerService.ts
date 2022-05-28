@@ -3,11 +3,12 @@ import {getRepository} from "typeorm";
 import {BannerDto} from "../../dto/BannerDto";
 import {Banner} from "../../../entities/Banner";
 import {Film} from "../../../entities/Film";
-import {relationName} from "typeorm-model-generator/dist/src/NamingStrategy";
 import {NewBannerDto} from "../../dto/NewBannerDto";
 import {Result} from "../../dto/Result";
 import {Guid} from "guid-typescript";
 import {FileService} from "../FileService";
+import PaginationLoading from "../../dto/PaginationLoading";
+import {UpdateBannerDto} from "../../dto/UpdateBannerDto";
 
 @Injectable()
 export class BannerService {
@@ -16,6 +17,23 @@ export class BannerService {
 
     public async GetAllBanners(): Promise<BannerDto[]> {
         const banners = await getRepository(Banner).find({relations: ['film']})
+        return banners.map(banner => {
+            return {
+                description: banner.description,
+                image: banner.image,
+                filmTitle: banner.film.title,
+                bannerId: banner.id
+            }
+        })
+    }
+
+    async getBannersByPart(pagination: PaginationLoading): Promise<BannerDto[]> {
+        let banners = await getRepository(Banner)
+            .find({
+                relations: ['film'],
+                take: pagination.take,
+                skip: pagination.skip
+            });
         return banners.map(banner => {
             return {
                 description: banner.description,
@@ -72,6 +90,28 @@ export class BannerService {
         } catch (e) {
             return {success: false, textError: e.message}
         }
+    }
+
+    public async updateBanner(banner: UpdateBannerDto, image: Express.Multer.File | null): Promise<Result<string>> {
+        let bannerRepository = await getRepository(Banner)
+        try {
+             await bannerRepository.update(banner.bannerId, {description: banner.description});
+            if (image != null) {
+                let resultSaveImage = await this.fileService.saveImage(image, 'banner');
+                if (resultSaveImage.success) {
+                    await bannerRepository.update(banner.bannerId,{image: resultSaveImage.result})
+                } else {
+                    return {
+                        success: false,
+                        textError: `не удалось сохранить новое изображение: ${resultSaveImage.textError}`
+                    }
+                }
+            }
+        } catch (e) {
+            return {success: false, textError: `не удалось обновить баннер: ${e.message}`}
+        }
+
+        return {success: true}
     }
 
 }

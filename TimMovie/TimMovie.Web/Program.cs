@@ -2,14 +2,11 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using TimMovie.Core;
 using TimMovie.Infrastructure;
-using TimMovie.Infrastructure.Services;
 using TimMovie.Web.Configuration;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -24,7 +21,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
 
-builder.Services.AddHostedService<UserStatusWorker>();
+// builder.Services.AddHostedService<UserStatusWorker>();
 
 var app = builder.Build();
 
@@ -44,7 +41,9 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseUserStatusUpdateService();
+app.UseUserStatusDeleteService();
 
 app.MapControllerRoute(
     name: "default",

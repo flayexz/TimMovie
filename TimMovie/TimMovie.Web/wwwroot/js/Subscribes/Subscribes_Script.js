@@ -3,6 +3,7 @@ $(function () {
         let subBody = $('.subscribeCard-container');
         const url = "/Subscribes/SubscribesResult";
         let allLoaded = false;
+        let isLoading = false;
         let amountSkip = 0;
         const amountTake = 10;
 
@@ -29,7 +30,7 @@ $(function () {
         });
 
         function tryLoadMoreSubscribes() {
-            if (allLoaded) {
+            if (allLoaded || isLoading) {
                 return;
             }
 
@@ -39,6 +40,7 @@ $(function () {
             const threshold = height - screenHeight / 5;
             const position = scrolled + screenHeight;
             if (position >= threshold) {
+                isLoading = true;
                 getSubscribes();
             }
         }
@@ -52,7 +54,7 @@ $(function () {
                     allLoaded = result.length < amountTake;
                     subBody.append(result);
                 }
-            })
+            }).then(() => isLoading = false);
         }
 
     }

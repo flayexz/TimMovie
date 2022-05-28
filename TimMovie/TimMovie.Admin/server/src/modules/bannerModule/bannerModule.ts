@@ -5,6 +5,7 @@ import {FileService} from "../FileService";
 
 @Module({
     controllers: [BannerController],
-    providers: [BannerService,FileService]
+    providers: [BannerService, FileService]
 })
-export class BannerModule {}
+export class BannerModule {
+}
