@@ -23,7 +23,8 @@ public class UserStatusDeleteServiceMiddleware
     {
         var users = _userManager.Users
             .Include(u => u.Status)
-            .Where(u => u.Status != null && u.Status.UserStatusEnum != UserStatusEnum.Offline);
+            .Where(u => u.Status != null && u.Status.UserStatusEnum != UserStatusEnum.Offline)
+            .ToList();
         foreach (var user in users)
         {
             if (DateTime.Now - user.Status!.DateLastChange <= TimeSpan.FromMinutes(CountMinutes)) continue;
