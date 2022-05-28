@@ -45,7 +45,11 @@ export class PersonService {
         let producers = (await getRepository(Producer).find({
             where: [
                 {name: includeNamePart(pagiantion.namePart)},
-                {surname: includeNamePart(pagiantion.namePart)}
+                {surname: includeNamePart(pagiantion.namePart)},
+                {
+                    surname: pagiantion.namePart.split(' ').length > 1 ? includeNamePart(pagiantion.namePart.split(' ')[1]) : false,
+                    name: includeNamePart(pagiantion.namePart.split(' ')[0])
+                }
             ],
             order: {
                 name: 'ASC',

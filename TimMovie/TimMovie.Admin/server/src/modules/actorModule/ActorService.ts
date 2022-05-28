@@ -7,7 +7,6 @@ import {PersonDto} from "../../dto/PersonDto";
 import {Result} from "../../dto/Result";
 import {Guid} from "guid-typescript";
 import {FileService} from "../FileService";
-import {Banner} from "../../../entities/Banner";
 
 @Injectable()
 export class ActorService {
