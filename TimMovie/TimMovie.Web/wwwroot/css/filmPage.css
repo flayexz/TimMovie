@@ -170,8 +170,8 @@ button{
 
 .actors-producers__item__img {
  border-radius: 50%;
- max-width: 90px;
- max-height: 90px;
+ width: 90px;
+ height: 90px;
  object-fit: cover;
 }
 
