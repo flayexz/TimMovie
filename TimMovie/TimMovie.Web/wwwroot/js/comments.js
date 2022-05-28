@@ -30,11 +30,12 @@
                 changeButtonColorAndText("Cлишком длинное сообщение", errorColor);
                 return;
             }
+            let value = element[0].value
+            element[0].value = "";
             $.post({
                 url: "/Film/LeaveComment",
-                data: {filmId: document.URL.split('/').pop(), content: element[0].value},
+                data: {filmId: document.URL.split('/').pop(), content: value},
                 success: function (data) {
-                    element[0].value = "";
                     $(".comments-container-body-comments").prepend(data);
                     changeButtonColorAndText("Комментарий добавлен", successColor);
                     if ($(".comments-stub")[0] !== undefined)
@@ -54,11 +55,12 @@
             changeButtonColorAndText("Cлишком длинное сообщение", errorColor);
             return;
         }
+        let value = element[0].value
+        element[0].value = "";
         $.post({
             url: "/Film/LeaveComment",
-            data: {filmId: document.URL.split('/').pop(), content: element.value},
+            data: {filmId: document.URL.split('/').pop(), content: value},
             success: function (data) {
-                element.value = "";
                 $(".comments-container-body-comments").prepend(data);
                 changeButtonColorAndText("Комментарий добавлен", successColor);
                 if ($(".comments-stub")[0] !== undefined)
