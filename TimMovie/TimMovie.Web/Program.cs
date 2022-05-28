@@ -2,14 +2,11 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using TimMovie.Core;
 using TimMovie.Infrastructure;
-using TimMovie.Infrastructure.Services;
 using TimMovie.Web.Configuration;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -44,6 +41,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseUserStatusUpdateService();
 app.UseUserStatusDeleteService();
 

@@ -10,18 +10,16 @@ namespace TimMovie.Web.Middleware;
 public class UserStatusDeleteServiceMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly UserManager<User> _userManager;
     private const int CountMinutes = 5;
 
-    public UserStatusDeleteServiceMiddleware(RequestDelegate next, UserManager<User> userManager)
+    public UserStatusDeleteServiceMiddleware(RequestDelegate next)
     {
         _next = next;
-        _userManager = userManager;
     }
 
-    public async Task InvokeAsync(HttpContext context)
+    public async Task InvokeAsync(HttpContext context,  UserManager<User> userManager)
     {
-        var users = _userManager.Users
+        var users = userManager.Users
             .Include(u => u.Status)
             .Where(u => u.Status != null && u.Status.UserStatusEnum != UserStatusEnum.Offline)
             .ToList();
@@ -30,7 +28,7 @@ public class UserStatusDeleteServiceMiddleware
             if (DateTime.Now - user.Status!.DateLastChange <= TimeSpan.FromMinutes(CountMinutes)) continue;
             user.Status.UserStatusEnum = UserStatusEnum.Offline;
             user.Status.DateLastChange = DateTime.Now;
-            await _userManager.UpdateAsync(user);
+            await userManager.UpdateAsync(user);
         }
 
         await _next.Invoke(context);
