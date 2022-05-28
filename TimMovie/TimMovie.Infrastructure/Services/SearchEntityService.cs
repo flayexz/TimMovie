@@ -26,9 +26,9 @@ public class SearchEntityService : ISearchEntityService
     /// <summary>
     /// Всего 10 записей: 4 фильма, 2 жанра, 2 актера, 2 режиссера
     /// </summary>
-    public SearchEntityResultDto GetSearchEntityResultByNamePart(string namePart)
+    public SearchEntityResultDto GetSearchEntityResultByNamePart(string? namePart)
     {
-        var result = new SearchEntityResultDto()
+        var result = new SearchEntityResultDto
         {
             Films = _filmService.GetFilmsByNamePart(namePart, 4),
             Genres = _genreService.GetGenresByNamePart(namePart, 2),

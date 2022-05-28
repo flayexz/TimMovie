@@ -15,7 +15,7 @@ public class SearchEntityViewComponent : ViewComponent
     }
 
 
-    public IViewComponentResult Invoke(string namePart)
+    public IViewComponentResult Invoke(string? namePart)
     {
         var searchResult = _searchEntityService.GetSearchEntityResultByNamePart(namePart);
 

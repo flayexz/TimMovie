@@ -1,16 +1,15 @@
-﻿namespace TimMovie.WebApi.Controllers.AuthorizationController
+﻿namespace TimMovie.WebApi.Controllers.AccountController
 
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Mvc
-open Microsoft.Extensions.Logging
 open TimMovie.Core.DTO.Account
 open TimMovie.Core.Interfaces
 open TimMovie.SharedKernel.Classes
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
-type AccountController(logger: ILogger<AccountController>, userService: IUserService) as this =
+type AccountController(userService: IUserService) as this =
     inherit ControllerBase()
 
     member private _.UrlToConfirmEmail =
@@ -24,7 +23,7 @@ type AccountController(logger: ILogger<AccountController>, userService: IUserSer
         userRegistrationDto.Email <- email
         userRegistrationDto.UserName <- username
         userRegistrationDto.Password <- password
-
+        
         let registerResult =
             userService.RegisterUserAsync(userRegistrationDto)
             |> Async.AwaitTask
