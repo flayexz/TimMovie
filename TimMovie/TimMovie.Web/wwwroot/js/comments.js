@@ -1,4 +1,4 @@
-$(function () {
+﻿$(function () {
     let skip = 0;
     const take = 5;
     let allLoaded = false;
@@ -18,9 +18,33 @@ $(function () {
         skip = 0;
     }
 
+    $(document).on("keypress", e => {
+        let element = $(".textarea-comment")
+        if (e.key === "Enter" && !e.shiftKey && element.is(":focus")) {
+            event.preventDefault();
+            if (element[0].value.length < 2) {
+                changeButtonColorAndText("Слишком короткое сообщение", errorColor);
+                return;
+            }
+            if (element[0].value.length > 1000) {
+                changeButtonColorAndText("Cлишком длинное сообщение", errorColor);
+                return;
+            }
+            $.post({
+                url: "/Film/LeaveComment",
+                data: {filmId: document.URL.split('/').pop(), content: element[0].value},
+                success: function (data) {
+                    element[0].value = "";
+                    $(".comments-container-body-comments").prepend(data);
+                    changeButtonColorAndText("Комментарий добавлен", successColor);
+                    if ($(".comments-stub")[0] !== undefined)
+                        $(".comments-stub")[0].innerHTML = "";
+                }
+            });
+        }
+    })
+
     $(".leave-comment-container").on('click', '.button-comment-send', () => {
-        if ($(".comments-stub")[0] !== undefined)
-            $(".comments-stub")[0].innerHTML = "";
         let element = $(".textarea-comment")[0];
         if (element.value.length < 2) {
             changeButtonColorAndText("Слишком короткое сообщение", errorColor);
@@ -37,6 +61,8 @@ $(function () {
                 element.value = "";
                 $(".comments-container-body-comments").prepend(data);
                 changeButtonColorAndText("Комментарий добавлен", successColor);
+                if ($(".comments-stub")[0] !== undefined)
+                    $(".comments-stub")[0].innerHTML = "";
             }
         });
     });
