@@ -26,7 +26,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TimMovie.Infrastructure\TimMovie.Infrastructure.csproj" />
-      <ProjectReference Include="..\TimMovie.Web\TimMovie.Web.csproj" />
     </ItemGroup>
 
     <ItemGroup>
