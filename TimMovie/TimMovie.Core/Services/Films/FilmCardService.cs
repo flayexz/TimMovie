@@ -96,8 +96,7 @@ public class FilmCardService
         filterBuilder.AddFilterByGenre(new[] {genreName});
 
         var sortBuilder = new SortFilmBuilder(filterBuilder);
-        sortBuilder.AddSortByRating(false);
-        sortBuilder.AddSortByViews(false);
+        sortBuilder.AddSortByPopularity(true);
 
         var queryExecutor = sortBuilder.Build();
 

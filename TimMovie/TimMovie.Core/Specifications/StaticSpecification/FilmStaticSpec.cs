@@ -7,4 +7,6 @@ public class FilmStaticSpec
 {
     public static readonly Specification<Film> FilmIsIncludedAnySubscriptionSpec = 
         new(film => film.Subscribes.Any());
+    public static readonly Specification<Film> FilmWithoutRatings = 
+        new(film => film.UserFilmWatcheds.All(watched => watched.Grade == null));
 }

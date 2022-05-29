@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
+using TimMovie.Core.ExpressionQuery.Films;
 using TimMovie.Core.Query;
 using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.Specifications.InheritedSpecifications;
@@ -105,15 +106,13 @@ public class FilmService
                             && FilmStaticSpec.FilmIsIncludedAnySubscriptionSpec) is not null;
     }
 
-    public double? GetRating(Film film)
+    public double GetRating(Film film)
     {
         var rating = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(film.Id))
-            .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
+            .Select(FilmQueryExpression.Rating)
             .FirstOrDefault();
-        return rating.HasValue
-            ? Math.Round(rating.Value, 1)
-            : null;
+        return Math.Round(rating, 1);
     }
 
     public IEnumerable<Film> GetFilmsByNamePart(string namePart, int count = int.MaxValue) =>

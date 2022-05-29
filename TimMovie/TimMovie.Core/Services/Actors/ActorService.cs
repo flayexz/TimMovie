@@ -3,7 +3,7 @@ using TimMovie.Core.DTO.Person;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
 using TimMovie.Core.Specifications.InheritedSpecifications;
-using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.ActorSpec;
+using TimMovie.Core.Specifications.InheritedSpecifications.ActorSpec;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Actors;

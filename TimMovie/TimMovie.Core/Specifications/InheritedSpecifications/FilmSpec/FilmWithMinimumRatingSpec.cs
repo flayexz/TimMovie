@@ -15,6 +15,6 @@ public class FilmWithMinimumRatingSpec: Specification<Film>
     public FilmWithMinimumRatingSpec(double rating)
     {
         Conditional = film =>
-            film.UserFilmWatcheds.Select(watched => watched.Grade).Average() >= rating;
+            film.UserFilmWatcheds.Select(watched => watched.Grade ?? 0).Average() >= rating;
     }
 }
