@@ -29,17 +29,17 @@ public class WatchedFilmsController : Controller
     }
 
 
-    [HttpGet("[controller]/{userId:guid}")]
-    public async Task<IActionResult> WatchedFilms(Guid userId, int page = 1)
+    [HttpGet("[controller]/{id:guid}")]
+    public async Task<IActionResult> WatchedFilms(Guid id, int page = 1)
     {
-        var user = await userManager.FindByIdAsync(userId.ToString());
+        var user = await userManager.FindByIdAsync(id.ToString());
 
         if (user is null)
         {
             return View("~/Views/Errors/UserNotExisting.cshtml");
         }
 
-        var watchedFilmsDto = watchedFilmService.GetPaginatedUserWatchedFilmsByUserId(userId, page, PageSize);
+        var watchedFilmsDto = watchedFilmService.GetPaginatedUserWatchedFilmsByUserId(id, page, PageSize);
 
         if (!watchedFilmsDto.Any())
         {
