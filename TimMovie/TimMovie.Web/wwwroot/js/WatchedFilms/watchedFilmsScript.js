@@ -58,6 +58,7 @@ function resizeToDefault() {
 
 let body = $("body");
 let lastPressedButton = null;
+
 body.on('click', '.setGradeButton', (e) => {
     lastPressedButton = $(e.target)[0];
     let parent = $(e.target)[0].parentNode;
@@ -70,6 +71,7 @@ body.on('click', '.gradeNumber', (e) => {
     setGrade(savedFilmId, e).then(_ => {
         if (lastPressedButton !== null){
             lastPressedButton = $(lastPressedButton);
+            let lastSettedGrade = choseButton[0].innerText;
             if (lastSettedGrade >= 1 && lastSettedGrade < 5)
             {
                 if(lastPressedButton.hasClass("goodGrade")){

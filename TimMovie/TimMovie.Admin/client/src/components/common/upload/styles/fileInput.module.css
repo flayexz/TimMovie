@@ -1,5 +1,5 @@
 .input_dragAndDrop {
-    margin-top: 16px;
+    /*margin-top: 16px;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,13 +14,12 @@
 
 .input_dragAndDrop_dropped{
     border: 1px solid gray;
-    margin-top: 16px;
+    /*margin-top: 16px;*/
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     background-color: white;
-    padding: 155px 64px;
 }
 
 

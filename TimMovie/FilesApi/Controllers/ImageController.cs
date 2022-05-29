@@ -10,11 +10,13 @@ public class ImageController : ControllerBase
     private const string DefaultImgName = "default.jpg";
     private readonly ImageService _imageService;
     private readonly FileService _fileService;
+    private readonly ILogger<ImageController> _logger;
 
-    public ImageController(ImageService imageService, FileService fileService)
+    public ImageController(ImageService imageService, FileService fileService, ILogger<ImageController> logger)
     {
         _imageService = imageService;
         _fileService = fileService;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -22,6 +24,7 @@ public class ImageController : ControllerBase
     {
         if (!_fileService.ContentFileIsExisted(relativePath))
         {
+            _logger.LogWarning($"Изображение не найдено");
             if (!TryGetAbsolutePathDefaultImage(relativePath, out var absolutePathDefaultImg))
                 return NotFound();
             return PhysicalFile(absolutePathDefaultImg, "image/jpeg");
@@ -34,11 +37,14 @@ public class ImageController : ControllerBase
 
     private bool TryGetAbsolutePathDefaultImage(string relativePath, out string absolutePathDefaultImg)
     {
+        _logger.LogInformation($"Relative path: {relativePath}");
         absolutePathDefaultImg = null!;
         var parts = relativePath.Split("/");
+        _logger.LogInformation($"Split count: {parts.Length}");
         if (parts.Length != 3)
             return false;
         var newPath = $"{parts[0]}/{parts[1]}/{DefaultImgName}";
+        _logger.LogInformation($"New path: {newPath}");
         if (!_fileService.ContentFileIsExisted(newPath))
             return false;
         absolutePathDefaultImg = _fileService.GetAbsolutePathToFile(newPath);

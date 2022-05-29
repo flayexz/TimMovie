@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Account;
+using TimMovie.Core.DTO.Actor;
+using TimMovie.Core.DTO.Comments;
+using TimMovie.Core.DTO.Country;
 using TimMovie.Core.DTO.Films;
+using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Payment;
+using TimMovie.Core.DTO.Producer;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.Users;
 using TimMovie.Core.DTO.WatchedFilms;
@@ -26,6 +31,10 @@ public class AppMappingProfile : Profile
         CreateMap<ExternalLoginViewModel, ExternalLoginDto>();
         CreateMap<FilmCardDto, FilmCardViewModel>();
         CreateMap<Film, FilmCardViewModel>();
+        CreateMap<Country, CountryDto>().ReverseMap();
+        CreateMap<Producer, ProducerDto>().ReverseMap();
+        CreateMap<Actor, ActorDto>().ReverseMap();
+        CreateMap<Comment, CommentsDto>().ReverseMap();
         CreateMap<LoginViewModel, LoginDto>().ReverseMap();
         CreateMap<UserInfoDto, UserInfoViewModel>();
         CreateMap<SubscribePaymentViewModel, SubscribePaymentDto>().ReverseMap();
@@ -36,6 +45,10 @@ public class AppMappingProfile : Profile
                     src.CardNumber.Trim())).ReverseMap();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
         CreateMap<FilmDto, FilmViewModel>();
+        CreateMap<Film, FilmDto>()
+            .ForMember(
+                filmDto => filmDto.Comments,
+                expression => expression.MapFrom(film => film.Comments)).ReverseMap();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
         CreateMap<BigFilmCardDto, BigFilmCardViewModel>();
     }

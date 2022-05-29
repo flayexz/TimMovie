@@ -13,7 +13,7 @@ export default function ToastNotification({modalControl, ...props}: ToastNotific
                     <strong className="me-auto">TimMovie</strong>
                 </Toast.Header>
                 <Toast.Body className={classNameConcat("text-white", props.bodyClass ?? "")}>
-                    Фильм успешно добавлен
+                    {modalControl.messageText}
                 </Toast.Body>
             </Toast>
         </ToastContainer>

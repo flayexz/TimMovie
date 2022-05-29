@@ -1,6 +1,8 @@
 import React, {FC, useState} from "react";
 import styles from './styles/fileInput.module.css';
 import {UploadProps} from "./UploadProps";
+import useModalWindow from "../../../hook/modal/useModalWindow";
+import ToastNotification from "../modal/ToastNotification";
 
 interface FileInputProps {
     setPreview: Function,
@@ -34,14 +36,14 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
     }
 
     function uploadFiles(files: File[]) {
-        if(!(files[0].name.includes('.jpg') || files[0].name.includes('.png'))){
-            alert('Неверное расширение файла. Фотография должна быть с расширением jpg или png')
+        let fileName = files[0].name.toLowerCase()
+        if(!(fileName.includes('.jpg') || fileName.includes('.png'))){
             setDrag(false);
+            alert('Неверное расширение файла. Фотография должна быть с расширением jpg или png')
             return
         }
         setFile(files[0]);
         setPreview(URL.createObjectURL(files[0]));
-        console.log(files);
         setDrag(false);
     }
 

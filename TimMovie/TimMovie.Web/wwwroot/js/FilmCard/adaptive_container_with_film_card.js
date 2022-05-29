@@ -35,9 +35,20 @@
         if (images.length === 0) {
             return;
         }
+        let image = images[0]
+        
+        if (image.offsetWidth !== 0){
+            resizeText(image.offsetWidth);
+            return;
+        }
 
-        let image = images[0];
-        let width = image.offsetWidth;
+        $(image).one("load", function (e) {
+            let width = e.currentTarget.offsetWidth;
+            resizeText(width)
+        });
+    }
+    
+    function resizeText(width){
         let newFontSizeForTitle = getFontSizeByImageWidth(width);
 
         let allCards = $(".film-card");

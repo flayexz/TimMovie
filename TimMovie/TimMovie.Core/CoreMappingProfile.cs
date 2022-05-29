@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using TimMovie.Core.DTO.Films;
+using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Messages;
+using TimMovie.Core.DTO.Notifications;
 using TimMovie.Core.DTO.Person;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.WatchedFilms;
@@ -17,8 +19,17 @@ public class CoreMappingProfile : Profile
                 dto => dto.FirstGenreName,
                 expression => expression.MapFrom(film => film.Genres.First().Name));
         CreateMap<UserSubscribe, UserSubscribeDto>();
-        CreateMap<Subscribe, SubscribeDto>();
-        CreateMap<Film, FilmDto>();
+        CreateMap<Subscribe, SubscribeDto>()
+            .ForMember(
+                subscribeDto => subscribeDto.Films,
+                expression => expression.MapFrom(subscribe => subscribe.Films)
+                )
+            .ForMember(
+                subscribeDto => subscribeDto.Genres,
+                expression => expression.MapFrom(subscribe => subscribe.Genres)
+            ).ReverseMap();
+        CreateMap<Film, SubscribeFilmDto>();
+        CreateMap<Genre, GenreDto>().ReverseMap();
         CreateMap<User, FilmForStatusDto>()
             .ForMember(
                 film => film.Id,
@@ -37,6 +48,7 @@ public class CoreMappingProfile : Profile
             .ForMember(x => x.Image,
                 e => e.MapFrom(src => src.Film.Image));
         CreateMap<Message, MessageDto>();
+        CreateMap<Notification, NotificationDto>();
         CreateMap<NewMessageDto, Message>();
         CreateMap<FilmDto, BigFilmCardDto>()
             .ForMember(f => f.Producer,

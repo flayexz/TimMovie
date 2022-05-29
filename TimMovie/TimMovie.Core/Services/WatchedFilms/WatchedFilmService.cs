@@ -43,7 +43,7 @@ public class WatchedFilmService
         var watchedDto = films.Select(x =>
         {
             var watchedDto = mapper.Map<WatchedFilmDto>(x);
-            watchedDto.Rating = filmService.GetRating(x.Film) ?? 0;
+            watchedDto.Rating = filmService.GetRating(x.Film);
             return watchedDto;
         });
 

@@ -26,6 +26,7 @@ export function useInput(validations: Validation<string>): InputInfo{
         onChange,
         onBlur,
         resetInput,
+        setValue,
         isDirty,
         validationState: valid
     }

@@ -7,5 +7,6 @@ export default interface InputInfo{
     onBlur: (e: FocusEvent<Node>) => void;
     resetInput: () => void;
     isDirty: boolean;
-    validationState: ValidationState
+    validationState: ValidationState;
+    setValue: (value: string) => void;
 }

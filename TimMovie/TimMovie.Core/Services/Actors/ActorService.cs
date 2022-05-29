@@ -3,7 +3,7 @@ using TimMovie.Core.DTO.Person;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
 using TimMovie.Core.Specifications.InheritedSpecifications;
-using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.ActorSpec;
+using TimMovie.Core.Specifications.InheritedSpecifications.ActorSpec;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Services.Actors;
@@ -21,7 +21,7 @@ public class ActorService
         _mapper = mapper;
     }
 
-    public IEnumerable<Actor> GetActorsByNamePart(string namePart, int count = int.MaxValue) =>
+    public IEnumerable<Actor> GetActorsByNamePart(string? namePart, int count = int.MaxValue) =>
         _actorRepository.Query
             .Where(new ActorByNamePartSpec(namePart))
             .Take(count);

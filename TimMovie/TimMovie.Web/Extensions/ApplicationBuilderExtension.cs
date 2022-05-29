@@ -13,4 +13,9 @@ public static class ApplicationBuilderExtension
     {
         return builder.UseMiddleware<UserStatusUpdateServiceMiddleware>();
     }
+    
+    public static IApplicationBuilder UseUserStatusDeleteService(this IApplicationBuilder builder)
+    {
+        return builder.UseMiddleware<UserStatusDeleteServiceMiddleware>();
+    }
 }

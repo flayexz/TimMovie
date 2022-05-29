@@ -25,7 +25,7 @@ public class Film : BaseEntity
     public List<Producer> Producers { get; set; }
 
     public List<Actor> Actors { get; set; }
-
+    
     public List<Genre> Genres { get; set; }
     public List<User> UsersWatchLater { get; set; }
     public List<User> UsersWatching { get; set; }

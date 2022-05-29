@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.Const;
 using TimMovie.Core.DTO.Messages;
 using TimMovie.Core.Services.Messages;
 
@@ -13,6 +15,7 @@ public class TechnicalSupportController: Controller
         _messageService = messageService;
     }
     
+    [Authorize(Roles = RoleNames.Support)]
     [HttpGet]
     public IActionResult Support()
     {

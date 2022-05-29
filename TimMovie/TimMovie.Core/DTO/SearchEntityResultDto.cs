@@ -6,9 +6,9 @@ public class SearchEntityResultDto
 {
     public IEnumerable<Film> Films { get; set; }
     
-    public IEnumerable<Genre> Genres { get; set; }
+    public IEnumerable<Entities.Genre> Genres { get; set; }
     
-    public IEnumerable<Actor> Actors { get; set;  }
+    public IEnumerable<Entities.Actor> Actors { get; set;  }
     
-    public IEnumerable<Producer> Producers { get; set; }
+    public IEnumerable<Entities.Producer> Producers { get; set; }
 }

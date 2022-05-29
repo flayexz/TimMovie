@@ -11,6 +11,7 @@ import {ActorModule} from "./modules/actorModule/actor.module";
 import {ProducerModule} from "./modules/producerModule/producer.module";
 import {CountryModule} from "./modules/countryModule/countryModule";
 import {GenreModule} from "./modules/genreModule/genre.module";
+import {PersonModule} from "./modules/personModule/personModule";
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import {GenreModule} from "./modules/genreModule/genre.module";
         ProducerModule,
         CountryModule,
         GenreModule,
+        PersonModule
     ],
 })
 export class AppModule {}

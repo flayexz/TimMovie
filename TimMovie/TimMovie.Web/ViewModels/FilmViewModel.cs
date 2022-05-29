@@ -1,4 +1,5 @@
-﻿using TimMovie.Core.Entities;
+﻿using TimMovie.Core.DTO.Comments;
+using TimMovie.Core.Entities;
 
 namespace TimMovie.Web.ViewModels;
 
@@ -16,15 +17,10 @@ public class FilmViewModel
     public int? GradesNumber { get; set; }
     public string? FilmLink { get; set; }
     public List<Producer> Producers { get; set; }
-
     public List<Actor> Actors { get; set; }
-
     public List<Genre> Genres { get; set; }
     public List<Comment> Comments { get; set; }
-    
     public bool IsGradeSet { get; set; }
-    
     public bool IsAddedToWatchLater { get; set; }
-    
     public string? PathToUserPhoto { get; set; }
 }

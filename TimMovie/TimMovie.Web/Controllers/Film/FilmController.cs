@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using TimMovie.Core.DTO.Comments;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Services.Films;
 using TimMovie.Web.Extensions;
@@ -40,14 +42,9 @@ public class FilmController : Controller
         var user = await _userManager.FindByIdAsync(UserId.ToString());
         film.PathToUserPhoto = user.PathToPhoto;
         var comments = GetCommentsWithPagination(film.Id, 0, MaxTakeValue)?.ToList();
-        if (comments is not null)
-            film.Comments = comments
-                .Select(comment =>
-                {
-                    comment.Date -= TimeSpan.FromHours(3);
-                    return comment;
-                })
-                .ToList();
+        if (comments is null) return View("~/Views/Film/Film.cshtml", film);
+        var commentsDto = _mapper.Map<List<CommentsDto>>(comments);
+        film.Comments = commentsDto;
         return View("~/Views/Film/Film.cshtml", film);
     }
 
@@ -59,33 +56,19 @@ public class FilmController : Controller
         var comments = GetCommentsWithPagination(filmId, skip, take)?.ToList();
         if (comments is null)
             return BadRequest();
-        return View("~/Views/Partials/Film/CommentsPartial.cshtml", comments);
+        var commentsDto = _mapper.Map<List<CommentsDto>>(comments);
+        return View("~/Views/Partials/Film/CommentsPartial.cshtml", commentsDto);
     }
 
 
     [HttpPost]
     public async Task<IActionResult> LeaveComment(Guid filmId, string content)
     {
-        if (content.Length is < 2 or > 1000)
+        var result = await _filmService.TryAddCommentToFilm(User.GetUserId(), filmId, content);
+        if (result.IsFailure)
             return BadRequest();
-        if (UserId is null)
-            return BadRequest();
-        var user = await _userManager.FindByIdAsync(UserId.ToString());
-        if (user is null)
-            return BadRequest();
-        var dbFilm = _filmService.GetDbFilmById(filmId);
-        if (dbFilm is null)
-            return BadRequest();
-        var comment = new Comment
-        {
-            Author = user,
-            Film = dbFilm,
-            Content = content,
-            Date = DateTime.Now
-        };
-        if (!await _filmService.TryAddCommentToFilm(comment))
-            return BadRequest();
-        return View("~/Views/Partials/Film/CommentsPartial.cshtml", new List<Comment> {comment});
+        var commentDto = _mapper.Map<CommentsDto>(result.Value);
+        return View("~/Views/Partials/Film/CommentsPartial.cshtml", new List<CommentsDto> {commentDto});
     }
 
     [HttpPost]

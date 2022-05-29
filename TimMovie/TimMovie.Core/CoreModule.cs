@@ -1,4 +1,5 @@
 using Autofac;
+using TimMovie.Core.DTO.Notifications;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Actors;
 using TimMovie.Core.Services.Banners;
@@ -7,6 +8,7 @@ using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Genres;
 using TimMovie.Core.Services.Messages;
+using TimMovie.Core.Services.Notifications;
 using TimMovie.Core.Services.Producers;
 using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.SupportedServices;
@@ -27,6 +29,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<ActorService>(builder);
         RegisterServiceOnSelf<ProducerService>(builder);
         builder.RegisterType<SubscribeService>().As<ISubscribeService>().InstancePerLifetimeScope();
+        builder.RegisterType<NotificationService>().As<INotificationService>().InstancePerLifetimeScope();
         RegisterServiceOnSelf<FileService>(builder);
         RegisterServiceOnSelf<UserValidator>(builder);
         RegisterServiceOnSelf<WatchedFilmService>(builder);
