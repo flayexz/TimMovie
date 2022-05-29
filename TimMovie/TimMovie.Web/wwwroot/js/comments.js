@@ -16,7 +16,6 @@
 
     window.onload = function () {
         skip = 0;
-        replaceDate();
     }
 
     $(document).on("keypress", e => {
@@ -37,7 +36,7 @@
                 url: "/Film/LeaveComment",
                 data: {filmId: document.URL.split('/').pop(), content: value},
                 success: function (data) {
-                    $(".comments-container-body-comments").prepend(data);
+                    $(".comments-container-body-comments").prepend(replaceDate(data));
                     changeButtonColorAndText("Комментарий добавлен", successColor);
                     if ($(".comments-stub")[0] !== undefined)
                         $(".comments-stub")[0].innerHTML = "";
@@ -62,8 +61,8 @@
             url: "/Film/LeaveComment",
             data: {filmId: document.URL.split('/').pop(), content: value},
             success: function (data) {
-                $(".comments-container-body-comments").prepend(data);
                 changeButtonColorAndText("Комментарий добавлен", successColor);
+                $(".comments-container-body-comments").prepend(replaceDate(data));
                 if ($(".comments-stub")[0] !== undefined)
                     $(".comments-stub")[0].innerHTML = "";
             }
@@ -82,7 +81,6 @@
         if (position >= threshold) {
             isLoading = true;
             getComments();
-            replaceDate();
         }
     }
 
@@ -112,17 +110,29 @@
         element[0].innerText = text;
     }
 
-    function replaceDate() {
-        if ($(".comments-container-body-comments")[0].innerHTML.trim() !== "") {
-            let html = $(".comments-container-body-comments")[0].innerHTML;
-            let result = [...html.matchAll(/[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9]:[0-9][0-9]:[0-9][0-9]/g)];
-            $.each(result, function () {
-                let parts = this[0].split(' ');
-                let yearMonthDay = parts[0].split('.');
-                let hourMinuteSecond = parts[1].split(':');
-                console.log(new Date(yearMonthDay[2], yearMonthDay[1], yearMonthDay[0], 
-                    hourMinuteSecond[0], hourMinuteSecond[1], hourMinuteSecond[2]));
-            });
-        }
+    function replaceDate(data) {
+        let pattern = /[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9]:[0-9][0-9]:[0-9][0-9]/g;
+        let commentDate = data.match(pattern);
+        let parts = commentDate[0].split(' ');
+        let yearMonthDay = parts[0].split('.');
+        let hourMinuteSecond = parts[1].split(':');
+        let resultDate = new Date(Date
+            .UTC(yearMonthDay[2], yearMonthDay[1], yearMonthDay[0],
+                hourMinuteSecond[0], hourMinuteSecond[1], hourMinuteSecond[2]))
+            .toLocaleString()
+            .replace(",", "");
+        return data.replace(pattern, resultDate);
+        // let result = [...data.matchAll(/[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9]:[0-9][0-9]:[0-9][0-9]/g)];
+        // $.each(result, function () {
+        //     let parts = this[0].split(' ');
+        //     let yearMonthDay = parts[0].split('.');
+        //     let hourMinuteSecond = parts[1].split(':');
+        //     this[0] = new Date(Date
+        //         .UTC(yearMonthDay[2], yearMonthDay[1], yearMonthDay[0], 
+        //             hourMinuteSecond[0], hourMinuteSecond[1], hourMinuteSecond[2]))
+        //         .toLocaleString()
+        //         .replace(",", "");
+        // });
+        // return data;
     }
 });
