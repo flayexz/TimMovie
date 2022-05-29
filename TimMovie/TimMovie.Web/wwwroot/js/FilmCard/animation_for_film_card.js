@@ -33,7 +33,7 @@ function prepareFilms() {
 }
 
 $(document).ready(function () {
-    //prepareFilms();
+    prepareFilms();
 });
 
 
