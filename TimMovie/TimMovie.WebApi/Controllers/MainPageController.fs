@@ -1,55 +1,104 @@
-﻿namespace TimMovie.WebApi.Controllers.AuthorizationController
+﻿namespace TimMovie.WebApi.Controllers.MainPageController
 
 open System
-open System.Text.Json
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Mvc
-open Microsoft.Extensions.Logging
+open Microsoft.FSharp.Core
+open Newtonsoft.Json
 open OpenIddict.Validation.AspNetCore
+open TimMovie.Core.DTO
+open TimMovie.Core.DTO.Films
 open TimMovie.Core.Interfaces
-open TimMovie.Core.Services.Subscribes
+open TimMovie.Core.Services.Films
+open TimMovie.SharedKernel.Classes
+open TimMovie.WebApi.Services.JwtService
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
 type MainPageController
     (
-        logger: ILogger<MainPageController>,
         searchEntityService: ISearchEntityService,
-        subscribeService: ISubscribeService
+        subscribeService: ISubscribeService,
+        notificationService: INotificationService,
+        filmCardService: FilmCardService
     ) as this =
     inherit ControllerBase()
 
+    member private _.jwtService = JwtService()
+
     [<HttpPost>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+    [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
     member _.SearchEntityByNamePart([<FromForm>] namePart: string) =
         searchEntityService.GetSearchEntityResultByNamePart(namePart)
 
-    [<HttpPost>]
+    [<HttpGet>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetUserSubscribes([<FromForm>] userGuid: Guid) =
-        subscribeService.GetAllActiveUserSubscribes(userGuid)
+    member _.GetAllUserNotifications() =
+        let jwtTokenOption =
+            this.jwtService.GetUserJwtToken(this.HttpContext.Request.Headers)
 
-    [<HttpPost>]
+        if jwtTokenOption.IsSome then
+            let userGuidOption =
+                this.jwtService.GetUserGuid(jwtTokenOption.Value)
+
+            if userGuidOption.IsSome then
+                let notifications =
+                    notificationService.GetAllUserNotifications(Guid(userGuidOption.Value.ToString()))
+
+                let json =
+                    JsonConvert.SerializeObject notifications
+
+                Result.Ok(json)
+            else
+                Result.Fail<string>("Error occurred while decoding the jwt token")
+        else
+            Result.Fail<string>("Error occurred while getting user jwt token")
+            
+    [<HttpGet>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetAllSubscribes([<FromForm>] namePart: string) =
-        let subscribes =
-            subscribeService.GetSubscribesByNamePart(namePart)
+    member _.GetUserSubscribes() =
+        let jwtTokenOption =
+            this.jwtService.GetUserJwtToken(this.HttpContext.Request.Headers)
 
-        JsonSerializer.Serialize subscribes
+        if jwtTokenOption.IsSome then
+            let userGuidOption =
+                this.jwtService.GetUserGuid(jwtTokenOption.Value)
+
+            if userGuidOption.IsSome then
+                    let subscribes =
+                        subscribeService.GetAllActiveUserSubscribes(Guid(userGuidOption.Value.ToString()))
+
+                    let json =
+                        JsonConvert.SerializeObject subscribes
+
+                    Result.Ok(json)
+            else
+                Result.Fail<string>("Error occurred while decoding the jwt token")
+        else
+            Result.Fail<string>("Error occurred while getting user jwt token")
 
     [<HttpPost>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+    [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetAllSubscribesWithPagination
+    member _.GetAllSubscribesByNamePart([<FromForm>] namePart: string) =
+        subscribeService.GetSubscribesByNamePart(namePart)
+
+    [<HttpPost>]
+    [<AllowAnonymous>]
+    [<Consumes("application/x-www-form-urlencoded")>]
+    member _.GetSubscribesByNamePartWithPagination
         (
             [<FromForm>] namePart: string,
             [<FromForm>] take: int,
             [<FromForm>] skip: int
         ) =
-        let subscribes =
-            subscribeService.GetSubscribesByNamePart(namePart, take, skip)
-
-        JsonSerializer.Serialize subscribes
+        subscribeService.GetSubscribesByNamePart(namePart, take, skip)
+        
+    [<HttpPost>]
+    [<AllowAnonymous>]
+    [<Consumes("application/x-www-form-urlencoded")>]
+    member _.GetFilmByFilters([<FromForm>] generalPaginationDto: GeneralPaginationDto<SelectedFilmFiltersDto>) =
+        filmCardService.GetFilmCardsByFilters(generalPaginationDto)

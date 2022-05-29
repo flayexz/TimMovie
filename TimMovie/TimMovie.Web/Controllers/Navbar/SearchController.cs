@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TimMovie.Core.Services.Subscribes;
 
 namespace TimMovie.Web.Controllers.Navbar;
 

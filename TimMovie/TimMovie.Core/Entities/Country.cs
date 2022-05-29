@@ -9,6 +9,9 @@ public class Country : BaseEntity
     [MaxLength(100)]
     public string Name { get; set; }
 
+    [System.Text.Json.Serialization.JsonIgnore]
     public List<User> Users { get; set; }
+    
+    [System.Text.Json.Serialization.JsonIgnore]
     public List<Film> Films { get; set; }
 }

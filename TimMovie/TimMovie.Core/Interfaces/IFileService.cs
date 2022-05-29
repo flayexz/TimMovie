@@ -8,4 +8,5 @@ public interface IFileService
     Task<string> GetLinkToDefaultUserPhoto();
     string? GetUriToFileServer(string? relativePath);
     bool IsRequestToFileServer(string path);
+    
 }

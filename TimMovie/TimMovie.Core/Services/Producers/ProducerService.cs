@@ -24,7 +24,7 @@ public class ProducerService
         _mapper = mapper;
     }
 
-    public IEnumerable<Producer> GetProducersByNamePart(string namePart, int count = int.MaxValue) =>
+    public IEnumerable<Producer> GetProducersByNamePart(string? namePart, int count = int.MaxValue) =>
         _producerRepository.Query
             .Where(new ProducerByNamePartSpec(namePart))
             .Take(count);

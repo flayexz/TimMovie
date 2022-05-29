@@ -1,14 +1,52 @@
 $(function () {
-    $('#input-search-entities-navbar').keyup(function () {
-        $.post({
-            url: "/Search/SearchEntityResults",
-            data: {namePart: $('#input-search-entities-navbar').val()},
-            success: function (data) {
-                $('.search-elements').html(data);
+    let previousRequest = undefined;
+    let currentRequest = null;
+    let element = $('#input-search-entities-navbar');
+
+    $('input').on('keyup', function () {
+        let elm = $(this);
+        let time = (new Date()).getTime();
+        let delay = 150;
+
+        elm.attr({'keyup': time});
+        elm.off('keydown');
+        elm.off('keypress');
+        elm.on('keydown', function (e) {
+            $(this).attr({'keyup': time});
+        });
+        elm.on('keypress', function (e) {
+            $(this).attr({'keyup': time});
+        });
+
+        setTimeout(function () {
+            let oldtime = parseFloat(elm.attr('keyup'));
+            if (oldtime <= (new Date()).getTime() - delay & oldtime > 0 &&
+                elm.attr('keyup') !== '' &&
+                typeof elm.attr('keyup') !== 'undefined') {
+                SendRequest();
+                elm.removeAttr('keyup');
             }
-        })
-        
+        }, delay);
     });
+
+    function SendRequest() {
+        if (element.val().trim() === '') {
+            $('.search-elements').html("");
+            return;
+        }
+        previousRequest = currentRequest;
+        currentRequest = $.post({
+            url: "/Search/SearchEntityResults",
+            data: {namePart: element.val()},
+            success: function (data) {
+                if ($('#input-search-entities-navbar').val().trim() === '')
+                    $('.search-elements').html("");
+                else
+                    $('.search-elements').html(data);
+            }
+        }).then(() => previousRequest = null)
+    }
+
     $("#buttonClose").click(function () {
         $('#dialogContent').html();
     });

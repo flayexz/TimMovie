@@ -4,5 +4,5 @@ namespace TimMovie.Core.Interfaces;
 
 public interface ISearchEntityService
 {
-    public SearchEntityResultDto GetSearchEntityResultByNamePart(string namePart);
+    public SearchEntityResultDto GetSearchEntityResultByNamePart(string? namePart);
 }
