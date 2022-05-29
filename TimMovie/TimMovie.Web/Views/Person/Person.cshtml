@@ -7,7 +7,7 @@
             <div class="person_name mt-3">@Model.Name @Model.Surname</div>
         </div>
         <div class="d-flex flex-column mt-5">
-            <div class="d-flex align-items-end">
+            <div class="d-flex align-items-end person_films-title_container">
                 <div class="person_films-title">Полная фильмография</div>
                 <div class="ms-3 person_amount-films"></div>
             </div>
@@ -22,9 +22,11 @@
 {
     <script src="/js/common/inclineWord.js"></script>
     <script src="/js/PersonPage/downloadAmountFilms.js"></script>
+     <script src="/js/PersonPage/loadMoreFilms.js"></script>
 }
 
 @section Styles
 {
     <link rel="stylesheet" href="/css/Person/personPage.css">
+    <link rel="stylesheet" href="/css/FilmCard/personFilm.css">
 }

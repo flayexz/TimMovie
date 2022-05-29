@@ -1,5 +1,8 @@
 ﻿(function (){
-    let cardContainer = $("#person-film-container");
+    let filmContainer = $("#person-film-container");
+    const path = window.location.pathname.split("/");
+    const personType = path[1];
+    const userId = path[2];
     let amountSkip = 0;
     let amountTake = 20;
     let allLoaded = false;
@@ -8,32 +11,21 @@
     let requestIsAlreadySent = false;
 
     function getFilmsByFilters(){
-        let data = {
-            amountSkip,
-            amountTake
-        };
-
         if (!requestIsAlreadySent){
             $('.loader').toggleClass('hide');
         }
 
         requestIsAlreadySent = true;
         currentRequest = $.get({
-            url: "/Films/FilmFilters",
-            data: data,
+            url: `/${personType}/films?id=${userId}&skip=${amountSkip}&take=${amountTake}`,
             success: function (result){
-                console.log("Написал, результат пришел")
                 $('.loader').toggleClass('hide');
                 requestIsAlreadySent = false;
 
                 amountSkip += amountTake;
                 allLoaded = result.length < 30;
 
-                cardContainer.append(result);
-                $("img").one("load", function() {
-                    prepareFilms();
-                    adaptContainer();
-                });
+                filmContainer.append(result);
                 isLoad = false;
             }
         })

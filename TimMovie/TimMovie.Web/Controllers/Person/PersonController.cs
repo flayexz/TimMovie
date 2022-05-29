@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TimMovie.Core.DTO.Person;
 using TimMovie.Core.Services.Person;
 using TimMovie.Web.ViewModels.Person;
 
@@ -16,10 +17,21 @@ public class PersonController: Controller
         _mapper = mapper;
     }
 
-    [HttpGet("[controller]/{id:guid}")]
-    public IActionResult GetPersonPage(Guid id)
+    [HttpGet("actor/{id:guid}")]
+    public IActionResult GetActorPage(Guid id)
     {
-        var person = _personService.GetPersonById(id);
+        return GetPersonPage(id, _personService.GetActorById);
+    }
+
+    [HttpGet("producer/{id:guid}")]
+    public IActionResult GetProducerPage(Guid id)
+    {
+        return GetPersonPage(id, _personService.GetProducerById);
+    }
+    
+    private IActionResult GetPersonPage(Guid id, Func<Guid, PersonDto?> getPersonById)
+    {
+        var person = getPersonById(id);
         var personView = _mapper.Map<PersonViewModel>(person);
         return View("~/Views/Person/Person.cshtml", personView);
     }

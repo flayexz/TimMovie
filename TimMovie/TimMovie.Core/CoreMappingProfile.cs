@@ -50,5 +50,6 @@ public class CoreMappingProfile: Profile
         CreateMap<Message, MessageDto>();
         CreateMap<Notification, NotificationDto>();
         CreateMap<NewMessageDto, Message>();
+        CreateMap<Film, PersonFilmDto>();
     }
 }

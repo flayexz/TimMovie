@@ -8,6 +8,7 @@ using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Person;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels;
+using TimMovie.Web.ViewModels.Films;
 
 namespace TimMovie.Web.Controllers.Film;
 
@@ -92,20 +93,34 @@ public class FilmController : Controller
         return Ok();
     }
 
-    [HttpGet("[controller]/person/{id:guid}")]
-    public int GetAmountFilmsByPersonId(Guid id)
+    [HttpGet("[controller]/actor/{id:guid}")]
+    public int GetAmountFilmsByActorId(Guid id)
     {
-        Console.WriteLine(id);
-        var count = _personService.GetAmountFilmsById(id);
+        var count = _personService.GetAmountFilmsForActor(id);
         return count;
     }
     
-    [HttpGet("/person/films")]
-    public int GetFilmsForPerson(Guid personId, int skip, int take)
+    [HttpGet("[controller]/producer/{id:guid}")]
+    public int GetAmountFilmsByProducerId(Guid id)
     {
-        Console.WriteLine(personId);
-        var count = _personService.GetAmountFilmsById(personId);
+        var count = _personService.GetAmountFilmsForProducer(id);
         return count;
+    }
+    
+    [HttpGet("/actor/films")]
+    public IActionResult GetFilmsForActor(Guid id, int skip, int take)
+    {
+        var films = _personService.GetFilmsByActor(id, skip, take);
+        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(films);
+        return View("~/Views/Partials/FilmCard/PersonFilms.cshtml", filmsViewModel);
+    }
+    
+    [HttpGet("/producer/films")]
+    public IActionResult GetFilmsForProducer(Guid id, int skip, int take)
+    {
+        var films = _personService.GetFilmsByProducer(id, skip, take);
+        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(films);
+        return View("~/Views/Partials/FilmCard/PersonFilms.cshtml", filmsViewModel);
     }
 
     private IEnumerable<Comment>? GetCommentsWithPagination(Guid filmId, int skip, int take)

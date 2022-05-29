@@ -15,6 +15,7 @@ using TimMovie.Core.Entities;
 using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.Account;
 using TimMovie.Web.ViewModels.FilmCard;
+using TimMovie.Web.ViewModels.Films;
 using TimMovie.Web.ViewModels.Payment;
 using TimMovie.Web.ViewModels.Person;
 using TimMovie.Web.ViewModels.User;
@@ -53,5 +54,6 @@ public class AppMappingProfile : Profile
                 filmDto => filmDto.Comments,
                 expression => expression.MapFrom(film => film.Comments)).ReverseMap();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
+        CreateMap<PersonFilmDto, PersonFilmViewModel>();
     }
 }
