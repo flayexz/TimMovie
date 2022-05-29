@@ -16,6 +16,7 @@
 
     window.onload = function () {
         skip = 0;
+        replaceDate();
     }
 
     $(document).on("keypress", e => {
@@ -46,12 +47,12 @@
     })
 
     $(".leave-comment-container").on('click', '.button-comment-send', () => {
-        let element = $(".textarea-comment")[0];
-        if (element.value.length < 2) {
+        let element = $(".textarea-comment");
+        if (element[0].value.length < 2) {
             changeButtonColorAndText("Слишком короткое сообщение", errorColor);
             return;
         }
-        if (element.value.length > 1000) {
+        if (element[0].value.length > 1000) {
             changeButtonColorAndText("Cлишком длинное сообщение", errorColor);
             return;
         }
@@ -81,6 +82,7 @@
         if (position >= threshold) {
             isLoading = true;
             getComments();
+            replaceDate();
         }
     }
 
@@ -108,5 +110,19 @@
         let element = $(".send-comment-status");
         element.css({"color": `${color}`});
         element[0].innerText = text;
+    }
+
+    function replaceDate() {
+        if ($(".comments-container-body-comments")[0].innerHTML.trim() !== "") {
+            let html = $(".comments-container-body-comments")[0].innerHTML;
+            let result = [...html.matchAll(/[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9]:[0-9][0-9]:[0-9][0-9]/g)];
+            $.each(result, function () {
+                let parts = this[0].split(' ');
+                let yearMonthDay = parts[0].split('.');
+                let hourMinuteSecond = parts[1].split(':');
+                console.log(new Date(yearMonthDay[2], yearMonthDay[1], yearMonthDay[0], 
+                    hourMinuteSecond[0], hourMinuteSecond[1], hourMinuteSecond[2]));
+            });
+        }
     }
 });
