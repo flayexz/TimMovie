@@ -26,7 +26,7 @@ function getGrade(filmId, likeBtn = null) {
 
 }
 
-function setGrade(filmId, e, inCardGrade = false) {
+function setGrade(filmId, e, inCardGrade = false, watchedFilmsLike = null) {
     return $.post({
         url: "/Film/SetGrade",
         data: {filmId: savedFilmId, grade: e.target.innerText},
@@ -35,15 +35,22 @@ function setGrade(filmId, e, inCardGrade = false) {
             $(e.target).css("background", "#302a45");
             $('#modalFilmGrade').modal('hide');
             if (choseButton != null && choseButton[0].innerText === $(e.target)[0].innerText){
-                choseButton = null;
-                inCardGrade? updateFilmCardAfterUnset(likeButton) : updateGradeAfterUnset();
+                if (watchedFilmsLike !== null)
+                {
+                    watchedFilmsLike.innerText="-";
+                }
+                else {
+                    choseButton = null;
+                    inCardGrade ? updateFilmCardAfterUnset(likeButton) : updateGradeAfterUnset();
+                }
             }
             else if (choseButton != null && choseButton[0].innerText !== $(e.target)[0].innerText){
                 choseButton = $(e.target);
             }
             else{
                 choseButton = $(e.target);
-                inCardGrade? updateFilmCardAfterSet(likeButton) : updateGradeAfterSet();
+                if(watchedFilmsLike === null)
+                    inCardGrade? updateFilmCardAfterSet(likeButton) : updateGradeAfterSet();
             }
         }
     });

@@ -11,7 +11,7 @@ Unlike = document.createElementNS("http://www.w3.org/2000/svg", "use");
 Unlike.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/sprite.svg#Unlike");
 
 function ChangeLikeSvg(isFillRed, likeButton = null) {
-    let likeSvg = likeButton === null? document.querySelector('.svg-grade') : likeButton.find('.svg-grade');
+    let likeSvg = likeButton === null? $('.svg-grade') : likeButton.find('.svg-grade');
     let use = likeSvg.find("use")
     let useHref = use.attr('xlink:href').split('#');
     let href = useHref.shift();
