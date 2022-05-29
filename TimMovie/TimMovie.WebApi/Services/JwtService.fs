@@ -1,7 +1,10 @@
 ﻿namespace TimMovie.WebApi.Services.JwtService
 
+open System.Collections.Generic
 open System.IdentityModel.Tokens.Jwt
 open System.Linq
+open System.Net
+open System.Net.Http
 
 type JwtService() =
     member this.GetUserJwtToken(headers: Microsoft.AspNetCore.Http.IHeaderDictionary) =
@@ -39,3 +42,20 @@ type JwtService() =
                                 )
                                 .Value
                         )
+    
+    member this.Authorize(route: string, username: string, password: string) =
+        let data = List<KeyValuePair<string, string>>()
+        data.Add(KeyValuePair<string, string>(nameof(username), username))
+        data.Add(KeyValuePair<string, string>(nameof(password), password))
+        data.Add(KeyValuePair<string, string>("grant_type", "password"))
+        let client = new HttpClient()
+        let response = client.PostAsync(route, new FormUrlEncodedContent(data))
+                       |> Async.AwaitTask
+                       |> Async.RunSynchronously
+        if response.StatusCode <> HttpStatusCode.OK then
+            TimMovie.SharedKernel.Classes.Result.Fail<string>($"Response status code is {response.StatusCode}")
+        else
+            let content = response.Content.ReadAsStringAsync()
+                          |> Async.AwaitTask
+                          |> Async.RunSynchronously
+            TimMovie.SharedKernel.Classes.Result.Ok(content)
