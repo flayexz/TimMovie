@@ -83,7 +83,7 @@ public class FilmService
             Film = dbFilm,
             Author = user,
             Content = content,
-            Date = DateTime.Now
+            Date = DateTime.UtcNow
         };
         dbFilm.Comments.Add(comment);
         await _filmRepository.SaveChangesAsync();
@@ -93,7 +93,7 @@ public class FilmService
             AuthorPathToPhoto = user.PathToPhoto,
             AuthorDisplayName = user.DisplayName,
             Content = content,
-            Date = DateTime.Now
+            Date = DateTime.UtcNow
         };
         return Result.Ok(resultComment);
     }
@@ -194,11 +194,6 @@ public class FilmService
                     Content = comment.Content,
                     Date = comment.Date
                 }).OrderByDescending(c => c.Date)
-                .Select(comment =>
-                {
-                    comment.Date -= TimeSpan.FromHours(3);
-                    return comment;
-                })
                 .ToList(),
             Producers = dbFilm.Producers.Select(producer => new ProducerDto
             {

@@ -36,7 +36,7 @@
                 url: "/Film/LeaveComment",
                 data: {filmId: document.URL.split('/').pop(), content: value},
                 success: function (data) {
-                    $(".comments-container-body-comments").prepend(data);
+                    $(".comments-container-body-comments").prepend(replaceDate(data));
                     changeButtonColorAndText("Комментарий добавлен", successColor);
                     if ($(".comments-stub")[0] !== undefined)
                         $(".comments-stub")[0].innerHTML = "";
@@ -46,12 +46,12 @@
     })
 
     $(".leave-comment-container").on('click', '.button-comment-send', () => {
-        let element = $(".textarea-comment")[0];
-        if (element.value.length < 2) {
+        let element = $(".textarea-comment");
+        if (element[0].value.length < 2) {
             changeButtonColorAndText("Слишком короткое сообщение", errorColor);
             return;
         }
-        if (element.value.length > 1000) {
+        if (element[0].value.length > 1000) {
             changeButtonColorAndText("Cлишком длинное сообщение", errorColor);
             return;
         }
@@ -61,8 +61,8 @@
             url: "/Film/LeaveComment",
             data: {filmId: document.URL.split('/').pop(), content: value},
             success: function (data) {
-                $(".comments-container-body-comments").prepend(data);
                 changeButtonColorAndText("Комментарий добавлен", successColor);
+                $(".comments-container-body-comments").prepend(replaceDate(data));
                 if ($(".comments-stub")[0] !== undefined)
                     $(".comments-stub")[0].innerHTML = "";
             }
@@ -108,5 +108,19 @@
         let element = $(".send-comment-status");
         element.css({"color": `${color}`});
         element[0].innerText = text;
+    }
+
+    function replaceDate(data) {
+        let pattern = /[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9]:[0-9][0-9]:[0-9][0-9]/g;
+        let commentDate = data.match(pattern);
+        let parts = commentDate[0].split(' ');
+        let yearMonthDay = parts[0].split('.');
+        let hourMinuteSecond = parts[1].split(':');
+        let resultDate = new Date(Date
+            .UTC(yearMonthDay[2], yearMonthDay[1], yearMonthDay[0],
+                hourMinuteSecond[0], hourMinuteSecond[1], hourMinuteSecond[2]))
+            .toLocaleString()
+            .replace(",", "");
+        return data.replace(pattern, resultDate);
     }
 });

@@ -36,14 +36,9 @@ public class FilmController : Controller
         var user = await _userManager.FindByIdAsync(userId.ToString());
         film.PathToUserPhoto = user.PathToPhoto;
         var comments = GetCommentsWithPagination(film.Id, 0, MaxTakeValue)?.ToList();
-        if (comments is not null)
-        {
-            var changedComments = comments
-                .Select(comment => { comment.Date -= TimeSpan.FromHours(3); return comment; })
-                .ToList();
-            var commentsDto = _mapper.Map<List<CommentsDto>>(changedComments);
-            film.Comments = commentsDto;
-        }
+        if (comments is null) return View("~/Views/Film/Film.cshtml", film);
+        var commentsDto = _mapper.Map<List<CommentsDto>>(comments);
+        film.Comments = commentsDto;
         return View("~/Views/Film/Film.cshtml", film);
     }
 
