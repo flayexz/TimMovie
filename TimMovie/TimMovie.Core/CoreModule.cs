@@ -36,6 +36,7 @@ public class CoreModule: Module
         RegisterServiceOnSelf<ChatTemplatedNotificationService>(builder);
         RegisterServiceOnSelf<MessageService>(builder);
         RegisterServiceOnSelf<PersonService>(builder);
+        RegisterServiceOnSelf<WatchLaterService>(builder);
     }
 
     private void RegisterServiceOnSelf<T>(ContainerBuilder builder) 

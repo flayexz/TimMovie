@@ -40,9 +40,12 @@
                     <li class="nav-item nav-button-left">
                         <a class="navbar-text" asp-controller="Films" asp-action="Filters">Фильмы</a>
                     </li>
-                    <li class="nav-item nav-button-left">
-                        <a href="#" class="navbar-text">Смотреть позже</a>
-                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item nav-button-left">
+                            <a class="navbar-text" asp-controller="WatchLater" asp-action="WatchLater">Смотреть позже</a>
+                        </li>
+                    }
                     @if (User.HasRoleClaim(RoleNames.Support))
                     {
                         <li class="nav-item nav-button-left">

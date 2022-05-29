@@ -18,27 +18,35 @@ public class FilmController : Controller
     private const int MaxTakeValue = 5;
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
+    private readonly WatchLaterService _watchLaterService;
     private readonly UserManager<User> _userManager;
     private readonly PersonService _personService;
 
+    private Guid? UserId => User.GetUserId();
 
-    public FilmController(IMapper mapper, FilmService filmService, 
-        UserManager<User> userManager, PersonService personService)
+
+    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager, WatchLaterService watchLaterService, PersonService personService)
     {
         _mapper = mapper;
         _filmService = filmService;
         _userManager = userManager;
         _personService = personService;
+        _watchLaterService = watchLaterService;
     }
 
-    [HttpGet("[controller]/{id:guid}")]
-    public async Task<IActionResult> Film(Guid id)
+
+    [HttpGet("[controller]/{filmId:guid}")]
+    public async Task<IActionResult> Film(Guid filmId)
     {
-        var film = _mapper.Map<FilmViewModel>(_filmService.GetFilmById(id));
-        film.IsGradeSet = GetGrade(id) is not null;
-        var userId = User.GetUserId();
-        if (userId is null) return View("~/Views/Film/Film.cshtml", film);
-        var user = await _userManager.FindByIdAsync(userId.ToString());
+        var film = _mapper.Map<FilmViewModel>(_filmService.GetFilmById(filmId));
+        if (UserId is not null)
+        {
+            film.IsGradeSet = GetGrade(filmId) is not null;
+            film.IsAddedToWatchLater = _watchLaterService.IsWatchLaterFilm(filmId, UserId.Value);
+        }
+
+        if (UserId is null) return View("~/Views/Film/Film.cshtml", film);
+        var user = await _userManager.FindByIdAsync(UserId.ToString());
         film.PathToUserPhoto = user.PathToPhoto;
         var comments = GetCommentsWithPagination(film.Id, 0, MaxTakeValue)?.ToList();
         if (comments is null) return View("~/Views/Film/Film.cshtml", film);
@@ -66,29 +74,25 @@ public class FilmController : Controller
         var result = await _filmService.TryAddCommentToFilm(User.GetUserId(), filmId, content);
         if (result.IsFailure)
             return BadRequest();
-        
         var commentDto = _mapper.Map<CommentsDto>(result.Value);
         return View("~/Views/Partials/Film/CommentsPartial.cshtml", new List<CommentsDto> {commentDto});
     }
 
     [HttpPost]
-    public int? GetGrade(Guid filmId)
-    {
-        var userId = User.GetUserId();
-        if (userId is null)
-            return null;
-        return !_filmService.TryGetUserGrade(filmId, userId.Value, out var grade) ? null : grade;
-    }
+    public int? GetGrade(Guid filmId) =>
+        !_filmService.TryGetUserGrade(filmId, UserId.Value, out var grade)
+            ? null
+            : grade;
+
 
     [HttpPost]
     public async Task<IActionResult> SetGrade(Guid filmId, int grade)
     {
         if (grade is < 1 or > 10)
             return BadRequest();
-        var userId = User.GetUserId();
-        if (userId is null)
+        if (UserId is null)
             return BadRequest();
-        if (!await _filmService.TryUpdateFilmGrade(filmId, userId.Value, grade))
+        if (!await _filmService.TryUpdateFilmGrade(filmId, UserId.Value, grade))
             return BadRequest();
         return Ok();
     }
@@ -128,5 +132,23 @@ public class FilmController : Controller
         var film = _filmService.GetDbFilmById(filmId);
         var result = film?.Comments.OrderByDescending(c => c.Date).Skip(skip).Take(take).ToList();
         return result;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddFilmToWatchLater(Guid filmId)
+    {
+        if (UserId is null)
+            return BadRequest();
+        await _watchLaterService.TryAddFilmToWatchLater(filmId, UserId.Value);
+        return Ok();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> RemoveFilmFromWatchLater(Guid filmId)
+    {
+        if (UserId is null)
+            return BadRequest();
+        await _watchLaterService.TryRemoveFilmFromWatchLater(filmId, UserId.Value);
+        return Ok();
     }
 }

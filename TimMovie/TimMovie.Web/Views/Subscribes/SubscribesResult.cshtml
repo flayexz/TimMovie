@@ -24,7 +24,7 @@
                             <ul class="dropdown-menu scrollable">
                                 @foreach (var film in subscribe.Films)
                                 {
-                                    <a class="dropdown-item" asp-controller="Film" asp-action="Film" asp-route-id="@film.Id">@film.Title</a>
+                                    <a class="dropdown-item" asp-controller="Film" asp-action="Film" asp-route-filmId="@film.Id">@film.Title</a>
                                 }
                             </ul>
                         </div>

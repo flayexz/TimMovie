@@ -1,8 +1,12 @@
-$(document).ready(function () {
-    moveDescription();
+$('description').ready(function () {
     cropDescriptrion();
+})
+$(document).ready(function () {
     hideAllActorsAndProducers();
 });
+
+let filmIdFromUrl = document.URL.split('/').pop();
+
 
 $(window).resize(function () {
     moveDescription();
@@ -33,8 +37,7 @@ function cropDescriptrion() {
         descLess.appendTo(description);
         descMore.appendTo(description);
         $("#descMore").hide();
-    }
-    else $('#more').hide();
+    } else $('#more').hide();
 }
 
 function showMore() {
@@ -93,6 +96,27 @@ showMoreActorsAndProducersBtn.on("click", showMoreActorsAndProducers);
 hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
 hideActorsAndProducersBtn.on("click", hideActorsAndProducers);
 
-$("#rate_movie").click(function (){
-    getGrade(document.URL.split('/').pop());
+
+
+$("#watch_later").on("click",function (e) {
+    e.preventDefault()
+    if ($(this).data("auth") === "True") {
+        let isAdded = $(this).data("added");
+        if(isAdded === "True") {
+            RemoveFilmFromWatchLater(filmIdFromUrl, $(this).find(".watch_later_svg"))
+            $(this).data("added", "False");
+            $("#watch_later_label").text(watchLaterAddText)
+        }
+        else {
+            AddToWatchLater(filmIdFromUrl, $(this).find(".watch_later_svg"));
+            $(this).data("added", "True");
+            $("#watch_later_label").text(watchLaterRemoveText)
+        }
+    } else $('#modal1').modal('show');
+})
+
+$("#rate_movie").click(function () {
+    if ($(this).data("auth") === "True")
+        getGrade(filmIdFromUrl);
+    else $('#modal1').modal('show');
 })
