@@ -37,8 +37,8 @@ public class CoreMappingProfile : Profile
             .ForMember(
                 film => film.Title,
                 expression => expression.MapFrom(user => user.WatchingFilm.Title));
-        CreateMap<Producer, FilmProducerDto>();
-        CreateMap<Actor, FilmActorDto>();
+        CreateMap<Producer, PersonDto>();
+        CreateMap<Actor, PersonDto>();
         CreateMap<UserFilmWatched, WatchedFilmDto>()
             .ForMember(
                 x => x.WatchedDate,
@@ -50,6 +50,7 @@ public class CoreMappingProfile : Profile
         CreateMap<Message, MessageDto>();
         CreateMap<Notification, NotificationDto>();
         CreateMap<NewMessageDto, Message>();
+        CreateMap<Film, PersonFilmDto>();
         CreateMap<FilmDto, BigFilmCardDto>()
             .ForMember(f => f.Producer,
                 e =>
