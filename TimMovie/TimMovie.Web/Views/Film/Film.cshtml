@@ -4,6 +4,7 @@
     Layout = "_Layout";
     ViewData["Title"] = Model.Title;
     var mainGenreName = Model.Genres.First().Name;
+    bool isAuth = User.Identity.IsAuthenticated;
 }
 <div class="filmPage_container">
     <a href="#" id="backward_link" class="hover_link">
@@ -38,6 +39,13 @@
                     }
                 </ul>
             </div>
+            <div id="film_description">
+                <h2 class="text_color text_bold mt-4">О фильме</h2>
+                <div id="description">
+                    @Model.Description
+                </div>
+                <button id="more">Читать дальше...</button>
+            </div>
         </div>
         <div class="col-12 col-xl-7 order-xl-1" id="film_player">
             <div class="ratio ratio-16x9 circleBorders">
@@ -46,25 +54,26 @@
                 </iframe>
             </div>
             <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
-                <div class="d-flex flex-column">
-                    <button data-bs-toggle="modal" data-bs-target=@(Context.User.Identity is {IsAuthenticated: true } ? "#modalFilmGrade" : "#modal1")
-                            class="buttons" id="rate_movie">
-                        <svg style="@(Model.IsGradeSet ? "display: none" : "display: block")" xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#c6c6c9" class="svg_size svg-grade-unset me-2" viewBox="0 0 16 16">
-                          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                        </svg>
-                        <svg style="@(Model.IsGradeSet ? "display: block" : "display: none")" xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="#b22222" class="svg_size svg-grade-set me-2" viewBox="0 0 16 16">
-                          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                <div class="d-flex flex-column under_film_buttons">
+                    <button data-bs-toggle="modal" data-bs-target=@(isAuth ? "#modalFilmGrade" : "#modal1")
+                            class="buttons" id="rate_movie" data-auth = "@isAuth">
+                        <svg class="svg-grade me-2"
+                             width="24px" height="24px"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="@(Model.IsGradeSet? "#ef233c" : "#c6c6c9")">
+                            <use xlink:href="/img/svgIcons/sprite.svg#@(Model.IsGradeSet ? "Unlike" : "Like")"/>
                         </svg>
                         <span id="rate_movie_label">@(Model.IsGradeSet ? "Изменить оценку фильма" : "Поставить оценку фильму")</span>
                     </button>
                     <div class="d-flex justify-content-end">
-                        <button class="buttons" id="watch_later">
-                            <svg class="svg_size mt-2" width="2.2rem" fill="#c6c6c9" version="1.1" viewBox="0 0 700 700"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="m536.2 12.824h-372.4c-8.5117 0-15.625 7-15.625 15.625v502.77c0 12.938 14.895 20.328 25.258 12.434l176.62-139.95 176.62 140.28c10.305 7.8945 25.145 0.50391 25.145-12.434l-0.003906-503.11c0-8.625-7-15.625-15.625-15.625zm-15.625 486.98-161-128.3c-5.6016-4.2578-13.328-4.3672-19.039 0l-161.11 127.96v-455.34h341.15z"/>
+                        <button class="buttons" id="watch_later" data-auth="@isAuth" data-added = "@Model.IsAddedToWatchLater">
+                            <svg class="watch_later_svg me-2"
+                                 width="24px" height="24px"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 fill="#c6c6c9">
+                                <use xlink:href="/img/svgIcons/sprite.svg#@(Model.IsAddedToWatchLater ? "RemoveFromWatchLater" : "AddToWatchLater")"/>
                             </svg>
-                            <span id="watch_later_label">Смотреть позже</span>
+                            <span id="watch_later_label">@(Model.IsAddedToWatchLater ? "Убрать из смотреть" : "Смотреть") позже</span>
                         </button>
                     </div>
                 </div>
@@ -73,13 +82,6 @@
                     <span class="rating_under_label">Оценили: @Model.GradesNumber</span>
                 </div>
             </div>
-        </div>
-        <div id="film_description">
-            <h2 class="text_color text_bold mt-4">О фильме</h2>
-            <div id="description">
-                @Model.Description
-            </div>
-            <button id="more">Читать дальше...</button>
         </div>
     </div>
     <div class="film__line mt-4"></div>
@@ -149,15 +151,12 @@
     </div>
 </div>
 
-@{ await Html.RenderPartialAsync("~/Views/Film/Comments.cshtml", (Model.Comments, Model.PathToUserPhoto));}
-
 @section Styles
 {
     <link rel="stylesheet" href="/css/filmPage.css"/>
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
     <link rel="stylesheet" href="~/css/carousel.css"/>
     <link rel="stylesheet" href="/css/gradeModalWindow.css">
-    <link rel="stylesheet" href="/css/comments.css">
 }
 
 @section Scripts{
@@ -166,6 +165,8 @@
     <script src="~/js/FilmCard/animation_for_film_card.js"></script>
     <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
     <script src="~/js/gradeModalWindow.js"></script>
+    <script src="~/js/FilmCard/WatchLater.js"></script>
     <script src="~/js/updateUserStatusWatchingFilm.js"></script>
-    <script src="~/js/comments.js"></script>
+    <script src="~/js/svgLogic.js"></script>
+    <script src="~/js/FilmCard/WatchLater.js"></script>
 }

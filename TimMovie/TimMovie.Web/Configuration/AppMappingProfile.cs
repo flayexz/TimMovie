@@ -50,5 +50,6 @@ public class AppMappingProfile : Profile
                 filmDto => filmDto.Comments,
                 expression => expression.MapFrom(film => film.Comments)).ReverseMap();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
+        CreateMap<BigFilmCardDto, BigFilmCardViewModel>();
     }
 }
