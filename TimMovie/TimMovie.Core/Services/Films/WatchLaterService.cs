@@ -26,6 +26,30 @@ public class WatchLaterService
         _filmService = filmService;
     }
     
+    public bool IsWatchLaterFilm(Guid filmId, Guid userId)
+    {
+        if (!_filmService.TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user))
+            return false;
+        return user!.FilmsWatchLater.Contains(dbFilm!);
+    }
+    
+    public async Task<bool> TryAddFilmToWatchLater(Guid filmId, Guid userId)
+    {
+        if (!_filmService.TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
+
+        user!.FilmsWatchLater.Add(dbFilm!);
+        return await _filmService.TryUpdateUserRepository(user);
+    }
+
+    public async Task<bool> TryRemoveFilmFromWatchLater(Guid filmId, Guid userId)
+    {
+        if (!_filmService.TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
+
+        user!.FilmsWatchLater.Remove(dbFilm!);
+        return await _filmService.TryUpdateUserRepository(user);
+    }
+    
+    
     public FilmDto GetFilmForBigCardById(Guid filmId)
     {
         var dbFilm = _filmService.GetDbFilmById(filmId);

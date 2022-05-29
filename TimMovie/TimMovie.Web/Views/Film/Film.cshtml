@@ -56,17 +56,17 @@
             <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
                 <div class="d-flex flex-column under_film_buttons">
                     <button data-bs-toggle="modal" data-bs-target=@(isAuth ? "#modalFilmGrade" : "#modal1")
-                            class="buttons" id="rate_movie" data-auth = "@isAuth">
+                            class="buttons" id="rate_movie" data-auth="@isAuth">
                         <svg class="svg-grade me-2"
                              width="24px" height="24px"
                              xmlns="http://www.w3.org/2000/svg"
-                             fill="@(Model.IsGradeSet? "#ef233c" : "#c6c6c9")">
+                             fill="@(Model.IsGradeSet ? "#ef233c" : "#c6c6c9")">
                             <use xlink:href="/img/svgIcons/sprite.svg#@(Model.IsGradeSet ? "Unlike" : "Like")"/>
                         </svg>
                         <span id="rate_movie_label">@(Model.IsGradeSet ? "Изменить оценку фильма" : "Поставить оценку фильму")</span>
                     </button>
                     <div class="d-flex justify-content-end">
-                        <button class="buttons" id="watch_later" data-auth="@isAuth" data-added = "@Model.IsAddedToWatchLater">
+                        <button class="buttons" id="watch_later" data-auth="@isAuth" data-added="@Model.IsAddedToWatchLater">
                             <svg class="watch_later_svg me-2"
                                  width="24px" height="24px"
                                  xmlns="http://www.w3.org/2000/svg"
@@ -151,12 +151,15 @@
     </div>
 </div>
 
+@{ await Html.RenderPartialAsync("~/Views/Film/Comments.cshtml", (Model.Comments, Model.PathToUserPhoto)); }
+
 @section Styles
 {
     <link rel="stylesheet" href="/css/filmPage.css"/>
     <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
     <link rel="stylesheet" href="~/css/carousel.css"/>
     <link rel="stylesheet" href="/css/gradeModalWindow.css">
+    <link rel="stylesheet" href="/css/comments.css">
 }
 
 @section Scripts{
@@ -169,4 +172,5 @@
     <script src="~/js/updateUserStatusWatchingFilm.js"></script>
     <script src="~/js/svgLogic.js"></script>
     <script src="~/js/FilmCard/WatchLater.js"></script>
+    <script src="~/js/comments.js"></script>
 }

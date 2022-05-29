@@ -16,18 +16,20 @@ public class FilmCardService
     private readonly IRepository<UserFilmWatched> _userFilmWatchedRepository;
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
+    private readonly WatchLaterService _watchLaterService;
 
 
     public FilmCardService(
         IRepository<Film> filmRepository,
         IMapper mapper,
         FilmService filmService,
-        IRepository<UserFilmWatched> userFilmWatchedRepository)
+        IRepository<UserFilmWatched> userFilmWatchedRepository, WatchLaterService watchLaterService)
     {
         _filmRepository = filmRepository;
         _mapper = mapper;
         _filmService = filmService;
         _userFilmWatchedRepository = userFilmWatchedRepository;
+        _watchLaterService = watchLaterService;
     }
 
     public IEnumerable<FilmCardDto> GetFilmCardsByFilters(
@@ -118,7 +120,7 @@ public class FilmCardService
     {
         _filmService.TryGetUserGrade(filmCardDto.Id, userId, out var tmpGrade);
         filmCardDto.IsGradeSet = tmpGrade is not null;
-        filmCardDto.IsAddedToWatchLater = _filmService.IsWatchLaterFilm(filmCardDto.Id, userId);
+        filmCardDto.IsAddedToWatchLater = _watchLaterService.IsWatchLaterFilm(filmCardDto.Id, userId);
     }
 
     public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid userId, int amount)

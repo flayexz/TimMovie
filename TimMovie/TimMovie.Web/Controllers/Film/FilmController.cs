@@ -16,15 +16,17 @@ public class FilmController : Controller
     private const int MaxTakeValue = 5;
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
+    private readonly WatchLaterService _watchLaterService;
     private readonly UserManager<User> _userManager;
     private Guid? UserId => User.GetUserId();
 
 
-    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager)
+    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager, WatchLaterService watchLaterService)
     {
         _mapper = mapper;
         _filmService = filmService;
         _userManager = userManager;
+        _watchLaterService = watchLaterService;
     }
 
 
@@ -35,7 +37,7 @@ public class FilmController : Controller
         if (UserId is not null)
         {
             film.IsGradeSet = GetGrade(filmId) is not null;
-            film.IsAddedToWatchLater = _filmService.IsWatchLaterFilm(filmId, UserId.Value);
+            film.IsAddedToWatchLater = _watchLaterService.IsWatchLaterFilm(filmId, UserId.Value);
         }
 
         if (UserId is null) return View("~/Views/Film/Film.cshtml", film);
@@ -102,7 +104,7 @@ public class FilmController : Controller
     {
         if (UserId is null)
             return BadRequest();
-        await _filmService.TryAddFilmToWatchLater(filmId, UserId.Value);
+        await _watchLaterService.TryAddFilmToWatchLater(filmId, UserId.Value);
         return Ok();
     }
 
@@ -111,7 +113,7 @@ public class FilmController : Controller
     {
         if (UserId is null)
             return BadRequest();
-        await _filmService.TryRemoveFilmFromWatchLater(filmId, UserId.Value);
+        await _watchLaterService.TryRemoveFilmFromWatchLater(filmId, UserId.Value);
         return Ok();
     }
 }

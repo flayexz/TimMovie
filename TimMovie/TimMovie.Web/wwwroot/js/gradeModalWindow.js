@@ -5,8 +5,8 @@ let gradeSetText = "Изменить оценку фильма";
 let gradeUnsetText = "Поставить оценку фильму";
 let likeButton = null;
 
-function getGrade(filmId, film_card_buttons = null) {
-    likeButton = film_card_buttons;
+function getGrade(filmId, likeBtn = null) {
+    likeButton = likeBtn;
     savedFilmId = filmId;
     gradeNumber.css("background", "#1e1a2e");
     return $.post({
@@ -61,17 +61,17 @@ function updateGradeAfterUnset(){
 
 function updateFilmCardAfterSet(){
     likeButton.attr("title", gradeSetText)
-    ChangeLikeSvg(false);
+    ChangeLikeSvg(false, likeButton);
 }
 
 function updateFilmCardAfterUnset(){
     likeButton.attr("title", gradeUnsetText)
-    ChangeLikeSvg(false);
+    ChangeLikeSvg(false, likeButton);
 }
 
 
 gradeNumber.click(function (e) {
-    likeButton === null ? setGrade(savedFilmId, e) : setGrade(savedFilmId, e, likeButton)
+    likeButton === null ? setGrade(savedFilmId, e) : setGrade(savedFilmId, e, true)
 })
 
 gradeNumber.mouseover(function (e) {

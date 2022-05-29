@@ -10,18 +10,18 @@ Like.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/
 Unlike = document.createElementNS("http://www.w3.org/2000/svg", "use");
 Unlike.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/sprite.svg#Unlike");
 
-function ChangeLikeSvg(isFillRed) {
-    let likeSvg = document.querySelector('.svg-grade');
-    let use = likeSvg.querySelector("use")
-    let useHref = use.getAttribute('xlink:href').split('#');
+function ChangeLikeSvg(isFillRed, likeButton = null) {
+    let likeSvg = likeButton === null? document.querySelector('.svg-grade') : likeButton.find('.svg-grade');
+    let use = likeSvg.find("use")
+    let useHref = use.attr('xlink:href').split('#');
     let href = useHref.shift();
     let svgName = useHref.pop();
     if (svgName === "Like") {
-        likeSvg.style.fill = isFillRed ? "#ef233c" : "#c6c6c9";
-        use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${href}#Unlike`);
+        likeSvg.css("fill", `${isFillRed ? "#ef233c" : "#c6c6c9"}`);
+        use.attr('xlink:href', `${href}#Unlike`);
     } else {
-        likeSvg.style.fill = "#c6c6c9";
-        use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `${href}#Like`);
+        likeSvg.css("fill", "#c6c6c9");
+        use.attr('xlink:href', `${href}#Like`);
     }
 }
 
@@ -36,4 +36,3 @@ function ChangeWatchLaterSvg(watchLaterBtn) {
     else
         use.attr('xlink:href', `${href}#AddToWatchLater`);
 }
-

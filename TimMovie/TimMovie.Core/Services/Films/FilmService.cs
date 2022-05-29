@@ -47,45 +47,22 @@ public class FilmService
         return dbFilm is not null;
     }
 
-    public bool TryGetFirstOrDefaultUser(Guid userId, out User? user)
+    private bool TryGetFirstOrDefaultUser(Guid userId, out User? user)
     {
         user = _userRepository.Query.Include(u => u.FilmsWatchLater)
             .FirstOrDefault(new EntityByIdSpec<User>(userId));
         return user is not null;
     }
 
-    private bool TryGetFilmAndUser(Guid filmId, Guid userId, out Film? dbFilm, out User? user) =>
+    public bool TryGetFilmAndUser(Guid filmId, Guid userId, out Film? dbFilm, out User? user) =>
         TryGetFirstOrDefaultFilm(filmId, out dbFilm)
         & TryGetFirstOrDefaultUser(userId, out user);
 
-    private async Task<bool> TryUpdateUserRepository(User? user)
+    public async Task<bool> TryUpdateUserRepository(User? user)
     {
         _userRepository.Update(user);
         await _userRepository.SaveChangesAsync();
         return true;
-    }
-
-    public bool IsWatchLaterFilm(Guid filmId, Guid userId)
-    {
-        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user))
-            return false;
-        return user!.FilmsWatchLater.Contains(dbFilm!);
-    }
-    
-    public async Task<bool> TryAddFilmToWatchLater(Guid filmId, Guid userId)
-    {
-        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
-
-        user!.FilmsWatchLater.Add(dbFilm!);
-        return await TryUpdateUserRepository(user);
-    }
-
-    public async Task<bool> TryRemoveFilmFromWatchLater(Guid filmId, Guid userId)
-    {
-        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
-
-        user!.FilmsWatchLater.Remove(dbFilm!);
-        return await TryUpdateUserRepository(user);
     }
 
     public bool TryGetUserGrade(Guid filmId, Guid userId, out int? grade)
