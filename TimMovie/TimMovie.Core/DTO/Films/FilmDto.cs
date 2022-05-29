@@ -15,12 +15,13 @@ public class FilmDto
     public double? Rating { get; set; }
     public int? GradesNumber { get; set; }
     public string? FilmLink { get; set; }
-
     public List<Producer> Producers { get; set; }
 
     public List<Actor> Actors { get; set; }
 
     public List<Genre> Genres { get; set; }
+    
+    public List<Comment> Comments { get; set; }
     
     public string Image { get; set; } = null!;
 }

@@ -179,7 +179,7 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
 
-    public FilmDto GetFilmById(Guid filmId)
+    public FilmDto GetFilmById2(Guid filmId)
     {
         var dbFilm = GetDbFilmById(filmId);
         var filmDto = MapToRequiredDto<Film?, FilmDto>(dbFilm);
@@ -187,6 +187,57 @@ public class FilmService
         filmDto.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
         return filmDto;
     }
+    
+    public FilmDto GetFilmById(Guid filmId)
+    {
+        var dbFilm = GetDbFilmById(filmId);
+        var filmDto = new FilmDto
+        {
+            Id = dbFilm!.Id,
+            Title = dbFilm.Title,
+            Year = dbFilm.Year,
+            Description = dbFilm.Description,
+            //Country = new CountryDto {Name = dbFilm.Country?.Name},
+            Rating = GetRating(dbFilm),
+            GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId),
+            FilmLink = dbFilm.FilmLink,
+            // Comments = dbFilm.Comments.Select(comment => new CommentsDto
+            //     {
+            //         AuthorDisplayName = comment.Author.DisplayName,
+            //         AuthorId = comment.Author.Id,
+            //         AuthorPathToPhoto = comment.Author.PathToPhoto,
+            //         Content = comment.Content,
+            //         Date = comment.Date
+            //     }).OrderByDescending(c => c.Date)
+            //     .Select(comment =>
+            //     {
+            //         comment.Date -= TimeSpan.FromHours(3);
+            //         return comment;
+            //     })
+            //     .ToList(),
+            // Producers = dbFilm.Producers.Select(producer => new ProducerDto
+            // {
+            //     Id = producer.Id,
+            //     Name = producer.Name,
+            //     Surname = producer.Surname,
+            //     Photo = producer.Photo
+            // }).ToList(),
+            // Actors = dbFilm.Actors.Select(actor => new ActorDto
+            // {
+            //     Id = actor.Id,
+            //     Name = actor.Name,
+            //     Surname = actor.Surname,
+            //     Photo = actor.Photo
+            // }).ToList(),
+            // Genres = dbFilm.Genres.Select(genre => new GenreDto
+            // {
+            //     Id = genre.Id,
+            //     Name = genre.Name
+            // }).ToList()
+        };
+        return filmDto;
+    }
+    
 
     public Film? GetDbFilmById(Guid filmId)
     {

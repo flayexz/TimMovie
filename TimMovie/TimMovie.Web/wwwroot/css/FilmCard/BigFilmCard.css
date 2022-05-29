@@ -10,6 +10,7 @@ body {
 
 .info_container{
   width: 60%;
+  height: 100%
 }
 
 .movie_card {
@@ -42,7 +43,7 @@ body {
 .movie_card .info_section .movie_header {
   position: relative;
   padding: 10px 25px 10px 25px;
-  height: 40%;
+  max-height: 40%;
 }
 
 .z-index3{
@@ -68,15 +69,17 @@ body {
 
 
 .movie_desc{
-  height: 100px;
+  max-height: 35%;
   position: relative;
 }
 
 .movie_card .info_section .movie_desc .text {
-  height: 100%;
   color: #cfd6e1;
+  margin: 0;
+  -webkit-line-clamp: 6; /* Число отображаемых строк */
+  display: -webkit-box; 
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .movie_card .blur_back {
@@ -106,6 +109,7 @@ body {
   position: relative;
   z-index: 3;
   width: 80%;
+  max-height: 25%;
 }
 
 
@@ -141,7 +145,7 @@ body {
 .actor_img {
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: cover;
 }
 
 .watch_later_btn{

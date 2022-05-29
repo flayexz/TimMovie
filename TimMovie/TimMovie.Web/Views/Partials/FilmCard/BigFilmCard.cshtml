@@ -20,7 +20,7 @@
                 </button>
             </div>
             <div class="movie_header text-center">
-                <h1>@film.Title</h1>
+                <h2>@film.Title</h2>
                 <h4>
                     <a class="hover_link zindex-3" asp-controller="Films" asp-action="Filters" asp-route-year="@Model.Year">@Model.Year</a>,
                     <a class="hover_link zindex-3" href="#">@film.Producer.Name @film.Producer.Surname</a>
@@ -38,7 +38,7 @@
                     @film.Description.Trim().Split("\n")[0]
                 </p>
             </div>
-            <div class="actors d-flex align-content-center justify-content-between mt-3">
+            <div class="actors d-flex align-content-center justify-content-between mb-2">
                 <a class="actor">
                     <div id="film_rating" class="content">@film.Rating</div>
                     <div class="caption">Рейтинг TimMovie</div>

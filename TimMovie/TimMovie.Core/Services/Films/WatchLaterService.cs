@@ -37,7 +37,7 @@ public class WatchLaterService
 
         if (filmsWatchLater is null) return new List<BigFilmCardDto>();
 
-        var filmDtoList = filmsWatchLater.Select(f => _filmService.GetFilmById(f.Id));
+        var filmDtoList = filmsWatchLater.Select(f => _filmService.GetFilmById2(f.Id));
         return filmDtoList
             .Select(filmDto => _mapper.Map<BigFilmCardDto>(filmDto))
             .ToList();

@@ -12,7 +12,7 @@
                     <div id="watch_later_title" title="@(Model.IsAddedToWatchLater ? "Убрать из смотреть" : "Смотреть") позже">
                         <button class="buttons bg-transparent border-0 p-0 m-0 film_card_btns" 
                                 data-auth="@isAuth" data-type="watchLater" data-added = "@Model.IsAddedToWatchLater">
-                            <svg class="watch_later_svg"
+                            <svg class="watch_later_svg svg_hover"
                                  width="24px" height="24px"
                                  xmlns="http://www.w3.org/2000/svg"
                                  fill="#c6c6c9">
@@ -23,7 +23,7 @@
                     <div id="like_title" title="@(Model.IsGradeSet ? "Изменить оценку фильма" : "Поставить оценку фильму")">
                         <button data-bs-toggle="modal" data-bs-target=@(isAuth ? "#modalFilmGrade" : "#modal1")
                                 class="buttons bg-transparent border-0 p-0 m-0 film_card_btns" data-type="like" data-auth = "@isAuth">
-                            <svg class="svg-grade"
+                            <svg class="svg-grade svg_hover"
                                  width="24px" height="24px"
                                  xmlns="http://www.w3.org/2000/svg"
                                  fill="#c6c6c9">
