@@ -215,15 +215,6 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
 
-    public FilmDto GetFilmById2(Guid filmId)
-    {
-        var dbFilm = GetDbFilmById(filmId);
-        var filmDto = MapToRequiredDto<Film?, FilmDto>(dbFilm);
-        filmDto!.Rating = GetRating(dbFilm!);
-        filmDto.GradesNumber = _watchedFilmService.Value.GetAmountGradesForFilms(filmId);
-        return filmDto;
-    }
-    
     public FilmDto GetFilmById(Guid filmId)
     {
         var dbFilm = GetDbFilmById(filmId);

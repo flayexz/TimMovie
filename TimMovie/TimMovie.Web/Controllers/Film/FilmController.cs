@@ -31,7 +31,7 @@ public class FilmController : Controller
     [HttpGet("[controller]/{filmId:guid}")]
     public async Task<IActionResult> Film(Guid filmId)
     {
-        var film = _mapper.Map<FilmViewModel>(_filmService.GetFilmById2(filmId));
+        var film = _mapper.Map<FilmViewModel>(_filmService.GetFilmById(filmId));
         if (UserId is not null)
         {
             film.IsGradeSet = GetGrade(filmId) is not null;

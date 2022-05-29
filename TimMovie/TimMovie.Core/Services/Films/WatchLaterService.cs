@@ -26,8 +26,7 @@ public class WatchLaterService
         _filmService = filmService;
     }
 
-    
-    
+
     public List<BigFilmCardDto> GetWatchLaterFilmsAsync(Guid userId, int take, int skip)
     {
         var filmsWatchLater = _userManager.Users
@@ -37,7 +36,7 @@ public class WatchLaterService
 
         if (filmsWatchLater is null) return new List<BigFilmCardDto>();
 
-        var filmDtoList = filmsWatchLater.Select(f => _filmService.GetFilmById2(f.Id));
+        var filmDtoList = filmsWatchLater.Select(f => _filmService.GetDbFilmById(f.Id));
         return filmDtoList
             .Select(filmDto => _mapper.Map<BigFilmCardDto>(filmDto))
             .ToList();

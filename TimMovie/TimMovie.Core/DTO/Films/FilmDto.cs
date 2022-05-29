@@ -20,7 +20,6 @@ public class FilmDto
     public List<CommentsDto> Comments { get; set; }
     public List<ProducerDto> Producers { get; set; }
     public List<ActorDto> Actors { get; set; }
-    public List<Genre> Genres { get; set; }
-    public List<Comment> Comments { get; set; }
+    public List<GenreDto> Genres { get; set; }
     public string Image { get; set; } = null!;
 }
