@@ -192,9 +192,10 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
     
-    public FilmDto GetFilmById(Guid filmId)
+    public FilmDto? GetFilmById(Guid filmId)
     {
         var dbFilm = GetDbFilmById(filmId);
+        if (dbFilm == null) return null;
         var filmDto = new FilmDto
         {
             Id = dbFilm!.Id,

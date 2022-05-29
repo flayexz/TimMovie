@@ -33,7 +33,11 @@ public class FilmController : Controller
     [HttpGet("[controller]/{filmId:guid}")]
     public async Task<IActionResult> Film(Guid filmId)
     {
-        var film = _mapper.Map<FilmViewModel>(_filmService.GetFilmById(filmId));
+        var filmDto = _filmService.GetFilmById(filmId);
+        if (filmDto == null) 
+            return View("~/Views/Errors/ResourceNotFound.cshtml"); 
+        var film = _mapper.Map<FilmViewModel>(filmDto);
+
         if (UserId is not null)
         {
             film.IsGradeSet = GetGrade(filmId) is not null;
