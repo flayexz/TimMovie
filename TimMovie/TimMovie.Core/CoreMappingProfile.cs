@@ -50,7 +50,7 @@ public class CoreMappingProfile : Profile
         CreateMap<Message, MessageDto>();
         CreateMap<Notification, NotificationDto>();
         CreateMap<NewMessageDto, Message>();
-        CreateMap<Film, BigFilmCardDto>()
+        CreateMap<FilmDto, BigFilmCardDto>()
             .ForMember(f => f.Producer,
                 e =>
                     e.MapFrom(src => src.Producers.FirstOrDefault()))
