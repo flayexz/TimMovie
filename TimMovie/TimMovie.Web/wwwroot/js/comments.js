@@ -122,17 +122,5 @@
             .toLocaleString()
             .replace(",", "");
         return data.replace(pattern, resultDate);
-        // let result = [...data.matchAll(/[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9][0-9]:[0-9][0-9]:[0-9][0-9]|[0-9][0-9].[0-9][0-9].[0-9][0-9][0-9][0-9] [0-9]:[0-9][0-9]:[0-9][0-9]/g)];
-        // $.each(result, function () {
-        //     let parts = this[0].split(' ');
-        //     let yearMonthDay = parts[0].split('.');
-        //     let hourMinuteSecond = parts[1].split(':');
-        //     this[0] = new Date(Date
-        //         .UTC(yearMonthDay[2], yearMonthDay[1], yearMonthDay[0], 
-        //             hourMinuteSecond[0], hourMinuteSecond[1], hourMinuteSecond[2]))
-        //         .toLocaleString()
-        //         .replace(",", "");
-        // });
-        // return data;
     }
 });

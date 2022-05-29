@@ -21,8 +21,6 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     containerBuilder.RegisterModule(new InfrastructureModule(builder.Configuration));
 });
 
-// builder.Services.AddHostedService<UserStatusWorker>();
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
