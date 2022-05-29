@@ -29,9 +29,9 @@ public class WatchLaterController : Controller
     {
         var userId = User.GetUserId();
         if (userId is null)
-            return BadRequest();
+            return View("~/Views/Errors/UserNotExisting.cshtml");
         var isOwner = User.Identity.IsAuthenticated;
-        if (!isOwner) return BadRequest();
+        if (!isOwner) return View("~/Views/Errors/ResourceIsNotAvailable.cshtml");
         
         var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId.Value, take, skip);
 
