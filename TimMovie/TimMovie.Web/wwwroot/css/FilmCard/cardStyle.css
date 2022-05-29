@@ -26,6 +26,7 @@
 .film-card__title {
     font-size: 1.2em;
     word-wrap: normal;
+    overflow: hidden;
 }
 
 .film-card__under-content {

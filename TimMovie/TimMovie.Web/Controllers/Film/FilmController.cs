@@ -5,8 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using TimMovie.Core.DTO.Comments;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Services.Films;
+using TimMovie.Core.Services.Person;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels;
+using TimMovie.Web.ViewModels.Films;
 
 namespace TimMovie.Web.Controllers.Film;
 
@@ -18,14 +20,17 @@ public class FilmController : Controller
     private readonly FilmService _filmService;
     private readonly WatchLaterService _watchLaterService;
     private readonly UserManager<User> _userManager;
+    private readonly PersonService _personService;
+
     private Guid? UserId => User.GetUserId();
 
 
-    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager, WatchLaterService watchLaterService)
+    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager, WatchLaterService watchLaterService, PersonService personService)
     {
         _mapper = mapper;
         _filmService = filmService;
         _userManager = userManager;
+        _personService = personService;
         _watchLaterService = watchLaterService;
     }
 
@@ -90,6 +95,36 @@ public class FilmController : Controller
         if (!await _filmService.TryUpdateFilmGrade(filmId, UserId.Value, grade))
             return BadRequest();
         return Ok();
+    }
+
+    [HttpGet("[controller]/actor/{id:guid}")]
+    public int GetAmountFilmsByActorId(Guid id)
+    {
+        var count = _personService.GetAmountFilmsForActor(id);
+        return count;
+    }
+    
+    [HttpGet("[controller]/producer/{id:guid}")]
+    public int GetAmountFilmsByProducerId(Guid id)
+    {
+        var count = _personService.GetAmountFilmsForProducer(id);
+        return count;
+    }
+    
+    [HttpGet("/actor/films")]
+    public IActionResult GetFilmsForActor(Guid id, int skip, int take)
+    {
+        var films = _personService.GetFilmsByActor(id, skip, take);
+        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(films);
+        return View("~/Views/Partials/FilmCard/PersonFilms.cshtml", filmsViewModel);
+    }
+    
+    [HttpGet("/producer/films")]
+    public IActionResult GetFilmsForProducer(Guid id, int skip, int take)
+    {
+        var films = _personService.GetFilmsByProducer(id, skip, take);
+        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(films);
+        return View("~/Views/Partials/FilmCard/PersonFilms.cshtml", filmsViewModel);
     }
 
     private IEnumerable<Comment>? GetCommentsWithPagination(Guid filmId, int skip, int take)
