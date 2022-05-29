@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TimMovie.Core.DTO.Comments;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Services.Films;
+using TimMovie.Core.Services.Person;
 using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels;
 
@@ -17,13 +18,16 @@ public class FilmController : Controller
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
     private readonly UserManager<User> _userManager;
+    private readonly PersonService _personService;
 
 
-    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager)
+    public FilmController(IMapper mapper, FilmService filmService, 
+        UserManager<User> userManager, PersonService personService)
     {
         _mapper = mapper;
         _filmService = filmService;
         _userManager = userManager;
+        _personService = personService;
     }
 
     [HttpGet("[controller]/{id:guid}")]
@@ -86,6 +90,22 @@ public class FilmController : Controller
         if (!await _filmService.TryUpdateFilmGrade(filmId, userId.Value, grade))
             return BadRequest();
         return Ok();
+    }
+
+    [HttpGet("[controller]/person/{id:guid}")]
+    public int GetAmountFilmsByPersonId(Guid id)
+    {
+        Console.WriteLine(id);
+        var count = _personService.GetAmountFilmsById(id);
+        return count;
+    }
+    
+    [HttpGet("/person/films")]
+    public int GetFilmsForPerson(Guid personId, int skip, int take)
+    {
+        Console.WriteLine(personId);
+        var count = _personService.GetAmountFilmsById(personId);
+        return count;
     }
 
     private IEnumerable<Comment>? GetCommentsWithPagination(Guid filmId, int skip, int take)
