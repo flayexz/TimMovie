@@ -15,6 +15,10 @@ public class FilmFiltersBuilder: FilmQueryBuilder
     public FilmFiltersBuilder(IRepository<Film> query) : base(query)
     {
     }
+    
+    public FilmFiltersBuilder(IRepository<Film> filmRepository, IQueryable<Film> filmQuery) : base(filmRepository, filmQuery)
+    {
+    }
 
     public FilmFiltersBuilder AddFilterByGenre(IEnumerable<string>? genreNames)
     {
