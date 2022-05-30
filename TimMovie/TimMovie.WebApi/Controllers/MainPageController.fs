@@ -1,6 +1,7 @@
 ﻿namespace TimMovie.WebApi.Controllers.MainPageController
 
 open System
+open System.Collections.Generic
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Mvc
 open Microsoft.FSharp.Core
@@ -8,6 +9,7 @@ open Newtonsoft.Json
 open OpenIddict.Validation.AspNetCore
 open TimMovie.Core.DTO
 open TimMovie.Core.DTO.Films
+open TimMovie.Core.Enums
 open TimMovie.Core.Interfaces
 open TimMovie.Core.Services.Films
 open TimMovie.SharedKernel.Classes
@@ -55,7 +57,7 @@ type MainPageController
                 Result.Fail<string>("Error occurred while decoding the jwt token")
         else
             Result.Fail<string>("Error occurred while getting user jwt token")
-            
+
     [<HttpGet>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
@@ -68,13 +70,12 @@ type MainPageController
                 this.jwtService.GetUserGuid(jwtTokenOption.Value)
 
             if userGuidOption.IsSome then
-                    let subscribes =
-                        subscribeService.GetAllActiveUserSubscribes(Guid(userGuidOption.Value.ToString()))
+                let subscribes =
+                    subscribeService.GetAllActiveUserSubscribes(Guid(userGuidOption.Value.ToString()))
 
-                    let json =
-                        JsonConvert.SerializeObject subscribes
+                let json = JsonConvert.SerializeObject subscribes
 
-                    Result.Ok(json)
+                Result.Ok(json)
             else
                 Result.Fail<string>("Error occurred while decoding the jwt token")
         else
@@ -96,9 +97,38 @@ type MainPageController
             [<FromForm>] skip: int
         ) =
         subscribeService.GetSubscribesByNamePart(namePart, take, skip)
-        
+
     [<HttpPost>]
     [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetFilmByFilters([<FromForm>] generalPaginationDto: GeneralPaginationDto<SelectedFilmFiltersDto>) =
+    member _.GetFilmByFilters
+        (
+            [<FromForm>] filmSortingType: FilmSortingType,
+            [<FromForm>] genresName: IEnumerable<string>,
+            [<FromForm>] countriesName: IEnumerable<string>,
+            [<FromForm>] firstYear: int,
+            [<FromForm>] lastYear: int,
+            [<FromForm>] rating: int,
+            [<FromForm>] isDescending: bool,
+            [<FromForm>] amountSkip: int,
+            [<FromForm>] amountTake: int
+        ) =
+        
+        let selectedFilmFiltersDto =
+            SelectedFilmFiltersDto(
+                SortingType = filmSortingType,
+                GenresName = genresName,
+                CountriesName = countriesName,
+                Rating = rating,
+                AnnualPeriod = AnnualPeriodDto(firstYear, lastYear),
+                IsDescending = isDescending
+            )
+
+        let generalPaginationDto =
+            GeneralPaginationDto<SelectedFilmFiltersDto>(
+                DataDto = selectedFilmFiltersDto,
+                AmountSkip = amountSkip,
+                AmountTake = amountTake
+            )
+
         filmCardService.GetFilmCardsByFilters(generalPaginationDto)

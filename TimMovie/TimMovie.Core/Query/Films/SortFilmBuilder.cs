@@ -21,7 +21,6 @@ public class SortFilmBuilder : FilmQueryBuilder
         AddSort(isDescending,
             film => film.UserFilmWatcheds
                 .Count(watched => watched.Date >= DateTime.Now.AddMonths(-1)));
-        
         return this;
     }
 
