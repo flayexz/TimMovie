@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Autofac;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
@@ -48,16 +49,23 @@ public class SubscribeService : ISubscribeService
         return MapToSubscribeDto(subscribes);
     }
 
-    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid userId)
+    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid? userId)
     {
         var query = _userSubscribeRepository.Query
             .Where(new UserSubscribeByUserIdSpec(userId) && SubscribeSpec.ActiveSubscribe);
-
         var subscribes = new QueryExecutor<UserSubscribe>(query, _userSubscribeRepository)
             .IncludeInResult(subscribe => subscribe.Subscribe)
             .GetEntities();
-
         return MapToUserSubscribeDto(subscribes);
+    }
+
+    public bool IsFilmAvailableForUser(Guid? userId, Film? film)
+    {
+        if (film.IsFree) return true;
+        if (userId == null) return false;
+        var userSubscribes = GetAllActiveUserSubscribes(userId);
+        var subscribes = userSubscribes.Select(us => GetSubscribeById(us.SubscribeId));
+        return subscribes.Any(s => s.Films.FirstOrDefault(f => f.Id == film.Id) != null);
     }
 
     private IEnumerable<SubscribeDto> MapToSubscribeDto(IEnumerable<Subscribe> userSubscribes) =>
@@ -98,8 +106,14 @@ public class SubscribeService : ISubscribeService
         await _userSubscribeRepository.SaveChangesAsync();
     }
 
+    Subscribe? ISubscribeService.GetSubscribeById(Guid subscribeId)
+    {
+        return GetSubscribeById(subscribeId);
+    }
+
     public Subscribe? GetSubscribeById(Guid subscribeId) =>
-        _subscribesRepository.Query.FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
+        _subscribesRepository.Query.Include(f=>f.Films)
+            .FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
 
     private async Task ExtendUserSubscribeAsync(UserSubscribe userSubscribe)
     {

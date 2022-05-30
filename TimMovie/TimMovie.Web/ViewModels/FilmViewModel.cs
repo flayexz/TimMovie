@@ -23,4 +23,5 @@ public class FilmViewModel
     public bool IsGradeSet { get; set; }
     public bool IsAddedToWatchLater { get; set; }
     public string? PathToUserPhoto { get; set; }
+    public bool IsAvailable { get; set; }
 }
