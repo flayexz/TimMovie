@@ -12,7 +12,7 @@
 }
 <div class="d-flex flex-column">
     <div class="d-flex mt-3">
-        @{ await Html.RenderPartialAsync("~/Views/Profile/ProfileCard.cshtml", (Model.IsOwner, Model.UserInfo)); }
+        @{ await Html.RenderPartialAsync("~/Views/Profile/ProfileCard.cshtml", (Model.IsOwner, Model.UserInfo, Model.FilmCards.Any())); }
         <div class="d-flex flex-column flex-grow-1 ms-5">
             <div class="h3">Последние просмотренные фильмы</div>
             @if (Model.FilmCards.Any())
