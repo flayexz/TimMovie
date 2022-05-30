@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.Services.Films;
 using TimMovie.Web.Extensions;
@@ -6,6 +7,7 @@ using TimMovie.Web.ViewModels.FilmCard;
 
 namespace TimMovie.Web.Controllers.WatchLaterController;
 
+[Authorize]
 public class WatchLaterController : Controller
 {
     private readonly IMapper _mapper;
@@ -28,12 +30,8 @@ public class WatchLaterController : Controller
     public async Task<IActionResult> WatchLaterFilms(int take, int skip)
     {
         var userId = User.GetUserId();
-        if (userId is null)
-            return View("~/Views/Errors/UserNotExisting.cshtml");
-        var isOwner = User.Identity.IsAuthenticated;
-        if (!isOwner) return View("~/Views/Errors/ResourceIsNotAvailable.cshtml");
-        
-        var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId.Value, take, skip);
+
+        var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId!.Value, take, skip);
 
         var cardsViewModel = _mapper.Map<IEnumerable<BigFilmCardViewModel>>(watchLaterFilms);
 
