@@ -113,7 +113,7 @@ type MainPageController
             [<FromForm>] amountSkip: int,
             [<FromForm>] amountTake: int
         ) =
-        
+
         let selectedFilmFiltersDto =
             SelectedFilmFiltersDto(
                 SortingType = filmSortingType,

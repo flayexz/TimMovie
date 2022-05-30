@@ -16,10 +16,7 @@ open TimMovie.WebApi.Services.JwtService
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
-type FilmController
-    (
-        filmService: FilmService
-    ) as this =
+type FilmController(filmService: FilmService) as this =
     inherit ControllerBase()
 
     member private _.jwtService = JwtService()
@@ -27,8 +24,7 @@ type FilmController
     [<HttpPost>]
     [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetFilmById([<FromForm>] filmId: Guid) =
-        filmService.GetFilmById(filmId)
+    member _.GetFilmById([<FromForm>] filmId: Guid) = filmService.GetFilmById(filmId)
 
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -49,4 +45,3 @@ type FilmController
                 Result.Fail<CommentsDto>("Error occurred while decoding the jwt token")
         else
             Result.Fail<CommentsDto>("Error occurred while getting user jwt token")
-        

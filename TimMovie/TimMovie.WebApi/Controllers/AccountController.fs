@@ -23,7 +23,7 @@ type AccountController(userService: IUserService) as this =
         userRegistrationDto.Email <- email
         userRegistrationDto.UserName <- username
         userRegistrationDto.Password <- password
-        
+
         let registerResult =
             userService.RegisterUserAsync(userRegistrationDto)
             |> Async.AwaitTask
@@ -36,6 +36,7 @@ type AccountController(userService: IUserService) as this =
                 |> Async.RunSynchronously
             else
                 let sb = System.Text.StringBuilder()
+
                 for error in registerResult.Errors do
                     sb.Append($" {error.Description}") |> ignore
 
@@ -51,13 +52,12 @@ type AccountController(userService: IUserService) as this =
 
     [<HttpGet>]
     [<AllowAnonymous>]
-    [<ApiExplorerSettings(IgnoreApi=true)>]
+    [<ApiExplorerSettings(IgnoreApi = true)>]
     member _.ConfirmEmail(userId: string, code: string) =
         userService.ConfirmEmailAsync(userId, code)
-        
-    
+
+
     [<HttpGet>]
     [<AllowAnonymous>]
-    [<ApiExplorerSettings(IgnoreApi=true)>]
-    member _.GetUrlToConfirmEmail() =
-        this.UrlToConfirmEmail
+    [<ApiExplorerSettings(IgnoreApi = true)>]
+    member _.GetUrlToConfirmEmail() = this.UrlToConfirmEmail
