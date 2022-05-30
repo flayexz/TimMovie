@@ -71,8 +71,10 @@ public class UserProfileController : Controller
             return View("~/Views/Errors/UserNotExisting.cshtml");
         }
 
+        var currentUser = User.GetUserId();
+
         var userInfo = await _userService.GetInfoAboutUserAsync(id);
-        var filmCards = _filmCardService.GetLatestFilmsViewedByUser(id, 6);
+        var filmCards = _filmCardService.GetLatestFilmsViewedByUser(id, 6, currentUser);
         var subscribes = _subscribeService.GetAllActiveUserSubscribes(id);
 
         var userProfile = new UserProfileViewModel

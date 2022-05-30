@@ -123,10 +123,10 @@ public class FilmCardService
         filmCardDto.IsAddedToWatchLater = _watchLaterService.IsWatchLaterFilm(filmCardDto.Id, userId);
     }
 
-    public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid userId, int amount)
+    public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid guestId, int amount, Guid? currentUser)
     {
         var query = _userFilmWatchedRepository.Query
-            .Where(new WatchedFilmByUserIdSpec(userId))
+            .Where(new WatchedFilmByUserIdSpec(guestId))
             .OrderByDescending(watched => watched.Date);
         var queryExecutor = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
 
@@ -136,6 +136,6 @@ public class FilmCardService
             .GetEntitiesWithPagination(0, amount)
             .Select(watched => watched.Film);
 
-        return GetFilmCardsByFilms(films, userId);
+        return GetFilmCardsByFilms(films, currentUser ?? default);
     }
 }
