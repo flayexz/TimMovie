@@ -107,6 +107,12 @@ button{
  border-radius: 8px;
 }
 
+.notAvailableFilmLabel{
+ border: 2px solid white;
+ border-radius: 30px;
+ flex-wrap: wrap;
+ background-image: url("../img/bratva.jpg");
+}
 
 #film_rating{
  display: flex;

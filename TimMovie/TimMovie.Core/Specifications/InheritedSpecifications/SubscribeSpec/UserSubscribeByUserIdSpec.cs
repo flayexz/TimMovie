@@ -5,7 +5,7 @@ namespace TimMovie.Core.Specifications.InheritedSpecifications.SubscribeSpec;
 
 public class UserSubscribeByUserIdSpec: Specification<UserSubscribe>
 {
-    public UserSubscribeByUserIdSpec(Guid userId)
+    public UserSubscribeByUserIdSpec(Guid? userId)
     {
         Conditional = subscribe => subscribe.SubscribedUser.Id == userId;
     }

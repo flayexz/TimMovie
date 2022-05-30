@@ -9,7 +9,9 @@ using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Producer;
 using TimMovie.Core.Entities;
 using TimMovie.Core.ExpressionQuery.Films;
+using TimMovie.Core.Interfaces;
 using TimMovie.Core.Query;
+using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
@@ -24,6 +26,7 @@ public class FilmService
     private readonly IRepository<Film> _filmRepository;
     private readonly IRepository<User> _userRepository;
     private readonly Lazy<WatchedFilmService> _watchedFilmService;
+    private readonly ISubscribeService _subscribeService;
     private readonly UserManager<User> _userManager;
     private readonly IMapper _mapper;
 
@@ -32,13 +35,14 @@ public class FilmService
         IRepository<User> userRepository,
         IMapper mapper,
         Lazy<WatchedFilmService> watchedFilmService,
-        UserManager<User> userManager)
+        UserManager<User> userManager, ISubscribeService subscribeService)
     {
         _filmRepository = filmRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _watchedFilmService = watchedFilmService;
         _userManager = userManager;
+        _subscribeService = subscribeService;
     }
 
     private bool TryGetFirstOrDefaultFilm(Guid filmId, out Film? dbFilm)
@@ -192,7 +196,7 @@ public class FilmService
         ? null
         : _mapper.Map<TDto>(entity);
     
-    public FilmDto? GetFilmById(Guid filmId)
+    public FilmDto? GetFilmById(Guid filmId, Guid? userId = null)
     {
         var dbFilm = GetDbFilmById(filmId);
         if (dbFilm == null) return null;
@@ -233,7 +237,8 @@ public class FilmService
             {
                 Id = genre.Id,
                 Name = genre.Name
-            }).ToList()
+            }).ToList(),
+            IsAvailable = _subscribeService.IsFilmAvailableForUser(userId, dbFilm)
         };
         return filmDto;
     }
@@ -253,4 +258,10 @@ public class FilmService
             .ThenIncludeInResult(comment => comment.Author)
             .FirstOrDefault();
     }
+
+    // public bool IsFilmAvailableForUser(Guid userId, Guid filmId)
+    // {
+    //     var available = _subscribeService.IsFilmAvailableForUser(userId, filmId);
+    //     return available;
+    // }
 }

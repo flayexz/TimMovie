@@ -7,7 +7,9 @@ public interface ISubscribeService
 {
     public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take = int.MaxValue, int skip = 0);
 
-    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid userId);
+    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid? userId);
+
+    public bool IsFilmAvailableForUser(Guid? userId, Film? film);
 
     public Task AddUserToSubscribeAsync(User user, Subscribe subscribe);
 

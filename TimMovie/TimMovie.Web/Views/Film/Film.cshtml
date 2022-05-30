@@ -48,10 +48,21 @@
             </div>
         </div>
         <div class="col-12 col-xl-7 order-xl-1" id="film_player">
-            <div class="ratio ratio-16x9 circleBorders">
-                <iframe src="@Model.FilmLink?rel=0&controls=2&modestbranding=1&showinfo=0"
-                        title="YouTube video" allowfullscreen style="border-radius: 16px;">
-                </iframe>
+            <div class="ratio ratio-16x9">
+                @if (!Model.IsAvailable)
+                    {
+                        <div class="notAvailableFilmLabel d-flex align-items-center justify-content-center">
+                            <h3>У вас нет необходимой подписки</h3>
+                            <a class="hover_link" asp-controller="Subscribes" asp-action="Subscribes">Приобрести подписки от братвы</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <iframe src="@Model.FilmLink?rel=0&controls=0&modestbranding=1&showinfo=0"
+                                title="YouTube video" allowfullscreen style="border-radius: 16px;">
+                        </iframe>
+                    }
+                
             </div>
             <div class="d-flex flex-row-reverse justify-content-between align-items-center mt-2">
                 <div class="d-flex flex-column under_film_buttons">

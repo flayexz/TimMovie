@@ -3,7 +3,6 @@ using TimMovie.Core.DTO.Comments;
 using TimMovie.Core.DTO.Country;
 using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Producer;
-using TimMovie.Core.Entities;
 
 namespace TimMovie.Core.DTO.Films;
 
@@ -22,4 +21,6 @@ public class FilmDto
     public List<ActorDto> Actors { get; set; }
     public List<GenreDto> Genres { get; set; }
     public string Image { get; set; } = null!;
+    
+    public bool IsAvailable { get; set; }
 }

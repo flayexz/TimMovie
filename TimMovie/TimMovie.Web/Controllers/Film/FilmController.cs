@@ -26,7 +26,8 @@ public class FilmController : Controller
     private Guid? UserId => User.GetUserId();
 
 
-    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager, WatchLaterService watchLaterService, PersonService personService)
+    public FilmController(IMapper mapper, FilmService filmService, UserManager<User> userManager,
+        WatchLaterService watchLaterService, PersonService personService)
     {
         _mapper = mapper;
         _filmService = filmService;
@@ -39,9 +40,9 @@ public class FilmController : Controller
     [HttpGet("[controller]/{filmId:guid}")]
     public async Task<IActionResult> Film(Guid filmId)
     {
-        var filmDto = _filmService.GetFilmById(filmId);
-        if (filmDto == null) 
-            return View("~/Views/Errors/ResourceNotFound.cshtml"); 
+        var filmDto = _filmService.GetFilmById(filmId, UserId);
+        if (filmDto == null)
+            return View("~/Views/Errors/ResourceNotFound.cshtml");
         var film = _mapper.Map<FilmViewModel>(filmDto);
 
         if (UserId is not null)
@@ -108,14 +109,14 @@ public class FilmController : Controller
         var count = _personService.GetAmountFilmsForActor(id);
         return count;
     }
-    
+
     [HttpGet("[controller]/producer/{id:guid}")]
     public int GetAmountFilmsByProducerId(Guid id)
     {
         var count = _personService.GetAmountFilmsForProducer(id);
         return count;
     }
-    
+
     [HttpGet("/actor/films")]
     public IActionResult GetFilmsForActor(Guid id, int skip, int take)
     {
