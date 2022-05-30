@@ -1,0 +1,24 @@
+﻿@addTagHelper *, TimMovie.Web
+@model IEnumerable<TimMovie.Web.ViewModels.FilmCard.FilmCardViewModel>
+
+@{
+    var cards = Model.ToList();
+    var cardsNumber = cards.Count;
+}
+
+<div class="carousel-container">
+    <div class="carousel-inner">
+        <div class="track">
+            @for (var i = 0; i < cardsNumber; i++)
+            {
+                <div class="card-container column">
+                    <div class="card">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/Partials/FilmCard/FilmCard.cshtml", cards[i]);
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
