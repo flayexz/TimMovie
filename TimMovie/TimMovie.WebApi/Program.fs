@@ -20,7 +20,7 @@ type public Program() =
 
     [<EntryPoint>]
     static let main args =
-        
+
         let builder = WebApplication.CreateBuilder(args)
 
         builder.Host.UseServiceProviderFactory(AutofacServiceProviderFactory())

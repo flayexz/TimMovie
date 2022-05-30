@@ -2,18 +2,18 @@
 
 open System.Net
 open Newtonsoft.Json
-open TimMovie.Core.DTO.Notifications
+open TimMovie.Core.DTO.Subscribes
+open TimMovie.WebApi
 open TimMovie.WebApi.Tests
 open Xunit
-open TimMovie.WebApi
 
-type NotificationsTests(factory: BaseApplicationFactory<Program>) =
+type SubscribesTests(factory: BaseApplicationFactory<Program>) =
     interface IClassFixture<BaseApplicationFactory<Program>>
 
     [<Theory>]
     [<InlineData(true)>]
     [<InlineData(false)>]
-    member this.``Test notifications``(isRequestWithJWT: bool) =
+    member this.``Test getting all user notifications``(isRequestWithJWT: bool) =
         let client = factory.CreateClient()
         let userManager = factory.GetUserManager
 
@@ -24,7 +24,7 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwtToken}")
 
         let response =
-            client.GetAsync(Constants.Notifications)
+            client.GetAsync(Constants.AllUserSubscribes)
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
@@ -39,13 +39,13 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
             JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
 
         if isRequestWithJWT then
-            let notifications =
-                JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
+            let subscribes =
+                JsonConvert.DeserializeObject<List<UserSubscribeDto>> result.Value
 
             Assert.True(
                 result <> null
                 && result.Succeeded
-                && notifications.Length = 2
+                && subscribes.Length = 1
             )
         else
             Assert.True(result <> null && result.IsFailure)

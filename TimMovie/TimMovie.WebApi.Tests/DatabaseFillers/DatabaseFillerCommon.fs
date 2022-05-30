@@ -5,7 +5,7 @@ open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
 
 type DatabaseFillerCommon() =
-    
+
     static member Start(dbContext: ApplicationContext, userManager: UserManager<User>) =
         let dbFillerUsers = DatabaseFillerUsers()
         dbFillerUsers.Start(userManager)
@@ -15,3 +15,5 @@ type DatabaseFillerCommon() =
         dbFillerNotifications.Start(dbContext, userManager)
         let dbFillerFilmFilters = DatabaseFillerFilmFilters()
         dbFillerFilmFilters.Start(dbContext, userManager)
+        let dbFillerSubscribes = DatabaseFillerSubscribes()
+        dbFillerSubscribes.Start(dbContext, userManager)

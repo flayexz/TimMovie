@@ -2,12 +2,10 @@
 
 type Constants() =
     static member NavbarSearch = "/MainPage/SearchEntityByNamePart"
-    static member Authorization = "/connect/token"
-    static member Registration = "/Account/Register"
     static member Notifications = "/MainPage/GetAllUserNotifications"
-    static member UrlToConfirmEmail = "/Account/GetUrlToConfirmEmail"
     static member FilmByFilters = "/MainPage/GetFilmByFilters"
-    
+    static member AllUserSubscribes = "/MainPage/GetUserSubscribes"
+
     static member DefaultUserName = "testUser"
     static member DefaultDisplayName = Constants.DefaultUserName
     static member DefaultEmail = "testEmail@testEmail.testEmail"
