@@ -17,6 +17,8 @@ public class SortFilmBuilder : FilmQueryBuilder
 
     public SortFilmBuilder AddSortByPopularity(bool isDescending)
     {
+        AddSort(isDescending, film => film);
+        
         return this;
     }
 
