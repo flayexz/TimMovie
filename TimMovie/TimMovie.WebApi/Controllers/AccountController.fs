@@ -54,3 +54,10 @@ type AccountController(userService: IUserService) as this =
     [<ApiExplorerSettings(IgnoreApi=true)>]
     member _.ConfirmEmail(userId: string, code: string) =
         userService.ConfirmEmailAsync(userId, code)
+        
+    
+    [<HttpGet>]
+    [<AllowAnonymous>]
+    [<ApiExplorerSettings(IgnoreApi=true)>]
+    member _.GetUrlToConfirmEmail() =
+        this.UrlToConfirmEmail

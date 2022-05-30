@@ -33,16 +33,24 @@ type SearchTests(factory: BaseApplicationFactory<Program>) =
     [<InlineData("F0A0P0G2", 0, 0, 0, 2)>]
     [<InlineData("F0A0P0G3", 0, 0, 0, 2)>]
     [<InlineData("F1", 3, 2, 1, 1)>]
-    [<InlineData("actorName", 0, 1, 0, 0)>]
-    [<InlineData("actorSurname", 0, 1, 0, 0)>]
-    [<InlineData("actorName actorSurname", 0, 1, 0, 0)>]
-    [<InlineData("actorName acto", 0, 1, 0, 0)>]
-    [<InlineData("actorNameactorSurname", 0, 0, 0, 0)>]
-    [<InlineData("producerName", 0, 0, 1, 0)>]
-    [<InlineData("producerSurname", 0, 0, 1, 0)>]
-    [<InlineData("producerName producerSurname", 0, 0, 1, 0)>]
-    [<InlineData("producerName prod", 0, 0, 1, 0)>]
-    [<InlineData("producerNameproducerSurname", 0, 0, 0, 0)>]
+    [<InlineData("Фильм", 2, 0, 0, 0)>]
+    [<InlineData("фильм", 2, 0, 0, 0)>]
+    [<InlineData("Film", 2, 0, 0, 0)>]
+    [<InlineData("film", 2, 0, 0, 0)>]
+    [<InlineData("Имя Фамилия", 0, 2, 2, 0)>]
+    [<InlineData("имя Фамилия", 0, 2, 2, 0)>]
+    [<InlineData("Имя фамилия", 0, 2, 2, 0)>]
+    [<InlineData("имя фамилия", 0, 2, 2, 0)>]
+    [<InlineData("имяфамилия", 0, 0, 0, 0)>]
+    [<InlineData("Name Surname", 0, 2, 2, 0)>]
+    [<InlineData("name Surname", 0, 2, 2, 0)>]
+    [<InlineData("Name surname", 0, 2, 2, 0)>]
+    [<InlineData("name surname", 0, 2, 2, 0)>]
+    [<InlineData("namesurname", 0, 0, 0, 0)>]
+    [<InlineData("Жанр", 0, 0, 0, 2)>]
+    [<InlineData("жанр", 0, 0, 0, 2)>]
+    [<InlineData("Genre", 0, 0, 0, 2)>]
+    [<InlineData("genre", 0, 0, 0, 2)>]
     member this.``Test search``
         (
             value: string,
@@ -51,12 +59,12 @@ type SearchTests(factory: BaseApplicationFactory<Program>) =
             producersCount: int,
             genresCount: int
         ) =
-        let route = RouteConstants.NavbarSearch
         let client = factory.CreateClient()
         let data = List<KeyValuePair<string, string>>()
         data.Add(KeyValuePair<string, string>("namePart", value))
         task {
-            let! response = client.PostAsync(route, new FormUrlEncodedContent(data))
+            let! response = client.PostAsync(Constants.NavbarSearch, new FormUrlEncodedContent(data))
+            client.Dispose()
             Assert.True(response.StatusCode = HttpStatusCode.OK)
             let! content = response.Content.ReadAsStringAsync()
             let result =
@@ -74,3 +82,4 @@ type SearchTests(factory: BaseApplicationFactory<Program>) =
                 && result.Genres |> Seq.length = genresCount
             )
         }
+        

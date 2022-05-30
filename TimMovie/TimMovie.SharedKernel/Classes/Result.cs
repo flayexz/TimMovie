@@ -2,7 +2,7 @@
 
 public class Result
 {
-    protected Result(bool succeeded, string error)
+    public Result(bool succeeded, string error)
     {
         switch (succeeded)
         {
@@ -45,11 +45,11 @@ public class Result
 
 public class Result<T> : Result
 {
-    protected internal Result(T value, bool succeeded, string error)
+    public Result(T value, bool succeeded, string error)
         : base(succeeded, error)
     {
         Value = value;
     }
-
+    
     public T Value { get; set; }
 }

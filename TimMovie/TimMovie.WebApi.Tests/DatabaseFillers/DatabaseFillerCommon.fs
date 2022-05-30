@@ -1,9 +1,16 @@
 ﻿namespace TimMovie.WebApi.Tests
 
+open Microsoft.AspNetCore.Identity
+open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
 
 type DatabaseFillerCommon() =
-    static member Start(dbContext: ApplicationContext) =
+    
+    static member Start(dbContext: ApplicationContext, userManager: UserManager<User>) =
+        let dbFillerUsers = DatabaseFillerUsers()
+        dbFillerUsers.Start(userManager)
         let dbFillerNavbarSearch = DatabaseFillerNavbarSearch()
         dbFillerNavbarSearch.Start(dbContext)
+        let dbFillerNotifications = DatabaseFillerNotifications()
+        dbFillerNotifications.Start(dbContext, userManager)
         ignore
