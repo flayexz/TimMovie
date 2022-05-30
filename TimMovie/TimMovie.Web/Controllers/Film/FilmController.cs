@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using TimMovie.Core.DTO.Comments;
+using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Services.Films;
 using TimMovie.Core.Services.Person;
@@ -118,16 +119,18 @@ public class FilmController : Controller
     [HttpGet("/actor/films")]
     public IActionResult GetFilmsForActor(Guid id, int skip, int take)
     {
-        var films = _personService.GetFilmsByActor(id, skip, take);
-        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(films);
-        return View("~/Views/Partials/FilmCard/PersonFilms.cshtml", filmsViewModel);
+        return GetFilmsForPerson(_personService.GetFilmsByActor(id, skip, take));
     }
-    
+
     [HttpGet("/producer/films")]
     public IActionResult GetFilmsForProducer(Guid id, int skip, int take)
     {
-        var films = _personService.GetFilmsByProducer(id, skip, take);
-        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(films);
+        return GetFilmsForPerson(_personService.GetFilmsByProducer(id, skip, take));
+    }
+    
+    private IActionResult GetFilmsForPerson(IEnumerable<PersonFilmDto> personFilms)
+    {
+        var filmsViewModel = _mapper.Map<IEnumerable<PersonFilmViewModel>>(personFilms);
         return View("~/Views/Partials/FilmCard/PersonFilms.cshtml", filmsViewModel);
     }
 

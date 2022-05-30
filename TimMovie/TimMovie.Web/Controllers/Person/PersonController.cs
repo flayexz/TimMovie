@@ -32,6 +32,11 @@ public class PersonController: Controller
     private IActionResult GetPersonPage(Guid id, Func<Guid, PersonDto?> getPersonById)
     {
         var person = getPersonById(id);
+        if (person is null)
+        {
+            return NotFound();
+        }
+        
         var personView = _mapper.Map<PersonViewModel>(person);
         return View("~/Views/Person/Person.cshtml", personView);
     }

@@ -74,8 +74,8 @@ public class PersonService
     {
         var films = _filmRepository.Query
             .Where(conditionalByPerson)
-            .Take(take)
             .Skip(skip)
+            .Take(take)
             .ToList();
 
         var filmsDto = films
