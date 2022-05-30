@@ -14,3 +14,4 @@ type DatabaseFillerNotifications() =
          let users = List<User>()
          users.Add(user)
          dbContext.Notifications.Add(Notification(Content="Notification1", Users=users)) |> ignore
+         dbContext.Notifications.Add(Notification(Content="Notification2", Users=users)) |> ignore

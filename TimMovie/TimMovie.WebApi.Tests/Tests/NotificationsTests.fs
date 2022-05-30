@@ -13,7 +13,7 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
     [<Theory>]
     [<InlineData(true)>]
     [<InlineData(false)>]
-    member this.``Test search``(isRequestWithJWT: bool) =
+    member this.``Test notifications``(isRequestWithJWT: bool) =
         let client = factory.CreateClient()
         let userManager = factory.GetUserManager
         if isRequestWithJWT then

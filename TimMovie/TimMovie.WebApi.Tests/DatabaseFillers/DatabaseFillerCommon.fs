@@ -13,4 +13,5 @@ type DatabaseFillerCommon() =
         dbFillerNavbarSearch.Start(dbContext)
         let dbFillerNotifications = DatabaseFillerNotifications()
         dbFillerNotifications.Start(dbContext, userManager)
-        ignore
+        let dbFillerFilmFilters = DatabaseFillerFilmFilters()
+        dbFillerFilmFilters.Start(dbContext, userManager)

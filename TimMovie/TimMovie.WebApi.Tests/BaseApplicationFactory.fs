@@ -18,7 +18,7 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
     let mutable userManagerField = Unchecked.defaultof<UserManager<User>>
     member this.GetUserManager
         with get () = userManagerField
-        and set (value) = userManagerField <- value
+        and set value = userManagerField <- value
     
     override this.ConfigureWebHost(builder) =
         builder.ConfigureServices
