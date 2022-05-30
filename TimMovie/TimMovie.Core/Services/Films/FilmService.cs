@@ -258,10 +258,4 @@ public class FilmService
             .ThenIncludeInResult(comment => comment.Author)
             .FirstOrDefault();
     }
-
-    // public bool IsFilmAvailableForUser(Guid userId, Guid filmId)
-    // {
-    //     var available = _subscribeService.IsFilmAvailableForUser(userId, filmId);
-    //     return available;
-    // }
 }
