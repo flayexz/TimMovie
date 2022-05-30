@@ -2,18 +2,15 @@ namespace TimMovie.WebApi.Tests
 
 open System
 open System.Linq
-open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.AspNetCore.Authorization.Policy
 open Microsoft.AspNetCore.Identity
 open Microsoft.AspNetCore.Mvc.Testing
 open Microsoft.EntityFrameworkCore
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
-open Microsoft.IdentityModel.Protocols.OpenIdConnect
 open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
 open TimMovie.WebApi
-open TimMovie.Core
 
 type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
     inherit WebApplicationFactory<Program>()
@@ -38,14 +35,6 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
                         options.UseInMemoryDatabase("InMemoryDbForTesting")
                         |> ignore) |> ignore
                         
-//                let jwtBearerOptions = fun (options : JwtBearerOptions) ->
-//                    let config=OpenIdConnectConfiguration(Issuer=MockJwtTokens.Issuer)
-//                    config.SigningKeys.Add(MockJwtTokens.SecurityKey)
-//                    options.Configuration = config |> ignore
-//                    ()
-//                let actionJwtBearerOptions = Action<JwtBearerOptions>(jwtBearerOptions)
-//                services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, actionJwtBearerOptions)
-//                    |> ignore
                 services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>() |> ignore
                 
                 let sp = services.BuildServiceProvider()

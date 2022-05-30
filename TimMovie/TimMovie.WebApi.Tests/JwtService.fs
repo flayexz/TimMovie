@@ -4,7 +4,6 @@ open System.Collections.Generic
 open System.Security.Claims
 open Microsoft.AspNetCore.Identity
 open OpenIddict.Abstractions
-open TimMovie.Core
 open TimMovie.Core.Entities
 
 type JwtService() =

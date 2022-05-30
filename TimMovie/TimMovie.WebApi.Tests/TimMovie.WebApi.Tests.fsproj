@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <Compile Include="Constants.fs" />
+        <Compile Include="MockJwtTokens.fs" />
         <Compile Include="FakePolicyEvaluator.fs" />
         <Compile Include="JwtService.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerNavbarSearch.fs" />
