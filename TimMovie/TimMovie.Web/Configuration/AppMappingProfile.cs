@@ -6,6 +6,7 @@ using TimMovie.Core.DTO.Country;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Payment;
+using TimMovie.Core.DTO.Person;
 using TimMovie.Core.DTO.Producer;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.Users;
@@ -14,7 +15,9 @@ using TimMovie.Core.Entities;
 using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.Account;
 using TimMovie.Web.ViewModels.FilmCard;
+using TimMovie.Web.ViewModels.Films;
 using TimMovie.Web.ViewModels.Payment;
+using TimMovie.Web.ViewModels.Person;
 using TimMovie.Web.ViewModels.User;
 using TimMovie.Web.ViewModels.UserSubscribes;
 using TimMovie.Web.ViewModels.WatchedFilms;
@@ -45,10 +48,13 @@ public class AppMappingProfile : Profile
                     src.CardNumber.Trim())).ReverseMap();
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
         CreateMap<FilmDto, FilmViewModel>();
+        CreateMap<PersonDto, PersonViewModel>();
         CreateMap<Film, FilmDto>()
             .ForMember(
                 filmDto => filmDto.Comments,
                 expression => expression.MapFrom(film => film.Comments)).ReverseMap();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
+        CreateMap<PersonFilmDto, PersonFilmViewModel>();
+        CreateMap<BigFilmCardDto, BigFilmCardViewModel>();
     }
 }

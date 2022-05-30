@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO;
 using TimMovie.Core.DTO.Films;
-using TimMovie.Core.Entities;
 using TimMovie.Core.Enums;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
@@ -20,20 +18,17 @@ public class FilmsController : Controller
     private readonly GenreService _genreService;
     private readonly FilmCardService _filmCardService;
     private readonly IMapper _mapper;
-    private readonly UserManager<User> _userManager;
 
     public FilmsController(
         FilmCardService filmsFilterService,
         CountryService countryService,
         GenreService genreService,
-        IMapper mapper,
-        UserManager<User> userManager)
+        IMapper mapper)
     {
         _filmCardService = filmsFilterService;
         _countryService = countryService;
         _genreService = genreService;
         _mapper = mapper;
-        _userManager = userManager;
     }
 
     [HttpGet]
@@ -76,7 +71,7 @@ public class FilmsController : Controller
                 GenreNames = genres,
                 Countries = countries,
                 MinRating = minRating,
-                Year =year,
+                Year = year,
                 FilmSortingType = filmSortingType,
                 IsDescending = isDescending
             }
@@ -86,9 +81,10 @@ public class FilmsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> FilmFilters(GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
+    public IActionResult FilmFilters(GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
     {
-        var cardsDto = _filmCardService.GetFilmCardsByFilters(filtersWithPagination);
+        var userId = User.GetUserId() is null ? default : User.GetUserId().Value;
+        var cardsDto = _filmCardService.GetFilmCardsByFilters(filtersWithPagination, userId);
         if (filtersWithPagination?.DataDto is null)
         {
             return NotFound();

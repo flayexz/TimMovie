@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using TimMovie.Core.DTO.Actor;
 using TimMovie.Core.DTO.Comments;
@@ -7,7 +8,10 @@ using TimMovie.Core.DTO.Films;
 using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Producer;
 using TimMovie.Core.Entities;
+using TimMovie.Core.ExpressionQuery.Films;
+using TimMovie.Core.Interfaces;
 using TimMovie.Core.Query;
+using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.WatchedFilms;
 using TimMovie.Core.Specifications.InheritedSpecifications;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
@@ -22,6 +26,7 @@ public class FilmService
     private readonly IRepository<Film> _filmRepository;
     private readonly IRepository<User> _userRepository;
     private readonly Lazy<WatchedFilmService> _watchedFilmService;
+    private readonly ISubscribeService _subscribeService;
     private readonly UserManager<User> _userManager;
     private readonly IMapper _mapper;
 
@@ -30,25 +35,44 @@ public class FilmService
         IRepository<User> userRepository,
         IMapper mapper,
         Lazy<WatchedFilmService> watchedFilmService,
-        UserManager<User> userManager)
+        UserManager<User> userManager, ISubscribeService subscribeService)
     {
         _filmRepository = filmRepository;
         _userRepository = userRepository;
         _mapper = mapper;
         _watchedFilmService = watchedFilmService;
         _userManager = userManager;
+        _subscribeService = subscribeService;
+    }
+
+    private bool TryGetFirstOrDefaultFilm(Guid filmId, out Film? dbFilm)
+    {
+        dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
+        return dbFilm is not null;
+    }
+
+    private bool TryGetFirstOrDefaultUser(Guid userId, out User? user)
+    {
+        user = _userRepository.Query.Include(u => u.FilmsWatchLater)
+            .FirstOrDefault(new EntityByIdSpec<User>(userId));
+        return user is not null;
+    }
+
+    public bool TryGetFilmAndUser(Guid filmId, Guid userId, out Film? dbFilm, out User? user) =>
+        TryGetFirstOrDefaultFilm(filmId, out dbFilm)
+        & TryGetFirstOrDefaultUser(userId, out user);
+
+    public async Task<bool> TryUpdateUserRepository(User? user)
+    {
+        _userRepository.Update(user);
+        await _userRepository.SaveChangesAsync();
+        return true;
     }
 
     public bool TryGetUserGrade(Guid filmId, Guid userId, out int? grade)
     {
         grade = null;
-        var dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));
-        if (dbFilm is null)
-            return false;
-
-        var user = _userRepository.Query.FirstOrDefault(new EntityByIdSpec<User>(userId));
-        if (user is null)
-            return false;
+        if (!TryGetFilmAndUser(filmId, userId, out var dbFilm, out var user)) return false;
 
         grade = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(filmId))
@@ -142,15 +166,13 @@ public class FilmService
                             && FilmStaticSpec.FilmIsIncludedAnySubscriptionSpec) is not null;
     }
 
-    public double? GetRating(Film film)
+    public double GetRating(Film film)
     {
         var rating = _filmRepository.Query
             .Where(new EntityByIdSpec<Film>(film.Id))
-            .Select(f => f.UserFilmWatcheds.Select(watched => watched.Grade).Average())
+            .Select(FilmQueryExpression.Rating)
             .FirstOrDefault();
-        return rating.HasValue
-            ? Math.Round(rating.Value, 1)
-            : null;
+        return Math.Round(rating, 1);
     }
 
     public IEnumerable<Film> GetFilmsByNamePart(string? namePart, int count = int.MaxValue) =>
@@ -173,10 +195,11 @@ public class FilmService
         where TDto : class => entity is null
         ? null
         : _mapper.Map<TDto>(entity);
-
-    public FilmDto GetFilmById(Guid filmId)
+    
+    public FilmDto? GetFilmById(Guid filmId, Guid? userId = null)
     {
         var dbFilm = GetDbFilmById(filmId);
+        if (dbFilm == null) return null;
         var filmDto = new FilmDto
         {
             Id = dbFilm!.Id,
@@ -214,7 +237,8 @@ public class FilmService
             {
                 Id = genre.Id,
                 Name = genre.Name
-            }).ToList()
+            }).ToList(),
+            IsAvailable = _subscribeService.IsFilmAvailableForUser(userId, dbFilm)
         };
         return filmDto;
     }
@@ -225,7 +249,7 @@ public class FilmService
             .Where(new EntityByIdSpec<Film>(filmId));
         var executor = new QueryExecutor<Film>(query, _filmRepository);
 
-        var tmpFilm = executor
+        return executor
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .IncludeInResult(film => film.Actors)
@@ -233,6 +257,5 @@ public class FilmService
             .IncludeEnumerableInResult(film => film.Comments)
             .ThenIncludeInResult(comment => comment.Author)
             .FirstOrDefault();
-        return tmpFilm;
     }
 }

@@ -1,5 +1,4 @@
 $(function () {
-    let previousRequest = undefined;
     let currentRequest = null;
     let element = $('#input-search-entities-navbar');
 
@@ -23,6 +22,7 @@ $(function () {
             if (oldtime <= (new Date()).getTime() - delay & oldtime > 0 &&
                 elm.attr('keyup') !== '' &&
                 typeof elm.attr('keyup') !== 'undefined') {
+                currentRequest?.abort();
                 SendRequest();
                 elm.removeAttr('keyup');
             }
@@ -34,7 +34,6 @@ $(function () {
             $('.search-elements').html("");
             return;
         }
-        previousRequest = currentRequest;
         currentRequest = $.post({
             url: "/Search/SearchEntityResults",
             data: {namePart: element.val()},
@@ -44,7 +43,7 @@ $(function () {
                 else
                     $('.search-elements').html(data);
             }
-        }).then(() => previousRequest = null)
+        });
     }
 
     $("#buttonClose").click(function () {

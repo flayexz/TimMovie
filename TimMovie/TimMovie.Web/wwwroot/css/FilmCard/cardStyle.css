@@ -25,7 +25,12 @@
 
 .film-card__title {
     font-size: 1.2em;
-    word-wrap: normal;
+    margin: 0;
+    -webkit-line-clamp: 3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
 }
 
 .film-card__under-content {
@@ -45,4 +50,8 @@
     margin-top: 45%;
     font-size: 0.9em;
     color:#ccc;
+}
+
+.svg_hover:hover{
+    fill:#F6F6F7;
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Autofac;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
@@ -17,15 +18,17 @@ public class SubscribeService : ISubscribeService
 {
     private readonly IRepository<UserSubscribe> _userSubscribeRepository;
     private readonly IRepository<Subscribe> _subscribesRepository;
+    private readonly IRepository<Genre> _genresRepository;
     private readonly IMapper _mapper;
     private const int SubscribeMonthsDuration = 1;
 
     public SubscribeService(IRepository<UserSubscribe> userSubscribeRepository,
-        IRepository<Subscribe> subscribesRepository, IMapper mapper)
+        IRepository<Subscribe> subscribesRepository, IMapper mapper, IRepository<Genre> genresRepository)
     {
         _userSubscribeRepository = userSubscribeRepository;
         _subscribesRepository = subscribesRepository;
         _mapper = mapper;
+        _genresRepository = genresRepository;
     }
 
     /// <summary>
@@ -48,16 +51,25 @@ public class SubscribeService : ISubscribeService
         return MapToSubscribeDto(subscribes);
     }
 
-    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid userId)
+    public IEnumerable<UserSubscribeDto> GetAllActiveUserSubscribes(Guid? userId)
     {
         var query = _userSubscribeRepository.Query
             .Where(new UserSubscribeByUserIdSpec(userId) && SubscribeSpec.ActiveSubscribe);
-
         var subscribes = new QueryExecutor<UserSubscribe>(query, _userSubscribeRepository)
             .IncludeInResult(subscribe => subscribe.Subscribe)
             .GetEntities();
-
         return MapToUserSubscribeDto(subscribes);
+    }
+
+    public bool IsFilmAvailableForUser(Guid? userId, Film? film)
+    {
+        if (film.IsFree) return true;
+        if (userId == null) return false;
+        var userSubscribes = GetAllActiveUserSubscribes(userId);
+        var subscribes = userSubscribes.Select(us => GetSubscribeById(us.SubscribeId));
+        var isFilmInSubscribeFilms  = subscribes.Any(s => s.Films.FirstOrDefault(f => f.Id == film.Id) != null);
+        var isFilmInSubscribeGenres = subscribes.Any(s => s.Genres.FirstOrDefault(g => g.Films.Contains(film)) != null);
+        return isFilmInSubscribeFilms || isFilmInSubscribeGenres;
     }
 
     private IEnumerable<SubscribeDto> MapToSubscribeDto(IEnumerable<Subscribe> userSubscribes) =>
@@ -98,8 +110,14 @@ public class SubscribeService : ISubscribeService
         await _userSubscribeRepository.SaveChangesAsync();
     }
 
-    public Subscribe? GetSubscribeById(Guid subscribeId) =>
-        _subscribesRepository.Query.FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
+    Subscribe? ISubscribeService.GetSubscribeById(Guid subscribeId)
+    {
+        return GetSubscribeById(subscribeId);
+    }
+
+    private Subscribe? GetSubscribeById(Guid subscribeId) =>
+        _subscribesRepository.Query.Include(s=>s.Films).Include(s=>s.Genres).ThenInclude(g => g.Films)
+            .FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
 
     private async Task ExtendUserSubscribeAsync(UserSubscribe userSubscribe)
     {

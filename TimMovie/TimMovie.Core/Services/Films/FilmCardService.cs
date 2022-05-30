@@ -16,22 +16,24 @@ public class FilmCardService
     private readonly IRepository<UserFilmWatched> _userFilmWatchedRepository;
     private readonly IMapper _mapper;
     private readonly FilmService _filmService;
+    private readonly WatchLaterService _watchLaterService;
 
 
     public FilmCardService(
         IRepository<Film> filmRepository,
         IMapper mapper,
         FilmService filmService,
-        IRepository<UserFilmWatched> userFilmWatchedRepository)
+        IRepository<UserFilmWatched> userFilmWatchedRepository, WatchLaterService watchLaterService)
     {
         _filmRepository = filmRepository;
         _mapper = mapper;
         _filmService = filmService;
         _userFilmWatchedRepository = userFilmWatchedRepository;
+        _watchLaterService = watchLaterService;
     }
 
     public IEnumerable<FilmCardDto> GetFilmCardsByFilters(
-        GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination)
+        GeneralPaginationDto<SelectedFilmFiltersDto> filtersWithPagination, Guid userId = default)
     {
         ArgumentValidator.ThrowExceptionIfNull(filtersWithPagination, nameof(filtersWithPagination));
         ArgumentValidator.ThrowExceptionIfNull(
@@ -44,18 +46,20 @@ public class FilmCardService
 
         var films = GetFilmsWithCountryAndGenres(filtersWithPagination, queryExecutor);
 
-        var filmCard = GetFilmCardsByFilms(films);
+        var filmCard = GetFilmCardsByFilms(films, userId);
 
         return filmCard;
     }
 
-    private List<FilmCardDto> GetFilmCardsByFilms(IEnumerable<Film> films)
+    private List<FilmCardDto> GetFilmCardsByFilms(IEnumerable<Film> films, Guid userId = default)
     {
         return films
             .Select(film =>
             {
                 var filmCard = _mapper.Map<FilmCardDto>(film);
                 filmCard.Rating = _filmService.GetRating(film);
+                if (userId != default)
+                    AddGradeAndWatchLater(filmCard, userId);
                 return filmCard;
             })
             .ToList();
@@ -87,7 +91,8 @@ public class FilmCardService
     }
 
 
-    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount, Guid? filmToRemoveId)
+    public List<FilmCardDto> GetFilmCardsByGenre(string genreName, int amount, Guid? filmToRemoveId,
+        Guid userId = default)
     {
         var isNeedToRemove = filmToRemoveId is not null;
         if (isNeedToRemove) amount += 1;
@@ -96,8 +101,7 @@ public class FilmCardService
         filterBuilder.AddFilterByGenre(new[] {genreName});
 
         var sortBuilder = new SortFilmBuilder(filterBuilder);
-        sortBuilder.AddSortByRating(false);
-        sortBuilder.AddSortByViews(false);
+        sortBuilder.AddSortByPopularity(true);
 
         var queryExecutor = sortBuilder.Build();
 
@@ -105,26 +109,33 @@ public class FilmCardService
             .IncludeInResult(film => film.Genres)
             .IncludeInResult(film => film.Country)
             .GetEntitiesWithPagination(0, amount);
-
+        
         if (isNeedToRemove)
             films = films.Where(film => film.Id != filmToRemoveId).ToList();
 
-        return GetFilmCardsByFilms(films);
+        return GetFilmCardsByFilms(films, userId);
     }
 
-    public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid userId, int amount)
+    private void AddGradeAndWatchLater(FilmCardDto filmCardDto, Guid userId)
+    {
+        _filmService.TryGetUserGrade(filmCardDto.Id, userId, out var tmpGrade);
+        filmCardDto.IsGradeSet = tmpGrade is not null;
+        filmCardDto.IsAddedToWatchLater = _watchLaterService.IsWatchLaterFilm(filmCardDto.Id, userId);
+    }
+
+    public IEnumerable<FilmCardDto> GetLatestFilmsViewedByUser(Guid guestId, int amount, Guid? currentUser)
     {
         var query = _userFilmWatchedRepository.Query
-            .Where(new WatchedFilmByUserIdSpec(userId))
+            .Where(new WatchedFilmByUserIdSpec(guestId))
             .OrderByDescending(watched => watched.Date);
-        var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
+        var queryExecutor = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
 
-        var films = queryExec
+        var films = queryExecutor
             .IncludeInResult(watched => watched.Film.Country)
             .IncludeInResult(watched => watched.Film.Genres)
             .GetEntitiesWithPagination(0, amount)
             .Select(watched => watched.Film);
 
-        return GetFilmCardsByFilms(films);
+        return GetFilmCardsByFilms(films, currentUser ?? default);
     }
 }
