@@ -10,7 +10,7 @@
     margin: 0 auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 780px) {
     .person_container-page{
         min-width: 0px;
     }

@@ -96,7 +96,7 @@
             }
             @foreach (var producer in Model.Producers)
             {
-                <a href="#" class="d-flex flex-column actors-producers__item__container" title="@producer.Name @producer.Surname">
+                <a asp-controller="Person" asp-action="GetProducerPage" asp-route-id="@producer.Id" class="d-flex flex-column actors-producers__item__container" title="@producer.Name @producer.Surname">
                     <img src=@producer.Photo class="actors-producers__item__img">
                     <div class="d-flex flex-column mt-1">
                         <div class="actors-producers__item__name">@producer.Name @producer.Surname</div>
@@ -106,7 +106,7 @@
             }
             @foreach (var actor in Model.Actors.Take(amountActorForShow))
             {
-                <a href="#" class="d-flex flex-column actors-producers__item__container" title="@actor.Name @actor.Surname">
+                <a asp-controller="Person" asp-action="GetActorPage" asp-route-id="@actor.Id" class="d-flex flex-column actors-producers__item__container" title="@actor.Name @actor.Surname">
                     <img src=@actor.Photo class="actors-producers__item__img">
                     <div class="d-flex flex-column mt-1">
                         <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
@@ -119,7 +119,7 @@
                 foreach (var actor in Model.Actors.Skip(amountActorForShow))
                 {
                     <div class="actors-producers__item__container_show" title="@actor.Name @actor.Surname">
-                        <a href="#" class="d-flex flex-column actors-producers__item__container">
+                        <a asp-controller="Person" asp-action="GetActorPage" asp-route-id="@actor.Id" class="d-flex flex-column actors-producers__item__container">
                             <img src=@actor.Photo class="actors-producers__item__img">
                             <div class="d-flex flex-column mt-1">
                                 <div class="actors-producers__item__name">@actor.Name @actor.Surname</div>
