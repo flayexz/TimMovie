@@ -18,15 +18,17 @@ public class SubscribeService : ISubscribeService
 {
     private readonly IRepository<UserSubscribe> _userSubscribeRepository;
     private readonly IRepository<Subscribe> _subscribesRepository;
+    private readonly IRepository<Genre> _genresRepository;
     private readonly IMapper _mapper;
     private const int SubscribeMonthsDuration = 1;
 
     public SubscribeService(IRepository<UserSubscribe> userSubscribeRepository,
-        IRepository<Subscribe> subscribesRepository, IMapper mapper)
+        IRepository<Subscribe> subscribesRepository, IMapper mapper, IRepository<Genre> genresRepository)
     {
         _userSubscribeRepository = userSubscribeRepository;
         _subscribesRepository = subscribesRepository;
         _mapper = mapper;
+        _genresRepository = genresRepository;
     }
 
     /// <summary>
@@ -65,7 +67,9 @@ public class SubscribeService : ISubscribeService
         if (userId == null) return false;
         var userSubscribes = GetAllActiveUserSubscribes(userId);
         var subscribes = userSubscribes.Select(us => GetSubscribeById(us.SubscribeId));
-        return subscribes.Any(s => s.Films.FirstOrDefault(f => f.Id == film.Id) != null);
+        var isFilmInSubscribeFilms  = subscribes.Any(s => s.Films.FirstOrDefault(f => f.Id == film.Id) != null);
+        var isFilmInSubscribeGenres = subscribes.Any(s => s.Genres.FirstOrDefault(g => g.Films.Contains(film)) != null);
+        return isFilmInSubscribeFilms || isFilmInSubscribeGenres;
     }
 
     private IEnumerable<SubscribeDto> MapToSubscribeDto(IEnumerable<Subscribe> userSubscribes) =>
@@ -111,8 +115,8 @@ public class SubscribeService : ISubscribeService
         return GetSubscribeById(subscribeId);
     }
 
-    public Subscribe? GetSubscribeById(Guid subscribeId) =>
-        _subscribesRepository.Query.Include(f=>f.Films)
+    private Subscribe? GetSubscribeById(Guid subscribeId) =>
+        _subscribesRepository.Query.Include(s=>s.Films).Include(s=>s.Genres).ThenInclude(g => g.Films)
             .FirstOrDefault(new EntityByIdSpec<Subscribe>(subscribeId));
 
     private async Task ExtendUserSubscribeAsync(UserSubscribe userSubscribe)

@@ -112,6 +112,7 @@ button{
  border-radius: 30px;
  flex-wrap: wrap;
  background-image: url("../img/bratva.jpg");
+ opacity: 0.8;
 }
 
 #film_rating{
