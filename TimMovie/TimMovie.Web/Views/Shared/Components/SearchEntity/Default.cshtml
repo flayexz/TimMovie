@@ -5,7 +5,7 @@
     var film = Model.Films?.Skip(i).First();
     if (film is null)
         continue;
-    <a class="search-element d-flex" asp-controller="Film" asp-action="Film" asp-route-id="@film.Id">
+    <a class="search-element d-flex" asp-controller="Film" asp-action="Film" asp-route-filmId="@film.Id">
         <div class="search-element-icon">
             <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                  width="30px" height="30px" viewBox="0 0 612 612"
@@ -37,7 +37,7 @@
     var actor = Model.Actors?.Skip(i).First();
     if (actor is null)
         continue;
-    <a class="search-element d-flex">
+    <a asp-controller="Person" asp-action="GetActorPage" asp-route-id="@actor.Id" class="search-element d-flex">
         <div class="search-element-icon">
             <svg viewBox="3 3 29 29" xmlns="http://www.w3.org/2000/svg"
                  width="30px" height="30px">
@@ -61,7 +61,7 @@
     var producer = Model.Producers?.Skip(i).First();
     if (producer is null)
         continue;
-    <a class="search-element d-flex">
+    <a asp-controller="Person" asp-action="GetProducerPage" asp-route-id="@producer.Id"  class="search-element d-flex">
             <div class="search-element-icon">
                 <svg viewBox="3 3 29 29" xmlns="http://www.w3.org/2000/svg"
                      width="30px" height="30px">
@@ -82,7 +82,6 @@
 }
 @for (var i = 0; i < (Model.Genres?.Count() <= 2 ? Model.Genres?.Count() : 2); i++)
 {
-    https://localhost:7011/Films/Filters?genres=%D0%90%D1%80%D1%82%D1%85%D0%B0%D1%83%D1%81
     var genre = Model.Genres?.Skip(i).First();
     if (genre is null)
         continue;

@@ -1,5 +1,6 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
+using TimMovie.Core.Specifications.StaticSpecification;
 using TimMovie.SharedKernel.Interfaces;
 using TimMovie.SharedKernel.Specification;
 
@@ -58,7 +59,10 @@ public class FilmFiltersBuilder: FilmQueryBuilder
     
     public FilmFiltersBuilder AddFilterOnMinimumRating(double rating)
     {
-        Query = Query.Where(new FilmWithMinimumRatingSpec(rating));
+        Query = rating > 0 
+            ? Query.Where(new FilmWithMinimumRatingSpec(rating)) 
+            : Query;
+
         return this;
     }
 }

@@ -58,10 +58,10 @@
                                 <span>@filmNumber</span>
                             </div>
                             <div class="film-card">
-                                 <a asp-controller="Film" asp-action="Film" asp-route-id="@watched.FilmId"><img class="film-photo" src="@watched.Image" alt=""></a>
+                                 <a asp-controller="Film" asp-action="Film" asp-route-filmId="@watched.FilmId"><img class="film-photo" src="@watched.Image" alt=""></a>
                             </div>
                             <div class="film-title film-block">
-                                <a asp-controller="Film" asp-action="Film" asp-route-id="@watched.FilmId"> <span class="film-title-txt">@watched.Title</span></a>
+                                <a asp-controller="Film" asp-action="Film" asp-route-filmId="@watched.FilmId"> <span class="film-title-txt">@watched.Title</span></a>
                             </div>
                             <div class="film-duration film-block text-white">
                                 <span>@watched.Rating</span>

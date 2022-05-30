@@ -50,21 +50,17 @@ button{
  border: 0;
 }
 
-.buttons{
- background-color: #23212b;
- color:rgba(255, 255, 255, .72);
- font-size: 1.2rem;
- border-radius: 8px;
- height: 40px;
- display: flex;
- align-items: center;
- justify-content: center;
- padding: 10px;
- margin-top: 10px;
+
+.hover_link{
+ font-size: 1.3rem;
+ font-weight: 500;
+ text-decoration: none;
+ cursor: pointer;
+ color: rgba(255,255,255,0.72);
 }
 
-.buttons:hover{
- background-color: #36353e;
+.hover_link:hover{
+ color: #fff;
 }
 
 #more{
@@ -111,6 +107,13 @@ button{
  border-radius: 8px;
 }
 
+.notAvailableFilmLabel{
+ border: 2px solid white;
+ border-radius: 30px;
+ flex-wrap: wrap;
+ background-image: url("../img/bratva.jpg");
+ opacity: 0.8;
+}
 
 #film_rating{
  display: flex;
@@ -119,14 +122,6 @@ button{
  font-size: 1.2rem;
  background-color: #36353e;
  color: #fff;
-}
-
-.caption{
- max-width: 68.8px;
- text-align: center;
- font-size: 0.9rem;
- color: #828187;
- height:4rem;
 }
 
 .rating_label{
@@ -141,10 +136,9 @@ button{
  color: rgba(255, 255, 255, 0.72);
 }
 
-#watch_later{
- max-width: 250px;
+.under_film_buttons{
+ max-width: max-content;
 }
-
 
 .film__line {
  border-bottom: 1px solid rgb(114, 114, 114);
@@ -170,6 +164,9 @@ button{
 
 .actors-producers__item__img {
  border-radius: 50%;
+ width: 90px;
+ height: 90px;
+ object-fit: cover;
 }
 
 .actors-producers__item__name {
@@ -218,9 +215,6 @@ button{
 
  #watch_later_label {
   display: none;
- }
- .svg_size{
-  width: 4em;
  }
 }
 

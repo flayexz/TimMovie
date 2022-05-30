@@ -58,9 +58,11 @@ function resizeToDefault() {
 
 let body = $("body");
 let lastPressedButton = null;
+let lastPressedButtonValue = null
 
 body.on('click', '.setGradeButton', (e) => {
     lastPressedButton = $(e.target)[0];
+    lastPressedButtonValue = lastPressedButton.innerText;
     let parent = $(e.target)[0].parentNode;
     let filmId = $(parent).find(".filmIdHidden")[0].innerText;
     getGrade(filmId);
@@ -68,41 +70,41 @@ body.on('click', '.setGradeButton', (e) => {
 });
 
 body.on('click', '.gradeNumber', (e) => {
-    setGrade(savedFilmId, e).then(_ => {
+    setGrade(savedFilmId, e, false, lastPressedButton).then(_ => {
         if (lastPressedButton !== null){
             lastPressedButton = $(lastPressedButton);
             let lastSettedGrade = choseButton[0].innerText;
+            if (lastSettedGrade === lastPressedButtonValue){
+                lastSettedGrade="-";
+                lastPressedButton.removeClass("goodGrade");
+                lastPressedButton.removeClass("badGrade");
+                lastPressedButton.addClass("mediumGrade");
+            }
             if (lastSettedGrade >= 1 && lastSettedGrade < 5)
             {
-                if(lastPressedButton.hasClass("goodGrade")){
-
-                    lastPressedButton.removeClass("goodGrade");
-                    lastPressedButton.addClass("badGrade");
-                }
-                if(lastPressedButton.hasClass("mediumGrade")){
+                if(lastPressedButton.hasClass("mediumGrade"))
                     lastPressedButton.removeClass("mediumGrade");
-                    lastPressedButton.addClass("badGrade");
-                }
+                
+                if(lastPressedButton.hasClass("goodGrade"))
+                    lastPressedButton.removeClass("goodGrade");
+                lastPressedButton.addClass("badGrade");
             }
             if (lastSettedGrade >= 5 && lastSettedGrade < 8){
-                if(lastPressedButton.hasClass("goodGrade")){
-                    lastPressedButton.removeClass("goodGrade");
-                    lastPressedButton.addClass("mediumGrade");
-                }
-                if(lastPressedButton.hasClass("badGrade")){
+                if(lastPressedButton.hasClass("badGrade"))
                     lastPressedButton.removeClass("badGrade");
-                    lastPressedButton.addClass("mediumGrade");
-                }
+                
+                if(lastPressedButton.hasClass("goodGrade"))
+                    lastPressedButton.removeClass("goodGrade");
+                lastPressedButton.addClass("mediumGrade");
             }
             if (lastSettedGrade >= 8 && lastSettedGrade <= 10){
-                if(lastPressedButton.hasClass("mediumGrade")){
-                    lastPressedButton.removeClass("mediumGrade");
-                    lastPressedButton.addClass("goodGrade");
-                }
-                if(lastPressedButton.hasClass("badGrade")){
+                if(lastPressedButton.hasClass("badGrade"))
                     lastPressedButton.removeClass("badGrade");
-                    lastPressedButton.addClass("goodGrade");
-                }
+                
+                if(lastPressedButton.hasClass("mediumGrade"))
+                    lastPressedButton.removeClass("mediumGrade");
+                
+                lastPressedButton.addClass("goodGrade");
             }
             lastPressedButton[0].innerText = lastSettedGrade;
         }

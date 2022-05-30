@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Enums;
+using TimMovie.Core.ExpressionQuery.Films;
 using TimMovie.SharedKernel.Interfaces;
 
 namespace TimMovie.Core.Query.Films;
@@ -17,8 +18,9 @@ public class SortFilmBuilder : FilmQueryBuilder
 
     public SortFilmBuilder AddSortByPopularity(bool isDescending)
     {
-        AddSort(isDescending, film => film);
-        
+        AddSort(isDescending,
+            film => film.UserFilmWatcheds
+                .Count(watched => watched.Date >= DateTime.Now.AddMonths(-1)));
         return this;
     }
 
@@ -26,7 +28,7 @@ public class SortFilmBuilder : FilmQueryBuilder
     {
         AddSort(
             isDescending, 
-            film => film.UserFilmWatcheds.Select(watched => watched.Grade).Average());
+            FilmQueryExpression.Rating);
         
         return this;
     }
@@ -40,8 +42,7 @@ public class SortFilmBuilder : FilmQueryBuilder
 
     public SortFilmBuilder AddSortByViews(bool isDescending)
     {
-        AddSort(isDescending, film =>
-            film.UserFilmWatcheds.Select(watched => watched.WatchedUser.Id).Distinct().Count());
+        AddSort(isDescending, FilmQueryExpression.AmountViews);
         
         return this;
     }
@@ -74,8 +75,8 @@ public class SortFilmBuilder : FilmQueryBuilder
     
     private void AddSort<TKey>(bool isDescending, Expression<Func<Film, TKey>> expression)
     {
-        Query = isDescending
+        Query = (isDescending
             ? Query.OrderByDescending(expression)
-            : Query.OrderBy(expression);
+            : Query.OrderBy(expression)).ThenBy(film => film.Title);
     }
 }

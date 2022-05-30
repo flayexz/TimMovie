@@ -1,7 +1,7 @@
 ﻿using TimMovie.Core.Entities;
 using TimMovie.SharedKernel.Specification;
 
-namespace TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.ActorSpec;
+namespace TimMovie.Core.Specifications.InheritedSpecifications.ActorSpec;
 
 /// <summary>
 /// Фильтр на получение актеро
