@@ -1,12 +1,8 @@
 ﻿namespace TimMovie.WebApi.Tests.Tests
 
-open System.Collections.Generic
 open System.Net
-open System.Net.Http
-open Microsoft.VisualBasic
 open Newtonsoft.Json
-open TimMovie.Core.DTO
-open TimMovie.WebApi.Services.JwtService
+open TimMovie.Core.DTO.Notifications
 open TimMovie.WebApi.Tests
 open Xunit
 open TimMovie.WebApi
@@ -18,23 +14,30 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
     [<InlineData(true)>]
     member this.``Test search``(isRequestWithJWT: bool) =
         let client = factory.CreateClient()
+        let userManager = factory.GetUserManager
         if isRequestWithJWT then
-            let jwtService = JwtService()
             let jwtToken =
-                jwtService.Authorize(Constants.Authorization, Constants.DefaultUserName, Constants.DefaultPassword)
+                JwtService.GetJwtToken(Constants.DefaultUserName, userManager)
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwtToken}")
-        task {
-            let! response = client.GetAsync(Constants.Notifications)
-            client.Dispose()
-            if isRequestWithJWT then
-                Assert.True(response.StatusCode = HttpStatusCode.OK)
-                let! content = response.Content.ReadAsStringAsync()
-                let result =
-                    JsonConvert.DeserializeObject<List<Notifications.NotificationDto>> content
-                Assert.True(
-                    result <> null &&
-                    result.Count <> 0
-                )
-            else
-                Assert.True(response.StatusCode = HttpStatusCode.Unauthorized)
-        }
+        let response =
+            client.GetAsync(Constants.Notifications)
+            |> Async.AwaitTask
+            |> Async.RunSynchronously
+        let content =
+            response.Content.ReadAsStringAsync()
+            |> Async.AwaitTask
+            |> Async.RunSynchronously
+        let result =
+            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>>
+                content
+        let notifications =
+            JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
+        Assert.True(
+            response.StatusCode = HttpStatusCode.OK
+            && result <> null
+            && result.Succeeded
+            && notifications.Length = 1)
+        Assert.False(notifications.Length = 0
+                     && notifications.Length = 2)
+        
+        client.Dispose()
