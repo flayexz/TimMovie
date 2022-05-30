@@ -1,14 +1,14 @@
 ﻿AddToWatchLaterSvg = document.createElementNS("http://www.w3.org/2000/svg", "use");
-AddToWatchLaterSvg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/sprite.svg#AddToWatchLater");
+AddToWatchLaterSvg.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/img/svgIcons/sprite.svg#AddToWatchLater");
 
 RemoveFromWatchLater = document.createElementNS("http://www.w3.org/2000/svg", "use");
-RemoveFromWatchLater.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/sprite.svg#RemoveFromWatchLater");
+RemoveFromWatchLater.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/img/svgIcons/sprite.svg#RemoveFromWatchLater");
 
 Like = document.createElementNS("http://www.w3.org/2000/svg", "use");
-Like.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/sprite.svg#Like");
+Like.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/img/svgIcons/sprite.svg#Like");
 
 Unlike = document.createElementNS("http://www.w3.org/2000/svg", "use");
-Unlike.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "img/svgIcons/sprite.svg#Unlike");
+Unlike.setAttributeNS("http://www.w3.org/1999/xlink", 'xlink:href', "/img/svgIcons/sprite.svg#Unlike");
 
 function ChangeLikeSvg(isFillRed, likeButton = null) {
     let likeSvg = likeButton === null? $('.svg-grade') : likeButton.find('.svg-grade');

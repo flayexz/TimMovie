@@ -53,26 +53,26 @@
 </div>
 @{
     await Html.RenderPartialAsync("~/Views/Partials/Messages/MessageOnSave.cshtml");
+    await Html.RenderPartialAsync("~/Views/Grade/Grade.cshtml");
 }
 
 @section Styles
 {
-    <link rel="stylesheet" href="~/css/Profile/Profile.css">
-    <link rel="stylesheet" href="~/css/FilmCard/cardStyle.css"/>
+    <link rel="stylesheet" href="/css/Profile/Profile.css">
+    <link rel="stylesheet" href="/css/FilmCard/cardStyle.css"/>
     <link rel="stylesheet" href="/css/SmallPageElements/loader.css">
     <link rel="stylesheet" href="/css/Messages/MessageOnSave.css">
+    <link rel="stylesheet" href="/css/gradeModalWindow.css"/>
 }
 
 @section Scripts
 {
-    <script src="~/js/FilmCard/animation_for_film_card.js"></script>
-    <script src="~/js/FilmCard/adaptive_container_with_film_card.js"></script>
-    <script src="~/js/Profile/profile.js"></script>
-    <script src="~/js/Modals/modal_for_change_user_photo.js"></script>
-    <script src="~/js/Modals/modal_for_change_user_profile.js"></script>
-    <script src="~/js/gradeModalWindow.js"></script>
-    <script src="~/js/svgLogic.js"></script>
-    <script src="~/js/FilmCard/WatchLater.js"></script>
-    <script src="~/js/svgLogic.js"></script>
-    <script src="~/js/FilmCard/WatchLater.js"></script>
+    <script src="/js/FilmCard/animation_for_film_card.js"></script>
+    <script src="/js/FilmCard/adaptive_container_with_film_card.js"></script>
+    <script src="/js/Profile/profile.js"></script>
+    <script src="/js/Modals/modal_for_change_user_photo.js"></script>
+    <script src="/js/Modals/modal_for_change_user_profile.js"></script>
+    <script src="/js/svgLogic.js"></script>
+    <script src="/js/gradeModalWindow.js"></script>
+    <script src="/js/FilmCard/WatchLater.js"></script>
 }

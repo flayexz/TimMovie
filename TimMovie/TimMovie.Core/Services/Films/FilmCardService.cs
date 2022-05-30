@@ -136,6 +136,6 @@ public class FilmCardService
             .GetEntitiesWithPagination(0, amount)
             .Select(watched => watched.Film);
 
-        return GetFilmCardsByFilms(films);
+        return GetFilmCardsByFilms(films, userId);
     }
 }
