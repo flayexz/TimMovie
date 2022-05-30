@@ -4,7 +4,10 @@ using TimMovie.Core.DTO.Films;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Query;
 using TimMovie.Core.Query.Films;
+using TimMovie.Core.Specifications.InheritedSpecifications;
+using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec;
 using TimMovie.Core.Specifications.InheritedSpecifications.FilmSpec.UserFilmWatchedSpec;
+using TimMovie.SharedKernel.Classes;
 using TimMovie.SharedKernel.Interfaces;
 using TimMovie.SharedKernel.Validators;
 
@@ -137,5 +140,57 @@ public class FilmCardService
             .Select(watched => watched.Film);
 
         return GetFilmCardsByFilms(films, currentUser ?? default);
+    }
+    
+    public Result<IEnumerable<FilmCardDto>> GetFilmRecommendationsByUserId(Guid userId, int amount)
+    {
+        var query = _userFilmWatchedRepository.Query
+            .Where(new WatchedFilmByUserIdSpec(userId))
+            .OrderByDescending(watched => watched.Grade ?? 0);
+        var queryExec = new QueryExecutor<UserFilmWatched>(query, _userFilmWatchedRepository);
+
+        var bestGradedFilm =
+            queryExec
+                .IncludeInResult(watched => watched.Film.Producers)
+                .IncludeInResult(watched => watched.Film.Actors)
+                .GetEntitiesWithPagination(0, 1)
+                .FirstOrDefault();
+        if (bestGradedFilm == null)
+        {
+            return Result.Fail<IEnumerable<FilmCardDto>>("у данного пользователя нет оцененных фильмов");
+        }
+
+        var producer = bestGradedFilm.Film.Producers.FirstOrDefault();
+
+        var actor = bestGradedFilm.Film.Actors.FirstOrDefault();
+
+        if (producer == null || actor == null)
+        {
+            return Result.Fail<IEnumerable<FilmCardDto>>("у фильма с лучшим рейтингом нет продюссера/актеров");
+        }
+
+        var filmQuery = _filmRepository.Query
+            .Where((new FilmWithProducerSpec(producer.Id) || new FilmWithActorSpec(actor.Id)) &&
+                   new ExceptEntityByIdSpec<Film>(bestGradedFilm.Id));
+
+        var filterBuilder = new FilmFiltersBuilder(_filmRepository, filmQuery);
+        var sortBuilder = new SortFilmBuilder(filterBuilder);
+        sortBuilder.AddSortByRating(true);
+
+        var queryExecutor = sortBuilder.Build();
+
+        var films = queryExecutor
+            .IncludeInResult(x => x.Country)
+            .IncludeInResult(x => x.Genres)
+            .GetEntitiesWithPagination(0, amount);
+
+        var result = GetFilmCardsByFilms(films, userId);
+
+        if (result.Any())
+        {
+            return Result.Ok<IEnumerable<FilmCardDto>>(result);
+        }
+
+        return Result.Fail<IEnumerable<FilmCardDto>>("не найдены фильмы для рекомендации");
     }
 }

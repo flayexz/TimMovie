@@ -25,6 +25,15 @@ public abstract class FilmQueryBuilder
         Query = filmRepository.Query;
     }
     
+    protected FilmQueryBuilder(IRepository<Film> filmRepository, IQueryable<Film> filmQuery)
+    {
+        ArgumentValidator.ThrowExceptionIfNull(filmRepository, nameof(filmRepository));
+        ArgumentValidator.ThrowExceptionIfNull(filmQuery, nameof(filmQuery));
+
+        _filmRepository = filmRepository;
+        Query = filmQuery;
+    }
+    
     public QueryExecutor<Film> Build()
     {
         return new QueryExecutor<Film>(Query, _filmRepository);
