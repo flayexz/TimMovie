@@ -12,6 +12,7 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
 
     [<Theory>]
     [<InlineData(true)>]
+    [<InlineData(false)>]
     member this.``Test search``(isRequestWithJWT: bool) =
         let client = factory.CreateClient()
         let userManager = factory.GetUserManager
@@ -23,6 +24,7 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
             client.GetAsync(Constants.Notifications)
             |> Async.AwaitTask
             |> Async.RunSynchronously
+        Assert.True(response.StatusCode = HttpStatusCode.OK)
         let content =
             response.Content.ReadAsStringAsync()
             |> Async.AwaitTask
@@ -30,14 +32,16 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
         let result =
             JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>>
                 content
-        let notifications =
-            JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
-        Assert.True(
-            response.StatusCode = HttpStatusCode.OK
-            && result <> null
-            && result.Succeeded
-            && notifications.Length = 1)
-        Assert.False(notifications.Length = 0
-                     && notifications.Length = 2)
-        
+        if isRequestWithJWT then
+            let notifications =
+                JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
+            Assert.True(result <> null
+                        && result.Succeeded
+                        && notifications.Length = 1)
+            Assert.False(notifications.Length = 0
+                        && notifications.Length = 2)
+        else
+            Assert.True(result <> null
+                        && result.IsFailure)
         client.Dispose()
+    

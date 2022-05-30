@@ -38,14 +38,14 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
                         options.UseInMemoryDatabase("InMemoryDbForTesting")
                         |> ignore) |> ignore
                         
-                let jwtBearerOptions = fun (options : JwtBearerOptions) ->
-                    let config=OpenIdConnectConfiguration(Issuer=MockJwtTokens.Issuer)
-                    config.SigningKeys.Add(MockJwtTokens.SecurityKey)
-                    options.Configuration = config |> ignore
-                    ()
-                let actionJwtBearerOptions = Action<JwtBearerOptions>(jwtBearerOptions)
-                services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, actionJwtBearerOptions)
-                    |> ignore
+//                let jwtBearerOptions = fun (options : JwtBearerOptions) ->
+//                    let config=OpenIdConnectConfiguration(Issuer=MockJwtTokens.Issuer)
+//                    config.SigningKeys.Add(MockJwtTokens.SecurityKey)
+//                    options.Configuration = config |> ignore
+//                    ()
+//                let actionJwtBearerOptions = Action<JwtBearerOptions>(jwtBearerOptions)
+//                services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, actionJwtBearerOptions)
+//                    |> ignore
                 services.AddSingleton<IPolicyEvaluator, FakePolicyEvaluator>() |> ignore
                 
                 let sp = services.BuildServiceProvider()
