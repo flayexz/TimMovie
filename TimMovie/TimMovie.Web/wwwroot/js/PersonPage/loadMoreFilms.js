@@ -7,7 +7,6 @@
     let amountTake = 20;
     let allLoaded = false;
     let isLoad = false;
-    let currentRequest;
     let requestIsAlreadySent = false;
 
     function getFilmsByFilters(){
@@ -16,7 +15,7 @@
         }
 
         requestIsAlreadySent = true;
-        currentRequest = $.get({
+        $.get({
             url: `/${personType}/films?id=${userId}&skip=${amountSkip}&take=${amountTake}`,
             success: function (result){
                 $('.loader').toggleClass('hide');
