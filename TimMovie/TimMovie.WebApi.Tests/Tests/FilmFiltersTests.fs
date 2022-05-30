@@ -8,7 +8,6 @@ open Newtonsoft.Json
 open TimMovie.Core.DTO.Films
 open TimMovie.Core.Enums
 open TimMovie.WebApi.Tests
-open TimMovie.WebApi.Tests.Helpers
 open Xunit
 open TimMovie.WebApi
 
@@ -95,29 +94,27 @@ type FilmFiltersTests(factory: BaseApplicationFactory<Program>) =
                             && element.Rating.Value >= rating
                     )
                 )
-
-                let filmFilterHelpers = List<FilmFilterHelper>()
-                
-                for element in result do
-                    filmFilterHelpers.Add(
-                        { Id = element.Id;
-                          Title = element.Title;
-                          Year = element.Year;
-                          Rating = element.Rating; }
-                    )
-                    
-                
         }
 
     static member TestProperty: obj [] list =
-        [ [| FilmSortingType.Title
-             [| "Комедия" |]
-             null
-             1900
-             2200
-             true
-             1
-             0
-             100
-             "Film1"
-             1 |] ]
+        [ [| FilmSortingType.Title; null; null; 1900; 2200; true; 1; 0; 0; 0 |]
+          [| FilmSortingType.Title; null; null; 1900; 2200; true; 1; 100; 0; 0 |]
+          [| FilmSortingType.Title; null; null; 1900; 2200; true; 1; 100; 100; 0 |]
+          [| FilmSortingType.Title; null; null; 0; 0; true; 1; 100; 100; 0 |]
+          [| FilmSortingType.Title; null; null; -10; 0; true; 1; 100; 100; 0 |]
+          [| FilmSortingType.Title; null; null; 2020; 2019; true; 1; 100; 100; 0 |]
+          [| FilmSortingType.Title; [| "Комедия" |]; null; 1900; 2200; true; 1; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "Комедия" |]; null; 1900; 2200; false; 1; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "Комедия" |]; null; 1900; 2200; true; 10; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "Комедия" |]; null; 1900; 2200; false; 10; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "Комедия" |]; null; 2010; 2010; true; 10; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "Драма" |]; null; 1998; 1998; true; 5; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "Драма" |]; null; 1998; 1998; false; 5; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; null; 1998; 1998; true; 5; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; null; 1998; 1998; false; 5; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; [| "Россия" |]; 1998; 1998; false; 10; 0; 100; 0 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; [| "Россия" |]; 1998; 1998; false; 5; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; [| "Россия" |]; 1998; 1998; true; 10; 0; 100; 0 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; [| "Россия" |]; 1998; 1998; true; 5; 0; 100; 1 |]
+          [| FilmSortingType.Title; [| "По комиксам"; "Драма" |]; [| "Узбекистан" |]; 1998; 1998; false; 10; 0; 100; 0 |]
+          [| FilmSortingType.Title; [| "Комедия"; "Боевик"; "Триллер" |]; null; 1900; 2200; true; 1; 0; 100; 0 |] ]

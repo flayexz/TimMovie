@@ -37,8 +37,6 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
                 JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
             Assert.True(result <> null
                         && result.Succeeded
-                        && notifications.Length = 1)
-            Assert.False(notifications.Length = 0
                         && notifications.Length = 2)
         else
             Assert.True(result <> null

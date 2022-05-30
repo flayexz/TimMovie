@@ -32,9 +32,9 @@ type DatabaseFillerFilmFilters() =
          genres3.Add(genre)
          dbContext.Genres.Add(genre) |> ignore
          
-         let film1 = Film(Title="Film1", Year=2010, Genres=genres1, Country=Country(Name="Казахстан"))
-         let film2 = Film(Title="Film2", Year=1998, Genres=genres2, Country=Country(Name="Россия"))
-         let film3 = Film(Title="Film3", Year=2020, Genres=genres3, Country=Country(Name="Узбекистан"))
+         let film1 = Film(Title="FilterFi1", Year=2010, Genres=genres1, Country=Country(Name="Казахстан"))
+         let film2 = Film(Title="FilterFi2", Year=1998, Genres=genres2, Country=Country(Name="Россия"))
+         let film3 = Film(Title="FilterFi3", Year=2020, Genres=genres3, Country=Country(Name="Узбекистан"))
          dbContext.Films.Add(film1) |> ignore
          dbContext.Films.Add(film2) |> ignore
          dbContext.Films.Add(film3) |> ignore

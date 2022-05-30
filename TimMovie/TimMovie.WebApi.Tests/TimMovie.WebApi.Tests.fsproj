@@ -12,8 +12,6 @@
         <Compile Include="Identity\FakePolicyEvaluator.fs" />
         <Compile Include="Identity\MockJwtTokens.fs" />
         <Compile Include="Identity\JwtService.fs" />
-        <Compile Include="Helpers\LinqHelper.fs" />
-        <Compile Include="Helpers\FilmFilterHelper.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerNavbarSearch.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerNotifications.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerFilmFilters.fs" />
