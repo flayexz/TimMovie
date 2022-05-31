@@ -208,7 +208,7 @@ public class AccountController : Controller
         }
 
         logger.LogInformation($"неудачная попытка входа с использованием логина {login}");
-        return Ok("Неверный логин/почта или пароль");
+        return Ok("Неверный(е) логин/почта или пароль");
     }
 
     [HttpGet]
