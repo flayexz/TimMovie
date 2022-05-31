@@ -1,6 +1,7 @@
 ﻿namespace TimMovie.WebApi.Tests
 
 open System
+open System.Collections.Generic
 open Microsoft.AspNetCore.Identity
 open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
@@ -15,13 +16,21 @@ type DatabaseFillerSubscribes() =
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
-        dbContext.Subscribes.Add(Subscribe(Name = "TestSubscribe", Price = 1))
+        dbContext.Subscribes.Add(Subscribe(Name = "TestSubscribe", Price = 1, Description = "123"))
+        |> ignore
+
+        dbContext.Subscribes.Add(Subscribe(Name = "TestSubscribe2", Price = 1, Description = "123"))
+        |> ignore
+
+        dbContext.Subscribes.Add(
+            Subscribe(Id = Constants.DefaultSubscribeForPaymentGuid, Name = "SubscribeForPayment", Price = 228)
+        )
         |> ignore
 
         dbContext.UserSubscribes.Add(
             UserSubscribe(
                 SubscribedUser = user,
-                Subscribe = Subscribe(Name = "TestSubscribe", Price = 1),
+                Subscribe = Subscribe(Name = "UserSubscribes", Price = 1, Description = "123"),
                 StartDay = DateTime.Now,
                 EndDate = DateTime.Today.AddDays(1)
             )
