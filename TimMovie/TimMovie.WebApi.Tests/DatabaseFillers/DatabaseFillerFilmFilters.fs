@@ -51,7 +51,7 @@ type DatabaseFillerFilmFilters() =
             if user.WatchedFilms = null then
                 user.WatchedFilms <- List<UserFilmWatched>()
 
-            user.WatchedFilms.Add(UserFilmWatched(WatchedUser = user, Film = film1, Grade = 10, Date = DateTime.Now))
+            user.WatchedFilms.Add(UserFilmWatched(WatchedUser = user, Film = film1, Grade = 9, Date = DateTime.Now))
             user.WatchedFilms.Add(UserFilmWatched(WatchedUser = user, Film = film2, Grade = 5, Date = DateTime.Now))
             user.WatchedFilms.Add(UserFilmWatched(WatchedUser = user, Film = film2, Grade = 7, Date = DateTime.Now))
             let! _ = userManager.UpdateAsync(user)

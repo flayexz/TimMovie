@@ -22,7 +22,8 @@ type MainPageController
         searchEntityService: ISearchEntityService,
         subscribeService: ISubscribeService,
         notificationService: INotificationService,
-        filmCardService: FilmCardService
+        filmCardService: FilmCardService,
+        watchLaterService: WatchLaterService
     ) as this =
     inherit ControllerBase()
 
@@ -132,3 +133,26 @@ type MainPageController
             )
 
         filmCardService.GetFilmCardsByFilters(generalPaginationDto)
+
+    [<HttpPost>]
+    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+    [<Consumes("application/x-www-form-urlencoded")>]
+    member _.GetWatchLaterFilms([<FromForm>] take: int, [<FromForm>] skip: int) =
+        let jwtTokenOption =
+            this.jwtService.GetUserJwtToken(this.HttpContext.Request.Headers)
+
+        if jwtTokenOption.IsSome then
+            let userGuidOption =
+                this.jwtService.GetUserGuid(jwtTokenOption.Value)
+
+            if userGuidOption.IsSome then
+                let films =
+                    watchLaterService.GetWatchLaterFilmsAsync(Guid(userGuidOption.Value.ToString()), take, skip)
+
+                let json = JsonConvert.SerializeObject films
+
+                Result.Ok(json)
+            else
+                Result.Fail<string>("Error occurred while decoding the jwt token")
+        else
+            Result.Fail<string>("Error occurred while getting user jwt token")

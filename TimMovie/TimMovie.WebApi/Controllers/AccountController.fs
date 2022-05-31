@@ -9,6 +9,7 @@ open TimMovie.SharedKernel.Classes
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
+[<System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>]
 type AccountController(userService: IUserService) as this =
     inherit ControllerBase()
 

@@ -153,7 +153,7 @@ type FilmFiltersTests(factory: BaseApplicationFactory<Program>) =
              1900
              2200
              true
-             10
+             9
              0
              100
              1 |]
@@ -163,7 +163,7 @@ type FilmFiltersTests(factory: BaseApplicationFactory<Program>) =
              1900
              2200
              false
-             10
+             9
              0
              100
              1 |]
@@ -173,7 +173,7 @@ type FilmFiltersTests(factory: BaseApplicationFactory<Program>) =
              2010
              2010
              true
-             10
+             9
              0
              100
              1 |]

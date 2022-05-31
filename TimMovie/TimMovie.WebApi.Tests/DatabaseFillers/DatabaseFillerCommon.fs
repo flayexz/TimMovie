@@ -17,3 +17,7 @@ type DatabaseFillerCommon() =
         dbFillerFilmFilters.Start(dbContext, userManager)
         let dbFillerSubscribes = DatabaseFillerSubscribes()
         dbFillerSubscribes.Start(dbContext, userManager)
+        let dbFillerRecommendations = DatabaseFillerRecommendations()
+        dbFillerRecommendations.Start(dbContext, userManager)
+        let dbFillerWatchLater = DatabaseFillerWatchLater()
+        dbFillerWatchLater.Start(dbContext, userManager)

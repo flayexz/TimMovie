@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using TimMovie.Core.DTO.Actor;
+using TimMovie.Core.DTO.Comments;
+using TimMovie.Core.DTO.Country;
 using TimMovie.Core.DTO.Films;
 using TimMovie.Core.DTO.Genre;
 using TimMovie.Core.DTO.Messages;
 using TimMovie.Core.DTO.Notifications;
 using TimMovie.Core.DTO.Person;
+using TimMovie.Core.DTO.Producer;
 using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.WatchedFilms;
 using TimMovie.Core.Entities;
@@ -57,5 +61,13 @@ public class CoreMappingProfile : Profile
                     e.MapFrom(src => src.Producers.FirstOrDefault()))
             .ForMember(f => f.CountryName, e => e.MapFrom(src => src.Country.Name))
             .ForMember(f => f.Image, e => e.MapFrom(src => src.Image));
+        CreateMap<Country, CountryDto>().ReverseMap();
+        CreateMap<Producer, ProducerDto>().ReverseMap();
+        CreateMap<Actor, ActorDto>().ReverseMap();
+        CreateMap<Comment, CommentsDto>().ReverseMap();
+        CreateMap<Film, FilmDto>()
+            .ForMember(
+                filmDto => filmDto.Comments,
+                expression => expression.MapFrom(film => film.Comments)).ReverseMap();
     }
 }
