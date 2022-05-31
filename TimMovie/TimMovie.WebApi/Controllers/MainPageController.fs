@@ -49,14 +49,15 @@ type MainPageController
                 let notifications =
                     notificationService.GetAllUserNotifications(Guid(userGuidOption.Value.ToString()))
 
+
                 let json =
                     JsonConvert.SerializeObject(notifications, Formatting.Indented)
 
-                json
+                ContentResult(Content = json, StatusCode = 200)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
 
     [<HttpGet>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -73,13 +74,14 @@ type MainPageController
                 let subscribes =
                     subscribeService.GetAllActiveUserSubscribes(Guid(userGuidOption.Value.ToString()))
 
-                let json = JsonConvert.SerializeObject(subscribes,Formatting.Indented)
+                let json =
+                    JsonConvert.SerializeObject(subscribes, Formatting.Indented)
 
-                json
+                ContentResult(Content = json, StatusCode = 200)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
 
     [<HttpPost>]
     [<AllowAnonymous>]
@@ -144,14 +146,15 @@ type MainPageController
             let userGuidOption =
                 this.jwtService.GetUserGuid(jwtTokenOption.Value)
 
-            if userGuidOption.IsSome then 
+            if userGuidOption.IsSome then
                 let films =
                     watchLaterService.GetWatchLaterFilms(Guid(userGuidOption.Value.ToString()), take, skip)
 
-                let json = JsonConvert.SerializeObject(films, Formatting.Indented)
+                let json =
+                    JsonConvert.SerializeObject(films, Formatting.Indented)
 
-                json
+                ContentResult(Content = json, StatusCode = 200)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)

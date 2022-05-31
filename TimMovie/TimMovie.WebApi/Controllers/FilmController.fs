@@ -38,14 +38,20 @@ type FilmController(filmService: FilmService, filmCardService: FilmCardService) 
                     |> Async.AwaitTask
                     |> Async.RunSynchronously
 
-                let json =
-                    JsonConvert.SerializeObject(result, Formatting.Indented)
+                if result.Succeeded then
+                    let json =
+                        JsonConvert.SerializeObject(result.Value, Formatting.Indented)
 
-                json
+                    ContentResult(Content = json, StatusCode = 200)
+                else
+                    let json =
+                        JsonConvert.SerializeObject(result.Error, Formatting.Indented)
+
+                    ContentResult(Content = json, StatusCode = 400)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
 
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -62,11 +68,17 @@ type FilmController(filmService: FilmService, filmCardService: FilmCardService) 
                 let result =
                     filmCardService.GetFilmRecommendationsByUserId(Guid(userGuidOption.Value.ToString()), amount)
 
-                let json =
-                    JsonConvert.SerializeObject(result, Formatting.Indented)
+                if result.Succeeded then
+                    let json =
+                        JsonConvert.SerializeObject(result.Value, Formatting.Indented)
 
-                json
+                    ContentResult(Content = json, StatusCode = 200)
+                else
+                    let json =
+                        JsonConvert.SerializeObject(result.Error, Formatting.Indented)
+
+                    ContentResult(Content = json, StatusCode = 400)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)

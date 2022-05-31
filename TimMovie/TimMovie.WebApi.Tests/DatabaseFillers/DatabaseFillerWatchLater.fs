@@ -28,11 +28,12 @@ type DatabaseFillerWatchLater() =
         dbFilm.Description <- "132532"
         dbFilm.FilmLink <- "123424"
         dbContext.Update(dbFilm) |> ignore
-        
+
         if user.FilmsWatchLater = null then
             user.FilmsWatchLater <- List<Film>()
+
         user.FilmsWatchLater.Add(dbFilm)
-        
+
         userManager.UpdateAsync(user)
         |> Async.AwaitTask
         |> Async.RunSynchronously

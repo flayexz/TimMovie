@@ -35,22 +35,20 @@ type RecommendationTests(factory: BaseApplicationFactory<Program>) =
             client.PostAsync(Constants.FilmRecommendations, new FormUrlEncodedContent(data))
             |> Async.AwaitTask
             |> Async.RunSynchronously
-
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
-
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<List<FilmCardDto>>> content
             
-        if isRequestWithJWT then
-            Assert.True(
-                result <> null
-                && result.Succeeded)
+        if isRequestWithJWT = false then
+            Assert.True(response.StatusCode = HttpStatusCode.BadRequest)
         else
-            Assert.True(result <> null && result.IsFailure)
+            Assert.True(response.StatusCode = HttpStatusCode.OK)
+
+            let responseContent =
+                response.Content.ReadAsStringAsync()
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
+
+            let result =
+                JsonConvert.DeserializeObject<List<FilmCardDto>> responseContent
+
+            Assert.True(result <> null)
 
         client.Dispose()

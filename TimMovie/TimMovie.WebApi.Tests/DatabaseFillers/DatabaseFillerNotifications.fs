@@ -14,7 +14,7 @@ type DatabaseFillerNotifications() =
             userManager.FindByNameAsync(Constants.DefaultUserName)
             |> Async.AwaitTask
             |> Async.RunSynchronously
-            
+
         let users = List<User>()
         users.Add(user)
 
@@ -23,3 +23,5 @@ type DatabaseFillerNotifications() =
 
         dbContext.Notifications.Add(Notification(Content = "Notification2", Users = users))
         |> ignore
+        
+        

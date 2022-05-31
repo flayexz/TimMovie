@@ -28,26 +28,19 @@ type NotificationsTests(factory: BaseApplicationFactory<Program>) =
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
-
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
-
-        if isRequestWithJWT then
-            let notifications =
-                JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
-
-            Assert.True(
-                result <> null
-                && result.Succeeded
-                && notifications.Length = 2
-            )
+        if isRequestWithJWT = false then
+            Assert.True(response.StatusCode = HttpStatusCode.BadRequest)
         else
-            Assert.True(result <> null && result.IsFailure)
+            Assert.True(response.StatusCode = HttpStatusCode.OK)
+
+            let responseContent =
+                response.Content.ReadAsStringAsync()
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
+
+            let result =
+                JsonConvert.DeserializeObject<List<NotificationDto>> responseContent
+
+            Assert.True(result.Length = 2)
 
         client.Dispose()

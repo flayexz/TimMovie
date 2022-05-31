@@ -12,11 +12,7 @@ open TimMovie.WebApi.Services.JwtService
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
-type ProfileController
-    (
-        userService: IUserService,
-        paymentService: IPaymentService
-    ) as this =
+type ProfileController(userService: IUserService, paymentService: IPaymentService) as this =
     inherit ControllerBase()
 
     member private _.jwtService = JwtService()
@@ -41,11 +37,11 @@ type ProfileController
                 let json =
                     JsonConvert.SerializeObject(userInfo, Formatting.Indented)
 
-                json
+                ContentResult(Content = json, StatusCode = 200)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
 
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -79,11 +75,14 @@ type ProfileController
                     |> Async.AwaitTask
                     |> Async.RunSynchronously
 
-                let json =
-                    JsonConvert.SerializeObject(result, Formatting.Indented)
+                if result.Succeeded then
+                    ContentResult(StatusCode = 200)
+                else
+                    let json =
+                        JsonConvert.SerializeObject(result.Error, Formatting.Indented)
 
-                json
+                    ContentResult(Content = json, StatusCode = 400)
             else
-                "Error occurred while decoding the jwt token"
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            "Error occurred while getting user jwt token"
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
