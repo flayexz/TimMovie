@@ -13,6 +13,7 @@
         <Compile Include="Identity\MockJwtTokens.fs" />
         <Compile Include="Identity\JwtService.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerNavbarSearch.fs" />
+        <Compile Include="DatabaseFillers\DatabaseFillerRecommendations.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerNotifications.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerSubscribes.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerFilmFilters.fs" />
@@ -22,6 +23,7 @@
         <Compile Include="Tests\SearchTests.fs" />
         <Compile Include="Tests\FilmFiltersTests.fs" />
         <Compile Include="Tests\NotificationsTests.fs" />
+        <Compile Include="Tests\RecommendationTests.fs" />
         <Compile Include="Tests\SubscribesTests.fs" />
         <Compile Include="Tests\UserTests.fs" />
         <Compile Include="Tests\FilmsTests.fs" />

@@ -132,3 +132,5 @@ type MainPageController
             )
 
         filmCardService.GetFilmCardsByFilters(generalPaginationDto)
+        
+    

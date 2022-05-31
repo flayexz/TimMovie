@@ -14,6 +14,7 @@ type Constants() =
     static member PayForSubscription = "/Profile/PayForSubscription"
     static member GetFilmById = "/Film/GetFilmById"
     static member AddCommentToFilm = "/Film/AddCommentToFilm"
+    static member FilmRecommendations = "/Film/GetFilmRecommendations"
 
     static member DefaultUserName = "testUser"
     static member DefaultDisplayName = Constants.DefaultUserName
