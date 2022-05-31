@@ -31,7 +31,7 @@ public class WatchLaterController : Controller
     {
         var userId = User.GetUserId();
 
-        var watchLaterFilms = _watchLaterService.GetWatchLaterFilmsAsync(userId!.Value, take, skip);
+        var watchLaterFilms = _watchLaterService.GetWatchLaterFilms(userId!.Value, take, skip);
 
         var cardsViewModel = _mapper.Map<IEnumerable<BigFilmCardViewModel>>(watchLaterFilms);
 

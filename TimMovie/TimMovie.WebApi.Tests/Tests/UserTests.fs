@@ -32,70 +32,24 @@ type UserTests(factory: BaseApplicationFactory<Program>) =
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
+        if isRequestWithJWT = false then
+            Assert.True(response.StatusCode = HttpStatusCode.BadRequest)
+        else
+            Assert.True(response.StatusCode = HttpStatusCode.OK)
 
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
+            let responseContent =
+                response.Content.ReadAsStringAsync()
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
 
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
-
-        if isRequestWithJWT then
-            let user =
-                JsonConvert.DeserializeObject<UserInfoDto> result.Value
+            let result =
+                JsonConvert.DeserializeObject<UserInfoDto> responseContent
 
             Assert.True(
                 result <> null
-                && result.Succeeded
-                && user.DisplayName = Constants.DefaultDisplayName
-                && user.PathToPhoto = Constants.DefaultPathToPhoto
+                && result.DisplayName = Constants.DefaultDisplayName
+                && result.PathToPhoto = Constants.DefaultPathToPhoto
             )
-        else
-            Assert.True(result <> null && result.IsFailure)
-
-        client.Dispose()
-
-    [<Theory>]
-    [<InlineData(true)>]
-    [<InlineData(false)>]
-    member this.``Test getting user notifications``(isRequestWithJWT: bool) =
-        let client = factory.CreateClient()
-        let userManager = factory.GetUserManager
-
-        if isRequestWithJWT then
-            let jwtToken =
-                JwtService.GetJwtToken(Constants.DefaultUserName, userManager)
-
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwtToken}")
-
-        let response =
-            client.GetAsync(Constants.GetAllUserNotifications)
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
-
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
-
-        if isRequestWithJWT then
-            let notifications =
-                JsonConvert.DeserializeObject<List<NotificationDto>> result.Value
-
-            Assert.True(
-                result <> null
-                && result.Succeeded
-                && notifications.Count = 2
-            )
-        else
-            Assert.True(result <> null && result.IsFailure)
 
         client.Dispose()
 
@@ -124,24 +78,18 @@ type UserTests(factory: BaseApplicationFactory<Program>) =
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
-
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
-
-        if isRequestWithJWT then
-            Assert.True(
-                result <> null
-                && (result.Succeeded
-                    || result.Error.Contains("банк отклонил вашу покупку"))
-            )
+        if isRequestWithJWT = false then
+            Assert.True(response.StatusCode = HttpStatusCode.BadRequest)
         else
-            Assert.True(result <> null && result.IsFailure)
+            let responseContent =
+                response.Content.ReadAsStringAsync()
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
+
+            if responseContent.Trim() = "" then
+                Assert.True(response.StatusCode = HttpStatusCode.OK)
+            else
+                Assert.True(responseContent.Contains("банк отклонил вашу покупку"))
 
         client.Dispose()
 
@@ -149,14 +97,14 @@ type UserTests(factory: BaseApplicationFactory<Program>) =
     [<InlineData(true, 100, 0, 1)>]
     [<InlineData(true, 0, 0, 0)>]
     [<InlineData(false, 0, 0, 0)>]
-    member this.``Test getting watch later films``(isRequestWithJWT: bool, take: int, skip: int, requiredCount : int) =
+    member this.``Test getting watch later films``(isRequestWithJWT: bool, take: int, skip: int, requiredCount: int) =
         let client = factory.CreateClient()
         let userManager = factory.GetUserManager
 
         let data = List<KeyValuePair<string, string>>()
         data.Add(KeyValuePair<string, string>("take", take.ToString()))
         data.Add(KeyValuePair<string, string>("skip", skip.ToString()))
-        
+
         if isRequestWithJWT then
             let jwtToken =
                 JwtService.GetJwtToken(Constants.DefaultUserName, userManager)
@@ -168,26 +116,19 @@ type UserTests(factory: BaseApplicationFactory<Program>) =
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
-
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
-
-        if isRequestWithJWT then
-            let dto =
-                JsonConvert.DeserializeObject<List<BigFilmCardDto>> result.Value
-
-            Assert.True(
-                result <> null
-                && result.Succeeded
-                && dto.Count = requiredCount
-            )
+        if isRequestWithJWT = false then
+            Assert.True(response.StatusCode = HttpStatusCode.BadRequest)
         else
-            Assert.True(result <> null && result.IsFailure)
+            Assert.True(response.StatusCode = HttpStatusCode.OK)
+
+            let responseContent =
+                response.Content.ReadAsStringAsync()
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
+
+            let result =
+                JsonConvert.DeserializeObject<List<BigFilmCardDto>> responseContent
+
+            Assert.True(result <> null && result.Count = requiredCount)
 
         client.Dispose()

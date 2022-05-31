@@ -37,6 +37,8 @@ public class SubscribeService : ISubscribeService
     /// <returns></returns>
     public IEnumerable<SubscribeDto> GetSubscribesByNamePart(string? namePart, int take = int.MaxValue, int skip = 0)
     {
+        if (skip < 0 || take < 0)
+            return new List<SubscribeDto>();
         var query = _subscribesRepository.Query
             .Where(new UserSubscribeByNamePartSpec(namePart) && SubscribeSpec.ActiveSubscribe)
             .Skip(skip)

@@ -16,7 +16,7 @@ public class CardDto
     public string CCID { get; set; } = null!;
     
     [Required(ErrorMessage = "это обязательное поле")]
-    [Range(1,31,ErrorMessage = "недопустимое значение для месяца")]
+    [Range(1,12,ErrorMessage = "недопустимое значение для месяца")]
     public int ExpirationMonth { get; set; }
     
     [Required(ErrorMessage = "это обязательное поле")]

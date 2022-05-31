@@ -30,27 +30,20 @@ type SubscribesTests(factory: BaseApplicationFactory<Program>) =
             |> Async.AwaitTask
             |> Async.RunSynchronously
 
-        Assert.True(response.StatusCode = HttpStatusCode.OK)
-
-        let content =
-            response.Content.ReadAsStringAsync()
-            |> Async.AwaitTask
-            |> Async.RunSynchronously
-
-        let result =
-            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
-
-        if isRequestWithJWT then
-            let subscribes =
-                JsonConvert.DeserializeObject<List<UserSubscribeDto>> result.Value
-
-            Assert.True(
-                result <> null
-                && result.Succeeded
-                && subscribes.Count = 1
-            )
+        if isRequestWithJWT = false then
+            Assert.True(response.StatusCode = HttpStatusCode.BadRequest)
         else
-            Assert.True(result <> null && result.IsFailure)
+            Assert.True(response.StatusCode = HttpStatusCode.OK)
+
+            let responseContent =
+                response.Content.ReadAsStringAsync()
+                |> Async.AwaitTask
+                |> Async.RunSynchronously
+
+            let result =
+                JsonConvert.DeserializeObject<List<UserSubscribeDto>> responseContent
+
+            Assert.True(result <> null && result.Count = 1)
 
         client.Dispose()
 

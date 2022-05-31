@@ -9,5 +9,7 @@ open TimMovie.Infrastructure.Services
 
 type AppMappingProfile() as this =
     inherit Profile()
-    do 
-        this.CreateMap<UserRegistrationDto, User>() |> ignore
+
+    do
+        this.CreateMap<UserRegistrationDto, User>()
+        |> ignore

@@ -93,6 +93,8 @@ public class FilmService
         var dbFilm = GetDbFilmById(filmId);
         if (dbFilm is null)
             return Result.Fail<CommentsDto>("данного фильма не существует");
+        if (content is null)
+            return Result.Fail<CommentsDto>("комментарий не может быть пустым");
         switch (content.Length)
         {
             case < 2:

@@ -8,17 +8,11 @@ open Newtonsoft.Json
 open OpenIddict.Validation.AspNetCore
 open TimMovie.Core.DTO.Payment
 open TimMovie.Core.Interfaces
-open TimMovie.SharedKernel.Classes
 open TimMovie.WebApi.Services.JwtService
 
 [<ApiController>]
 [<Route("[controller]/[action]")>]
-type ProfileController
-    (
-        userService: IUserService,
-        notificationService: INotificationService,
-        paymentService: IPaymentService
-    ) as this =
+type ProfileController(userService: IUserService, paymentService: IPaymentService) as this =
     inherit ControllerBase()
 
     member private _.jwtService = JwtService()
@@ -40,37 +34,14 @@ type ProfileController
                     |> Async.AwaitTask
                     |> Async.RunSynchronously
 
-                let json = JsonConvert.SerializeObject userInfo
-
-                Result.Ok(json)
-            else
-                Result.Fail<string>("Error occurred while decoding the jwt token")
-        else
-            Result.Fail<string>("Error occurred while getting user jwt token")
-
-    [<HttpGet>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-    [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetAllUserNotifications() =
-        let jwtTokenOption =
-            this.jwtService.GetUserJwtToken(this.HttpContext.Request.Headers)
-
-        if jwtTokenOption.IsSome then
-            let userGuidOption =
-                this.jwtService.GetUserGuid(jwtTokenOption.Value)
-
-            if userGuidOption.IsSome then
-                let notifications =
-                    notificationService.GetAllUserNotifications(Guid(userGuidOption.Value.ToString()))
-
                 let json =
-                    JsonConvert.SerializeObject notifications
+                    JsonConvert.SerializeObject(userInfo, Formatting.Indented)
 
-                Result.Ok(json)
+                ContentResult(Content = json, StatusCode = 200)
             else
-                Result.Fail<string>("Error occurred while decoding the jwt token")
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            Result.Fail<string>("Error occurred while getting user jwt token")
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
 
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -99,10 +70,19 @@ type ProfileController
                 )
 
             if userGuidOption.IsSome then
-                paymentService.PaySubscribeAsync(Guid(userGuidOption.Value.ToString()), subscribeId, cardDto)
-                |> Async.AwaitTask
-                |> Async.RunSynchronously
+                let result =
+                    paymentService.PaySubscribeAsync(Guid(userGuidOption.Value.ToString()), subscribeId, cardDto)
+                    |> Async.AwaitTask
+                    |> Async.RunSynchronously
+
+                if result.Succeeded then
+                    ContentResult(StatusCode = 200)
+                else
+                    let json =
+                        JsonConvert.SerializeObject(result.Error, Formatting.Indented)
+
+                    ContentResult(Content = json, StatusCode = 400)
             else
-                Result.Fail<string>("Error occurred while decoding the jwt token")
+                ContentResult(Content = "Error occurred while decoding the jwt token", StatusCode = 400)
         else
-            Result.Fail<string>("Error occurred while getting user jwt token")
+            ContentResult(Content = "Error occurred while getting user jwt token", StatusCode = 400)
