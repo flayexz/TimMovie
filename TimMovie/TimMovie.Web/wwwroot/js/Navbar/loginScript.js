@@ -28,7 +28,6 @@ $('#loginButton').click(function (e) {
         url: '/Account/Login',
         data: data,
         success: function (result) {
-            hideLoader()
             if (result.includes('Неверный')) {
                 hideLoader()
                 appendError(result)
@@ -55,11 +54,11 @@ function hideError() {
 }
 
 function showLoader(){
-    $('.loader').toggleClass('show');
-    $('#loginButton').hide();
+    $('.loader').show()
+    $('#loginButton').hide()
 }
 
 function hideLoader(){
-    $('.loader').toggleClass('hide');
-    $('#loginButton').show();
+    $('.loader').hide()
+    $('#loginButton').show()
 }
