@@ -2,7 +2,6 @@
 $('#loginButton').click(function (e) {
     e.preventDefault()
     hideError()
-    console.log('123')
     const login = $('#userName').val()
     const password = $('#password').val()
     const isrememberMe = $('#rememberMe').prop('checked')
@@ -28,7 +27,6 @@ $('#loginButton').click(function (e) {
         url: '/Account/Login',
         data: data,
         success: function (result) {
-            console.log(result)
             if (result.includes('Неверный')) {
                 appendError(result)
             } else if (result.length > 30) {
