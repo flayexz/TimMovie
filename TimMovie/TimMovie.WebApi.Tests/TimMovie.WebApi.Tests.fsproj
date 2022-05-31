@@ -15,6 +15,7 @@
         <Compile Include="DatabaseFillers\DatabaseFillerNavbarSearch.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerRecommendations.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerNotifications.fs" />
+        <Compile Include="DatabaseFillers\DatabaseFillerWatchLater.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerSubscribes.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerFilmFilters.fs" />
         <Compile Include="DatabaseFillers\DatabaseFillerUsers.fs" />

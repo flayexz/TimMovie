@@ -14,7 +14,7 @@ type DatabaseFillerNotifications() =
             userManager.FindByNameAsync(Constants.DefaultUserName)
             |> Async.AwaitTask
             |> Async.RunSynchronously
-
+            
         let users = List<User>()
         users.Add(user)
 

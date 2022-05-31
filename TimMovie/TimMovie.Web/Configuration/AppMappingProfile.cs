@@ -34,10 +34,6 @@ public class AppMappingProfile : Profile
         CreateMap<ExternalLoginViewModel, ExternalLoginDto>();
         CreateMap<FilmCardDto, FilmCardViewModel>();
         CreateMap<Film, FilmCardViewModel>();
-        CreateMap<Country, CountryDto>().ReverseMap();
-        CreateMap<Producer, ProducerDto>().ReverseMap();
-        CreateMap<Actor, ActorDto>().ReverseMap();
-        CreateMap<Comment, CommentsDto>().ReverseMap();
         CreateMap<LoginViewModel, LoginDto>().ReverseMap();
         CreateMap<UserInfoDto, UserInfoViewModel>();
         CreateMap<SubscribePaymentViewModel, SubscribePaymentDto>().ReverseMap();
@@ -49,10 +45,6 @@ public class AppMappingProfile : Profile
         CreateMap<UserSubscribeDto, UserSubscribeViewModel>();
         CreateMap<FilmDto, FilmViewModel>();
         CreateMap<PersonDto, PersonViewModel>();
-        CreateMap<Film, FilmDto>()
-            .ForMember(
-                filmDto => filmDto.Comments,
-                expression => expression.MapFrom(film => film.Comments)).ReverseMap();
         CreateMap<WatchedFilmDto, WatchedFilmViewModel>();
         CreateMap<PersonFilmDto, PersonFilmViewModel>();
         CreateMap<BigFilmCardDto, BigFilmCardViewModel>();

@@ -4,6 +4,7 @@ open System.Collections.Generic
 open System.Net
 open System.Net.Http
 open Newtonsoft.Json
+open TimMovie.Core.DTO.Films
 open TimMovie.Core.DTO.Notifications
 open TimMovie.Core.DTO.Users
 open TimMovie.WebApi
@@ -138,6 +139,53 @@ type UserTests(factory: BaseApplicationFactory<Program>) =
                 result <> null
                 && (result.Succeeded
                     || result.Error.Contains("банк отклонил вашу покупку"))
+            )
+        else
+            Assert.True(result <> null && result.IsFailure)
+
+        client.Dispose()
+
+    [<Theory>]
+    [<InlineData(true, 100, 0, 1)>]
+    [<InlineData(true, 0, 0, 0)>]
+    [<InlineData(false, 0, 0, 0)>]
+    member this.``Test getting watch later films``(isRequestWithJWT: bool, take: int, skip: int, requiredCount : int) =
+        let client = factory.CreateClient()
+        let userManager = factory.GetUserManager
+
+        let data = List<KeyValuePair<string, string>>()
+        data.Add(KeyValuePair<string, string>("take", take.ToString()))
+        data.Add(KeyValuePair<string, string>("skip", skip.ToString()))
+        
+        if isRequestWithJWT then
+            let jwtToken =
+                JwtService.GetJwtToken(Constants.DefaultUserName, userManager)
+
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {jwtToken}")
+
+        let response =
+            client.PostAsync(Constants.WatchLaterFilms, new FormUrlEncodedContent(data))
+            |> Async.AwaitTask
+            |> Async.RunSynchronously
+
+        Assert.True(response.StatusCode = HttpStatusCode.OK)
+
+        let content =
+            response.Content.ReadAsStringAsync()
+            |> Async.AwaitTask
+            |> Async.RunSynchronously
+
+        let result =
+            JsonConvert.DeserializeObject<TimMovie.SharedKernel.Classes.Result<string>> content
+
+        if isRequestWithJWT then
+            let dto =
+                JsonConvert.DeserializeObject<List<BigFilmCardDto>> result.Value
+
+            Assert.True(
+                result <> null
+                && result.Succeeded
+                && dto.Count = requiredCount
             )
         else
             Assert.True(result <> null && result.IsFailure)

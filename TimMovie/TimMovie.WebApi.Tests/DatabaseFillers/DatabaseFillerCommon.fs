@@ -19,3 +19,5 @@ type DatabaseFillerCommon() =
         dbFillerSubscribes.Start(dbContext, userManager)
         let dbFillerRecommendations = DatabaseFillerRecommendations()
         dbFillerRecommendations.Start(dbContext, userManager)
+        let dbFillerWatchLater = DatabaseFillerWatchLater()
+        dbFillerWatchLater.Start(dbContext, userManager)

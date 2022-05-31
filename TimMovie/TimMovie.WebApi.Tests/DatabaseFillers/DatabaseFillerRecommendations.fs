@@ -14,7 +14,7 @@ type DatabaseFillerRecommendations() =
     member private this.AddRecommendations(dbContext: ApplicationContext, userManager: UserManager<User>) =
         let listGenres = List<Genre>()
         listGenres.Add(Genre(Name="1234"))
-        let film = Film(Title = "RecommendationFilm", Country = Country(Name = "Россия"), Image="123", Genres=listGenres)
+        let film = Film(Title = "RecommendationFilm", Country = Country(Name = "Россия"), Image="123", Genres=listGenres, Year=2006)
         dbContext.Films.Add(film) |> ignore
         dbContext.SaveChanges() |> ignore
         
@@ -26,10 +26,10 @@ type DatabaseFillerRecommendations() =
             
         let films = List<Film>()
         films.Add(dbFilm)
-        let producer = Producer(Name = "RecommendationFilmProducerName", Surname = "RecommendationFilmProducerSurname", Films=films)
+        let producer = Producer(Name = "RecommendationFilmProducerName", Surname = "RecommendationFilmProducerSurname", Films=films, Photo="12354")
         dbContext.Producers.Add(producer) |> ignore
         
-        let actor = Actor(Name = "RecommendationFilmActorName", Surname = "RecommendationFilmActorSurname", Films=films)
+        let actor = Actor(Name = "RecommendationFilmActorName", Surname = "RecommendationFilmActorSurname", Films=films, Photo="12352351")
         dbContext.Actors.Add(actor) |> ignore
         
         let user =
