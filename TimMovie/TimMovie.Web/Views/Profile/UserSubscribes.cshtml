@@ -20,9 +20,9 @@
                 @foreach (var subscribe in Model)
                 {
                     <div class="d-flex flex-column p-3 [ subscribeCardInProfile ]">
-                        <div class="subscribeCardInProfile_title">@subscribe.SubscribeName</div>
+                        <div class="subscribeCardInProfile_title text-break">@subscribe.SubscribeName</div>
                         <div class="mt-2 [ subscribeCardInProfile_description ]">
-                            <span class="text-white">Описание:</span> @subscribe.SubscribeDescription
+                            <span class="text-white text-break">Описание:</span> @subscribe.SubscribeDescription
                         </div>
                         <div class="d-flex flex-column mt-3 [ subscribeCardInProfile_duration ]">
                             <div class="">
