@@ -120,36 +120,6 @@ type FilmFiltersTests(factory: BaseApplicationFactory<Program>) =
           [| FilmSortingType.Title
              null
              null
-             1900
-             2200
-             true
-             1
-             100
-             100
-             0 |]
-          [| FilmSortingType.Title
-             null
-             null
-             0
-             0
-             true
-             1
-             100
-             100
-             0 |]
-          [| FilmSortingType.Title
-             null
-             null
-             -10
-             0
-             true
-             1
-             100
-             100
-             0 |]
-          [| FilmSortingType.Title
-             null
-             null
              2020
              2019
              true

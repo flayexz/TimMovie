@@ -75,13 +75,28 @@ type ProfileController
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.PayForSubscription([<FromForm>] subscribeId: Guid, [<FromForm>] cardDto: CardDto) =
+    member _.PayForSubscription
+        (
+            [<FromForm>] subscribeId: Guid,
+            [<FromForm>] cardNumber: string,
+            [<FromForm>] ccid: string,
+            [<FromForm>] expirationMonth: int,
+            [<FromForm>] expirationYear: int
+        ) =
         let jwtTokenOption =
             this.jwtService.GetUserJwtToken(this.HttpContext.Request.Headers)
 
         if jwtTokenOption.IsSome then
             let userGuidOption =
                 this.jwtService.GetUserGuid(jwtTokenOption.Value)
+
+            let cardDto =
+                CardDto(
+                    CardNumber = cardNumber,
+                    CCID = ccid,
+                    ExpirationMonth = expirationMonth,
+                    ExpirationYear = expirationYear
+                )
 
             if userGuidOption.IsSome then
                 paymentService.PaySubscribeAsync(Guid(userGuidOption.Value.ToString()), subscribeId, cardDto)

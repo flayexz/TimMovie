@@ -23,6 +23,8 @@
         <Compile Include="Tests\FilmFiltersTests.fs" />
         <Compile Include="Tests\NotificationsTests.fs" />
         <Compile Include="Tests\SubscribesTests.fs" />
+        <Compile Include="Tests\UserTests.fs" />
+        <Compile Include="Tests\FilmsTests.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

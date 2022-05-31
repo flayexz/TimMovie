@@ -59,7 +59,6 @@ type BaseApplicationFactory<'TStartup when 'TStartup: not struct>() =
 
                 try
                     DatabaseFillerCommon.Start(db, userManager)
-                    |> ignore
 
                     db.SaveChanges() |> ignore
                 with

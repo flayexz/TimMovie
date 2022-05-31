@@ -24,7 +24,8 @@ type FilmController(filmService: FilmService) as this =
     [<HttpPost>]
     [<AllowAnonymous>]
     [<Consumes("application/x-www-form-urlencoded")>]
-    member _.GetFilmById([<FromForm>] filmId: Guid) = filmService.GetFilmById(filmId)
+    member _.GetFilmById([<FromForm>] filmId: Guid) =
+        filmService.GetFilmById(filmId)
 
     [<HttpPost>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]

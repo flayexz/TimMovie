@@ -14,5 +14,5 @@ public class UserSubscribeByNamePartSpec : Specification<Subscribe>
     /// </summary>
     /// <param name="namePart"></param>
     public UserSubscribeByNamePartSpec(string? namePart) =>
-        Conditional = s => namePart == null || s.Name.ToLower().Contains(namePart);
+        Conditional = s => namePart == null || s.Name.ToLower().Contains(namePart.ToLower());
 }
