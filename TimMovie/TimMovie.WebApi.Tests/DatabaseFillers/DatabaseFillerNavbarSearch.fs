@@ -1,5 +1,6 @@
 ﻿namespace TimMovie.WebApi.Tests
 
+open System
 open TimMovie.Core.Entities
 open TimMovie.Infrastructure.Database
 
@@ -11,7 +12,7 @@ type DatabaseFillerNavbarSearch() =
         this.AddGenres(dbContext)
 
     member private this.AddFilms(dbContext: ApplicationContext) =
-        dbContext.Films.Add(Film(Title = "F1A0P0G0"))
+        dbContext.Films.Add(Film(Id=Constants.DefaultFilmGuid, Title = "F1A0P0G0"))
         |> ignore
 
         dbContext.Films.Add(Film(Title = "F2A0P0G0"))
