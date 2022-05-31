@@ -2,6 +2,7 @@
 $('#loginButton').click(function (e) {
     e.preventDefault()
     hideError()
+    showLoader()
     const login = $('#userName').val()
     const password = $('#password').val()
     const isrememberMe = $('#rememberMe').prop('checked')
@@ -15,7 +16,7 @@ $('#loginButton').click(function (e) {
         appendError('введите пароль')
         return;
     }
-
+    
     const antiforgeyToken = $("#UserLoginModal input[name='__RequestVerificationToken']").val()
     let data = {
         __RequestVerificationToken: antiforgeyToken,
@@ -27,7 +28,9 @@ $('#loginButton').click(function (e) {
         url: '/Account/Login',
         data: data,
         success: function (result) {
+            hideLoader()
             if (result.includes('Неверный')) {
+                hideLoader()
                 appendError(result)
             } else if (result.length > 30) {
                 document.write(result)
@@ -36,6 +39,7 @@ $('#loginButton').click(function (e) {
             }
         },
         error: function (e) {
+            hideLoader()
             console.log(e)
         }
     })
@@ -48,4 +52,14 @@ function appendError(error) {
 
 function hideError() {
     errorArea.hide()
+}
+
+function showLoader(){
+    $('.loader').toggleClass('show');
+    $('#loginButton').hide();
+}
+
+function hideLoader(){
+    $('.loader').toggleClass('hide');
+    $('#loginButton').show();
 }
