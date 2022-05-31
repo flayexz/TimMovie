@@ -145,6 +145,8 @@ public class FilmCardService
     
     public Result<IEnumerable<FilmCardDto>> GetFilmRecommendationsByUserId(Guid userId, int amount)
     {
+        if (amount < 0)
+            return Result.Fail<IEnumerable<FilmCardDto>>("значение не может быть отрицательным");
         var query = _userFilmWatchedRepository.Query
             .Where(new WatchedFilmByUserIdSpec(userId))
             .OrderByDescending(watched => watched.Grade ?? 0);

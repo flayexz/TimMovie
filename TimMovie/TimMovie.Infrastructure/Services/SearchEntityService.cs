@@ -1,4 +1,5 @@
 ﻿using TimMovie.Core.DTO;
+using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Actors;
 using TimMovie.Core.Services.Films;
@@ -28,6 +29,14 @@ public class SearchEntityService : ISearchEntityService
     /// </summary>
     public SearchEntityResultDto GetSearchEntityResultByNamePart(string? namePart)
     {
+        if (namePart is null)
+            return new SearchEntityResultDto
+            {
+                Films = new List<Film>(),
+                Genres = new List<Genre>(),
+                Actors = new List<Actor>(),
+                Producers = new List<Producer>()
+            };
         var result = new SearchEntityResultDto
         {
             Films = _filmService.GetFilmsByNamePart(namePart, 4),

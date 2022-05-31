@@ -58,8 +58,10 @@ public class WatchLaterService
         return filmDto;
     }
 
-    public List<BigFilmCardDto> GetWatchLaterFilmsAsync(Guid userId, int take, int skip)
+    public List<BigFilmCardDto> GetWatchLaterFilms(Guid userId, int take, int skip)
     {
+        if (take < 0 || skip < 0)
+            return new List<BigFilmCardDto>();
         var filmsWatchLater = _userManager.Users
             .Where(u => u.Id == userId)
             .Select(u => u.FilmsWatchLater.Skip(skip).Take(take))

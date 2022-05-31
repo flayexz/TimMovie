@@ -12,7 +12,6 @@ open TimMovie.Core.DTO.Films
 open TimMovie.Core.Enums
 open TimMovie.Core.Interfaces
 open TimMovie.Core.Services.Films
-open TimMovie.SharedKernel.Classes
 open TimMovie.WebApi.Services.JwtService
 
 [<ApiController>]
@@ -51,13 +50,13 @@ type MainPageController
                     notificationService.GetAllUserNotifications(Guid(userGuidOption.Value.ToString()))
 
                 let json =
-                    JsonConvert.SerializeObject notifications
+                    JsonConvert.SerializeObject(notifications, Formatting.Indented)
 
-                Result.Ok(json)
+                json
             else
-                Result.Fail<string>("Error occurred while decoding the jwt token")
+                "Error occurred while decoding the jwt token"
         else
-            Result.Fail<string>("Error occurred while getting user jwt token")
+            "Error occurred while getting user jwt token"
 
     [<HttpGet>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
@@ -74,13 +73,13 @@ type MainPageController
                 let subscribes =
                     subscribeService.GetAllActiveUserSubscribes(Guid(userGuidOption.Value.ToString()))
 
-                let json = JsonConvert.SerializeObject subscribes
+                let json = JsonConvert.SerializeObject(subscribes,Formatting.Indented)
 
-                Result.Ok(json)
+                json
             else
-                Result.Fail<string>("Error occurred while decoding the jwt token")
+                "Error occurred while decoding the jwt token"
         else
-            Result.Fail<string>("Error occurred while getting user jwt token")
+            "Error occurred while getting user jwt token"
 
     [<HttpPost>]
     [<AllowAnonymous>]
@@ -145,14 +144,14 @@ type MainPageController
             let userGuidOption =
                 this.jwtService.GetUserGuid(jwtTokenOption.Value)
 
-            if userGuidOption.IsSome then
+            if userGuidOption.IsSome then 
                 let films =
-                    watchLaterService.GetWatchLaterFilmsAsync(Guid(userGuidOption.Value.ToString()), take, skip)
+                    watchLaterService.GetWatchLaterFilms(Guid(userGuidOption.Value.ToString()), take, skip)
 
-                let json = JsonConvert.SerializeObject films
+                let json = JsonConvert.SerializeObject(films, Formatting.Indented)
 
-                Result.Ok(json)
+                json
             else
-                Result.Fail<string>("Error occurred while decoding the jwt token")
+                "Error occurred while decoding the jwt token"
         else
-            Result.Fail<string>("Error occurred while getting user jwt token")
+            "Error occurred while getting user jwt token"

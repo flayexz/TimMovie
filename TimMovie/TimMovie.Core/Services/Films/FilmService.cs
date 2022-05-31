@@ -87,6 +87,8 @@ public class FilmService
 
     public async Task<Result<CommentsDto>> TryAddCommentToFilm(Guid? userId, Guid filmId, string content)
     {
+        if (content is null)
+            return Result.Fail<CommentsDto>("комментарий не может быть пустым");
         var user = await _userManager.FindByIdAsync(userId.ToString());
         if (user is null)
             return Result.Fail<CommentsDto>("данного пользователя не существует");
