@@ -8,28 +8,28 @@
                 <div class="mt-2 mb-4 d-flex justify-content-center">
                     <h1 class="modal-title" id="modalLabel1">Вход</h1>
                 </div>
-                <form method="post" id="loginModal" asp-controller="Account" asp-action="Login">
-                    <div class="row mb-3 mt-3">
-                        <div class="col">
-                            <input name="userName" type="text" class="loginInput" placeholder="Логин или почта">
+                
+                <div class="row mb-3 mt-3">
+                    <div class="col">
+                        <input required="required" name="userName" id="userName" type="text" class="loginInput" placeholder="Логин или почта">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <input required="required" name="password" id="password" type="password" class="loginInput" placeholder="Пароль">
+                    </div>
+                </div>
+                <div class="row mb-10">
+                    <div class="col">
+                        <div class="form-check">
+                            <input name="rememberMe" id="rememberMe" type="checkbox" class="form-check-input" checked style="cursor: pointer;">
+                            <label style="color: white" class="form-check-label">Запомнить меня</label>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <input name="password" type="password" class="loginInput" placeholder="Пароль">
-                        </div>
-                    </div>
-                    <div class="row mb-10">
-                        <div class="col">
-                            <div class="form-check">
-                                <input name="rememberMe" type="checkbox" class="form-check-input" checked style="cursor: pointer;">
-                                <label style="color: white" class="form-check-label">Запомнить меня</label>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="submit" class="mt-4 mb-2 login-button-submit" value="Войти">
-                    <div asp-validation-summary="ModelOnly" style="color: #a60303"></div>
-                </form>
+                </div>
+                <input type="submit" id="loginButton" class="mt-4 mb-2 login-button-submit" value="Войти">
+                <div style="color: darkred; display: none" id="textError"></div>
+                
                 <div class="divider">или</div>
                 <div>
                     <form method="post" asp-controller="Account" asp-action="RegisterByVk" asp-route-returnUrl="/" asp-route-provider="VK">
@@ -60,3 +60,5 @@
         </div >
     </div>
 </div>
+
+<script src="~/js/Navbar/loginScript.js"></script>

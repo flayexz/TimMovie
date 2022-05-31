@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using TimMovie.Core.DTO.Account;
 using TimMovie.Core.Entities;
 using TimMovie.Core.Interfaces;
+using TimMovie.Core.Services.Banners;
+using TimMovie.Web.ViewModels;
 using TimMovie.Web.ViewModels.Account;
 
 namespace TimMovie.Web.Controllers;
@@ -17,6 +19,7 @@ public class AccountController : Controller
     private readonly UserManager<User> userManager;
     private readonly IMapper mapper;
     private readonly IUserService userService;
+    private readonly BannerService bannerService;
     private string? UserIp => HttpContext.Connection.RemoteIpAddress?.ToString();
     private string UrlToConfirmEmail => Url.Action("ConfirmEmail", "Account", null, HttpContext.Request.Scheme)!;
 
@@ -179,23 +182,14 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> LoginAsync()
+    
+    public async Task<IActionResult> LoginAsync(string login, string password, bool rememberMe)
     {
-        var isLogin = Request.Form.TryGetValue("userName", out var login);
-        var isPassword = Request.Form.TryGetValue("password", out var password);
-        var isRememberMe = Request.Form.TryGetValue("rememberMe", out _);
-
-        if (!isLogin || !isPassword)
-        {
-            return View();
-        }
-
         var loginDto = new LoginDto
         {
             Login = login,
             Password = password,
-            RememberMe = isRememberMe
+            RememberMe = rememberMe
         };
 
 
@@ -204,19 +198,17 @@ public class AccountController : Controller
         if (loginResult.Succeeded)
         {
             logger.LogInformation($"пользователь {login} вошел в свой акканут");
-            return RedirectToAction("MainPage", "MainPage");
+            return Ok();
         }
 
         if (loginResult.IsNotAllowed)
         {
             var userFromDb = await userManager.FindByNameAsync(login) ?? await userManager.FindByEmailAsync(login);
-
             return PartialView("MailSend", (userFromDb.Email, userFromDb.DisplayName));
         }
 
         logger.LogInformation($"неудачная попытка входа с использованием логина {login}");
-        ModelState.AddModelError(string.Empty, "Неверный логин/почта или пароль");
-        return RedirectToAction("MainPage", "MainPage");
+        return Ok("Неверный логин/почта или пароль");
     }
 
     [HttpGet]
