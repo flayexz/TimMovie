@@ -20,6 +20,7 @@ function Layout(){
                                 <NavLink className={activateLink} to="/films/collection">Фильмы</NavLink>
                                 <NavLink className={activateLink} to="/actorsProducers">Актеры и режиссеры</NavLink>
                                 <NavLink className={activateLink} to="/genres">Жанры</NavLink>
+                                <NavLink className={activateLink} to="/subscribes/collection">Подписки</NavLink>
                             </div>
                             <div><Logout/></div>
                         </div>

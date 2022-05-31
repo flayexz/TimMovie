@@ -18,6 +18,9 @@ export class Subscribe {
   @Column("text", { name: "Description", nullable: true })
   description: string | null;
 
+  @Column("boolean", { name: "IsActive", nullable: false, default: false })
+  isActive: boolean;
+
   @ManyToMany(() => Film, (films) => films.subscribes)
   films: Film[];
 

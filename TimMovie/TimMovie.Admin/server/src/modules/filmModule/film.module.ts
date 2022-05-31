@@ -10,6 +10,7 @@ import {ActorModule} from "../actorModule/actor.module";
 @Module({
   controllers: [FilmController],
   providers: [FilmService, FileService],
-  imports: [ActorModule, ProducerModule, GenreModule, CountryModule]
+  imports: [ActorModule, ProducerModule, GenreModule, CountryModule],
+  exports: [FilmService]
 })
 export class FilmModule {}
