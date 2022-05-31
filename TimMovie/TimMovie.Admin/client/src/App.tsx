@@ -11,6 +11,8 @@ import FilmsPage from "./components/films/FilmsPage";
 import FilmEditPage from "./components/films/FilmEditPage";
 import ActorsProducersPage from "./components/actorsProduces/ActorsProducersPage";
 import GenresPage from "./components/genres/GenresPage";
+import SubscribesPage from "./components/subscribes/SubscribesPage";
+import SubscribeEdit from "./components/subscribes/SubscribeEdit";
 
 function App() {
     return (
@@ -25,6 +27,8 @@ function App() {
                     <Route path="/films/:id" element={<FilmEditPage/>}/>
                     <Route path="/actorsProducers" element={<ActorsProducersPage/>}/>
                     <Route path="/genres" element={<GenresPage/>}/>
+                    <Route path="/subscribes/collection" element={<SubscribesPage/>}/>
+                    <Route path="/subscribes/:id" element={<SubscribeEdit/>}/>
                 </Route>
             </Routes>
         </AuthProvider>
