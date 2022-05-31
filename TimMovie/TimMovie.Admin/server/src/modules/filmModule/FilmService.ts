@@ -203,4 +203,15 @@ export class FilmService {
         };
     }
     
+    
+    async getFilmsByNames(names: string[]): Promise<Film[]>{
+        return await getRepository(Film)
+            .find({
+                where: names.map(name => {
+                    return {
+                        title: name
+                    }
+                })
+            })
+    }
 }

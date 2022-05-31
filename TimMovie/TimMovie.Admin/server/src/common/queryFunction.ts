@@ -5,3 +5,9 @@ export function includeNamePart(namePart: string){
     
     return Raw(alias => `lower(${alias}) LIKE '%${lowerNamePart}%'`);
 }
+
+export function equalNameWithoutCase(name: string){
+    let lowerName = name.toLowerCase();
+
+    return Raw(alias => `lower(${alias}) LIKE '%${lowerName}%'`);
+}
