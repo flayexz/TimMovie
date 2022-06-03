@@ -36,7 +36,11 @@ export const FileInput: FC<FileInputProps> = ({setPreview, setFile, uploadProps}
     }
 
     function uploadFiles(files: File[]) {
-        let fileName = files[0].name.toLowerCase()
+        if(files[0] == undefined){
+            setDrag(false)
+            return;
+        }
+        let fileName = files[0]?.name.toLowerCase()
         if(!(fileName.includes('.jpg') || fileName.includes('.png'))){
             setDrag(false);
             alert('Неверное расширение файла. Фотография должна быть с расширением jpg или png')
