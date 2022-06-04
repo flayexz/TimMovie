@@ -116,13 +116,3 @@ track.each(number => {
         setMoveCoefficients();
     })
 })
-
-
-// $(".rate_movie_from_card").click(function (e) {
-//     e.preventDefault();
-//     console.log(this);
-//     // let filmInfo = $(this).closest(".info_section");
-//     // let filmId = filmInfo.children(".stretched-link").attr("href").split("/").pop();
-//     // RemoveFilmFromWatchLater(filmId);
-//     // filmInfo.closest("#movie_card").remove()
-// })

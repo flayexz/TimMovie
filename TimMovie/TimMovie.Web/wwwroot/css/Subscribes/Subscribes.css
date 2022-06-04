@@ -27,18 +27,32 @@
 }
 
 .subscribeCardInSubscribeSearch-body-button {
-    color: rgb(187, 13, 58);
     text-align: center;
     border-radius: 6px;
     padding: 5px;
     margin-top: 15px;
 }
 
-.subscribeCardInSubscribeSearch-body-button:hover {
+.subscribeToBuy{
+    color: rgb(187, 13, 58);
+}
+
+.subscribeToBuy:hover{
     cursor: pointer;
     background: rgb(187, 13, 58);
     color: white;
 }
+
+.subscribeToExtend{
+    color: #33673B;
+}
+
+.subscribeToExtend:hover{
+    cursor: pointer;
+    background: #33673B;
+    color: white;
+}
+
 
 .btn-films, .btn-genres {
     padding: 2px;

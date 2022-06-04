@@ -61,16 +61,19 @@
                             </div>
                         }
                     </div>
-                    <a asp-controller="SubscribePayment" asp-action="Payment" asp-route-subscribeId="@subscribe.Id" class="subscribeCardInSubscribeSearch-body-button">
+                    
                         @if (hasUserSubscribe is not null && hasUserSubscribe.Value)
                         {
-                            @("Продлить")
+                            <a asp-controller="SubscribePayment" asp-action="Payment" asp-route-subscribeId="@subscribe.Id" class="subscribeCardInSubscribeSearch-body-button subscribeToExtend">
+                            Продлить
+                            </a>
                         }
                         else
                         {
-                            @("Оплатить")
+                            <a asp-controller="SubscribePayment" asp-action="Payment" asp-route-subscribeId="@subscribe.Id" class="subscribeCardInSubscribeSearch-body-button subscribeToBuy">
+                                Оплатить
+                            </a>   
                         }
-                    </a>
                 }
             </div>
         </div>

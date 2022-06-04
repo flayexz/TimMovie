@@ -24,4 +24,10 @@ public class MainPageController : Controller
         var banners = _mapper.Map<List<BannerViewModel>>(_bannerService.GetBanners());
         return View("~/Views/Navbar/MainPage/MainPage.cshtml", banners);
     }
+
+    [HttpPost]
+    public string[] GetImagesForBanners(Guid[] filmIds, bool isSmall) =>
+        isSmall
+            ? _bannerService.GetSmallBannerImages(filmIds)
+            : _bannerService.GetBigBannerImages(filmIds);
 }

@@ -5,6 +5,8 @@ let gradeSetText = "Изменить оценку фильма";
 let gradeUnsetText = "Поставить оценку фильму";
 let likeButton = null;
 
+
+
 function getGrade(filmId, likeBtn = null) {
     likeButton = likeBtn;
     savedFilmId = filmId;
