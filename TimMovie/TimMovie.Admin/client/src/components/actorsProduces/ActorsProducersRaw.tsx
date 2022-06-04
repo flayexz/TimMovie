@@ -75,15 +75,18 @@ function ActorsProducersRaw(person: ActorsProducersRowProps) {
         setOriginPhoto(preview!)
     }
 
+    const photoSize = 155;
+    const borderRadius = 15;
+
     return (<>
         <tr style={{verticalAlign: "middle"}}>
-            <td width={170}>
+            <td width={photoSize}>
                 <div className="justify-content-center d-flex">
-                    {isEdit ? <UploadFiles uploadProps={{photoWidth: 170, photoHeight: 170}} uploadHooks={{
+                    {isEdit ? <UploadFiles uploadProps={{photoWidth: photoSize, photoHeight: photoSize, borderRadius: borderRadius}} uploadHooks={{
                         setFile: setFile,
                         setPreview: setPreview,
                         preview: preview
-                    }}/> : <img src={originPhoto} style={{height: 170, width: 170, objectFit: "cover"}} className=""
+                    }}/> : <img src={originPhoto} style={{height: photoSize, width: photoSize,borderRadius:borderRadius, objectFit: "cover"}} className=""
                                 alt=""/>}
                 </div>
             </td>
