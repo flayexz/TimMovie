@@ -79,7 +79,8 @@ type public Program() =
         services.AddSwaggerGen
             (fun config ->
                 config.AddSecurityDefinition("Bearer", SwaggerSettings.GetScheme())
-                config.AddSecurityRequirement(SwaggerSettings.GetSecurityRequirement()))
+                config.AddSecurityRequirement(SwaggerSettings.GetSecurityRequirement())
+                config.SchemaFilter<EnumSchemaFilter>())
         |> ignore
 
         let app = builder.Build()

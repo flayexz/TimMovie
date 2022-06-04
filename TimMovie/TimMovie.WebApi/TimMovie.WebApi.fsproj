@@ -12,6 +12,7 @@
         <Compile Include="Controllers\FilmController.fs" />
         <Compile Include="Configuration\AppMappingProfile.fs" />
         <Compile Include="Configuration\SwaggerSettings.fs" />
+        <Compile Include="Configuration\EnumSchemaFilter.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
@@ -24,6 +25,7 @@
       <PackageReference Include="OpenIddict" Version="3.1.1" />
       <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="3.1.1" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.1" />
     </ItemGroup>
 
     <ItemGroup>
