@@ -29,9 +29,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
-//app.UseHttpsRedirection();
-
 app.UseFileService();
 app.UseStaticFiles();
 
@@ -39,6 +36,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseBannedUserService();
 
 app.UseUserStatusUpdateService();
 app.UseUserStatusDeleteService();
