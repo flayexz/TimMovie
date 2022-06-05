@@ -27,7 +27,7 @@ public class BannedUserMiddleware
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
             var claims = await userManager.GetClaimsAsync(user);
-            var isBanned = claims.First().Value == RoleNames.Banned;
+            var isBanned = claims.Any(c => c.Value == RoleNames.Banned);
             if (isBanned && context.Request.Path.Value != "/Errors/PageForBannedUser")
             {
                 await signInManager.SignOutAsync();
