@@ -22,12 +22,18 @@ public class BannedUserMiddleware
 
     public async Task InvokeAsync(HttpContext context, UserManager<User> userManager, SignInManager<User> signInManager)
     {
-        var isBanned = context.User.HasRoleClaim(RoleNames.Banned);
-        if (isBanned && context.Request.Path.Value != "/Errors/PageForBannedUser")
+        var userId = context.User.GetUserId();
+        if (userId != null)
         {
-            await signInManager.SignOutAsync();
-            context.Response.Redirect("/Errors/PageForBannedUser");
-            return;
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            var claims = await userManager.GetClaimsAsync(user);
+            var isBanned = claims.First().Value == RoleNames.Banned;
+            if (isBanned && context.Request.Path.Value != "/Errors/PageForBannedUser")
+            {
+                await signInManager.SignOutAsync();
+                context.Response.Redirect("/Errors/PageForBannedUser");
+                return;
+            }
         }
         await _next.Invoke(context);
     }
