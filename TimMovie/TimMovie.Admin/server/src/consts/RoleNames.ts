@@ -1,1 +1,1 @@
-﻿export const RoleNames = new Set(["user", "admin", "support", "banned"]);
+﻿export const RoleNames = new Set(["admin", "support", "banned"]);

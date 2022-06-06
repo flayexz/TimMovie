@@ -10,7 +10,7 @@ export class RoleController {
     }
     
     @Get("collection")
-    GetUserRolesAndAllRemaining(): NameDto[]{
+    getAllRoles(): NameDto[]{
         return this.roleService.getAllRoles();
     }
 }
