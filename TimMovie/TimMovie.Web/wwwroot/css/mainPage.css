@@ -77,3 +77,19 @@
   position: relative;
   right: -20%;
 }
+
+@media screen and (max-width: 1000px) {
+  #bannerCarousel .carousel-item h1{
+    font-size: 2.5rem;
+  }
+
+  #bannerCarousel .carousel-item p{
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #bannerCarousel .carousel-item{
+    text-align: center;
+  }
+}
