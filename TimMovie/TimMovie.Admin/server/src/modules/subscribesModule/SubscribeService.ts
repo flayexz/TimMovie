@@ -20,12 +20,8 @@ export class SubscribeService {
     constructor(private readonly filmService: FilmService,
                 private readonly genreService: GenreService){ }
     
-    public async getAllActiveSubscribes(): Promise<NameDto[]>{
-        let allSubscribes = await getRepository(Subscribe).find({
-                where: {
-                    isActive: true
-                }
-            });
+    public async getAllSubscribes(): Promise<NameDto[]>{
+        let allSubscribes = await getRepository(Subscribe).find();
         let subscribesDto = plainToInstance(NameDto, allSubscribes);
         
         console.log(subscribesDto);

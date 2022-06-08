@@ -53,7 +53,8 @@ function AddActorsProducers(props: AddPageProps) {
         let data = generateRequest()
         $api.post(url, data).then(response => {
             if (response.data.success) {
-                alert(`${type} успешно добавлен`)
+                let nameType = type === "producer" ? "Режиссер" : "Актер";
+                alert(`${nameType} успешно добавлен`)
                 resetFields()
                 props.update()
             } else {
@@ -63,7 +64,6 @@ function AddActorsProducers(props: AddPageProps) {
     }
 
     function resetFields() {
-        setType(actorValueName)
         name.resetInput()
         surname.resetInput()
         setPreview(null)

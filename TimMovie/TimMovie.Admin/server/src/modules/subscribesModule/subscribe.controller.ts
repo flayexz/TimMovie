@@ -14,8 +14,8 @@ export class SubscribeController {
     constructor(private readonly subscribeService: SubscribeService) {}
     
     @Get("collection")
-    async getAllActiveSubscribes(): Promise<NameDto[]>{
-        return await this.subscribeService.getAllActiveSubscribes();
+    async getAllSubscribes(): Promise<NameDto[]>{
+        return await this.subscribeService.getAllSubscribes();
     }
     
     @Post("add")
