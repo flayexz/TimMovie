@@ -40,6 +40,47 @@
 
 ## Архитектура
 ![Архитектура](/Docs/architecture.png)
+@startuml
+title TimMovie - Containers
+
+left to right direction
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(Client, "Client", "", $tags="")
+Person(Admin, "Admin", "", $tags="")
+Person(SupportEmployee, "Support Employee", "", $tags="")
+Person(AnyApiUser, "Any Api User", "", $tags="")
+System(Email, "Email", "", $tags="")
+
+System_Boundary("TimMovie_boundary", "TimMovie") {
+  Container(TimMovie.SPAAdmin, "SPA Admin", "React on Type Script", $tags="")
+  Container(TimMovie.WebApiAdmin, "Web Api Admin", "Nest JS on Type Script", $tags="")
+  Container(TimMovie.AuthService, "Auth Service", "ASP Net Core on F#", $tags="")
+  Container(TimMovie.OpenSiteWebApi, "Open Site Web Api", "ASP Net Core on F#", $tags="")
+  Container(TimMovie.Database, "Database", "Postgres", $tags="")
+  Container(TimMovie.WebAppClient, "Web App Client", "ASP Net Core on C#", $tags="")
+}
+
+Rel_D(Admin, TimMovie.SPAAdmin, "", $tags="")
+Rel_D(TimMovie.SPAAdmin, TimMovie.WebApiAdmin, "", $tags="")
+Rel_D(TimMovie.WebApiAdmin, TimMovie.AuthService, "Authentication", $tags="")
+Rel_D(TimMovie.SPAAdmin, TimMovie.AuthService, "Authentication", $tags="")
+Rel_D(TimMovie.WebAppClient, TimMovie.AuthService, "Authentication", $tags="")
+Rel_D(TimMovie.OpenSiteWebApi, TimMovie.AuthService, "Authentication", $tags="")
+Rel_D(AnyApiUser, TimMovie.OpenSiteWebApi, "Getting data through API of site", $tags="")
+Rel_D(TimMovie.WebAppClient, TimMovie.Database, "", $tags="")
+Rel_D(TimMovie.WebApiAdmin, TimMovie.Database, "", $tags="")
+Rel_D(TimMovie.OpenSiteWebApi, TimMovie.Database, "", $tags="")
+Rel_D(TimMovie.WebAppClient, Email, "", $tags="")
+Rel_D(Email, Client, "Sending mail confirmation message", $tags="")
+Rel_D(SupportEmployee, TimMovie.WebAppClient, "", $tags="")
+Rel_D(Client, TimMovie.WebAppClient, "", $tags="")
+
+SHOW_LEGEND()
+@enduml
 
 ## Используемые технологии
 ### Пользовательская часть
