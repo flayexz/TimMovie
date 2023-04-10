@@ -1,4 +1,4 @@
-package com.timmovie.fragments.login.components
+package com.timmovie.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

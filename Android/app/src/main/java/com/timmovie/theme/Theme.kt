@@ -5,11 +5,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
+    primary = Color(0xFFE6013C),
     primaryVariant = Purple700,
-    secondary = Teal200
+    secondary = Color(0xFFE62F3C)
 )
 
 private val LightColorPalette = lightColors(
