@@ -1,32 +1,38 @@
 package com.timmovie.fragments.chat_admin
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.timmovie.R
+import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.timmovie.components.ChatRecord
+import com.timmovie.components.InputText
+import com.timmovie.components.ChatRecordItem
+import com.timmovie.fragments.ChatPageBase
 
-class ChatAdminFragment : Fragment() {
+@Composable
+fun ChatAdminPage(records: MutableList<ChatRecordItem>) {
+    ChatPageBase(records = records)
+}
 
-    companion object {
-        fun newInstance() = ChatAdminFragment()
+@Preview
+@Composable
+fun ChatAdminPagePreview() {
+    val records = remember {
+        mutableStateListOf(ChatRecordItem("Вы", "Дорова епта"),
+        ChatRecordItem("Пахан", "Че надо?")
+        )
     }
-
-    private lateinit var viewModel: ChatAdminViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_chat_admin, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ChatAdminViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
+    ChatAdminPage(records = records)
 }
