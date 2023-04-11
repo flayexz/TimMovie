@@ -24,64 +24,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TimMovieTheme {
-                
-                var login by remember {
-                    mutableStateOf("")
-                }
-                var password by remember {
-                    mutableStateOf("")
-                }
-                var buttonEnabled by remember {
-                    mutableStateOf(false)
-                }
-                LoginPageMain(
-                    login = login,
-                    onLoginChange = {
-                        buttonEnabled = it.isNotEmpty() && password.isNotEmpty()
-                        login = it
-                    },
-                    password = password,
-                    onPasswordChange = {
-                        buttonEnabled = it.isNotEmpty() && login.isNotEmpty()
-                        password = it
-                    },
-                    onButtonClick = {  },
-                    buttonEnabled = buttonEnabled
-                )
+                LoginPage()
             }
         }
     }
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun LoginPageMain(login: String, onLoginChange: (String) -> Unit, password: String, onPasswordChange: (String) -> Unit, onButtonClick: () -> Unit, buttonEnabled: Boolean) {
-    Scaffold(
-        topBar = {
-            TopAppBar { Text("app bar") }
-        }) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxHeight()) {
-            LoginPage(
-                login = login,
-                loginChange = onLoginChange,
-                password = password,
-                passwordChange = onPasswordChange,
-                onButtonClick = onButtonClick,
-                buttonEnabled = buttonEnabled
-            )
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    LoginPageMain(
-        login = "Логин",
-        onLoginChange = {},
-        password = "Пароль",
-        onPasswordChange ={} ,
-        onButtonClick = { /*TODO*/ },
-        buttonEnabled = true
-    )
+    TimMovieTheme {
+        LoginPage()
+    }
 }
