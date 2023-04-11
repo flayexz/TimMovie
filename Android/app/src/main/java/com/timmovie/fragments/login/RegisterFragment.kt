@@ -20,16 +20,14 @@ import com.timmovie.components.InputText
 fun RegisterFragment(login: String, onLoginChange: (String) -> Unit,
                      password: String, onPasswordChange: (String) -> Unit,
                      passwordRepeat: String, onPasswordRepeatChange: (String) -> Unit,
-                     buttonEnabled: Boolean, onButtonClick: () -> Unit) {
+                     buttonEnabled: Boolean, onButtonClick: () -> Unit,
+                     onLoginButtonClick: () -> Unit = {}) {
     val defaultPadding = 5.dp;
-    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable {
-                        Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
-                    })
+                    Text(text = "Вход", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onLoginButtonClick))
                 }
             }
         },
@@ -107,7 +105,8 @@ fun RegisterFragmentPreview() {
         onPasswordChange = {},
         passwordRepeat = "Пароль",
         onPasswordRepeatChange = {},
-        buttonEnabled = true
+        buttonEnabled = true,
+        onButtonClick = {}
     ) {
 
     }

@@ -19,16 +19,14 @@ import com.timmovie.components.InputText
 @Composable
 fun LoginFragment(login: String, loginChange: (String) -> Unit,
                   password: String, passwordChange: (String) -> Unit,
-                  onButtonClick: () -> Unit, buttonEnabled: Boolean) {
+                  onButtonClick: () -> Unit, buttonEnabled: Boolean,
+                    onRegisterButtonClick: () -> Unit = {}) {
     val defaultPadding = 5.dp;
-    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable {
-                        Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
-                    })
+                    Text(text = "Регистрация", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onRegisterButtonClick))
                 }
             }
         },

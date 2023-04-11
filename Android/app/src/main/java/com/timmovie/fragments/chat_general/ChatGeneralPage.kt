@@ -27,7 +27,6 @@ fun ChatGeneralPage(records: MutableList<ChatRecordItem>) {
     ChatPageBase(records = records)
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
 @Composable
 fun ChatGeneralPagePreview() {
@@ -40,8 +39,6 @@ fun ChatGeneralPagePreview() {
         )
     }
 
-    Scaffold() {
-        ChatGeneralPage(records = records)
-    }
+    ChatGeneralPage(records = records)
 }
 
