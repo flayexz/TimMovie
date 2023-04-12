@@ -17,16 +17,17 @@ import androidx.compose.ui.unit.sp
 import com.timmovie.components.InputText
 
 @Composable
-fun LoginFragment(login: String, loginChange: (String) -> Unit,
-                  password: String, passwordChange: (String) -> Unit,
-                  onButtonClick: () -> Unit, buttonEnabled: Boolean,
-                    onRegisterButtonClick: () -> Unit = {}) {
+fun RegisterFragment(login: String, onLoginChange: (String) -> Unit,
+                     password: String, onPasswordChange: (String) -> Unit,
+                     passwordRepeat: String, onPasswordRepeatChange: (String) -> Unit,
+                     buttonEnabled: Boolean, onButtonClick: () -> Unit,
+                     onLoginButtonClick: () -> Unit = {}) {
     val defaultPadding = 5.dp;
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Регистрация", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onRegisterButtonClick))
+                    Text(text = "Вход", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onLoginButtonClick))
                 }
             }
         },
@@ -50,7 +51,7 @@ fun LoginFragment(login: String, loginChange: (String) -> Unit,
                         placeholder = {
                             Text(text = "Логин")
                         },
-                        onValueChange = loginChange,
+                        onValueChange = onLoginChange,
                         modifier = Modifier
                             .padding(bottom = defaultPadding))
 
@@ -62,11 +63,22 @@ fun LoginFragment(login: String, loginChange: (String) -> Unit,
                             Text("Пароль")
                         },
                         visualTransformation = PasswordVisualTransformation(),
-                        onValueChange = passwordChange,
+                        onValueChange = onPasswordChange,
                         modifier = Modifier
                             .padding(bottom = defaultPadding)
                     )
-
+                }
+                Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                    InputText(
+                        text = passwordRepeat,
+                        placeholder = {
+                            Text("Повторите пароль")
+                        },
+                        visualTransformation = PasswordVisualTransformation(),
+                        onValueChange = onPasswordRepeatChange,
+                        modifier = Modifier
+                            .padding(bottom = defaultPadding)
+                    )
                 }
                 Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                     Button(
@@ -74,7 +86,7 @@ fun LoginFragment(login: String, loginChange: (String) -> Unit,
                         enabled = buttonEnabled,
                         modifier = Modifier
                     ) {
-                        Text(text = "Войти")
+                        Text(text = "Зарегистрироваться")
                     }
 
                 }
@@ -85,13 +97,17 @@ fun LoginFragment(login: String, loginChange: (String) -> Unit,
 
 @Preview
 @Composable
-fun LoginFragmentPreview() {
-    LoginFragment(
+fun RegisterFragmentPreview() {
+    RegisterFragment(
         login = "Логин",
-        loginChange = {},
+        onLoginChange = {},
         password = "Пароль",
-        passwordChange = {},
-        onButtonClick = { /*TODO*/ },
-        buttonEnabled = true
-    )
+        onPasswordChange = {},
+        passwordRepeat = "Пароль",
+        onPasswordRepeatChange = {},
+        buttonEnabled = true,
+        onButtonClick = {}
+    ) {
+
+    }
 }
