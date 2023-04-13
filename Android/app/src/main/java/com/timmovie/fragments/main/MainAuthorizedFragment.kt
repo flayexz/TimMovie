@@ -1,29 +1,32 @@
-package com.timmovie.fragments.film
+package com.timmovie.fragments.main
 
-import androidx.compose.foundation.background
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Red
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.timmovie.components.FilmCard
 
 @Composable
-fun FilmFragment(onMainButtonClick: () -> Unit = {}) {
+fun MainAuthorizedFragment() {
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "На главную", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onMainButtonClick))
+                    Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable {
+                        Toast.makeText(context, "Вы вышли", Toast.LENGTH_SHORT).show()
+                    })
                 }
             }
         },
@@ -41,16 +44,23 @@ fun FilmFragment(onMainButtonClick: () -> Unit = {}) {
                     .weight(1f), 
                 contentAlignment = Alignment.Center) 
             {
-                Column(
-                    horizontalAlignment = CenterHorizontally, 
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 16.dp, bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp))
                 {
-                    Box(
-                        modifier = Modifier
-                            .size(width = 350.dp, height = 250.dp)
-                            .background(color = Red, shape = RoundedCornerShape(6.dp)))
-                    Text(text = "Не рикролл")
-                }
+                    items(9) { index ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            FilmCard(name = "Не рикролл $index")
+                            FilmCard(name = "Не рикролл ${index + 1}")
+                            FilmCard(name = "Не рикролл ${index + 2}")
+                        }
+                    }
+                }            
             }
             Box() {
                 Button(
@@ -73,6 +83,6 @@ fun FilmFragment(onMainButtonClick: () -> Unit = {}) {
 
 @Preview
 @Composable
-fun FilmFragmentPreview() {
-    FilmFragment()
+fun MainAuthorizedFragmentPreview() {
+    MainAuthorizedFragment()
 }
