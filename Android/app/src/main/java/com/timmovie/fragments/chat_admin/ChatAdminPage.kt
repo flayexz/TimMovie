@@ -18,5 +18,6 @@ fun ChatAdminPagePreview() {
         ChatRecordItem("Пахан", "Че надо?")
         )
     }
+
     ChatAdminPage(records = records)
 }
