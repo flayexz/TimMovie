@@ -22,13 +22,18 @@ import com.timmovie.components.InputText
 
 
 @Composable
-fun ChatPageBase(records: MutableList<ChatRecordItem>) {
-    val context = LocalContext.current
+fun ChatPageBase(records: MutableList<ChatRecordItem>,
+                 onExitClick: () -> Unit = {},
+                 anotherPageName: String = "",
+                 onAnotherPageClick: () -> Unit = {}) {
     Scaffold(topBar = {
         TopAppBar(modifier = Modifier.fillMaxWidth()) {
-            Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+                Text(text = anotherPageName, fontSize = 16.sp, modifier = Modifier.clickable {
+                    onAnotherPageClick()
+                })
                 Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable {
-                    Toast.makeText(context, "text", Toast.LENGTH_SHORT).show()
+                    onExitClick()
                 })
             }
         }
@@ -88,5 +93,5 @@ fun ChatPageBasePreview() {
             ChatRecordItem("Это", "ДДААВАЫАЫВАВЫА")
         )
     }
-    ChatPageBase(records = records)
+    ChatPageBase(records = records, onExitClick = {}, anotherPageName = "Другая страница", onAnotherPageClick = {})
 }

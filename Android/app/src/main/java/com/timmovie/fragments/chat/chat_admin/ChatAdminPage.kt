@@ -4,15 +4,31 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.fragments.chat.ChatPageBase
+import com.timmovie.infrastructure.AppState
 
 @Composable
-fun ChatAdminPage(viewModel: ChatAdminViewModel) {
-    ChatAdminPageInternal(records = viewModel.records)
+fun ChatAdminPage(viewModel: ChatAdminViewModel, onToGeneralChatClick: () -> Unit) {
+    ChatAdminPageInternal(
+        records = viewModel.records,
+        onExitClick =  {
+            viewModel.machine.currentState.value = AppState.Login
+        },
+        onAnotherPageClick = onToGeneralChatClick
+    )
 }
 
 @Composable
-fun ChatAdminPageInternal(records: MutableList<ChatRecordItem>) {
-    ChatPageBase(records = records)
+fun ChatAdminPageInternal(
+    records: MutableList<ChatRecordItem>,
+    onAnotherPageClick: () -> Unit,
+    onExitClick: () -> Unit
+) {
+    ChatPageBase(
+        records = records,
+        anotherPageName = "К пацанам",
+        onAnotherPageClick = onAnotherPageClick,
+        onExitClick = onExitClick
+    )
 }
 @Preview
 @Composable
@@ -23,5 +39,5 @@ fun ChatAdminPagePreview() {
             ChatRecordItem("Пахан", "Че надо?"),
         )
     }
-    ChatAdminPageInternal(records = records)
+    ChatAdminPageInternal(records = records, {}, {})
 }

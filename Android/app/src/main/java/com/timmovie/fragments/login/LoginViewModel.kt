@@ -20,7 +20,7 @@ class LoginViewModel(private val loginService: ILoginService, private val machin
         viewModelScope.launch {
             val success = loginService.login(login, password)
             if (success) {
-                machine.currentState.value = AppState.ChatGeneral
+                machine.currentState.value = AppState.Chat
             }
         }
     }
@@ -32,7 +32,7 @@ class LoginViewModel(private val loginService: ILoginService, private val machin
             }
             val success = loginService.register(login, password)
             if (success) {
-                machine.currentState.value = AppState.ChatGeneral
+                machine.currentState.value = AppState.Chat
             }
         }
     }

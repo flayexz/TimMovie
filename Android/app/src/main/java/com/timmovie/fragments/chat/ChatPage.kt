@@ -17,10 +17,20 @@ fun ChatPage(viewModel: ChatViewModel) {
     val nav = rememberNavController()
     NavHost(navController = nav, startDestination = chatGeneralPage) {
         composable(chatGeneralPage) {
-            ChatGeneralPage(ChatGeneralViewModel(viewModel.machine))
+            ChatGeneralPage(
+                ChatGeneralViewModel(viewModel.machine),
+                onToGeneralPageClick = {
+                    nav.navigate(chatAdminPage)
+                }
+            )
         }
         composable(chatAdminPage) {
-            ChatAdminPage(ChatAdminViewModel(viewModel.machine))
+            ChatAdminPage(
+                ChatAdminViewModel(viewModel.machine),
+                onToGeneralChatClick = {
+                    nav.navigate(chatGeneralPage)
+                }
+            )
         }
     }
 }

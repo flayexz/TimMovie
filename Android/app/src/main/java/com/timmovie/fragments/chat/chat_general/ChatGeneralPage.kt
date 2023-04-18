@@ -5,15 +5,31 @@ import androidx.compose.ui.tooling.preview.Preview
 
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.fragments.chat.ChatPageBase
+import com.timmovie.infrastructure.AppState
 
 @Composable
-fun ChatGeneralPage(viewModel: ChatGeneralViewModel) {
-    ChatGeneralPageInternal(records = viewModel.records)
+fun ChatGeneralPage(viewModel: ChatGeneralViewModel, onToGeneralPageClick: () -> Unit) {
+    ChatGeneralPageInternal(
+        records = viewModel.records,
+        onAnotherPageClick =  onToGeneralPageClick,
+        onExitClick =  {
+            viewModel.machine.currentState.value = AppState.Login
+        }
+    )
 }
 
 @Composable
-fun ChatGeneralPageInternal(records: MutableList<ChatRecordItem>) {
-    ChatPageBase(records = records)
+fun ChatGeneralPageInternal(
+    records: MutableList<ChatRecordItem>,
+    onAnotherPageClick: () -> Unit,
+    onExitClick: () -> Unit
+) {
+    ChatPageBase(
+        records = records,
+        onAnotherPageClick = onAnotherPageClick,
+        anotherPageName = "К пахану",
+        onExitClick = onExitClick
+    )
 }
 
 @Preview
@@ -28,6 +44,6 @@ fun ChatGeneralPagePreview() {
         )
     }
 
-    ChatGeneralPageInternal(records = records)
+    ChatGeneralPageInternal(records = records, {}, {})
 }
 
