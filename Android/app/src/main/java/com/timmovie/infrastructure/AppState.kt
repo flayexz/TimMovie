@@ -2,8 +2,7 @@ package com.timmovie.infrastructure
 
 enum class AppState {
     Login,
-    ChatGeneral,
-    ChatAdmin,
+    Chat,
     AllFilms,
     ConcreteFilm
 }

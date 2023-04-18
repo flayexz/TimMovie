@@ -1,4 +1,4 @@
-package com.timmovie.fragments
+package com.timmovie.fragments.chat
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable

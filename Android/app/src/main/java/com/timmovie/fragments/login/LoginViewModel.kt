@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 
 class LoginViewModel(private val loginService: ILoginService, private val machine: AppStateMachine) : ViewModel() {
-    var isLogin = MutableLiveData(false)
     var login by mutableStateOf("")
     var password by mutableStateOf("")
     var passwordRepeat by mutableStateOf("")

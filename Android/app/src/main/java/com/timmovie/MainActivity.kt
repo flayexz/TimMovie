@@ -12,8 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.core.login.NullLoginService
 import com.timmovie.components.ChatRecordItem
-import com.timmovie.fragments.chat_admin.ChatAdminPage
-import com.timmovie.fragments.chat_general.ChatGeneralPage
+import com.timmovie.fragments.chat.ChatPage
+import com.timmovie.fragments.chat.ChatViewModel
+import com.timmovie.fragments.chat.chat_admin.ChatAdminPage
+import com.timmovie.fragments.chat.chat_general.ChatGeneralPage
 import com.timmovie.fragments.login.LoginPage
 import com.timmovie.fragments.login.LoginViewModel
 import com.timmovie.infrastructure.AppState
@@ -33,25 +35,15 @@ class MainActivity : ComponentActivity() {
                     composable(AppState.Login.name) {
                         LoginPage(LoginViewModel(NullLoginService(), machine))
                     }
-                    composable(AppState.ChatGeneral.name) {
-                        val records = remember {
-                            mutableStateListOf<ChatRecordItem>()
-                        }
-                        ChatGeneralPage(records = records)
-                    }
-                    composable(AppState.ChatAdmin.name) {
-                        val records = remember {
-                            mutableStateListOf<ChatRecordItem>()
-                        }
-                        ChatAdminPage(records = records)
+                    composable(AppState.Chat.name) {
+                        ChatPage(ChatViewModel(machine = machine))
                     }
                 }
             }
             machine.currentState.observe(this) {
                 when (it) {
                     AppState.Login -> nav.navigate(AppState.Login.name)
-                    AppState.ChatGeneral -> nav.navigate(AppState.ChatGeneral.name)
-                    AppState.ChatAdmin -> nav.navigate(AppState.ChatAdmin.name)
+                    AppState.Chat -> nav.navigate(AppState.Chat.name)
                     AppState.AllFilms -> TODO()
                     AppState.ConcreteFilm -> TODO()
                 }
