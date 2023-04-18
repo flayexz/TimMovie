@@ -1,6 +1,6 @@
 package com.example.core.login
 
-import com.domain.ILoginService
+import com.domain.login.ILoginService
 import kotlinx.coroutines.delay
 
 class NullLoginService: ILoginService {

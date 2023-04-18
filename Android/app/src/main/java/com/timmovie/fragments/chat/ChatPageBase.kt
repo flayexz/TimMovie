@@ -25,7 +25,10 @@ import com.timmovie.components.InputText
 fun ChatPageBase(records: MutableList<ChatRecordItem>,
                  onExitClick: () -> Unit = {},
                  anotherPageName: String = "",
-                 onAnotherPageClick: () -> Unit = {}) {
+                 onAnotherPageClick: () -> Unit = {},
+                 inputMessage: String = "",
+                 onInputMessageChange: (String) -> Unit = {},
+                 onMessageSendClick: () -> Unit = {}) {
     Scaffold(topBar = {
         TopAppBar(modifier = Modifier.fillMaxWidth()) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
@@ -39,9 +42,6 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
         }
     }, bottomBar = {}) {
         it.calculateTopPadding()
-        var inputMessage by remember {
-            mutableStateOf("")
-        }
         Column(modifier = Modifier.fillMaxHeight().padding(5.dp)) {
             LazyColumn(modifier = Modifier
                 .weight(1f)) {
@@ -49,12 +49,10 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
                     ChatRecord(username = it.username, content = it.content)
                 }
             }
-            Box() {
+            Box {
                 InputText(
                     text = inputMessage,
-                    onValueChange = {
-                        inputMessage = it
-                    },
+                    onValueChange = onInputMessageChange,
                     placeholder = {
                         Text("Введите сообщение")
                     },
@@ -66,10 +64,7 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
-                        onClick = {
-                            records.add(ChatRecordItem("asdfa", "asdfsdf"))
-                            inputMessage = ""
-                        },
+                        onClick = onMessageSendClick,
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 5.dp)) {

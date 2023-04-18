@@ -13,7 +13,14 @@ fun ChatAdminPage(viewModel: ChatAdminViewModel, onToGeneralChatClick: () -> Uni
         onExitClick =  {
             viewModel.machine.currentState.value = AppState.Login
         },
-        onAnotherPageClick = onToGeneralChatClick
+        onAnotherPageClick = onToGeneralChatClick,
+        message = viewModel.message,
+        onMessageButtonClick = {
+            viewModel.sendMessage()
+        },
+        onMessageChange = {
+            viewModel.message = it
+        }
     )
 }
 
@@ -21,13 +28,19 @@ fun ChatAdminPage(viewModel: ChatAdminViewModel, onToGeneralChatClick: () -> Uni
 fun ChatAdminPageInternal(
     records: MutableList<ChatRecordItem>,
     onAnotherPageClick: () -> Unit,
-    onExitClick: () -> Unit
+    onExitClick: () -> Unit,
+    message: String,
+    onMessageButtonClick: () -> Unit,
+    onMessageChange: (String) -> Unit
 ) {
     ChatPageBase(
         records = records,
         anotherPageName = "К пацанам",
         onAnotherPageClick = onAnotherPageClick,
-        onExitClick = onExitClick
+        onExitClick = onExitClick,
+        inputMessage = message,
+        onMessageSendClick = onMessageButtonClick,
+        onInputMessageChange = onMessageChange
     )
 }
 @Preview
@@ -39,5 +52,5 @@ fun ChatAdminPagePreview() {
             ChatRecordItem("Пахан", "Че надо?"),
         )
     }
-    ChatAdminPageInternal(records = records, {}, {})
+    ChatAdminPageInternal(records = records, {}, {}, "", {}, {})
 }

@@ -1,4 +1,4 @@
-package com.domain
+package com.domain.login
 
 interface ILoginService {
     suspend fun register(username: String, password: String): Boolean

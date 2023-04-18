@@ -3,10 +3,9 @@ package com.timmovie.fragments.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.domain.ILoginService
+import com.domain.login.ILoginService
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
 import kotlinx.coroutines.launch

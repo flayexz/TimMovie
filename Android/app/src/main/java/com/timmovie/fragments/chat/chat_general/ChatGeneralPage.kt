@@ -14,7 +14,14 @@ fun ChatGeneralPage(viewModel: ChatGeneralViewModel, onToGeneralPageClick: () ->
         onAnotherPageClick =  onToGeneralPageClick,
         onExitClick =  {
             viewModel.machine.currentState.value = AppState.Login
-        }
+        },
+        onMessageChange = {
+            viewModel.message = it
+        },
+        onMessageButtonClick = {
+            viewModel.sendMessage()
+        },
+        message = viewModel.message
     )
 }
 
@@ -22,13 +29,19 @@ fun ChatGeneralPage(viewModel: ChatGeneralViewModel, onToGeneralPageClick: () ->
 fun ChatGeneralPageInternal(
     records: MutableList<ChatRecordItem>,
     onAnotherPageClick: () -> Unit,
-    onExitClick: () -> Unit
+    onExitClick: () -> Unit,
+    message: String,
+    onMessageButtonClick: () -> Unit,
+    onMessageChange: (String) -> Unit
 ) {
     ChatPageBase(
         records = records,
         onAnotherPageClick = onAnotherPageClick,
         anotherPageName = "К пахану",
-        onExitClick = onExitClick
+        onExitClick = onExitClick,
+        inputMessage = message,
+        onInputMessageChange = onMessageChange,
+        onMessageSendClick = onMessageButtonClick
     )
 }
 
@@ -44,6 +57,13 @@ fun ChatGeneralPagePreview() {
         )
     }
 
-    ChatGeneralPageInternal(records = records, {}, {})
+    ChatGeneralPageInternal(
+        records = records,
+        onExitClick =  {},
+        onAnotherPageClick = {},
+        message = "",
+        onMessageButtonClick = {},
+        onMessageChange = {}
+    )
 }
 
