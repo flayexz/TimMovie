@@ -1,7 +1,11 @@
 package com.timmovie.infrastructure
 
 import androidx.lifecycle.MutableLiveData
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AppStateMachine {
+
+@Singleton
+class AppStateMachine @Inject constructor() {
     val currentState = MutableLiveData<AppState>()
 }

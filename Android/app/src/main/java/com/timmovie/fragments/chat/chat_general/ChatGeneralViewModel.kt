@@ -11,9 +11,12 @@ import com.domain.chat.ChatMessage
 import com.domain.chat.IGeneralChatService
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.infrastructure.AppStateMachine
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatGeneralViewModel(val machine: AppStateMachine, val service: IGeneralChatService): ViewModel() {
+@HiltViewModel
+class ChatGeneralViewModel @Inject constructor(val machine: AppStateMachine, val service: IGeneralChatService): ViewModel() {
     private val onMessageReceivedHandler: (ChatMessage) -> Unit = {
         records.add(ChatRecordItem(it.username, it.message))
     }

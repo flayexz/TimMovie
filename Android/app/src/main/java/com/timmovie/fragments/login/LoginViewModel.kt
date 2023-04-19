@@ -8,10 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.domain.login.ILoginService
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class LoginViewModel(private val loginService: ILoginService, private val machine: AppStateMachine) : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val loginService: ILoginService,
+                                         private val machine: AppStateMachine) : ViewModel() {
     var login by mutableStateOf("")
     var password by mutableStateOf("")
     var passwordRepeat by mutableStateOf("")
