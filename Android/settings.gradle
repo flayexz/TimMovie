@@ -16,3 +16,4 @@ rootProject.name = "TimMovie"
 include ':app'
 include ':domain'
 include ':core'
+include ':protos'
