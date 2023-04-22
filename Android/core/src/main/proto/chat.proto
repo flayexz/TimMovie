@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import 'google/protobuf/empty.proto';
+
+message SendMessageRequest {
+  string message = 1;
+}
+
+message SendMessageResponse {  }
+
+message GetMessagesStreamResponse {
+  string message = 1;
+  string username = 2;
+}
+
+service GeneralChatService {
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+  rpc GetMessagesStream(google.protobuf.Empty) returns (stream GetMessagesStreamResponse);
+}
+
+service AdminChatService {
+  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
+  rpc GetMessagesStream(google.protobuf.Empty) returns (stream GetMessagesStreamResponse);
+}

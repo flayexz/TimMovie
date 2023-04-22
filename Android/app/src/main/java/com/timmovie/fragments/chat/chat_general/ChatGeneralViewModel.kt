@@ -41,5 +41,4 @@ class ChatGeneralViewModel @Inject constructor(val machine: AppStateMachine, val
             message = ""
         }
     }
-
 }
