@@ -1,7 +1,8 @@
 package com.domain.chat
 
+import kotlinx.coroutines.flow.Flow
+
 interface IAdminChatService {
     suspend fun sendMessageToAdmin(message: String)
-    fun registerOnMessageReceivedHandler(handler: (ChatMessage) -> Unit)
-    fun unregisterOnMessageReceivedHandler(handler: (ChatMessage) -> Unit)
+    suspend fun receiveMessages(): Flow<ChatMessage>
 }

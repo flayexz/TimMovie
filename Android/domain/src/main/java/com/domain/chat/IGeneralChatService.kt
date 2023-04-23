@@ -1,7 +1,9 @@
 package com.domain.chat
 
+import kotlinx.coroutines.flow.Flow
+
+
 interface IGeneralChatService {
     suspend fun sendMessage(message: String)
-    fun registerOnMessageReceivedHandler(handler: (ChatMessage) -> Unit)
-    fun unregisterOnMessageReceivedHandler(handler: (ChatMessage) -> Unit)
+    suspend fun receiveMessages(): Flow<ChatMessage>
 }
