@@ -9,6 +9,7 @@ import com.google.protobuf.Empty
 import io.grpc.Channel
 import io.grpc.ManagedChannelBuilder
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.transform
 
 class GrpcAdminChatService(channel: Channel): IAdminChatService {
