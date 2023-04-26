@@ -1,62 +1,46 @@
 package com.timmovie.fragments.login
 
-import android.widget.Toast
-import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun LoginPage() {
+fun LoginPage(viewModel: LoginViewModel) {
     val nav = rememberNavController()
-    val context = LocalContext.current
     NavHost(navController = nav, startDestination = "login") {
         composable("login") {
-            var login by remember {
-                mutableStateOf("")
-            }
-            var password by remember {
-                mutableStateOf("")
-            }
             LoginFragment(
-                login = login,
+                login = viewModel.login,
                 loginChange = {
-                    login = it
+                    viewModel.login = it
                 },
-                password = password,
+                password = viewModel.password,
                 passwordChange = {
-                    password = it
+                    viewModel.password = it
                 },
                 onButtonClick = {
-                    Toast.makeText(context, "Пока нет логики. Сасать", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "Пока нет логики. Сасать", Toast.LENGTH_SHORT).show()
+                    viewModel.login()
                 },
-                buttonEnabled = login.isNotEmpty() && password.isNotEmpty(),
+                buttonEnabled = viewModel.password.isNotEmpty() && viewModel.login.isNotEmpty(),
                 onRegisterButtonClick = {
                     nav.navigate("register")
                 }
             )
         }
         composable("register") {
-            var login by remember {
-                mutableStateOf("")
-            }
-            var password by remember {
-                mutableStateOf("")
-            }
-            var passwordRepeat by remember {
-                mutableStateOf("")
-            }
             RegisterFragment(
-                login = login,
-                onLoginChange = {login = it},
-                password = password,
-                onPasswordChange = {password = it},
-                passwordRepeat = passwordRepeat,
-                onPasswordRepeatChange = {passwordRepeat = it},
-                buttonEnabled = login.isNotEmpty() && password.isNotEmpty() && password == passwordRepeat,
+                login = viewModel.login,
+                onLoginChange = {viewModel.login = it},
+                password = viewModel.password,
+                onPasswordChange = {viewModel.password = it},
+                passwordRepeat = viewModel.passwordRepeat,
+                onPasswordRepeatChange = {viewModel.passwordRepeat = it},
+                buttonEnabled = viewModel.login.isNotEmpty() && viewModel.password.isNotEmpty() && viewModel.password == viewModel.passwordRepeat,
                 onButtonClick = {
-                    Toast.makeText(context, "Пока нет логики", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(context, "Пока нет логики", Toast.LENGTH_SHORT).show()
+                    viewModel.register()
                 },
                 onLoginButtonClick = {
                     nav.navigate("login")
