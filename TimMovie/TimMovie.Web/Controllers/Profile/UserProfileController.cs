@@ -2,15 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TimMovie.Core.DTO.Subscribes;
 using TimMovie.Core.DTO.Users;
 using TimMovie.Core.Entities;
-using TimMovie.Core.Entities.Enums;
 using TimMovie.Core.Interfaces;
 using TimMovie.Core.Services.Countries;
 using TimMovie.Core.Services.Films;
-using TimMovie.Core.Services.Subscribes;
 using TimMovie.Core.Services.SupportedServices;
 using TimMovie.Core.ValidatorServices;
 using TimMovie.SharedKernel.Classes;
@@ -19,6 +15,7 @@ using TimMovie.Web.Extensions;
 using TimMovie.Web.ViewModels.FilmCard;
 using TimMovie.Web.ViewModels.User;
 using TimMovie.Web.ViewModels.UserSubscribes;
+using Path = System.IO.Path;
 
 namespace TimMovie.Web.Controllers.Profile;
 
