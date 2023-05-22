@@ -20,16 +20,19 @@ public class AccountController : Controller
     private readonly IMapper mapper;
     private readonly IUserService userService;
     private readonly BannerService bannerService;
+    private readonly SignInManager<User> _signInManager;
 
     public AccountController(UserManager<User> userManager,
         IMapper mapper,
         ILogger<AccountController> logger,
-        IUserService userService)
+        IUserService userService,
+        SignInManager<User> signInManager)
     {
         this.userManager = userManager;
         this.mapper = mapper;
         this.logger = logger;
         this.userService = userService;
+        _signInManager = signInManager;
     }
 
     [HttpGet]
@@ -54,6 +57,9 @@ public class AccountController : Controller
             AddErrors(registerUserResult);
             return View(model);
         }
+
+        var user = await userManager.FindByNameAsync(userDto.UserName);
+        await _signInManager.SignInAsync(user, true);
 
         return Redirect("http://localhost:5011");
     }
