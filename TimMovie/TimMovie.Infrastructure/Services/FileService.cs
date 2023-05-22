@@ -10,6 +10,7 @@ public class FileService: IFileService
     private static readonly Uri PathForAddUserPhoto = new("file-api/image/user-photo", UriKind.Relative);
     private static readonly Regex RequestOnFileService = new("/file-api/");
     private static readonly Regex RequestOnFileServiceV2 = new("/content/");
+    private static readonly Regex RequestOnFileServiceUserV2 = new("/user_photo/");
     
     private readonly Uri _absoluteUriForAddUserPhoto;
     private readonly Uri _serviceUri;
@@ -51,6 +52,8 @@ public class FileService: IFileService
 
     public bool IsRequestToFileServer(string path)
     {
-        return RequestOnFileService.IsMatch(path) || RequestOnFileServiceV2.IsMatch(path);
+        return RequestOnFileService.IsMatch(path) 
+               || RequestOnFileServiceV2.IsMatch(path) 
+               || RequestOnFileServiceUserV2.IsMatch(path);
     }
 }

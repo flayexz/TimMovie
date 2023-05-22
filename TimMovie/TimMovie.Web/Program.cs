@@ -39,7 +39,7 @@ app.UseAuthorization();
 
 app.UseBannedUserService();
 
-app.UseUserStatusUpdateService();
+//app.UseUserStatusUpdateService();
 
 app.MapControllerRoute(
     name: "default",
