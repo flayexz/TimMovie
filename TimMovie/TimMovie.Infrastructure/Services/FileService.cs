@@ -37,10 +37,7 @@ public class FileService: IFileService
 
     public async Task<string> GetLinkToDefaultUserPhoto()
     {
-        using var httpClient = new HttpClient();
-        var uri = new Uri(_serviceUri, "file-api/image/user-photo/default");
-        
-        return await httpClient.GetStringAsync(uri);
+        return "/img/user_photo/default.jpg";
     }
     
     public string? GetUriToFileServer(string? relativePath)

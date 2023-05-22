@@ -55,7 +55,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        return View();
+        return Redirect("http://localhost:5011");
     }
 
     [HttpPost]
