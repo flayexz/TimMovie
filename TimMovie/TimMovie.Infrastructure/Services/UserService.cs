@@ -22,7 +22,7 @@ public class UserService : IUserService
     private readonly SignInManager<User> signInManager;
     private readonly UserManager<User> userManager;
     private readonly IMapper mapper;
-    private readonly IMailService mailService;
+    //private readonly IMailService mailService;
     private readonly IUserMessageService userMessageService;
     private readonly IIpService ipService;
     private readonly CountryService countryService;
@@ -31,13 +31,13 @@ public class UserService : IUserService
     private readonly IFileService _fileService;
 
     public UserService(SignInManager<User> signInManager, UserManager<User> userManager, IMapper mapper,
-        IMailService mailService, IUserMessageService userMessageService, IIpService ipService,
+        IUserMessageService userMessageService, IIpService ipService,
         CountryService countryService, IVkService vkService, FilmService filmService, IFileService fileService)
     {
         this.signInManager = signInManager;
         this.userManager = userManager;
         this.mapper = mapper;
-        this.mailService = mailService;
+        //this.mailService = mailService;
         this.userMessageService = userMessageService;
         this.ipService = ipService;
         this.countryService = countryService;
@@ -53,8 +53,6 @@ public class UserService : IUserService
         user.DisplayName = userRegistrationDto.UserName;
         user.BirthDate = DateOnly.FromDateTime(DateTime.Today);
         user.PathToPhoto = await _fileService.GetLinkToDefaultUserPhoto();
-        if (userRegistrationDto.Ip != null)
-            await AddCountryByIpAsync(user, userRegistrationDto.Ip);
         var registerResult = await userManager.CreateAsync(user, userRegistrationDto.Password);
         if (registerResult.Succeeded)
         {
@@ -68,17 +66,17 @@ public class UserService : IUserService
 
     public async Task<Result> SendConfirmEmailAsync(string email, string urlToAction)
     {
-        var userFromDb = await userManager.FindByEmailAsync(email);
-        if (userFromDb is null)
-            return Result.Fail("can`t find user by userName while sending email");
-        if (userFromDb.EmailConfirmed)
-            return Result.Fail("mail has already been confirmed");
-
-        var token = await userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
-        var confirmUrl = CreateUrlToConfirmEmail(urlToAction, userFromDb, token);
-        var msg = userMessageService.GenerateConfirmMessage(userFromDb.DisplayName, userFromDb.Email, confirmUrl);
-        var result = await mailService.SendMessageAsync(msg);
-        return result;
+        // var userFromDb = await userManager.FindByEmailAsync(email);
+        // if (userFromDb is null)
+        //     return Result.Fail("can`t find user by userName while sending email");
+        // if (userFromDb.EmailConfirmed)
+        //     return Result.Fail("mail has already been confirmed");
+        //
+        // var token = await userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
+        // var confirmUrl = CreateUrlToConfirmEmail(urlToAction, userFromDb, token);
+        // var msg = userMessageService.GenerateConfirmMessage(userFromDb.DisplayName, userFromDb.Email, confirmUrl);
+        // var result = await mailService.SendMessageAsync(msg);
+        return Result.Ok();
     }
 
     public async Task<Result> ConfirmEmailAsync(string userId, string code)

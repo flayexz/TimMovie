@@ -18,7 +18,7 @@ public class InfrastructureModule: Module
     protected override void Load(ContainerBuilder builder)
     {
         builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
-        builder.RegisterType<MailKitService>().As<IMailService>().InstancePerLifetimeScope();
+        //builder.RegisterType<MailKitService>().As<IMailService>().InstancePerLifetimeScope();
         builder.RegisterType<IpService>().As<IIpService>().InstancePerDependency();
         builder.RegisterType<UserMessageService>().As<IUserMessageService>().InstancePerLifetimeScope();
         builder.RegisterType<SearchEntityService>().As<ISearchEntityService>().InstancePerLifetimeScope();

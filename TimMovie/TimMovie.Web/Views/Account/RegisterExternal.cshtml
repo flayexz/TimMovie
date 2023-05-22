@@ -14,7 +14,7 @@
 <div class="container registration-container">
     <h1 style="color: white">Ваша почта</h1>
     <br>
-    <form method="post" asp-controller="Account" asp-action="RegisterExternal">
+    <form method="post" asp-controller="Account" asp-action="">
         <input hidden asp-for="ReturnUrl"/>
         <span asp-validation-for="Email"></span>
         <div class="form-field">

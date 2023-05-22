@@ -24,8 +24,8 @@ public static class InfrastructureStartupSetup
                 opt.Password.RequireDigit = true;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequiredLength = 8;
-                opt.User.RequireUniqueEmail = true;
-                opt.SignIn.RequireConfirmedEmail = true;
+                opt.User.RequireUniqueEmail = false;
+                opt.SignIn.RequireConfirmedEmail = false;
             })
             .AddErrorDescriber<RussianErrorDescriber>()
             .AddSignInManager()
