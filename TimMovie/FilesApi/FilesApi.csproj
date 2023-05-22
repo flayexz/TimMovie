@@ -4633,4 +4633,9 @@
       <Content Include="FileContent\user_photo\wsxy5qfs.jpg" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\img\content\actors\default.jpg" />
+      <None Include="wwwroot\img\content\banners\pmqxriu0.jpg" />
+    </ItemGroup>
+
 </Project>
