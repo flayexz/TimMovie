@@ -39,8 +39,7 @@ app.UseAuthorization();
 
 app.UseBannedUserService();
 
-app.UseUserStatusUpdateService();
-app.UseUserStatusDeleteService();
+//app.UseUserStatusUpdateService();
 
 app.MapControllerRoute(
     name: "default",
@@ -50,5 +49,6 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<ChatHub>("/chat");
 });
+app.MapGraphQL();
 
 app.Run();

@@ -45,6 +45,8 @@ public class FilmService
         _subscribeService = subscribeService;
     }
 
+    public async Task<List<Film>> GetAllAsync() => await _filmRepository.Query.ToListAsync();
+
     private bool TryGetFirstOrDefaultFilm(Guid filmId, out Film? dbFilm)
     {
         dbFilm = _filmRepository.Query.FirstOrDefault(new EntityByIdSpec<Film>(filmId));

@@ -5,6 +5,7 @@ using TimMovie.Core;
 using TimMovie.Core.Classes;
 using TimMovie.Infrastructure;
 using TimMovie.Web.AuthorizationHandlers.AgePolicy;
+using TimMovie.Web.GraphQL.Query;
 
 namespace TimMovie.Web.Configuration;
 
@@ -38,6 +39,8 @@ public static class ServicesConfiguration
 
         services.AddControllersWithViews();
 
+        AddGraphQL(services);
+
         services.AddAutoMapper(
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
@@ -45,5 +48,12 @@ public static class ServicesConfiguration
         services.AddTransient(typeof(Lazy<>), typeof(Lazier<>));
 
         return services;
+    }
+
+    private static void AddGraphQL(IServiceCollection services)
+    {
+        services
+            .AddGraphQLServer()
+            .AddQueryType<RootQuery>();
     }
 }
