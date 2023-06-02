@@ -54,6 +54,7 @@ public static class ServicesConfiguration
     {
         services
             .AddGraphQLServer()
-            .AddQueryType<RootQuery>();
+            .AddQueryType<RootQuery>()
+            .AddFiltering();
     }
 }
