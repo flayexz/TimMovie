@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=TimMovie
+    ports:
+      - 54320:5432
+    volumes:
+      - ./PostgreSQL___TimMovie_62_109_29_6-2022_05_11_13_29_54-dump.sql:/docker-entrypoint-initdb.d/dump.sql
+  
+  backend:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+    depends_on:
+      - postgres
+      - files-api
+
+  files-api:
+    restart: always
+    build:
+      dockerfile: Dockerfile-FilesApi
+    ports:
+      - '8081:80'
+    depends_on:
+      - postgres
