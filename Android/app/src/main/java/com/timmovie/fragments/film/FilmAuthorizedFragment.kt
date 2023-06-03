@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FilmAuthorizedFragment(onMainButtonClick: () -> Unit = {}) {
+fun FilmAuthorizedFragment(filmId: String, filmTitle: String, url: String, onButtonClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "На главную", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onMainButtonClick))
+                    Text(text = "На главную", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onButtonClick))
                 }
             }
         },
@@ -49,15 +49,7 @@ fun FilmAuthorizedFragment(onMainButtonClick: () -> Unit = {}) {
                         modifier = Modifier
                             .size(width = 350.dp, height = 250.dp)
                             .background(color = Red, shape = RoundedCornerShape(6.dp)))
-                    Text(text = "Не рикролл")
-                }
-            }
-            Box() {
-                Button(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()) 
-                {
-                    Text(text = "В чат")
+                    Text(text = filmId)
                 }
             }
             Box() {
@@ -69,10 +61,4 @@ fun FilmAuthorizedFragment(onMainButtonClick: () -> Unit = {}) {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun FilmAuthorizedFragmentPreview() {
-    FilmAuthorizedFragment()
 }

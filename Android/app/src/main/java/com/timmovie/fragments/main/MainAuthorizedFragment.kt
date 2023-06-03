@@ -1,6 +1,5 @@
 package com.timmovie.fragments.main
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,21 +11,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.timmovie.components.FilmCard
+import com.timmovie.components.FilmDataImage
 
 @Composable
-fun MainAuthorizedFragment() {
+fun MainAuthorizedFragment(films: List<FilmDataImage>, onButtonClick: () -> Unit, onButton2Click: (controller: NavController, id: String) -> Unit, controller: NavController) {
     val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
                 Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable {
-                        Toast.makeText(context, "Вы вышли", Toast.LENGTH_SHORT).show()
-                    })
+                    Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onButtonClick))
                 }
             }
         },
@@ -50,25 +48,17 @@ fun MainAuthorizedFragment() {
                         .padding(top = 16.dp, bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp))
                 {
-                    items(9) { index ->
+                    items(films.size / 3 - 1) { index ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            FilmCard(name = "Не рикролл $index")
-                            FilmCard(name = "Не рикролл ${index + 1}")
-                            FilmCard(name = "Не рикролл ${index + 2}")
+                            FilmCard(name = films[index].filmTitle, films[index].image, onButtonClick = { onButton2Click(controller, films[index].filmId) } )
+                            FilmCard(name = films[index + 1].filmTitle, films[index + 1].image, onButtonClick = { onButton2Click(controller, films[index + 1].filmId) })
+                            FilmCard(name = films[index + 2].filmTitle, films[index + 2].image, onButtonClick = { onButton2Click(controller, films[index + 2].filmId) })
                         }
                     }
                 }            
-            }
-            Box() {
-                Button(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()) 
-                {
-                    Text(text = "В чат")
-                }
             }
             Box() {
                 Button(
@@ -79,10 +69,4 @@ fun MainAuthorizedFragment() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun MainAuthorizedFragmentPreview() {
-    MainAuthorizedFragment()
 }
