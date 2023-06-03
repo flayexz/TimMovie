@@ -14,9 +14,7 @@ public static class ServicesConfiguration
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddDistributedMemoryCache();
-        services.AddDbContext(environment.IsDevelopment()
-            ? configuration.GetConnectionString("DefaultConnection")
-            : Environment.GetEnvironmentVariable("DATABASE_URL")!);
+        services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
         services.AddIdentity();
         services.AddSignalR(options => { options.ClientTimeoutInterval = new TimeSpan(0, 5, 0); });
 
@@ -39,7 +37,7 @@ public static class ServicesConfiguration
 
         services.AddControllersWithViews();
 
-        AddGraphQL(services);
+        services.AddGraphQL();
 
         services.AddAutoMapper(
             typeof(AppMappingProfile),
@@ -50,7 +48,7 @@ public static class ServicesConfiguration
         return services;
     }
 
-    private static void AddGraphQL(IServiceCollection services)
+    private static void AddGraphQL(this IServiceCollection services)
     {
         services
             .AddGraphQLServer()
