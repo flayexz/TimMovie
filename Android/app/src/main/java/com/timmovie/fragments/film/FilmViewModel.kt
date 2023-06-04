@@ -5,10 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apollographql.apollo3.ApolloClient
+import com.example.core.Constants
+import com.timmovie.GetFilmsQuery
+import com.timmovie.components.FilmDataImage
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,10 +28,10 @@ class FilmViewModel @Inject constructor(private val machine: AppStateMachine) : 
         }
     }
 
-    fun getFilm(id: String) {
+    fun chat() {
         viewModelScope.launch {
-            filmTitle = "Title"
-            url = "url"
+            machine.currentState.value = AppState.Chat
         }
     }
+
 }

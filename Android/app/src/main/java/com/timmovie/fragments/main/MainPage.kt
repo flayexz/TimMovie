@@ -23,7 +23,10 @@ fun MainPage(viewModel: MainViewModel, controller: NavController) {
                 onButton2Click = { id, controller ->
                     viewModel.goToFilm(id, controller)
                 },
-                controller = controller
+                controller = controller,
+                onButton3Click = {
+                    viewModel.chat()
+                },
             )
         }
     }

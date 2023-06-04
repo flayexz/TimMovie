@@ -16,9 +16,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.timmovie.components.FilmCard
 import com.timmovie.components.FilmDataImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
 @Composable
-fun MainAuthorizedFragment(films: List<FilmDataImage>, onButtonClick: () -> Unit, onButton2Click: (controller: NavController, id: String) -> Unit, controller: NavController) {
+fun MainAuthorizedFragment(films: List<FilmDataImage>, onButtonClick: () -> Unit, onButton2Click: (controller: NavController, id: String) -> Unit, controller: NavController, onButton3Click: () -> Unit,) {
     val context = LocalContext.current
     Scaffold(
         topBar = {
@@ -48,21 +51,31 @@ fun MainAuthorizedFragment(films: List<FilmDataImage>, onButtonClick: () -> Unit
                         .padding(top = 16.dp, bottom = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp))
                 {
-                    items(films.size / 3 - 1) { index ->
+                    items(films.size / 3) { index ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            FilmCard(name = films[index].filmTitle, films[index].image, onButtonClick = { onButton2Click(controller, films[index].filmId) } )
-                            FilmCard(name = films[index + 1].filmTitle, films[index + 1].image, onButtonClick = { onButton2Click(controller, films[index + 1].filmId) })
-                            FilmCard(name = films[index + 2].filmTitle, films[index + 2].image, onButtonClick = { onButton2Click(controller, films[index + 2].filmId) })
+                            val firstIndex = index * 3
+                            val secondIndex = firstIndex + 1
+                            val thirdIndex = firstIndex + 2
+
+                            if (firstIndex < films.size) {
+                                FilmCard(name = films[firstIndex].filmTitle, films[firstIndex].image, onButtonClick = { onButton2Click(controller, films[firstIndex].filmId) })
+                            }
+                            if (secondIndex < films.size) {
+                                FilmCard(name = films[secondIndex].filmTitle, films[secondIndex].image, onButtonClick = { onButton2Click(controller, films[secondIndex].filmId) })
+                            }
+                            if (thirdIndex < films.size) {
+                                FilmCard(name = films[thirdIndex].filmTitle, films[thirdIndex].image, onButtonClick = { onButton2Click(controller, films[thirdIndex].filmId) })
+                            }
                         }
                     }
                 }            
             }
             Box() {
                 Button(
-                    onClick = {},
+                    onClick = onButton3Click,
                     modifier = Modifier.fillMaxWidth()) {
                     Text(text = "К пахану")
                 }

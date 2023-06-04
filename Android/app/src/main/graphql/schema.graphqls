@@ -1,0 +1,604 @@
+schema {
+  query: RootQuery
+}
+
+"""
+The `@defer` directive may be provided for fragment spreads and inline fragments
+to inform the executor to delay the execution of the current fragment to
+indicate deprioritization of the current fragment. A query with `@defer`
+directive will cause the request to potentially return multiple responses, where
+non-deferred data is delivered in the initial response and data deferred is
+delivered in a subsequent response. `@include` and `@skip` take precedence over `@defer`.
+"""
+directive @defer(
+  """
+  If this argument label has a value other than null, it will be passed on to
+  the result of this defer directive. This label is intended to give client
+  applications a way to identify to which fragment a deferred result belongs to.
+  """
+  label: String
+
+  """Deferred when true."""
+  if: Boolean
+) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"""
+The `@stream` directive may be provided for a field of `List` type so that the
+backend can leverage technology such as asynchronous iterators to provide a
+partial list in the initial response, and additional list items in subsequent
+responses. `@include` and `@skip` take precedence over `@stream`.
+"""
+directive @stream(
+  """
+  If this argument label has a value other than null, it will be passed on to
+  the result of this stream directive. This label is intended to give client
+  applications a way to identify to which fragment a streamed result belongs to.
+  """
+  label: String
+
+  """The initial elements that shall be send down to the consumer."""
+  initialCount: Int! = 0
+
+  """Streamed when true."""
+  if: Boolean
+) on FIELD
+
+"""
+The `@specifiedBy` directive is used within the type system definition language
+to provide a URL for specifying the behavior of custom scalar definitions.
+"""
+directive @specifiedBy(
+  """
+  The specifiedBy URL points to a human-readable specification. This field will only read a result for scalar types.
+  """
+  url: String!
+) on SCALAR
+
+type Actor {
+  films: [Film!]!
+  name: String!
+  surname: String
+  photo: String
+  id: UUID!
+}
+
+input ActorFilterInput {
+  and: [ActorFilterInput!]
+  or: [ActorFilterInput!]
+  films: ListFilterInputTypeOfFilmFilterInput
+  name: StringOperationFilterInput
+  surname: StringOperationFilterInput
+  photo: StringOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+"""A connection to a list of items."""
+type AllConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AllEdge!]
+
+  """A flattened list of the nodes."""
+  nodes: [Film!]
+}
+
+"""An edge in a connection."""
+type AllEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: Film!
+}
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+type Comment {
+  film: Film!
+  author: User!
+  content: String!
+  date: DateTime!
+  id: UUID!
+}
+
+input CommentFilterInput {
+  and: [CommentFilterInput!]
+  or: [CommentFilterInput!]
+  film: FilmFilterInput
+  author: UserFilterInput
+  content: StringOperationFilterInput
+  date: ComparableDateTimeOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+input ComparableDateTimeOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime!]
+  nin: [DateTime!]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input ComparableDecimalOperationFilterInput {
+  eq: Decimal
+  neq: Decimal
+  in: [Decimal!]
+  nin: [Decimal!]
+  gt: Decimal
+  ngt: Decimal
+  gte: Decimal
+  ngte: Decimal
+  lt: Decimal
+  nlt: Decimal
+  lte: Decimal
+  nlte: Decimal
+}
+
+input ComparableGuidOperationFilterInput {
+  eq: UUID
+  neq: UUID
+  in: [UUID!]
+  nin: [UUID!]
+  gt: UUID
+  ngt: UUID
+  gte: UUID
+  ngte: UUID
+  lt: UUID
+  nlt: UUID
+  lte: UUID
+  nlte: UUID
+}
+
+input ComparableInt32OperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int!]
+  nin: [Int!]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input ComparableNullableOfDateOnlyOperationFilterInput {
+  eq: Date
+  neq: Date
+  in: [Date]
+  nin: [Date]
+  gt: Date
+  ngt: Date
+  gte: Date
+  ngte: Date
+  lt: Date
+  nlt: Date
+  lte: Date
+  nlte: Date
+}
+
+input ComparableNullableOfDateTimeOffsetOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime]
+  nin: [DateTime]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input ComparableNullableOfDateTimeOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime]
+  nin: [DateTime]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input ComparableNullableOfInt32OperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+type Country {
+  name: String!
+  users: [User!]!
+  films: [Film!]!
+  id: UUID!
+}
+
+input CountryFilterInput {
+  and: [CountryFilterInput!]
+  or: [CountryFilterInput!]
+  name: StringOperationFilterInput
+  users: ListFilterInputTypeOfUserFilterInput
+  films: ListFilterInputTypeOfFilmFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+"""The `Date` scalar represents an ISO-8601 compliant date type."""
+scalar Date
+
+"""The `DateTime` scalar represents an ISO-8601 compliant date time type."""
+scalar DateTime
+
+"""The built-in `Decimal` scalar type."""
+scalar Decimal
+
+type Film {
+  title: String!
+  year: Int!
+  description: String
+  country: Country
+  image: String
+  filmLink: String
+  isFree: Boolean!
+  comments: [Comment!]!
+  producers: [Producer!]!
+  actors: [Actor!]!
+  genres: [Genre!]!
+  usersWatchLater: [User!]!
+  usersWatching: [User!]!
+  subscribes: [Subscribe!]!
+  userFilmWatcheds: [UserFilmWatched!]!
+  id: UUID!
+}
+
+input FilmFilterInput {
+  and: [FilmFilterInput!]
+  or: [FilmFilterInput!]
+  title: StringOperationFilterInput
+  year: ComparableInt32OperationFilterInput
+  description: StringOperationFilterInput
+  country: CountryFilterInput
+  image: StringOperationFilterInput
+  filmLink: StringOperationFilterInput
+  isFree: BooleanOperationFilterInput
+  comments: ListFilterInputTypeOfCommentFilterInput
+  producers: ListFilterInputTypeOfProducerFilterInput
+  actors: ListFilterInputTypeOfActorFilterInput
+  genres: ListFilterInputTypeOfGenreFilterInput
+  usersWatchLater: ListFilterInputTypeOfUserFilterInput
+  usersWatching: ListFilterInputTypeOfUserFilterInput
+  subscribes: ListFilterInputTypeOfSubscribeFilterInput
+  userFilmWatcheds: ListFilterInputTypeOfUserFilmWatchedFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+type FilmQuery {
+  all(
+    """Returns the first _n_ elements from the list."""
+    first: Int
+
+    """Returns the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the last _n_ elements from the list."""
+    last: Int
+
+    """
+    Returns the elements in the list that come before the specified cursor.
+    """
+    before: String
+    where: FilmFilterInput
+  ): AllConnection
+}
+
+type Genre {
+  name: String!
+  films: [Film!]!
+  subscribes: [Subscribe!]!
+  id: UUID!
+}
+
+input GenreFilterInput {
+  and: [GenreFilterInput!]
+  or: [GenreFilterInput!]
+  name: StringOperationFilterInput
+  films: ListFilterInputTypeOfFilmFilterInput
+  subscribes: ListFilterInputTypeOfSubscribeFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+input ListFilterInputTypeOfActorFilterInput {
+  all: ActorFilterInput
+  none: ActorFilterInput
+  some: ActorFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfCommentFilterInput {
+  all: CommentFilterInput
+  none: CommentFilterInput
+  some: CommentFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfFilmFilterInput {
+  all: FilmFilterInput
+  none: FilmFilterInput
+  some: FilmFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfGenreFilterInput {
+  all: GenreFilterInput
+  none: GenreFilterInput
+  some: GenreFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfNotificationFilterInput {
+  all: NotificationFilterInput
+  none: NotificationFilterInput
+  some: NotificationFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfProducerFilterInput {
+  all: ProducerFilterInput
+  none: ProducerFilterInput
+  some: ProducerFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfSubscribeFilterInput {
+  all: SubscribeFilterInput
+  none: SubscribeFilterInput
+  some: SubscribeFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfUserFilmWatchedFilterInput {
+  all: UserFilmWatchedFilterInput
+  none: UserFilmWatchedFilterInput
+  some: UserFilmWatchedFilterInput
+  any: Boolean
+}
+
+input ListFilterInputTypeOfUserFilterInput {
+  all: UserFilterInput
+  none: UserFilterInput
+  some: UserFilterInput
+  any: Boolean
+}
+
+type Notification {
+  content: String!
+  users: [User!]!
+  date: DateTime
+  id: UUID!
+}
+
+input NotificationFilterInput {
+  and: [NotificationFilterInput!]
+  or: [NotificationFilterInput!]
+  content: StringOperationFilterInput
+  users: ListFilterInputTypeOfUserFilterInput
+  date: ComparableNullableOfDateTimeOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """
+  Indicates whether more edges exist following the set defined by the clients arguments.
+  """
+  hasNextPage: Boolean!
+
+  """
+  Indicates whether more edges exist prior the set defined by the clients arguments.
+  """
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Producer {
+  films: [Film!]!
+  name: String!
+  surname: String
+  photo: String
+  id: UUID!
+}
+
+input ProducerFilterInput {
+  and: [ProducerFilterInput!]
+  or: [ProducerFilterInput!]
+  films: ListFilterInputTypeOfFilmFilterInput
+  name: StringOperationFilterInput
+  surname: StringOperationFilterInput
+  photo: StringOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+type RootQuery {
+  films: FilmQuery!
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+type Subscribe {
+  name: String!
+  price: Decimal!
+  description: String
+  isActive: Boolean!
+  films: [Film!]!
+  genres: [Genre!]!
+  id: UUID!
+}
+
+input SubscribeFilterInput {
+  and: [SubscribeFilterInput!]
+  or: [SubscribeFilterInput!]
+  name: StringOperationFilterInput
+  price: ComparableDecimalOperationFilterInput
+  description: StringOperationFilterInput
+  isActive: BooleanOperationFilterInput
+  films: ListFilterInputTypeOfFilmFilterInput
+  genres: ListFilterInputTypeOfGenreFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+type User {
+  birthDate: Date
+  status: UserStatus
+  watchingFilm: Film
+  displayName: String!
+  pathToPhoto: String!
+  country: Country
+  registrationDate: DateTime!
+  watchedFilms: [UserFilmWatched!]!
+  notifications: [Notification!]!
+  filmsWatchLater: [Film!]!
+  id: UUID!
+  userName: String
+  normalizedUserName: String
+  email: String
+  normalizedEmail: String
+  emailConfirmed: Boolean!
+  passwordHash: String
+  securityStamp: String
+  concurrencyStamp: String
+  phoneNumber: String
+  phoneNumberConfirmed: Boolean!
+  twoFactorEnabled: Boolean!
+  lockoutEnd: DateTime
+  lockoutEnabled: Boolean!
+  accessFailedCount: Int!
+}
+
+type UserFilmWatched {
+  watchedUser: User!
+  film: Film!
+  grade: Int
+  date: DateTime!
+  id: UUID!
+}
+
+input UserFilmWatchedFilterInput {
+  and: [UserFilmWatchedFilterInput!]
+  or: [UserFilmWatchedFilterInput!]
+  watchedUser: UserFilterInput
+  film: FilmFilterInput
+  grade: ComparableNullableOfInt32OperationFilterInput
+  date: ComparableDateTimeOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+input UserFilterInput {
+  and: [UserFilterInput!]
+  or: [UserFilterInput!]
+  birthDate: ComparableNullableOfDateOnlyOperationFilterInput
+  status: UserStatusFilterInput
+  watchingFilm: FilmFilterInput
+  displayName: StringOperationFilterInput
+  pathToPhoto: StringOperationFilterInput
+  country: CountryFilterInput
+  registrationDate: ComparableDateTimeOperationFilterInput
+  watchedFilms: ListFilterInputTypeOfUserFilmWatchedFilterInput
+  notifications: ListFilterInputTypeOfNotificationFilterInput
+  filmsWatchLater: ListFilterInputTypeOfFilmFilterInput
+  id: ComparableGuidOperationFilterInput
+  userName: StringOperationFilterInput
+  normalizedUserName: StringOperationFilterInput
+  email: StringOperationFilterInput
+  normalizedEmail: StringOperationFilterInput
+  emailConfirmed: BooleanOperationFilterInput
+  passwordHash: StringOperationFilterInput
+  securityStamp: StringOperationFilterInput
+  concurrencyStamp: StringOperationFilterInput
+  phoneNumber: StringOperationFilterInput
+  phoneNumberConfirmed: BooleanOperationFilterInput
+  twoFactorEnabled: BooleanOperationFilterInput
+  lockoutEnd: ComparableNullableOfDateTimeOffsetOperationFilterInput
+  lockoutEnabled: BooleanOperationFilterInput
+  accessFailedCount: ComparableInt32OperationFilterInput
+}
+
+type UserStatus {
+  userId: UUID!
+  user: User!
+  userStatusEnum: UserStatusEnum!
+  dateLastChange: DateTime!
+  id: UUID!
+}
+
+enum UserStatusEnum {
+  OFFLINE
+  ONLINE
+  WATCHING
+}
+
+input UserStatusEnumOperationFilterInput {
+  eq: UserStatusEnum
+  neq: UserStatusEnum
+  in: [UserStatusEnum!]
+  nin: [UserStatusEnum!]
+}
+
+input UserStatusFilterInput {
+  and: [UserStatusFilterInput!]
+  or: [UserStatusFilterInput!]
+  userId: ComparableGuidOperationFilterInput
+  user: UserFilterInput
+  userStatusEnum: UserStatusEnumOperationFilterInput
+  dateLastChange: ComparableDateTimeOperationFilterInput
+  id: ComparableGuidOperationFilterInput
+}
+
+scalar UUID
+

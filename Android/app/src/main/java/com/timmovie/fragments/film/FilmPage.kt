@@ -20,6 +20,9 @@ fun FilmPage(viewModel: FilmViewModel) {
                 url = viewModel.url,
                 onButtonClick = {
                     viewModel.main()
+                },
+                onButton2Click = {
+                    viewModel.chat()
                 }
             )
         }

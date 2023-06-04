@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id("com.apollographql.apollo3") version "3.8.1"
 }
 
 android {
@@ -20,6 +21,10 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+    }
+    
+    sourceSets{
+        main.java.srcDirs += 'src/main/graphql'
     }
 
     buildTypes {
@@ -47,6 +52,11 @@ android {
         }
         exclude 'google/protobuf/*.proto'
     }
+    apollo {
+        service("TimMovieService") {
+            packageName.set("com.timmovie")
+        }
+    }
 }
 
 dependencies {
@@ -65,12 +75,19 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
     implementation project(path: ':domain')
     implementation project(path: ':core')
+    implementation 'com.android.volley:volley:1.2.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    implementation("com.apollographql.apollo3:apollo-runtime:3.8.1")
+    implementation("com.apollographql.apollo3:apollo-api:3.8.1")
+    implementation "io.coil-kt:coil-compose:2.4.0"
+    implementation "io.coil-kt:coil:2.4.0"
+    "implementation" ("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
+
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.44"

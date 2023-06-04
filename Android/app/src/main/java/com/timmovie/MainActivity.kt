@@ -10,7 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.apollographql.apollo3.ApolloClient
 import com.example.core.Constants
+import com.timmovie.components.FilmDataImage
 import com.timmovie.fragments.chat.ChatPage
 import com.timmovie.fragments.chat.ChatViewModel
 import com.timmovie.fragments.film.FilmPage
@@ -23,6 +25,7 @@ import com.timmovie.infrastructure.AppModule
 import com.timmovie.infrastructure.AppState
 import com.timmovie.theme.TimMovieTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
@@ -45,7 +48,6 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Constants.Routes.ALLFILMS) {
                         val viewModel = hiltViewModel<MainViewModel>()
-                        viewModel.getFilms()
                         MainPage(viewModel, nav)
                     }
                     composable(Constants.Routes.CONCRETEFILM, arguments = listOf(navArgument("id") {
@@ -56,6 +58,16 @@ class MainActivity : ComponentActivity() {
                         val filmId = it.arguments?.getString("id")
                         filmId?.let {
                             viewModel.filmId = filmId
+                        }
+                        runBlocking  {
+                            val apolloClient = ApolloClient.Builder()
+                                .serverUrl(Constants.Urls.GRAPHQL)
+                                .build()
+
+                            val response = apolloClient.query(GetFilmQuery(viewModel.filmId)).execute()
+                            
+                            viewModel.url = response.data?.films?.all?.nodes?.get(0)?.filmLink.toString()
+                            viewModel.filmTitle = response.data?.films?.all?.nodes?.get(0)?.title.toString()
                         }
                         FilmPage(viewModel)
                     }
