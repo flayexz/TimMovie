@@ -1,0 +1,15 @@
+query GetFilms {
+    films {
+        all(first: 50) {
+            nodes {
+                id
+                title
+                image
+            }
+            pageInfo {
+                hasNextPage
+                endCursor
+            }
+        }
+    }
+}

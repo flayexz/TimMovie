@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(private val loginService: ILoginService
         viewModelScope.launch {
             val success = loginService.login(login, password)
             if (success) {
-                machine.currentState.value = AppState.Chat
+                machine.currentState.value = AppState.AllFilms
             }
         }
     }
@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(private val loginService: ILoginService
             }
             val success = loginService.register(login, password)
             if (success) {
-                machine.currentState.value = AppState.Chat
+                machine.currentState.value = AppState.AllFilms
             }
         }
     }

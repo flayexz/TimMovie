@@ -1,0 +1,11 @@
+query GetFilm($id: UUID!) {
+    films { 
+        all(where: {id: {eq: $id}}){
+            nodes{
+                title
+                id
+                filmLink
+            }
+        }
+    }
+}

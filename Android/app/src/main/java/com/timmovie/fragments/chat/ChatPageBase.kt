@@ -30,17 +30,12 @@ import com.timmovie.components.InputText
 @Composable
 fun ChatPageBase(records: MutableList<ChatRecordItem>,
                  onExitClick: () -> Unit = {},
-                 anotherPageName: String = "",
-                 onAnotherPageClick: () -> Unit = {},
                  inputMessage: String = "",
                  onInputMessageChange: (String) -> Unit = {},
                  onMessageSendClick: () -> Unit = {}) {
     Scaffold(topBar = {
         TopAppBar(modifier = Modifier.fillMaxWidth()) {
-            Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                Text(text = anotherPageName, fontSize = 16.sp, modifier = Modifier.clickable {
-                    onAnotherPageClick()
-                })
+            Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Выход", fontSize = 16.sp, modifier = Modifier.clickable {
                     onExitClick()
                 })
@@ -76,9 +71,6 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
                             .padding(end = 5.dp)) {
                         Text(text = "Отправить")
                     }
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "П")
-                    }
                 }
             }
         }
@@ -94,5 +86,5 @@ fun ChatPageBasePreview() {
             ChatRecordItem("Это", "ДДААВАЫАЫВАВЫА")
         )
     }
-    ChatPageBase(records = records, onExitClick = {}, anotherPageName = "Другая страница", onAnotherPageClick = {})
+    ChatPageBase(records = records, onExitClick = {})
 }

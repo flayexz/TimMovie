@@ -7,13 +7,12 @@ import com.timmovie.fragments.chat.ChatPageBase
 import com.timmovie.infrastructure.AppState
 
 @Composable
-fun ChatAdminPage(viewModel: ChatAdminViewModel, onToGeneralChatClick: () -> Unit) {
+fun ChatAdminPage(viewModel: ChatAdminViewModel) {
     ChatAdminPageInternal(
         records = viewModel.records,
         onExitClick =  {
             viewModel.machine.currentState.value = AppState.Login
         },
-        onAnotherPageClick = onToGeneralChatClick,
         message = viewModel.message,
         onMessageButtonClick = {
             viewModel.sendMessage()
@@ -27,7 +26,6 @@ fun ChatAdminPage(viewModel: ChatAdminViewModel, onToGeneralChatClick: () -> Uni
 @Composable
 fun ChatAdminPageInternal(
     records: MutableList<ChatRecordItem>,
-    onAnotherPageClick: () -> Unit,
     onExitClick: () -> Unit,
     message: String,
     onMessageButtonClick: () -> Unit,
@@ -35,8 +33,6 @@ fun ChatAdminPageInternal(
 ) {
     ChatPageBase(
         records = records,
-        anotherPageName = "К пацанам",
-        onAnotherPageClick = onAnotherPageClick,
         onExitClick = onExitClick,
         inputMessage = message,
         onMessageSendClick = onMessageButtonClick,
@@ -52,5 +48,5 @@ fun ChatAdminPagePreview() {
             ChatRecordItem("Пахан", "Че надо?"),
         )
     }
-    ChatAdminPageInternal(records = records, {}, {}, "", {}, {})
+    ChatAdminPageInternal(records = records, {}, "", {}, {})
 }
