@@ -1,10 +1,12 @@
-using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using TimMovie.Core;
 using TimMovie.Core.Classes;
 using TimMovie.Infrastructure;
+using TimMovie.Infrastructure.Configurations;
+using TimMovie.Infrastructure.Settings;
 using TimMovie.Web.AuthorizationHandlers.AgePolicy;
+using TimMovie.Web.Background;
 using TimMovie.Web.GraphQL.Query;
 
 namespace TimMovie.Web.Configuration;
@@ -13,6 +15,14 @@ public static class ServicesConfiguration
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
+        services.Configure<KafkaSettings>(configuration.GetSection(KafkaSettings.SectionName));
+        services.AddKafkaProducer();
+        
+        services.AddHostedService<StatisticsBackgroundService>();
+
+        services.Configure<MongoSettings>(configuration.GetSection(MongoSettings.SectionName));
+        services.AddMongoDb();
+        
         services.AddDistributedMemoryCache();
         services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
         services.AddIdentity();
