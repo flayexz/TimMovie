@@ -23,28 +23,7 @@ fun LoginPage(viewModel: LoginViewModel) {
 //                    Toast.makeText(context, "Пока нет логики. Сасать", Toast.LENGTH_SHORT).show()
                     viewModel.login()
                 },
-                buttonEnabled = viewModel.password.isNotEmpty() && viewModel.login.isNotEmpty(),
-                onRegisterButtonClick = {
-                    nav.navigate("register")
-                }
-            )
-        }
-        composable("register") {
-            RegisterFragment(
-                login = viewModel.login,
-                onLoginChange = {viewModel.login = it},
-                password = viewModel.password,
-                onPasswordChange = {viewModel.password = it},
-                passwordRepeat = viewModel.passwordRepeat,
-                onPasswordRepeatChange = {viewModel.passwordRepeat = it},
-                buttonEnabled = viewModel.login.isNotEmpty() && viewModel.password.isNotEmpty() && viewModel.password == viewModel.passwordRepeat,
-                onButtonClick = {
-//                    Toast.makeText(context, "Пока нет логики", Toast.LENGTH_SHORT).show()
-                    viewModel.register()
-                },
-                onLoginButtonClick = {
-                    nav.navigate("login")
-                }
+                buttonEnabled = viewModel.login.isNotEmpty()
             )
         }
     }

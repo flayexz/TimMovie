@@ -44,6 +44,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Constants.Routes.CHAT) {
                         val viewModel = hiltViewModel<ChatViewModel>()
+                        viewModel.login
                         ChatPage(viewModel)
                     }
                     composable(Constants.Routes.ALLFILMS) {

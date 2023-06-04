@@ -11,11 +11,12 @@ import com.timmovie.fragments.chat.chat_admin.ChatAdminViewModel
 const val chatAdminPage = "chat-admin"
 
 @Composable
-fun ChatPage(viewModel: ChatViewModel) {
+fun ChatPage(viewModel: ChatViewModel, ) {
     val nav = rememberNavController()
     NavHost(navController = nav, startDestination = chatAdminPage) {
         composable(chatAdminPage) {
             ChatAdminPage(
+                //прокинуть хз как
                 ChatAdminViewModel(viewModel.machine, NullAdminChatService.Instance)
             )
         }
