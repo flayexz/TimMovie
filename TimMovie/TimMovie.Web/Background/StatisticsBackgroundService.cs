@@ -27,7 +27,7 @@ public class StatisticsBackgroundService : BackgroundService
         };
 
         using var channel = factory.CreateConnection().CreateModel();
-        
+
         while (!stoppingToken.IsCancellationRequested)
         {
             var mongoDatabase = _mongoClient.GetDatabase(_mongoSettings.DatabaseName);
@@ -35,11 +35,13 @@ public class StatisticsBackgroundService : BackgroundService
 
             var traffics = collection
                 .AsQueryable()
-                .GroupBy(t => t.FilmId)
-                .Select(g => new { Id = g.Key, Traffic = g.Count() })
+                .Select(x => new
+                {
+                    Id = x.FilmId, x.Count
+                })
                 .ToList();
 
-            var dict = traffics.ToDictionary(e => e.Id, e => e.Traffic);
+            var dict = traffics.ToDictionary(e => e.Id, e => e.Count);
             var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(dict));
 
             var properties = channel.CreateBasicProperties();
@@ -47,7 +49,8 @@ public class StatisticsBackgroundService : BackgroundService
             properties.CorrelationId = Guid.NewGuid().ToString();
 
             channel.ExchangeDeclare("statistics-exchange", "fanout");
-            channel.BasicPublish(exchange: "statistics-exchange", routingKey: "", basicProperties: properties, body: body);
+            channel.BasicPublish(exchange: "statistics-exchange", routingKey: "", basicProperties: properties,
+                body: body);
             await Task.Delay(1000, stoppingToken);
         }
     }

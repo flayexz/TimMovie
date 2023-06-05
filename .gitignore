@@ -392,3 +392,4 @@ MigrationBackup/
 # Editor-based HTTP Client requests
 /httpRequests/
 
+/TimMovie/TimMovie.Web/appsettings.Production.json
