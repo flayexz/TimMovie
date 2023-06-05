@@ -57,7 +57,8 @@ public class RegisterFilmTrafficConsumer : BackgroundService
                 {
                     var traffic = new FilmTraffic
                     {
-                        FilmId = message.Id
+                        FilmId = message.Id,
+                        Count = 1
                     };
 
                     await collection.InsertOneAsync(traffic, cancellationToken: stoppingToken);
