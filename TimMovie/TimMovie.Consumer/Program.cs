@@ -10,7 +10,7 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddKafkaAdminBuilder();
         services.AddKafkaConsumer();
         services.AddMongoDb();
-        services.AddHostedService<RegisterFilmTrafficConsumer>();
+        services.AddHostedService<FilmTrafficConsumer>();
     })
     .Build();
 

@@ -8,19 +8,19 @@ using TimMovie.Infrastructure.Settings;
 
 namespace TimMovie.Consumer;
 
-public class RegisterFilmTrafficConsumer : BackgroundService
+public class FilmTrafficConsumer : BackgroundService
 {
     private readonly KafkaSettings _kafkaSettings;
     private readonly IConsumer<Ignore, RegisterFilmTrafficEvent> _consumer;
-    private readonly ILogger<RegisterFilmTrafficConsumer> _logger;
+    private readonly ILogger<FilmTrafficConsumer> _logger;
     private readonly IAdminClient _adminClient;
     private readonly IMongoClient _mongoClient;
     private readonly MongoSettings _mongoSettings;
 
-    public RegisterFilmTrafficConsumer(
+    public FilmTrafficConsumer(
         IOptions<KafkaSettings> kafkaSettings,
         IConsumer<Ignore, RegisterFilmTrafficEvent> consumer,
-        ILogger<RegisterFilmTrafficConsumer> logger,
+        ILogger<FilmTrafficConsumer> logger,
         IAdminClient adminClient,
         IMongoClient mongoClient,
         IOptions<MongoSettings> mongoSettings)
