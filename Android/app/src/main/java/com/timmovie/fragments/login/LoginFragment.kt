@@ -82,16 +82,3 @@ fun LoginFragment(login: String, loginChange: (String) -> Unit,
         }
     }
 }
-
-@Preview
-@Composable
-fun LoginFragmentPreview() {
-    LoginFragment(
-        login = "Логин",
-        loginChange = {},
-        password = "Пароль",
-        passwordChange = {},
-        onButtonClick = { /*TODO*/ },
-        buttonEnabled = true
-    )
-}
