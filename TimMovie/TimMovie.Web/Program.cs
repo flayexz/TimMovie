@@ -4,6 +4,7 @@ using TimMovie.Core;
 using TimMovie.Infrastructure;
 using TimMovie.Web.Configuration;
 using TimMovie.Web.Extensions;
+using TimMovie.Web.gRPC;
 using TimMovie.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,7 +40,10 @@ app.UseAuthorization();
 
 app.UseBannedUserService();
 
+app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
+
 //app.UseUserStatusUpdateService();
+
 
 app.MapControllerRoute(
     name: "default",
@@ -47,6 +51,7 @@ app.MapControllerRoute(
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapGrpcService<ChatService>();
     endpoints.MapHub<ChatHub>("/chat");
 });
 app.MapGraphQL();

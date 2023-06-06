@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilesApi", "FilesApi\FilesA
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TimMovie.WebApi.Tests", "TimMovie.WebApi.Tests\TimMovie.WebApi.Tests.fsproj", "{F5041D7B-7E49-45EF-8B06-1A761502C006}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimMovie.Consumer", "TimMovie.Consumer\TimMovie.Consumer.csproj", "{E2F2DD37-E81A-4244-A88D-5BA4E585061A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,9 @@ Global
 		{F5041D7B-7E49-45EF-8B06-1A761502C006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5041D7B-7E49-45EF-8B06-1A761502C006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5041D7B-7E49-45EF-8B06-1A761502C006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2F2DD37-E81A-4244-A88D-5BA4E585061A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2F2DD37-E81A-4244-A88D-5BA4E585061A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2F2DD37-E81A-4244-A88D-5BA4E585061A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2F2DD37-E81A-4244-A88D-5BA4E585061A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
