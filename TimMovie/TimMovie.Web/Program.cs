@@ -35,12 +35,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseGrpcWeb();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseBannedUserService();
-
-app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
 
 //app.UseUserStatusUpdateService();
 
@@ -51,9 +51,9 @@ app.MapControllerRoute(
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGrpcService<ChatService>();
-    endpoints.MapHub<ChatHub>("/chat");
+    endpoints.MapHub<ChatHub>("/chatSinalR");
 });
+app.MapGrpcService<ChatService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGraphQL();
 
 app.Run();
