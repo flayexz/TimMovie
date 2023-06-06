@@ -6,5 +6,5 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(val machine: AppStateMachine, val login: String): ViewModel() {
+class ChatViewModel @Inject constructor(val machine: AppStateMachine): ViewModel() {
 }

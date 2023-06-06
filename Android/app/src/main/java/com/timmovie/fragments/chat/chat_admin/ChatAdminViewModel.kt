@@ -20,8 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine,
-                                             val service: IAdminChatService,
-                                             private val sharedPreferences: SharedPreferences) : ViewModel() {
+                                             val service: IAdminChatService) : ViewModel() {
+//                                             private val sharedPreferences: SharedPreferences) : ViewModel() {
     val records: MutableList<ChatRecordItem> = mutableStateListOf()
     var message by mutableStateOf("")
 
@@ -29,7 +29,7 @@ class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine,
         if (message.isEmpty()) return
         viewModelScope.launch {
             val Log = Logger.getLogger(MainActivity::class.java.name)
-            Log.warning(sharedPreferences.getString("login", ""))
+//            Log.warning(sharedPreferences.getString("login", ""))
             service.sendMessageToAdmin(message)
             message = ""
         }

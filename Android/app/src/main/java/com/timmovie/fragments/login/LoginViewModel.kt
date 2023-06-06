@@ -16,17 +16,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val loginService: ILoginService,
-                                         private val machine: AppStateMachine,
-                                         private val sharedPreferences: SharedPreferences) : ViewModel() {
+                                         private val machine: AppStateMachine) : ViewModel() {
+//                                         private val sharedPreferences: SharedPreferences) : ViewModel() {
     var login by mutableStateOf("")
     var password by mutableStateOf("")
     fun login() {
         viewModelScope.launch {
             val success = loginService.login(login, password)
             if (success) {
-                val editor = sharedPreferences.edit()
-                editor.putString("login", login)
-                editor.apply()
+//                val editor = sharedPreferences.edit()
+//                editor.putString("login", login)
+//                editor.apply()
                 machine.currentState.value = AppState.AllFilms
             }
         }
