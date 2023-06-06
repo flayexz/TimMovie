@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.domain.login.ILoginService
+import com.example.core.User
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,9 +25,7 @@ class LoginViewModel @Inject constructor(private val loginService: ILoginService
         viewModelScope.launch {
             val success = loginService.login(login, password)
             if (success) {
-//                val editor = sharedPreferences.edit()
-//                editor.putString("login", login)
-//                editor.apply()
+                User.name = login
                 machine.currentState.value = AppState.AllFilms
             }
         }

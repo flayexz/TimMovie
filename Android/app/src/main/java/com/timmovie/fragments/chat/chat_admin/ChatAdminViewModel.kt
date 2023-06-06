@@ -1,49 +1,91 @@
 package com.timmovie.fragments.chat.chat_admin
 
-import android.content.SharedPreferences
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.domain.chat.IAdminChatService
+import com.example.core.Constants
+import com.example.core.User
 import com.timmovie.MainActivity
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.infrastructure.AppStateMachine
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.logging.Logger
 import javax.inject.Inject
+import io.grpc.ManagedChannel
+import io.grpc.ManagedChannelBuilder
+import java.util.logging.Logger
 
 @HiltViewModel
-class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine,
-                                             val service: IAdminChatService) : ViewModel() {
-//                                             private val sharedPreferences: SharedPreferences) : ViewModel() {
+class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine) : ViewModel() {
     val records: MutableList<ChatRecordItem> = mutableStateListOf()
     var message by mutableStateOf("")
+    
 
     fun sendMessage() {
         if (message.isEmpty()) return
         viewModelScope.launch {
+            val channel: ManagedChannel = ManagedChannelBuilder
+                .forAddress(Constants.Urls.HOST, Constants.Urls.PORT)
+                .usePlaintext()
+                .build()
+            val service = ChatGrpc.newBlockingStub(channel)
+            val request = ChatOuterClass.ChatMessage.newBuilder()
+                .setName(User.name)
+                .setBody(message)
+                .build()
+            service.sendMessage(request)
             val Log = Logger.getLogger(MainActivity::class.java.name)
-//            Log.warning(sharedPreferences.getString("login", ""))
-            service.sendMessageToAdmin(message)
+            Log.warning("ОТПРАВИЛ СООБЩЕНИЕ")
+            Log.warning(User.name)
+            Log.warning(message)
+
+            records.add(ChatRecordItem(User.name, message))
             message = ""
         }
     }
 
     init {
         viewModelScope.launch {
-            launch {
-                service.receiveMessages().collect {
-                    records.add(ChatRecordItem(
-                        username = it.username,
-                        content = it.message
-                    ))
-                }
+            
+            val channel: ManagedChannel = ManagedChannelBuilder
+                .forAddress(Constants.Urls.HOST, Constants.Urls.PORT)
+                .usePlaintext()
+                .build()
+            val grpcService = ChatGrpc.newBlockingStub(channel)
+            val requestConnectToChat = ChatOuterClass.AttachedClient.newBuilder()
+                .setName(User.name)
+                .build()
+            val responseConnectUserToChat = grpcService.connectUserToChat(requestConnectToChat)
+            val Log = Logger.getLogger(MainActivity::class.java.name)
+            Log.warning("ПРИСОЕДИНИЛСЯ К ЧАТУ")
+
+            responseConnectUserToChat.forEach {
+                records.add(ChatRecordItem(
+                    username = it.name,
+                    content = it.body
+                ))
+                val Log = Logger.getLogger(MainActivity::class.java.name)
+                Log.warning("ДОБАВЛЯЕМ В ЧАТ")
+                Log.warning(it.name)
+                Log.warning(it.body)
+            }
+
+            val requestConnectToEvents = ChatOuterClass.AttachedClient.newBuilder()
+                .setName(User.name)
+                .build()
+            val responseConnectToEvents = grpcService.connectToEvents(requestConnectToEvents)
+            responseConnectToEvents.forEach {
+                records.add(ChatRecordItem(
+                    username = "notification",
+                    content = it.body
+                ))
+                val Log = Logger.getLogger(MainActivity::class.java.name)
+                Log.warning("ДОБАВЛЯЕМ В ЧАТ")
+                Log.warning("notification")
+                Log.warning(it.body)
             }
         }
     }

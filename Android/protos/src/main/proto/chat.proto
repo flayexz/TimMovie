@@ -1,28 +1,31 @@
-syntax = "proto3";
+﻿syntax = "proto3";
 
 import 'google/protobuf/empty.proto';
 
-option java_multiple_files = true;
-option java_package = 'com.example.grpc';
-option java_outer_classname = 'ChatProto';
-
-message SendMessageRequest {
-  string message = 1;
+enum ChatEventStatus {
+    NewChat = 0;
+    OldChat = 1;
 }
 
-message SendMessageResponse {  }
-
-message GetMessagesStreamResponse {
-  string message = 1;
-  string username = 2;
+message ChatEvent {
+  string body = 1;
+  ChatEventStatus status = 2;
 }
 
-service GeneralChatService {
-  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
-  rpc GetMessagesStream(google.protobuf.Empty) returns (stream GetMessagesStreamResponse);
+message AttachedClient {
+  string name = 1;
 }
 
-service AdminChatService {
-  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
-  rpc GetMessagesStream(google.protobuf.Empty) returns (stream GetMessagesStreamResponse);
+message ChatMessage {
+  string name = 1;
+  string body = 2;
+}
+
+service Chat {
+  rpc ConnectUserToChat(AttachedClient) returns (stream ChatMessage);
+  rpc ConnectSupportToChat(AttachedClient) returns (stream ChatMessage);
+  rpc ConnectToEvents(AttachedClient) returns (stream ChatEvent);
+  rpc SendMessage(ChatMessage) returns (google.protobuf.Empty);
+  rpc DisconnectUserFromChat(AttachedClient) returns (google.protobuf.Empty);
+  rpc DisconnectSupportFromChat(AttachedClient) returns (google.protobuf.Empty);
 }

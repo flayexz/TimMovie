@@ -20,7 +20,6 @@ fun LoginPage(viewModel: LoginViewModel) {
                     viewModel.password = it
                 },
                 onButtonClick = {
-//                    Toast.makeText(context, "Пока нет логики. Сасать", Toast.LENGTH_SHORT).show()
                     viewModel.login()
                 },
                 buttonEnabled = viewModel.login.isNotEmpty()

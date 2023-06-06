@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.core.chat.NullAdminChatService
 import com.timmovie.fragments.chat.chat_admin.ChatAdminPage
 import com.timmovie.fragments.chat.chat_admin.ChatAdminViewModel
 
@@ -16,8 +15,7 @@ fun ChatPage(viewModel: ChatViewModel, ) {
     NavHost(navController = nav, startDestination = chatAdminPage) {
         composable(chatAdminPage) {
             ChatAdminPage(
-                //прокинуть хз как
-                ChatAdminViewModel(viewModel.machine, NullAdminChatService.Instance)
+                ChatAdminViewModel(viewModel.machine)
             )
         }
     }

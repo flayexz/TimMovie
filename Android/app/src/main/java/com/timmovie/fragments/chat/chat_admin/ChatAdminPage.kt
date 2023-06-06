@@ -2,15 +2,30 @@ package com.timmovie.fragments.chat.chat_admin
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.core.Constants
+import com.example.core.User
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.fragments.chat.ChatPageBase
 import com.timmovie.infrastructure.AppState
+import io.grpc.ManagedChannel
+import io.grpc.ManagedChannelBuilder
 
 @Composable
 fun ChatAdminPage(viewModel: ChatAdminViewModel) {
     ChatAdminPageInternal(
         records = viewModel.records,
         onExitClick =  {
+
+            val channel: ManagedChannel = ManagedChannelBuilder
+                .forAddress(Constants.Urls.HOST, Constants.Urls.PORT)
+                .usePlaintext()
+                .build()
+            val grpcService = ChatGrpc.newBlockingStub(channel)
+            val request = ChatOuterClass.AttachedClient.newBuilder()
+                .setName(User.name)
+                .build()
+            grpcService.disconnectUserFromChat(request)
+
             viewModel.machine.currentState.value = AppState.Login
         },
         message = viewModel.message,
