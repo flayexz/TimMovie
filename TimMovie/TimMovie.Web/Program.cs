@@ -51,9 +51,9 @@ app.MapControllerRoute(
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHub<ChatHub>("/chatSinalR");
+    endpoints.MapGrpcService<ChatService>().EnableGrpcWeb().RequireCors("AllowAll");
+    endpoints.MapHub<ChatHub>("/chat");
 });
-app.MapGrpcService<ChatService>().EnableGrpcWeb().RequireCors("AllowAll");
 app.MapGraphQL();
 
 app.Run();

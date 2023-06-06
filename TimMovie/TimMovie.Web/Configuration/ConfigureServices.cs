@@ -46,7 +46,7 @@ public static class ServicesConfiguration
             opt.AddPolicy("AtLeast18", policy => policy.Requirements.Add(new AgeRequirement(18))));
 
         services.AddControllersWithViews();
-        
+
         services.AddCors(options => options.AddPolicy("AllowAll", corsPolicyBuilder =>
         {
             corsPolicyBuilder
