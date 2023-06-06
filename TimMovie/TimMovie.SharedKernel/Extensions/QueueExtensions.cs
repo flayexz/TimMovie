@@ -1,4 +1,5 @@
-﻿using TimMovie.SharedKernel.Validators;
+﻿using System.Collections.Concurrent;
+using TimMovie.SharedKernel.Validators;
 
 namespace TimMovie.SharedKernel.Extensions;
 
@@ -23,6 +24,28 @@ public static class QueueExtensions
             }
         }
 
-        return false;
+        return isDeleted;
+    }
+    
+    public static bool Remove<T>(this ConcurrentQueue<T> queue, T item)
+    {
+        ArgumentValidator.ThrowExceptionIfNull(queue, nameof(queue));
+
+        var isDeleted = false;
+        
+        for (var i = 0; i < queue.Count; i++)
+        {
+            queue.TryDequeue(out var itemFromQueue);
+            if (!isDeleted && Equals(item, itemFromQueue))
+            {
+                isDeleted = true;
+            }
+            else
+            {
+                queue.Enqueue(itemFromQueue);
+            }
+        }
+
+        return isDeleted;
     }
 }

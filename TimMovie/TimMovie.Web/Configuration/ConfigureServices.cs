@@ -49,6 +49,8 @@ public static class ServicesConfiguration
 
         services.AddGraphQL();
 
+        services.AddGrpc();
+
         services.AddAutoMapper(
             typeof(AppMappingProfile),
             typeof(CoreMappingProfile),
