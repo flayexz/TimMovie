@@ -3,8 +3,9 @@
 import 'google/protobuf/empty.proto';
 
 enum ChatEventStatus {
-    NewChat = 0;
-    OldChat = 1;
+    Simple = 0;
+    UserConnectToChat = 1;
+    UserDisconnectFromChat = 2;
 }
 
 message ChatEvent {

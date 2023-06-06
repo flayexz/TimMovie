@@ -2,6 +2,7 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using TimMovie.SharedKernel.Extensions;
+using TimMovie.Web.Extensions;
 
 namespace TimMovie.Web.gRPC;
 
@@ -20,24 +21,26 @@ public class ChatService: Chat.ChatBase
         if (FreeUsers.TryDequeue(out var freeUser))
         {
             Chats[support] = freeUser;
-            freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.OldChat });
+            freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.Simple });
         }
         else
         {
             FreeSupports.Enqueue(support);
-            support.Events.Enqueue(new ChatEvent { Body = "Ожидайте пользователя", Status = ChatEventStatus.OldChat });
+            support.Events.Enqueue(new ChatEvent { Body = "Ожидайте пользователя", Status = ChatEventStatus.Simple });
         }
 
         try
         {
+            await responseStream.WriteAsync(new ChatMessage {Body = "Инициализация", Name = "init"});
+            await Task.Delay(1000);
             while (!context.CancellationToken.IsCancellationRequested)
             {
                 while (support.Messages.TryDequeue(out var message))
                 {
                     await responseStream.WriteAsync(message);
                 }
-                
-                await Task.Delay(100);
+
+                await Task.Delay(1000);
             }
         }
         catch (OperationCanceledException)
@@ -53,13 +56,13 @@ public class ChatService: Chat.ChatBase
                 if (FreeSupports.TryDequeue(out var freeSupport))
                 {
                     Chats[freeSupport] = user;
-                    user.Events.Enqueue(new ChatEvent { Body = "Вас переключили на другого шарика эйчарика", Status = ChatEventStatus.OldChat });
-                    freeSupport.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.NewChat });
+                    user.Events.Enqueue(new ChatEvent { Body = "Вас переключили на другого шарика эйчарика", Status = ChatEventStatus.Simple });
+                    freeSupport.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.UserConnectToChat });
                 }
                 else
                 {
                     FreeUsers.Enqueue(user);
-                    user.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик отключился, ожидайте нового", Status = ChatEventStatus.OldChat });
+                    user.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик отключился, ожидайте нового", Status = ChatEventStatus.Simple });
                 }
             }
         }
@@ -74,16 +77,18 @@ public class ChatService: Chat.ChatBase
         if (FreeSupports.TryDequeue(out var freeSupport))
         {
             Chats[freeSupport] = user;
-            freeSupport.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.OldChat });
+            freeSupport.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.UserConnectToChat });
         }
         else
         {
             FreeUsers.Enqueue(user);
-            user.Events.Enqueue(new ChatEvent { Body = "Ожидайте шарика эйчарика", Status = ChatEventStatus.OldChat });
+            user.Events.Enqueue(new ChatEvent { Body = "Ожидайте шарика эйчарика", Status = ChatEventStatus.Simple });
         }
 
         try
         {
+            await responseStream.WriteAsync(new ChatMessage {Body = "Инициализация", Name = "init"});
+            await Task.Delay(1000);
             while (!context.CancellationToken.IsCancellationRequested)
             {
                 while (user.Messages.TryDequeue(out var message))
@@ -102,22 +107,21 @@ public class ChatService: Chat.ChatBase
         {
             FreeUsers.Remove(user);
 
-            KeyValuePair<ChatClient,ChatClient>? chat = Chats.FirstOrDefault(chat => chat.Value.Equals(user));
-            if (chat is not null)
+            var chat = Chats.FirstOrDefault(chat => chat.Value.Equals(user));
+            if (chat.IsNotDefault())
             {
-                Chats.TryRemove(chat.Value);
-                // находим нового пользователя
-                var support = chat.Value.Key;
+                Chats.TryRemove(chat);
+                var support = chat.Key;
                 if (FreeUsers.TryDequeue(out var freeUser))
                 {
                     Chats[support] = freeUser;
-                    support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, вас подключили к новому пользователю", Status = ChatEventStatus.NewChat });
-                    freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.OldChat });
+                    support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, вас подключили к новому пользователю", Status = ChatEventStatus.UserConnectToChat });
+                    freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.Simple });
                 }
                 else
                 {
                     FreeSupports.Enqueue(support);
-                    support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, ожидайте нового пользователя", Status = ChatEventStatus.NewChat });
+                    support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, ожидайте нового пользователя", Status = ChatEventStatus.UserDisconnectFromChat });
                 }
             }
         }
@@ -128,23 +132,24 @@ public class ChatService: Chat.ChatBase
         var client = new ChatClient(request.Name);
         var message = new ChatMessage { Body = request.Body, Name = request.Name };
 
-        KeyValuePair<ChatClient,ChatClient>? chat = Chats.FirstOrDefault(chat => chat.Key.Equals(client) || chat.Value.Equals(client));
-        if (chat is not null)
+        var chat = Chats
+            .FirstOrDefault(chat => chat.Key.Equals(client) || chat.Value.Equals(client));
+        if (chat.IsNotDefault())
         {
-            chat.Value.Key.Messages.Enqueue(message);
-            chat.Value.Value.Messages.Enqueue(message);
+            chat.Key.Messages.Enqueue(message);
+            chat.Value.Messages.Enqueue(message);
             return Task.FromResult(new Empty());
         }
 
         if (client.IsAdmin)
         {
             var support = FreeSupports.First(s => s.Equals(client));
-            support.Events.Enqueue(new ChatEvent { Body = "Ожидайте клиента", Status = ChatEventStatus.NewChat });
+            support.Events.Enqueue(new ChatEvent { Body = "Ожидайте клиента", Status = ChatEventStatus.Simple });
         }
         if (!client.IsAdmin)
         {
             var user = FreeUsers.First(s => s.Equals(client));
-            user.Events.Enqueue(new ChatEvent { Body = "Ожидайте шарика эйчарика", Status = ChatEventStatus.OldChat });
+            user.Events.Enqueue(new ChatEvent { Body = "Ожидайте шарика эйчарика", Status = ChatEventStatus.Simple });
         }
         
         return Task.FromResult(new Empty());
@@ -156,19 +161,21 @@ public class ChatService: Chat.ChatBase
         ServerCallContext context)
     {
         var client = new ChatClient(request.Name);
-        KeyValuePair<ChatClient,ChatClient>? oldClient = Chats
+        var (support, user) = Chats
             .FirstOrDefault(c => c.Key.Equals(client) || c.Value.Equals(client));
         if (client.IsAdmin)
         {
-            client = oldClient?.Key ?? FreeSupports.First(s => s.Equals(client));
+            client = support ?? FreeSupports.First(s => s.Equals(client));
         }
         else
         {
-            client = oldClient?.Value ?? FreeUsers.First(s => s.Equals(client));
+            client = user ?? FreeUsers.First(s => s.Equals(client));
         }
 
         try
         {
+            await responseStream.WriteAsync(new ChatEvent {Body = "Инициализация", Status = ChatEventStatus.Simple});
+            await Task.Delay(1000);
             while (!context.CancellationToken.IsCancellationRequested)
             {
                 while (client.Events.TryDequeue(out var e))
@@ -195,19 +202,19 @@ public class ChatService: Chat.ChatBase
             user.Events.Enqueue(new ChatEvent
             {
                 Body = "Шарик эйчарик отключился, если есть вопросы, перезайдите в чат", 
-                Status = ChatEventStatus.OldChat
+                Status = ChatEventStatus.Simple
             });
 
             if (FreeUsers.TryDequeue(out var freeUser))
             {
                 Chats[support] = freeUser;
-                freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.OldChat });
-                support.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.NewChat });
+                freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.Simple });
+                support.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.UserConnectToChat });
             }
             else
             {
                 FreeSupports.Enqueue(support);
-                support.Events.Enqueue(new ChatEvent { Body = "Ожидайте пользователя", Status = ChatEventStatus.NewChat });
+                support.Events.Enqueue(new ChatEvent { Body = "Ожидайте пользователя", Status = ChatEventStatus.Simple });
             }
         }
 
@@ -218,25 +225,24 @@ public class ChatService: Chat.ChatBase
     {
         var user = new ChatClient(request.Name);
         
-        KeyValuePair<ChatClient,ChatClient>? chat = Chats.FirstOrDefault(chat => chat.Value.Equals(user));
-        user = chat?.Value ?? FreeUsers.First(u => u.Equals(user));
+        var chat = Chats.FirstOrDefault(chat => chat.Value.Equals(user));
+        user = chat.Value ?? FreeUsers.First(u => u.Equals(user));
         
         FreeUsers.Remove(user);
 
-        if (chat is not null)
+        if (chat.IsNotDefault())
         {
-            Chats.TryRemove(chat.Value);
-            // находим нового пользователя
-            var support = chat.Value.Key;
+            Chats.TryRemove(chat);
+            var support = chat.Key;
             if (FreeUsers.TryDequeue(out var freeUser))
             {
                 Chats[support] = freeUser;
-                support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, вас подключили к новому пользователю", Status = ChatEventStatus.NewChat });
+                support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, вас подключили к новому пользователю", Status = ChatEventStatus.UserConnectToChat });
             }
             else
             {
                 FreeSupports.Enqueue(support);
-                support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, ожидайте нового пользователя", Status = ChatEventStatus.NewChat });
+                support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, ожидайте нового пользователя", Status = ChatEventStatus.UserDisconnectFromChat });
             }
         }
         
