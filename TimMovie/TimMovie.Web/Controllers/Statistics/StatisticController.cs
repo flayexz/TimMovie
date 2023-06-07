@@ -18,7 +18,7 @@ public class StatisticController : Controller
         _settings = settings.Value;
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> IncreaseFilmTrafficAsync([FromQuery] Guid filmId)
     {
         await _producer.ProduceAsync(_settings.Topic, new Message<Null, RegisterFilmTrafficEvent>
