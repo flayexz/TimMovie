@@ -22,6 +22,7 @@ public class ChatService: Chat.ChatBase
         {
             Chats[support] = freeUser;
             freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.Simple });
+            support.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.UserConnectToChat });
         }
         else
         {
@@ -78,6 +79,7 @@ public class ChatService: Chat.ChatBase
         {
             Chats[freeSupport] = user;
             freeSupport.Events.Enqueue(new ChatEvent { Body = "Пользователь подключен", Status = ChatEventStatus.UserConnectToChat });
+            user.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.Simple });
         }
         else
         {
@@ -238,6 +240,7 @@ public class ChatService: Chat.ChatBase
             {
                 Chats[support] = freeUser;
                 support.Events.Enqueue(new ChatEvent { Body = "Пользователь отключился, вас подключили к новому пользователю", Status = ChatEventStatus.UserConnectToChat });
+                freeUser.Events.Enqueue(new ChatEvent { Body = "Шарик эйчарик подключился", Status = ChatEventStatus.Simple });
             }
             else
             {
