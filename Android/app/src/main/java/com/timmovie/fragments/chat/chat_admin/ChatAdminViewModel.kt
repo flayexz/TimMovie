@@ -11,35 +11,23 @@ import com.example.core.*
 import com.google.protobuf.Empty
 import com.timmovie.MainActivity
 import com.timmovie.components.ChatRecordItem
-import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
 import com.timmovie.theme.MyGrpcService
 import com.timmovie.theme.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import io.grpc.ManagedChannel
-import io.grpc.ManagedChannelBuilder
 import io.grpc.stub.StreamObserver
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
 import java.util.logging.Logger
 
 @HiltViewModel
 class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine) : ViewModel() {
-    //    val records: MutableList<ChatRecordItem> = mutableStateListOf()
     val records = MutableLiveData<List<ChatRecordItem>>()
     var message by mutableStateOf("")
 
 
     fun sendMessage() {
         if (message.isEmpty()) return
-        viewModelScope.launch {
             val request = ChatOuterClass.ChatMessage.newBuilder()
                 .setName(User.name)
                 .setBody(message)
@@ -47,8 +35,11 @@ class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine) : Vie
             MyGrpcService.chatStub.sendMessage(request, object : StreamObserver<Empty> {
                 override fun onNext(response: Empty) {
                     // Обработка ответа сервера
+
                     val Log = Logger.getLogger(MainActivity::class.java.name)
-                    Log.warning("Обработка ответа сервера")
+                    Log.warning("ОТПРАВИЛ СООБЩЕНИЕ")
+                    Log.warning(User.name)
+                    Log.warning(message)
                 }
 
                 override fun onError(t: Throwable) {
@@ -59,29 +50,10 @@ class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine) : Vie
 
                 override fun onCompleted() {
                     // Завершение операции
-                    val Log = Logger.getLogger(MainActivity::class.java.name)
-                    Log.warning("ОТПРАВИЛ СООБЩЕНИЕ")
-                    Log.warning(User.name)
-                    Log.warning(message)
-
-                    val newRecords: List<ChatRecordItem> =
-                        listOf(ChatRecordItem(User.name, message))
-
-                    val currentRecords: MutableList<ChatRecordItem>? =
-                        records.value?.toMutableList()
-                    CoroutineScope(Dispatchers.Main).launch {
-                        if (currentRecords == null) {
-                            records.value = newRecords
-                        } else {
-                            currentRecords.addAll(newRecords)
-                            records.value = currentRecords!!
-                        }
-                    }
-
-                    message = ""
+                    
                 }
             })
-        }
+        message = ""
     }
 
     fun getChatMessages() {
@@ -103,7 +75,7 @@ class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine) : Vie
 
                     val currentRecords: MutableList<ChatRecordItem>? =
                         records.value?.toMutableList()
-                    CoroutineScope(Dispatchers.Main).launch {
+                    viewModelScope.launch {
                         if (currentRecords == null) {
                             records.value = newRecords
                         } else {
@@ -147,7 +119,7 @@ class ChatAdminViewModel @Inject constructor(val machine: AppStateMachine) : Vie
 
                     val currentRecords: MutableList<ChatRecordItem>? =
                         records.value?.toMutableList()
-                    CoroutineScope(Dispatchers.Main).launch {
+                    viewModelScope.launch {
                         if (currentRecords == null) {
                             records.value = newRecords
                         } else {

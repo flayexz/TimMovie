@@ -2,10 +2,12 @@ package com.timmovie.fragments.chat.chat_admin
 
 import ChatGrpc
 import ChatOuterClass
+import android.app.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 import com.google.protobuf.Empty
 import com.timmovie.MainActivity
 import com.timmovie.components.ChatRecordItem
@@ -13,6 +15,7 @@ import com.timmovie.fragments.chat.ChatPageBase
 import com.timmovie.infrastructure.AppState
 import com.timmovie.theme.MyChannel
 import com.timmovie.theme.User
+import com.timmovie.theme.isBuilded
 import io.grpc.stub.StreamObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,28 +24,10 @@ import java.util.logging.Logger
 @Composable
 fun ChatAdminPage(viewModel: ChatAdminViewModel) {
     val myRecords = viewModel.records.observeAsState()
-    LaunchedEffect(Unit) {
-        try {
-            viewModel.getChatMessages()
-            try {
-                withContext(Dispatchers.IO) {
-                    Thread.sleep(1000)
-                    viewModel.getEvents()
-                }
-            } catch(e: Exception) {
-                val Log = Logger.getLogger(MainActivity::class.java.name)
-                Log.warning(e.message)
-            }
-        } catch(e: Exception) {
-            val Log = Logger.getLogger(MainActivity::class.java.name)
-            Log.warning(e.message)
-        }
-    }
-
+    
     ChatAdminPageInternal(
         records = myRecords,
         onExitClick =  {
-
             val grpcService = ChatGrpc.newStub(MyChannel)
             val request = ChatOuterClass.AttachedClient.newBuilder()
                 .setName(User.name)
@@ -70,6 +55,32 @@ fun ChatAdminPage(viewModel: ChatAdminViewModel) {
             viewModel.message = it
         }
     )
+
+    if (!isBuilded) {
+        val builder = AlertDialog.Builder(LocalContext.current)
+        builder.setTitle("Confirmation")
+        builder.setMessage("Are you sure?")
+        builder.setPositiveButton("Да") { _, _ ->
+            try {
+                viewModel.getChatMessages()
+                try {
+                    Thread.sleep(500)
+                    viewModel.getEvents()
+                    isBuilded = true;
+                } catch (e: Exception) {
+                    val Log = Logger.getLogger(MainActivity::class.java.name)
+                    Log.warning(e.message)
+                }
+            } catch (e: Exception) {
+                val Log = Logger.getLogger(MainActivity::class.java.name)
+                Log.warning(e.message)
+            }
+        }
+        builder.setNegativeButton("Нет") { _, _ ->
+            viewModel.machine.currentState.value = AppState.Login
+        }
+        builder.create().show()
+    }
 }
 
 @Composable

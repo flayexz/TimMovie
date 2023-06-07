@@ -24,6 +24,7 @@ import com.timmovie.infrastructure.AppModule
 import com.timmovie.infrastructure.AppState
 import com.timmovie.theme.Constants
 import com.timmovie.theme.TimMovieTheme
+import com.timmovie.theme.isBuilded
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
             TimMovieTheme {
                 NavHost(navController = nav, startDestination = Constants.Routes.LOGIN) {
                     composable(Constants.Routes.LOGIN) {
+                        isBuilded = false;
                         val viewModel = hiltViewModel<LoginViewModel>()
                         LoginPage(viewModel)
                     }

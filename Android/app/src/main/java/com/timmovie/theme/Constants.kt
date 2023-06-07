@@ -35,3 +35,5 @@ val MyChannel: ManagedChannel = ManagedChannelBuilder
 object MyGrpcService {
     val chatStub: ChatGrpc.ChatStub = ChatGrpc.newStub(MyChannel)
 }
+
+var isBuilded = false;
