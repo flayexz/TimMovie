@@ -15,6 +15,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,12 +29,13 @@ import com.timmovie.components.InputText
 
 
 @Composable
-fun ChatPageBase(records: MutableList<ChatRecordItem>,
+fun ChatPageBase(records: State<List<ChatRecordItem>?>,
                  onExitClick: () -> Unit = {},
                  inputMessage: String = "",
                  onInputMessageChange: (String) -> Unit = {},
                  onMessageSendClick: () -> Unit = {}) {
-    
+
+    val records1 = records.value?.toMutableList()
     
     Scaffold(topBar = {
         TopAppBar(modifier = Modifier.fillMaxWidth()) {
@@ -48,8 +50,10 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
         Column(modifier = Modifier.fillMaxHeight().padding(5.dp)) {
             LazyColumn(modifier = Modifier
                 .weight(1f)) {
-                items(records) {
-                    ChatRecord(username = it.username, content = it.content)
+                records1?.let { records ->
+                    items(records) { record ->
+                        ChatRecord(username = record.username, content = record.content)
+                    }
                 }
             }
             Box {
@@ -77,16 +81,4 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ChatPageBasePreview() {
-    val records = remember {
-        mutableStateListOf(
-            ChatRecordItem("Кто-то", "Привет всем"),
-            ChatRecordItem("Это", "ДДААВАЫАЫВАВЫА")
-        )
-    }
-    ChatPageBase(records = records, onExitClick = {})
 }

@@ -1,58 +1,66 @@
 package com.timmovie.fragments.chat.chat_admin
 
-import android.widget.Toast
-import androidx.compose.runtime.*
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.core.Constants
-import com.example.core.MyChannel
-import com.example.core.User
+import ChatGrpc
+import ChatOuterClass
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.livedata.observeAsState
 import com.google.protobuf.Empty
+import com.timmovie.MainActivity
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.fragments.chat.ChatPageBase
 import com.timmovie.infrastructure.AppState
-import io.grpc.ManagedChannel
-import io.grpc.ManagedChannelBuilder
+import com.timmovie.theme.MyChannel
+import com.timmovie.theme.User
 import io.grpc.stub.StreamObserver
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.logging.Logger
 
 @Composable
 fun ChatAdminPage(viewModel: ChatAdminViewModel) {
+    val myRecords = viewModel.records.observeAsState()
     LaunchedEffect(Unit) {
         try {
             viewModel.getChatMessages()
-        } catch(_: Exception) {
-        }
-        try {
-            viewModel.getEvents()
-        } catch(_: Exception) {
+            try {
+                withContext(Dispatchers.IO) {
+                    Thread.sleep(1000)
+                    viewModel.getEvents()
+                }
+            } catch(e: Exception) {
+                val Log = Logger.getLogger(MainActivity::class.java.name)
+                Log.warning(e.message)
+            }
+        } catch(e: Exception) {
+            val Log = Logger.getLogger(MainActivity::class.java.name)
+            Log.warning(e.message)
         }
     }
+
     ChatAdminPageInternal(
-        records = viewModel.records,
+        records = myRecords,
         onExitClick =  {
 
             val grpcService = ChatGrpc.newStub(MyChannel)
             val request = ChatOuterClass.AttachedClient.newBuilder()
                 .setName(User.name)
                 .build()
-            GlobalScope.launch(Dispatchers.IO) {
-                grpcService.disconnectUserFromChat(request, object : StreamObserver<Empty> {
-                    override fun onNext(response: Empty) {
-                        // Обработка ответа сервера
-                    }
+            viewModel.machine.currentState.value = AppState.Login
+            grpcService.disconnectUserFromChat(request, object : StreamObserver<Empty> {
+                override fun onNext(response: Empty) {
+                    // Обработка ответа сервера
+                }
 
-                    override fun onError(t: Throwable) {
-                        // Обработка ошибки
-                    }
+                override fun onError(t: Throwable) {
+                    // Обработка ошибки
+                }
 
-                    override fun onCompleted() {
-                        // Завершение операции
-                        viewModel.machine.currentState.value = AppState.Login
-                    }
-                })
-            }
+                override fun onCompleted() {
+                    // Завершение операции
+                }
+            })
         },
         message = viewModel.message,
         onMessageButtonClick = {
@@ -66,7 +74,7 @@ fun ChatAdminPage(viewModel: ChatAdminViewModel) {
 
 @Composable
 fun ChatAdminPageInternal(
-    records: MutableList<ChatRecordItem>,
+    records: State<List<ChatRecordItem>?>,
     onExitClick: () -> Unit,
     message: String,
     onMessageButtonClick: () -> Unit,
@@ -79,15 +87,4 @@ fun ChatAdminPageInternal(
         onMessageSendClick = onMessageButtonClick,
         onInputMessageChange = onMessageChange
     )
-}
-@Preview
-@Composable
-fun ChatAdminPagePreview() {
-    val records = remember {
-        mutableStateListOf(
-            ChatRecordItem("Вы", "Дорова епта"),
-            ChatRecordItem("Пахан", "Че надо?"),
-        )
-    }
-    ChatAdminPageInternal(records = records, {}, "", {}, {})
 }
