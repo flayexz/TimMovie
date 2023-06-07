@@ -1,5 +1,7 @@
+using System.Net;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using TimMovie.Core;
 using TimMovie.Infrastructure;
 using TimMovie.Web.Configuration;
@@ -10,6 +12,13 @@ using TimMovie.Web.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(IPAddress.Any, 5011, listenOptions =>
+    {
+        listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+    });
+});
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.ConfigureServices(builder.Configuration,builder.Environment);
