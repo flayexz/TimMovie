@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.example.core.Constants
+import com.timmovie.theme.Constants
 
 @Composable
 fun FilmCard (name: String, image: String, onButtonClick: () -> Unit, length: Int = 10) {

@@ -22,7 +22,6 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun MainAuthorizedFragment(films: List<FilmDataImage>, onButtonClick: () -> Unit, onButton2Click: (controller: NavController, id: String) -> Unit, controller: NavController, onButton3Click: () -> Unit,) {
-    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {

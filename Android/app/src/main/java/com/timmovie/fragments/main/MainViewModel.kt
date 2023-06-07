@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.apollographql.apollo3.ApolloClient
-import com.example.core.Constants
 import com.timmovie.GetFilmsQuery
 import com.timmovie.MainActivity
 import com.timmovie.components.FilmDataImage
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
+import com.timmovie.theme.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

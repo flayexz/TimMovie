@@ -12,8 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.apollographql.apollo3.ApolloClient
-import com.example.core.Constants
-import com.timmovie.components.FilmDataImage
 import com.timmovie.fragments.chat.ChatPage
 import com.timmovie.fragments.chat.ChatViewModel
 import com.timmovie.fragments.film.FilmPage
@@ -24,12 +22,10 @@ import com.timmovie.fragments.main.MainPage
 import com.timmovie.fragments.main.MainViewModel
 import com.timmovie.infrastructure.AppModule
 import com.timmovie.infrastructure.AppState
+import com.timmovie.theme.Constants
 import com.timmovie.theme.TimMovieTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
-import okhttp3.*
-import java.io.IOException
-import java.util.logging.Logger
 
 
 @AndroidEntryPoint

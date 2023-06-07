@@ -7,17 +7,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.ApolloClient
-import com.example.core.Constants
-import com.timmovie.GetFilmsQuery
-import com.timmovie.components.FilmDataImage
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
 import com.timmovie.infrastructure.RabbitmqStatisticsManagerProvider
 import com.timmovie.infrastructure.StatisticsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel

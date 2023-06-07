@@ -1,4 +1,4 @@
-package com.example.core
+package com.timmovie.theme
 
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
@@ -16,7 +16,7 @@ object Constants {
         const val FILESAPI = "http://10.0.2.2:8081/"
         const val FILMAPI = "http://10.0.2.2:5011/statistic/IncreaseFilmTraffic?filmId="
         const val HOST = "10.0.2.2"
-        const val PORT = 5011
+        const val PORT = 5002
     }
 }
 
@@ -31,3 +31,7 @@ val MyChannel: ManagedChannel = ManagedChannelBuilder
                 .forAddress(Constants.Urls.HOST, Constants.Urls.PORT)
     .usePlaintext()
     .build()
+
+object MyGrpcService {
+    val chatStub: ChatGrpc.ChatStub = ChatGrpc.newStub(MyChannel)
+}

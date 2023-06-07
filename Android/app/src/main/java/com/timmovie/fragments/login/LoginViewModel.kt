@@ -7,9 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.domain.login.ILoginService
-import com.example.core.User
 import com.timmovie.infrastructure.AppState
 import com.timmovie.infrastructure.AppStateMachine
+import com.timmovie.theme.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
