@@ -1,6 +1,7 @@
 package com.timmovie.fragments.film
 
 import android.annotation.SuppressLint
+import android.os.StrictMode
 import android.util.Log
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
@@ -25,10 +26,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.example.core.Constants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.timmovie.MainActivity
+import kotlinx.coroutines.runBlocking
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.util.logging.Logger
 
 @Composable
@@ -37,10 +42,12 @@ fun FilmAuthorizedFragment(
     filmTitle: String,
     url: String,
     onButtonClick: () -> Unit,
-    onButton2Click: () -> Unit
+    onButton2Click: () -> Unit,
+    statistics: State<Map<String, Int>?>
 ) {
     val context = LocalContext.current
-
+    val count = statistics.value?.get(filmId).toString()
+    
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
@@ -95,6 +102,7 @@ fun FilmAuthorizedFragment(
                         })
                     }
                     Text(text = filmTitle)
+                    Text(text = count.toString())
                 }
             }
             Box() {

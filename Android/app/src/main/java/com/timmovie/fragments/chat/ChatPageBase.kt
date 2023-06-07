@@ -33,6 +33,8 @@ fun ChatPageBase(records: MutableList<ChatRecordItem>,
                  inputMessage: String = "",
                  onInputMessageChange: (String) -> Unit = {},
                  onMessageSendClick: () -> Unit = {}) {
+    
+    
     Scaffold(topBar = {
         TopAppBar(modifier = Modifier.fillMaxWidth()) {
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {

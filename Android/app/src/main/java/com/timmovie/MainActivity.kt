@@ -2,6 +2,7 @@ package com.timmovie
 
 //import com.timmovie.infrastructure.AppModule
 import android.os.Bundle
+import android.os.StrictMode
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,6 +27,9 @@ import com.timmovie.infrastructure.AppState
 import com.timmovie.theme.TimMovieTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
+import okhttp3.*
+import java.io.IOException
+import java.util.logging.Logger
 
 
 @AndroidEntryPoint
@@ -44,6 +48,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(Constants.Routes.CHAT) {
                         val viewModel = hiltViewModel<ChatViewModel>()
+//                        viewModel.login
                         ChatPage(viewModel)
                     }
                     composable(Constants.Routes.ALLFILMS) {
@@ -54,12 +59,11 @@ class MainActivity : ComponentActivity() {
                         type = NavType.StringType
                     })) {
                         val viewModel = hiltViewModel<FilmViewModel>()
-                        viewModel.filmId
-                        val filmId = it.arguments?.getString("id")
-                        filmId?.let {
-                            viewModel.filmId = filmId
-                        }
                         runBlocking  {
+                            val filmId = it.arguments?.getString("id")
+                            filmId?.let {
+                                viewModel.filmId = filmId
+                            }
                             val apolloClient = ApolloClient.Builder()
                                 .serverUrl(Constants.Urls.GRAPHQL)
                                 .build()

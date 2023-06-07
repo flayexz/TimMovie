@@ -6,6 +6,7 @@ using TimMovie.Infrastructure.Settings;
 
 namespace TimMovie.Web.Controllers.Statistics;
 
+
 public class StatisticController : Controller
 {
     private readonly IProducer<Null, RegisterFilmTrafficEvent> _producer;

@@ -19,15 +19,11 @@ import com.timmovie.components.InputText
 @Composable
 fun LoginFragment(login: String, loginChange: (String) -> Unit,
                   password: String, passwordChange: (String) -> Unit,
-                  onButtonClick: () -> Unit, buttonEnabled: Boolean,
-                    onRegisterButtonClick: () -> Unit = {}) {
+                  onButtonClick: () -> Unit, buttonEnabled: Boolean) {
     val defaultPadding = 5.dp;
     Scaffold(
         topBar = {
             TopAppBar(modifier = Modifier.fillMaxWidth()) {
-                Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "Регистрация", fontSize = 16.sp, modifier = Modifier.clickable(onClick = onRegisterButtonClick))
-                }
             }
         },
         modifier = Modifier
@@ -53,19 +49,6 @@ fun LoginFragment(login: String, loginChange: (String) -> Unit,
                         onValueChange = loginChange,
                         modifier = Modifier
                             .padding(bottom = defaultPadding))
-
-                }
-                Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-                    InputText(
-                        text = password,
-                        placeholder = {
-                            Text("Пароль")
-                        },
-                        visualTransformation = PasswordVisualTransformation(),
-                        onValueChange = passwordChange,
-                        modifier = Modifier
-                            .padding(bottom = defaultPadding)
-                    )
 
                 }
                 Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
