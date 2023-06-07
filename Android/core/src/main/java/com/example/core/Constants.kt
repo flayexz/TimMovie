@@ -1,5 +1,8 @@
 package com.example.core
 
+import io.grpc.ManagedChannel
+import io.grpc.ManagedChannelBuilder
+
 object Constants {
     object Routes {
         const val LOGIN = "/login"
@@ -22,3 +25,9 @@ class User {
         var name: String = ""
     }
 }
+
+val MyChannel: ManagedChannel = ManagedChannelBuilder
+//    .forAddress("bcdf-178-205-29-128.ngrok-free.app", 8080)
+                .forAddress(Constants.Urls.HOST, Constants.Urls.PORT)
+    .usePlaintext()
+    .build()

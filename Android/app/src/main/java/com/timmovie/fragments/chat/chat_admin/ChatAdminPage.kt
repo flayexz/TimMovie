@@ -1,32 +1,58 @@
 package com.timmovie.fragments.chat.chat_admin
 
+import android.widget.Toast
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.core.Constants
+import com.example.core.MyChannel
 import com.example.core.User
+import com.google.protobuf.Empty
 import com.timmovie.components.ChatRecordItem
 import com.timmovie.fragments.chat.ChatPageBase
 import com.timmovie.infrastructure.AppState
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
+import io.grpc.stub.StreamObserver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun ChatAdminPage(viewModel: ChatAdminViewModel) {
+    LaunchedEffect(Unit) {
+        try {
+            viewModel.getChatMessages()
+        } catch(_: Exception) {
+        }
+        try {
+            viewModel.getEvents()
+        } catch(_: Exception) {
+        }
+    }
     ChatAdminPageInternal(
         records = viewModel.records,
         onExitClick =  {
 
-            val channel: ManagedChannel = ManagedChannelBuilder
-                .forAddress(Constants.Urls.HOST, Constants.Urls.PORT)
-                .usePlaintext()
-                .build()
-            val grpcService = ChatGrpc.newBlockingStub(channel)
+            val grpcService = ChatGrpc.newStub(MyChannel)
             val request = ChatOuterClass.AttachedClient.newBuilder()
                 .setName(User.name)
                 .build()
-            grpcService.disconnectUserFromChat(request)
+            GlobalScope.launch(Dispatchers.IO) {
+                grpcService.disconnectUserFromChat(request, object : StreamObserver<Empty> {
+                    override fun onNext(response: Empty) {
+                        // Обработка ответа сервера
+                    }
 
-            viewModel.machine.currentState.value = AppState.Login
+                    override fun onError(t: Throwable) {
+                        // Обработка ошибки
+                    }
+
+                    override fun onCompleted() {
+                        // Завершение операции
+                        viewModel.machine.currentState.value = AppState.Login
+                    }
+                })
+            }
         },
         message = viewModel.message,
         onMessageButtonClick = {
